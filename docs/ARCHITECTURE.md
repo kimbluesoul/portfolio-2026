@@ -24,7 +24,7 @@ This project is a UI / interaction-heavy portfolio website. Architecture should 
 | Styling | **Plain CSS** + CSS custom-property tokens mirrored from Figma variables, Astro scoped styles, cascade layers. No Tailwind / CSS-in-JS | [ADR-0004](../ADR/0004-css-and-design-tokens.md) |
 | Content | **Astro content collections** (YAML + Zod schemas); case pages rendered by a fixed-order section renderer that encodes the V9 template rules | [ADR-0005](../ADR/0005-content-model-and-case-template.md) |
 | Images | `astro:assets` (`<Picture>`), AVIF + WebP, responsive widths, build-time optimization | [ADR-0006](../ADR/0006-media-pipeline.md) |
-| Video | Self-hosted MP4 (H.264) + required poster, `preload="none"`, play-in-viewport, user pause control | [ADR-0006](../ADR/0006-media-pipeline.md) |
+| Video | Self-hosted MP4 (H.264) + required poster, `preload="none"`, never autoplays: hover/focus to play on desktop, tap to play on mobile | [ADR-0006](../ADR/0006-media-pipeline.md) |
 | Motion | CSS-first, motion tokens, IntersectionObserver reveals, native cross-document View Transitions as enhancement. No animation library | [ADR-0007](../ADR/0007-motion-architecture.md) |
 | Fonts | Self-hosted Instrument Sans + Noto Sans TC (unicode-range slices), no third-party font CDN | [ADR-0008](../ADR/0008-self-hosted-fonts.md) |
 | State | No global state, no client store, no browser storage | §6 |
@@ -239,8 +239,8 @@ All interactivity is **progressive enhancement**. With JavaScript disabled, ever
 
 | Element | Responsibility |
 |---|---|
-| `<loop-video>` | Wraps `<video muted playsinline loop preload="none" poster>`. Plays only while ≥ 50% in viewport (IntersectionObserver) and pauses when it leaves. Provides a visible **pause/play toggle** (WCAG 2.2.2). Does not autoplay under `prefers-reduced-motion: reduce` or when `play()` rejects (iOS Low Power Mode); shows poster + play button instead. |
-| `<motion-steps>` | Interaction & Motion step switcher, used by every project (AMD 404 / 維護 is one instance). Semantics: WAI-ARIA **Tabs** (`tablist` / `tab` / `tabpanel`), arrow-key + Home/End navigation, roving tabindex. Selecting a step swaps the active `<loop-video>`. Steps whose media is `pending` render disabled with the poster/placeholder (behavior Q5). |
+| `<loop-video>` | Wraps `<video muted playsinline loop preload="none" poster>`. **Never autoplays.** Playback is always user-initiated (Product Owner decision Q6, 2026-10-29). **Hover-capable devices** (`(hover: hover)`): play on `pointerenter` / keyboard `focus-within`, pause on `pointerleave` / `focusout`. When the video sits inside a whole-card link, hovering or focusing the card triggers it. **Touch devices** (`(hover: none)`): the poster shows a **play indicator**, and tapping toggles play/pause. Inside a link card, the indicator is a separate button outside the link's hit area, so tapping the card still navigates. A video also pauses when it scrolls out of view. The element exposes `data-state="idle|playing|paused"` for styling and tests. |
+| `<motion-steps>` | Interaction & Motion step switcher, used by every project (AMD 404 / 維護 is one instance). Semantics: WAI-ARIA **Tabs** (`tablist` / `tab` / `tabpanel`), arrow-key + Home/End navigation, roving tabindex. **Selecting a step plays that step's video** (a user action on every device). The initial step shows its poster until the user hovers / taps / selects. |
 | `<reveal-on-view>` | Adds `data-inview` once when the element enters the viewport. CSS does the animation. Disconnects after firing. |
 
 Rules:
@@ -256,7 +256,7 @@ Rules:
 - Only `transform` and `opacity` are animated (compositor-only). Do not animate layout properties (`width`, `height`, `top`, `margin`). `will-change` only during an active animation.
 - Scroll reveals use `<reveal-on-view>`. Scroll-linked animation (`animation-timeline: view()`) may be used as an enhancement behind `@supports`, never as the only path to visible content.
 - Page transitions: native cross-document **View Transitions** (`@view-transition { navigation: auto; }`) as progressive enhancement. No SPA router.
-- **Reduced motion**: a global `@media (prefers-reduced-motion: reduce)` layer sets durations to ~0, disables smooth scroll, reveals, and View Transitions, and `<loop-video>` stops autoplay.
+- **Reduced motion**: a global `@media (prefers-reduced-motion: reduce)` layer sets durations to ~0 and disables smooth scroll, reveals, and View Transitions. Videos are unaffected because they only ever play on user action.
 - **Content is visible by default.** Reveal styles hide elements only when JS has loaded (`html.js [data-reveal]:not([data-inview])`), so a JS failure never hides content.
 - An animation library (GSAP, Motion One, Lottie, etc.) needs an ADR. The threshold is a Figma motion spec that CSS + IO cannot express, such as a scrubbed multi-element timeline.
 
@@ -288,8 +288,11 @@ Rules:
 - Repository weight: masters stay **out of git**. If committed delivery media exceeds **300 MB**, open an ADR (Git LFS or R2 object storage).
 
 ### 9.3 Missing assets
-- `status: 'pending'` media (e.g. AMD 維護 video) renders a poster/placeholder in development and preview builds.
-- Production behavior for pending media is open question Q5. The build prints a **pending-asset report** on every run, so nothing ships pending by accident.
+- `status: 'pending'` media renders a poster/placeholder in development and preview builds.
+- The **production build fails** if any media is still `pending`. The build also prints a **pending-asset report** on every run, so nothing ships pending by accident.
+
+### 9.4 Play indicator
+- Touch devices show a play indicator on video posters (§7). Figma has no design for it. In M1, the implementer adds a minimal token-based indicator (a circular `--color-bg-brand` fill with a white triangle, matching the Next-arrow button style), lists it under "Deviations from Figma", and the Product Owner approves or replaces it on the preview deploy.
 
 ---
 
@@ -318,7 +321,8 @@ Rules:
 Target: **WCAG 2.2 AA**.
 - Contrast: all text/background token pairs are verified ≥ 4.5:1 (≥ 3:1 for large text and UI boundaries). **Known constraint:** brand blue `#1F3BD6` on `#141414` / `#222222` is **≈ 2.3:1**, so brand-blue text is not allowed on dark sections. Blue as a fill with white text/icon (7.9:1) is fine.
 - Keyboard: everything operable by keyboard, with a visible `:focus-visible` ring (token-defined) and a skip link to `main`.
-- Motion: `prefers-reduced-motion` honored (§8). Auto-playing video longer than 5 s has a pause control (WCAG 2.2.2), see Q6.
+- Motion: `prefers-reduced-motion` honored (§8). Videos never autoplay (hover / focus / tap to play), so no separate pause control is needed (WCAG 2.2.2).
+- Scope note: there is no legal accessibility obligation for a personal portfolio in Taiwan. The Product Owner chose a **pragmatic baseline**: automated checks plus keyboard / contrast / alt text / reduced motion. It must not add design work beyond what Figma already shows.
 - Links: "opens in new tab" announced; generic labels like "Figma 原型" get context via `aria-describedby` / visually hidden project name.
 - Media: meaningful `alt`; videos are decorative demonstrations (no audio) and are described by the adjacent caption / step text.
 - `lang` attributes per §3.
@@ -384,7 +388,7 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 
 ### 16.2 Required tests
 - **Unit**: `projects.ts` (ordering, next wrap 07→01, unique order), `sections.ts` (order, omission, tone alternation for all optional-section combinations), `media.ts` (pending detection, size helpers).
-- **E2E smoke**: every route returns 200 and has one `h1`. Nav anchors land on `#work` / `#about` / `#contact`. Next-project chain visits all 7 and returns to 88Win. Every link card has `target="_blank"` + `rel` containing `noopener`. `<motion-steps>` keyboard behavior. The resume page links to an existing PDF. No console errors.
+- **E2E smoke**: every route returns 200 and has one `h1`. Nav anchors land on `#work` / `#about` / `#contact`. Next-project chain visits all 7 and returns to 88Win. Every link card has `target="_blank"` + `rel` containing `noopener`. `<motion-steps>` keyboard behavior. `<loop-video>` never plays without user action (no `playing` state after load and scroll). The resume page links to an existing PDF. No console errors.
 - **Accessibility**: axe zero serious/critical on all routes.
 - **Visual regression**: not a blocking gate in v1. The Claude review compares preview deploys against Figma screenshots. It can be added later as an ADR.
 
@@ -408,10 +412,10 @@ These are raised for the **Product Owner**. The architecture does not decide the
 |---|---|---|
 | Q1 | **Scope mismatch.** PRODUCT.md says 4 initial projects (order TBD) and "Home only, no case studies yet". Figma and the brief have 7 projects in a fixed order, 7 designed case pages, and a resume page. Which is current? | M2+ scope |
 | Q2 | ~~No mobile designs.~~ **Resolved 2026-10-29**: 390 frames delivered (Appendix A). The tablet range is handled per §10. | — |
-| Q3 | **Resume page has no design**, and the PDF is not in the repo yet. | M4 |
+| Q3 | **Resume page.** The PDF was delivered 2026-10-29 at `public/files/Syuan-Ci-Resume.pdf` (2 pages). It is already laid out in the site's visual language (blue eyebrows, thin-border tags, rule-separated sections). Proposed: the PDF **is** the desktop design reference for `/resume/`, and mobile stacks the two-column rows. Awaiting PO confirmation. | M4 |
 | Q4 | **Motion spec.** There are no durations/easings or reveal behavior in Figma/DESIGN_SYSTEM. Approve the provisional tokens, or define them? Do motion steps auto-advance when a video ends? | Motion polish (not M0) |
-| Q5 | **Pending media at launch.** AMD 「Step=維護」 has no video. Should the step be hidden, shown disabled, or should launch wait? | AMD page launch |
-| Q6 | **Video pause control (WCAG 2.2.2).** Figma has no pause UI for looping videos. Approve a small pause/play toggle (design needed), or switch to click-to-play? | Accessibility gate |
+| Q5 | ~~Pending media at launch (AMD 維護 video).~~ **Resolved 2026-10-29** by the Product Owner. The video is delivered with the AMD assets in M3. | — |
+| Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**: no autoplay. Desktop plays on hover / focus, mobile on tap with a play indicator (§7, §9.4). | — |
 | Q7 | **Domain + Cloudflare account** (production URL, needed for canonical/OG/sitemap). | Launch only |
 | Q8 | **Analytics**: none (default) or cookieless Cloudflare Web Analytics? | Launch only |
 | Q9 | **Language**: Traditional Chinese only (assumed), or an English version later? | Routing if "later" |
@@ -445,8 +449,8 @@ Material architecture changes are recorded under [`ADR/`](../ADR/README.md), usi
 | **M1 — Home** | Hero, featured project, project grid (7 cards), About, Footer, nav anchors, UI primitives + hover states, `<reveal-on-view>`, `<loop-video>` (if cards use video) | M0 merged |
 | **M2 — Case template + 88Win** | All 9 section components, `CaseSections` renderer + tone logic, `<motion-steps>`, 88Win content (the complete V9 reference page) | M1 merged + Q1 |
 | **M3 — Remaining 6 case studies** | Content + assets only (no new components unless Architect approves) | M2 merged + Q10 |
-| **M4 — Resume** | `/resume/`, PDF download, About/Footer resume links | Q3 |
-| **M5 — Launch hardening** | 404, SEO/OG/JSON-LD, sitemap, budget tuning, domain | Q5, Q7, Q8 |
+| **M4 — Resume** | `/resume/` (content transcribed from the PDF into `resume.yaml`), "Download PDF", About "View Resume" + Footer "VIEW RESUME" links | Q3 confirmation |
+| **M5 — Launch hardening** | 404, SEO/OG/JSON-LD, sitemap, budget tuning, domain | Q7, Q8 |
 
 Mobile is part of **every** milestone's Definition of Done (mobile + desktop screenshots in each PR, compared against the 390 and 1920 frames).
 

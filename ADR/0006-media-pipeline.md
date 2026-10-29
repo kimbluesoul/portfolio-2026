@@ -16,14 +16,15 @@ Each case page carries about 15–25 raster images and 2–5 videos (16:9 key sc
 
 **Video**
 - MP4 / H.264 / yuv420p / no audio / `+faststart`, with a required poster image. Files go in `public/media/<slug>/` with versioned filenames.
-- Rendered only via `<loop-video>`: `muted playsinline loop preload="none"`, plays while in view, pauses out of view, and has a pause control. No autoplay under reduced motion or when autoplay is blocked.
+- Rendered only via `<loop-video>`: `muted playsinline loop preload="none"`. **Never autoplays** (Product Owner decision, 2026-10-29). On hover-capable devices it plays on hover / keyboard focus and pauses on leave. On touch devices, a play indicator toggles playback on tap. It pauses when scrolled out of view.
 - Size caps (enforced in CI): key-screen 8 MB, motion step 4 MB, card / preview 3 MB.
-- `status: 'pending'` marks undelivered media. The build prints a pending-asset report.
+- `status: 'pending'` marks undelivered media. The build prints a pending-asset report, and the production build fails if anything is still pending.
 
 **Not used**: YouTube/Vimeo/Figma iframes, GIFs for motion (much larger than MP4), image CDNs.
 
 ## Consequences
-- Zero video bytes load before the user scrolls to a video, and posters carry the first paint.
+- Zero video bytes load until the user asks for a video. Posters carry all first impressions, so poster quality matters as much as the video.
+- No pause control is needed for WCAG 2.2.2, because playback is always user-initiated.
 - Delivery video lives in git. If it exceeds 300 MB, a new ADR moves video to Git LFS or Cloudflare R2.
 - Astro image processing increases build time with many 2× sources. This is acceptable, and the Cloudflare build cache mitigates it.
 

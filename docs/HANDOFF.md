@@ -24,11 +24,14 @@
 | M1 | A4: type scale / spacing recorded in DESIGN_SYSTEM | Product Owner (ChatGPT may transcribe with citations) |
 | M2+ | Q1 / A2: PRODUCT.md scope update (7 projects, case pages, resume) | Product Owner |
 | M3 | Q10: Figma content inconsistencies | Product Owner |
-| M4 | Q3: resume design + PDF | Product Owner |
-| AMD launch | Q5: 維護 video (960×532) | Product Owner |
+| M4 | Q3: confirm the PDF as the resume page's design reference (PDF delivered at `public/files/Syuan-Ci-Resume.pdf`) | Product Owner |
+| M3 (AMD) | 維護 video file (960×532) delivered with AMD assets (Q5 resolved) | Product Owner |
 
 ## Open questions
-See ARCHITECTURE §17 (Q1–Q10) and the review doc, Part B.
+See ARCHITECTURE §17 and the review doc, Part B.
+
+Resolved on 2026-10-29: **Q2** (mobile 390 frames delivered), **Q5** (AMD 維護 video), **Q6** (videos never autoplay: hover/focus on desktop, tap with a play indicator on mobile).
+Still open: Q1, Q3 (confirmation), Q4, Q7, Q8, Q9, Q10, plus process items A1 and A2.
 
 ## Next actions for ChatGPT (M0 — Bootstrap), once approved
 Read: `docs/PRODUCT.md`, `docs/DESIGN_SYSTEM.md`, `docs/ARCHITECTURE.md`, `ADR/`, `AGENTS.md`, this file.
