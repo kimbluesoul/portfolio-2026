@@ -4,7 +4,7 @@
 
 ## Status (2026-10-30)
 - **Phase**: **M0 — Bootstrap implemented; awaiting Architect review.**
-- **Branch / PR**: `feat/m0-bootstrap` / PR pending. PR #1 was merged into `main` before this branch was created.
+- **Branch / PR**: `feat/m0-bootstrap` / PR #2. PR #1 was merged into `main` before this branch was created.
 - **Quality gate**: `pnpm verify` passes locally (lint, format, Astro check, 42 unit tests, static build, 12 Playwright/axe checks, and 9 Lighthouse runs across 3 routes).
 - **Scope**: Project scaffold, tooling, CI, content schemas, placeholder routes, and test infrastructure only. No visual section implementation, real project content, media, or motion was added.
 
@@ -49,7 +49,7 @@
 |---|---|
 | Collaboration scaffold | Done (PR #1) |
 | Architecture v1 | **Approved** (PR #1) |
-| M0 Bootstrap | **In review** (`feat/m0-bootstrap`) |
+| M0 Bootstrap | **In review** (PR #2) |
 | M1 Home | Not started |
 | M2 Case template + 88Win | Not started |
 | M3 Remaining case studies | Not started |
