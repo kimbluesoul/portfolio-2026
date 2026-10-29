@@ -26,12 +26,12 @@ ChatGPT acts as:
 ChatGPT owns implementation after architecture is approved.
 
 ## Implementation rules
-1. Read `docs/PRODUCT.md`, `docs/DESIGN_SYSTEM.md`, `docs/ARCHITECTURE.md`, and `docs/HANDOFF.md` before implementation.
+1. Read `docs/PRODUCT.md`, `docs/DESIGN_SYSTEM.md`, `docs/ARCHITECTURE.md`, `ADR/`, and `docs/HANDOFF.md` before implementation.
 2. Do not silently change architecture.
 3. Do not override Product Owner UI / UX decisions.
 4. Keep changes scoped to the requested feature.
 5. Use feature branches and Pull Requests.
-6. Run the architecture-defined lint, typecheck, tests, and build checks before requesting review.
+6. Run the architecture-defined quality gates (`pnpm verify`, see `docs/ARCHITECTURE.md` §16) before requesting review, and fill in `.github/pull_request_template.md`.
 7. Update `docs/HANDOFF.md` when project state materially changes.
 8. Prefer clear, maintainable implementation over clever abstractions.
 9. Avoid unrelated refactors inside feature PRs.

@@ -22,6 +22,8 @@ The portfolio should let the work speak through visual presentation, interaction
 - `docs/DESIGN_SYSTEM.md` — approved visual / interaction system
 - `docs/ARCHITECTURE.md` — architecture owned by Claude
 - `docs/HANDOFF.md` — current project state
+- `docs/reviews/` — Architect review records
+- `ADR/` — Architecture Decision Records
 - `AGENTS.md` — implementation-agent rules
 - `CLAUDE.md` — Claude architect / reviewer rules
 
@@ -37,4 +39,4 @@ The portfolio should let the work speak through visual presentation, interaction
 
 ## Current phase
 
-Collaboration scaffold and architecture kickoff. Website implementation has not started.
+Architecture v1 written and awaiting Product Owner approval (see `docs/HANDOFF.md`). Website implementation has not started.
