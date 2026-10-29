@@ -21,7 +21,6 @@
 |---|---|---|
 | M0 start | Architecture v1 approval | Product Owner |
 | M1 start | A1: how the implementer reads Figma and who exports assets | Product Owner |
-| M1 acceptance | Q2: mobile designs (or the "propose → approve" process) | Product Owner |
 | M1 | A4: type scale / spacing recorded in DESIGN_SYSTEM | Product Owner (ChatGPT may transcribe with citations) |
 | M2+ | Q1 / A2: PRODUCT.md scope update (7 projects, case pages, resume) | Product Owner |
 | M3 | Q10: Figma content inconsistencies | Product Owner |

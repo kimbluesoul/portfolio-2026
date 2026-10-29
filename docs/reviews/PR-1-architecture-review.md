@@ -60,7 +60,7 @@ Raised for the **Product Owner**. None of these were changed. They are mirrored 
 | # | Severity | Issue | Recommended direction |
 |---|---|---|---|
 | Q1 | Blocks M2+ | Scope mismatch (see A2). | Confirm the 7-project scope, the fixed order, and the milestone phasing in ARCHITECTURE §19. |
-| Q2 | **Blocks M1 acceptance** | **No mobile frames exist.** Every Figma frame is 1920 desktop, but "電腦版與手機版都要做". Mobile layout is a UI decision. | Provide 390-wide frames for Home, the case template (all 9 sections), nav, footer, and resume. Alternatively, authorize "implementer proposes mobile adaptation following documented rules → PO approves on the preview deploy". |
+| Q2 | ~~Blocks M1 acceptance~~ **Resolved** | No mobile frames existed. | 390 frames delivered on 2026-10-29 (ARCHITECTURE Appendix A). The tablet range follows ARCHITECTURE §10. |
 | Q3 | Blocks M4 | The resume page has no design, and `Syuan-Ci-Resume.pdf` is not in the repo yet. (The two `Resume cover / 104` frames are 104-platform covers, not a web resume.) | Provide a design (or approve a simple text layout built from existing tokens) and the PDF. |
 | Q4 | Shapes M1–M2 | No motion spec (durations, easings, reveal style). Unknown whether Interaction & Motion steps auto-advance when a video ends. | Approve the provisional tokens or define them. Decide whether steps auto-advance. |
 | Q5 | Blocks AMD launch | AMD 「Step=維護」 video is empty. | Choose: hide the step until the video exists, show it disabled with the poster, or hold the launch. |

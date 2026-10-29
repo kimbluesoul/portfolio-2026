@@ -47,7 +47,8 @@ Facts established from Figma (2026-10-29) that shape the architecture:
 - Case pages are long (9,000–12,600 px at 1920) and **media-heavy**: per page about 2 hero/showcase images, 1 16:9 hero video slot, 3–6 close-ups, 3 mobile panels, 1–3 motion videos, and a mosaic band.
 - Interaction & Motion sections are a **step list that switches a video** (the AMD switcher `440:668` is one instance of this pattern, not a one-off).
 - Colors live in Figma variables (`Portfolio 2026 / Primitives`, `Portfolio 2026 / Color`). Typography / spacing are **not** variables yet.
-- **Only desktop (1920) frames exist.** There are no mobile frames and no resume page design (see §17).
+- Designs exist at **desktop 1920** and **mobile 390** for Home, all 7 case studies, nav, footer, link card, and the AMD switcher (Appendix A). There is **no tablet frame** and **no resume page design** (see §17).
+- The page `03 Foundations` (`41:2`) shows an **older warm palette** (Paper / Ink / `#315D7D` blue) that does not match the bound variables. It is **not** a source of truth. Use the bound variables in Appendix A.
 - The site has no backend needs: no forms, no CMS, no auth, no user data.
 
 Non-functional priorities, in order: **visual fidelity → performance → accessibility → maintainability**. When a visual requirement conflicts with performance or accessibility budgets, the implementer raises it; it is not silently traded off.
@@ -295,11 +296,12 @@ Rules:
 ## 10. Responsive implementation strategy
 - **Mobile-first CSS.** Base styles target small screens; `min-width` media queries add desktop layout.
 - **Fluid scale**: type and section spacing use `clamp()` between a 390 px and a 1920 px reference viewport, so the desktop Figma values are hit exactly at 1920.
-- Layout breakpoints (provisional tokens, to be confirmed with mobile designs, Q2): `--bp-md: 768px`, `--bp-lg: 1024px`, `--bp-xl: 1440px`. CSS custom properties cannot be used inside media queries, so media queries use the literal value followed by the token name in a comment (`@media (min-width: 1024px) /* --bp-lg */`). JS reads the same values from a single `src/lib/breakpoints.ts`.
+- **Two design anchors**: mobile frames at 390 and desktop frames at 1920. Implement the 390 frames exactly at 390 and the 1920 frames exactly at 1920.
+- Layout breakpoints (provisional tokens): `--bp-md: 768px`, `--bp-lg: 1024px`, `--bp-xl: 1440px`. **Tablet (768–1279) is not designed.** The implementer chooses where each section switches from the mobile to the desktop layout, keeping desktop layouts from cramping. These switch points are shown on the preview deploy for Product Owner approval, then recorded in DESIGN_SYSTEM. CSS custom properties cannot be used inside media queries, so media queries use the literal value followed by the token name in a comment (`@media (min-width: 1024px) /* --bp-lg */`). JS reads the same values from a single `src/lib/breakpoints.ts`.
 - Use **container queries** for reusable components whose layout depends on their slot (ProjectCard in featured vs grid, LinkCard).
 - Desktop max layout width follows Figma: 1728 px content on Home, 1440 px on case pages, centered beyond 1920.
 - Touch: hover-only affordances must have an equivalent visible state under `(hover: none)`. Tap targets ≥ 44×44 px.
-- **Mobile layouts are design decisions.** Until mobile frames exist (Q2), the implementer must not invent permanent mobile designs. See §17.
+- Mobile layouts follow the 390 frames. Where a mobile frame omits something present on desktop, follow the mobile frame and do not invent a layout. If a needed mobile state is missing, raise it in the PR under "Deviations from Figma".
 
 ---
 
@@ -405,7 +407,7 @@ These are raised for the **Product Owner**. The architecture does not decide the
 | # | Question | Blocks |
 |---|---|---|
 | Q1 | **Scope mismatch.** PRODUCT.md says 4 initial projects (order TBD) and "Home only, no case studies yet". Figma and the brief have 7 projects in a fixed order, 7 designed case pages, and a resume page. Which is current? | M2+ scope |
-| Q2 | **No mobile designs.** Every Figma frame is 1920 desktop, but mobile is required. Provide mobile frames (recommended 390 wide: Home, case template, nav, footer, resume), or authorize "implementer proposes, PO approves on preview"? | Mobile layout in every milestone |
+| Q2 | ~~No mobile designs.~~ **Resolved 2026-10-29**: 390 frames delivered (Appendix A). The tablet range is handled per §10. | — |
 | Q3 | **Resume page has no design**, and the PDF is not in the repo yet. | M4 |
 | Q4 | **Motion spec.** There are no durations/easings or reveal behavior in Figma/DESIGN_SYSTEM. Approve the provisional tokens, or define them? Do motion steps auto-advance when a video ends? | Motion polish (not M0) |
 | Q5 | **Pending media at launch.** AMD 「Step=維護」 has no video. Should the step be hidden, shown disabled, or should launch wait? | AMD page launch |
@@ -446,26 +448,31 @@ Material architecture changes are recorded under [`ADR/`](../ADR/README.md), usi
 | **M4 — Resume** | `/resume/`, PDF download, About/Footer resume links | Q3 |
 | **M5 — Launch hardening** | 404, SEO/OG/JSON-LD, sitemap, budget tuning, domain | Q5, Q7, Q8 |
 
-Mobile is part of **every** milestone's Definition of Done (mobile + desktop screenshots in each PR). Q2 therefore needs an answer before M1 is accepted.
+Mobile is part of **every** milestone's Definition of Done (mobile + desktop screenshots in each PR, compared against the 390 and 1920 frames).
 
 ---
 
 ## Appendix A. Figma source map
 File `gNIygsBj4ODtt5gyY2Twij`, page `360:2`.
 
-| Item | Node |
-|---|---|
-| Home (desktop 1920) | `360:3` |
-| 88Win case (V9 reference, all sections) | `360:251` |
-| Hwa Fong Tire | `360:1603` |
-| FITZONE | `360:1373` |
-| SSS | `360:1814` |
-| JHANYU | `360:2029` |
-| AMD | `360:2240` |
-| HUIFA | `360:2449` |
-| V9 template rules (section rules + per-project suggestion table) | `360:2669` |
-| AMD / Motion switcher (Step=404 `440:655`, Step=維護 `440:656`) | `440:668` |
-| Interactive components / hover states | `465:662` |
+| Item | Desktop 1920 | Mobile 390 |
+|---|---|---|
+| Home | `360:3` | `474:1057` |
+| 88Win case (V9 reference, all sections) | `360:251` | `475:953` |
+| Hwa Fong Tire | `360:1603` | `483:1298` |
+| FITZONE | `360:1373` | `484:1339` |
+| SSS | `360:1814` | `484:1580` |
+| JHANYU | `360:2029` | `484:1821` |
+| AMD | `360:2240` | `485:1462` |
+| HUIFA | `360:2449` | `485:1693` |
+| Navigation | instance in each page | `473:913` |
+| Footer | instance in each page | `473:921` |
+| Link card | `465:714` | `473:935` |
+| AMD / Motion switcher (Step=404 `440:655`, Step=維護 `440:656`) | `440:668` | `482:1326` |
+| V9 template rules (section rules + per-project suggestion table) | `360:2669` | — |
+| Interactive components / hover states | `465:662` | — |
+
+Not a source of truth: page `03 Foundations` (`41:2`, outdated warm palette), and pages `01 Home Low-fi` and `02 Case Study` (earlier explorations).
 | Color variables (semantic names used as CSS tokens) | collections `Portfolio 2026 / Primitives`, `Portfolio 2026 / Color` |
 
 Color tokens currently bound in the designs (from `get_variable_defs`). `tokens.css` uses these names, normalized to `--color-*`:
