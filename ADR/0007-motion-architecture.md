@@ -1,11 +1,11 @@
 # ADR-0007: CSS-first motion, no animation library
 
-- Status: Proposed
+- Status: Accepted (2026-10-29)
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 
 ## Context
-The product emphasizes interaction and motion ("Show more, explain less"). The template also says only two "signature" visuals per case page (Hero showcase, Visual Extension) and that other sections "stay quiet". Most of the product's motion is **inside the work videos**, not in page chrome. No timeline-level motion spec exists in Figma yet (Q4).
+The product emphasizes interaction and motion ("Show more, explain less"). The template also says only two "signature" visuals per case page (Hero showcase, Visual Extension) and that other sections "stay quiet". Most of the product's motion is **inside the work videos**, not in page chrome. Figma has no motion spec. Token values and behavior rules were defined on Product Owner delegation in `docs/DESIGN_SYSTEM.md` → Motion (Q4).
 
 ## Decision
 - Hover / focus / press transitions and entrance reveals use **CSS** with motion tokens (`--motion-duration-*`, `--motion-ease-*`).

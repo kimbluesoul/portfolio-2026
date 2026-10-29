@@ -1,6 +1,6 @@
 # ADR-0003: No client UI framework; progressive-enhancement custom elements
 
-- Status: Proposed
+- Status: Accepted (2026-10-29)
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 
@@ -8,7 +8,7 @@
 Interactive behavior in the Figma designs is limited to:
 - hover / focus / press states (CSS),
 - anchor navigation (HTML),
-- looping videos that play in view,
+- looping videos that play on hover / focus (desktop) or tap (mobile),
 - the Interaction & Motion step switcher (tabs that swap a video),
 - scroll-triggered reveals.
 

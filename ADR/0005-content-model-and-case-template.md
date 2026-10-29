@@ -1,6 +1,6 @@
 # ADR-0005: Typed content collections and a code-enforced case template
 
-- Status: Proposed
+- Status: Accepted (2026-10-29)
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 

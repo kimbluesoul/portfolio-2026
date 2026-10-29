@@ -39,4 +39,4 @@ The portfolio should let the work speak through visual presentation, interaction
 
 ## Current phase
 
-Architecture v1 written and awaiting Product Owner approval (see `docs/HANDOFF.md`). Website implementation has not started.
+Architecture v1 approved. Next: M0 bootstrap by ChatGPT (see `docs/HANDOFF.md`).

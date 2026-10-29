@@ -1,6 +1,6 @@
 # ADR-0008: Self-hosted fonts with unicode-range subsets
 
-- Status: Proposed
+- Status: Accepted (2026-10-29)
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 

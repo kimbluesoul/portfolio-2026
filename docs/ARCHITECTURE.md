@@ -4,9 +4,9 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1 — Proposed, awaiting Product Owner approval** (2026-10-29).
+**v1 — Approved by the Product Owner** (2026-10-29).
 
-Implementation may start with milestone **M0 (bootstrap)** once the Product Owner approves this document. Milestones beyond M1 are gated on the open product questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture).
+Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
 ChatGPT must not populate or change architectural decisions on Claude's behalf. See [Architecture governance](#18-architecture-governance).
 
@@ -252,7 +252,7 @@ Rules:
 
 ## 8. Animation architecture
 - **CSS-first.** Hover, focus, press, and reveal motion are CSS transitions/keyframes driven by motion tokens:
-  `--motion-duration-fast | -base | -slow`, `--motion-ease-standard | -emphasized | -exit`. Values are provisional until the Product Owner defines motion in DESIGN_SYSTEM (Q4).
+  `--motion-duration-*`, `--motion-ease-*`, `--motion-distance-reveal`, `--motion-stagger`. Values and behavior rules are defined in `docs/DESIGN_SYSTEM.md` → Motion.
 - Only `transform` and `opacity` are animated (compositor-only). Do not animate layout properties (`width`, `height`, `top`, `margin`). `will-change` only during an active animation.
 - Scroll reveals use `<reveal-on-view>`. Scroll-linked animation (`animation-timeline: view()`) may be used as an enhancement behind `@supports`, never as the only path to visible content.
 - Page transitions: native cross-document **View Transitions** (`@view-transition { navigation: auto; }`) as progressive enhancement. No SPA router.
@@ -410,10 +410,10 @@ These are raised for the **Product Owner**. The architecture does not decide the
 
 | # | Question | Blocks |
 |---|---|---|
-| Q1 | **Scope mismatch.** PRODUCT.md says 4 initial projects (order TBD) and "Home only, no case studies yet". Figma and the brief have 7 projects in a fixed order, 7 designed case pages, and a resume page. Which is current? | M2+ scope |
+| Q1 | ~~Scope mismatch.~~ **Resolved 2026-10-29**: 7 projects in a fixed order. PRODUCT.md updated. | — |
 | Q2 | ~~No mobile designs.~~ **Resolved 2026-10-29**: 390 frames delivered (Appendix A). The tablet range is handled per §10. | — |
-| Q3 | **Resume page.** The PDF was delivered 2026-10-29 at `public/files/Syuan-Ci-Resume.pdf` (2 pages). It is already laid out in the site's visual language (blue eyebrows, thin-border tags, rule-separated sections). Proposed: the PDF **is** the desktop design reference for `/resume/`, and mobile stacks the two-column rows. Awaiting PO confirmation. | M4 |
-| Q4 | **Motion spec.** There are no durations/easings or reveal behavior in Figma/DESIGN_SYSTEM. Approve the provisional tokens, or define them? Do motion steps auto-advance when a video ends? | Motion polish (not M0) |
+| Q3 | ~~Resume page design.~~ **Resolved 2026-10-29**: `public/files/Syuan-Ci-Resume.pdf` is the desktop design reference for `/resume/`. Mobile stacks the two-column rows. | — |
+| Q4 | ~~Motion spec.~~ **Resolved 2026-10-29** (delegated to Architect): see DESIGN_SYSTEM → Motion. Steps do not auto-advance. | — |
 | Q5 | ~~Pending media at launch (AMD 維護 video).~~ **Resolved 2026-10-29** by the Product Owner. The video is delivered with the AMD assets in M3. | — |
 | Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**: no autoplay. Desktop plays on hover / focus, mobile on tap with a play indicator (§7, §9.4). | — |
 | Q7 | **Domain + Cloudflare account** (production URL, needed for canonical/OG/sitemap). | Launch only |
@@ -447,9 +447,9 @@ Material architecture changes are recorded under [`ADR/`](../ADR/README.md), usi
 |---|---|---|
 | **M0 — Bootstrap** | Astro project, tooling, scripts (§16.1), CI workflow, `_headers`, tokens.css from Figma variables, fonts, BaseLayout, SiteHeader/SiteFooter skeleton, content schemas + `site.yaml`, empty routes rendering, Cloudflare preview deploy | Architecture approved |
 | **M1 — Home** | Hero, featured project, project grid (7 cards), About, Footer, nav anchors, UI primitives + hover states, `<reveal-on-view>`, `<loop-video>` (if cards use video) | M0 merged |
-| **M2 — Case template + 88Win** | All 9 section components, `CaseSections` renderer + tone logic, `<motion-steps>`, 88Win content (the complete V9 reference page) | M1 merged + Q1 |
+| **M2 — Case template + 88Win** | All 9 section components, `CaseSections` renderer + tone logic, `<motion-steps>`, 88Win content (the complete V9 reference page) | M1 merged |
 | **M3 — Remaining 6 case studies** | Content + assets only (no new components unless Architect approves) | M2 merged + Q10 |
-| **M4 — Resume** | `/resume/` (content transcribed from the PDF into `resume.yaml`), "Download PDF", About "View Resume" + Footer "VIEW RESUME" links | Q3 confirmation |
+| **M4 — Resume** | `/resume/` (content transcribed from the PDF into `resume.yaml`, layout following the PDF), "Download PDF", About "View Resume" + Footer "VIEW RESUME" links | M1 merged |
 | **M5 — Launch hardening** | 404, SEO/OG/JSON-LD, sitemap, budget tuning, domain | Q7, Q8 |
 
 Mobile is part of **every** milestone's Definition of Done (mobile + desktop screenshots in each PR, compared against the 390 and 1920 frames).

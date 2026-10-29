@@ -1,6 +1,6 @@
 # ADR-0004: Plain CSS with design tokens mirrored from Figma variables
 
-- Status: Proposed
+- Status: Accepted (2026-10-29)
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 
