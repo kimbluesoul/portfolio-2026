@@ -1,0 +1,66 @@
+slug: 88win
+order: 1
+name: 88Win
+nameZh: 線上娛樂城
+card:
+  summary: M0 sample project used to validate the content schema.
+  tags:
+    - UI Design
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: M0 placeholder graphic
+  featured: true
+seo:
+  title: 88Win — M0 Placeholder
+  description: Schema-valid placeholder content for the M0 project bootstrap.
+next:
+  oneLiner: M0 placeholder
+  meta: Project 01 / 07
+  media: *placeholder
+hero:
+  eyebrow: Project 01
+  title: 88Win
+  headline: M0 placeholder case study
+  subtitle: Visual implementation begins in M2.
+  stats:
+    - label: Role
+      value: UI Designer
+    - label: Platform
+      value: Web
+    - label: Status
+      value: Placeholder
+    - label: Year
+      value: '2026'
+  showcase:
+    layout: single
+    items:
+      - *placeholder
+overview:
+  heading: Overview Placeholder
+  blocks:
+    - title: Context
+      body: Placeholder content for schema validation only.
+    - title: Outcome
+      body: Real project content is out of scope for M0.
+  outputs:
+    - Responsive website
+keyScreens:
+  eyebrow: Key Screens
+  heading: Key Screens Placeholder
+  subtitle: Visual assets are intentionally deferred.
+  main: *placeholder
+  closeups:
+    - caption: Placeholder close-up one
+      media: *placeholder
+    - caption: Placeholder close-up two
+      media: *placeholder
+links:
+  eyebrow: Links
+  heading: Project Links Placeholder
+  subtitle: Final project links will be added with real content.
+  cards:
+    - kind: prototype
+      label: Figma prototype
+      description: Placeholder external link for schema validation.
+      url: https://www.figma.com/

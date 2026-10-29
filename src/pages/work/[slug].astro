@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const siteEntry = await getEntry('site', 'site');
+if (!siteEntry) throw new Error('Missing site content entry.');
+---
+
+<BaseLayout
+  title={project.data.seo.title}
+  description={project.data.seo.description}
+  site={siteEntry.data}
+>
+  <article class="placeholder-page">
+    <p>{project.data.hero.eyebrow}</p>
+    <h1>{project.data.hero.title}</h1>
+    <p>{project.data.hero.subtitle}</p>
+    <p>
+      Case-study sections and visual media are intentionally deferred to M2.
+    </p>
+  </article>
+</BaseLayout>

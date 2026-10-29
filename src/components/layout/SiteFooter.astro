@@ -1,0 +1,55 @@
+---
+interface Props {
+  copyright: string;
+  email: string;
+  linkedin: string;
+  resumeLabel: string;
+}
+
+const { copyright, email, linkedin, resumeLabel } = Astro.props;
+---
+
+<footer id="contact" class="site-footer">
+  <p>{copyright}</p>
+  <ul aria-label="Contact links">
+    <li>
+      <a href={`mailto:${email}`}>Email</a>
+    </li>
+    <li>
+      <a href={linkedin} target="_blank" rel="noopener noreferrer">
+        LinkedIn <span class="visually-hidden">(opens in a new tab)</span>
+      </a>
+    </li>
+    <li>
+      <a href="/resume/">{resumeLabel}</a>
+    </li>
+  </ul>
+</footer>
+
+<style>
+  .site-footer {
+    padding: var(--space-8);
+    background: var(--color-bg-inverse);
+    color: var(--color-text-on-brand);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-start: var(--space-4);
+  }
+
+  a {
+    color: var(--color-text-on-brand);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

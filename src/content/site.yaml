@@ -1,0 +1,28 @@
+site:
+  nav:
+    - label: Work
+      href: /#work
+    - label: About
+      href: /#about
+    - label: Contact
+      href: '#contact'
+  hero:
+    eyebrow: Portfolio 2026
+    heading: M0 Bootstrap Placeholder
+    introduction: Content will be transcribed from the approved Figma source in M1.
+  credentials:
+    - UI Design
+    - Interaction Design
+  about:
+    heading: About Placeholder
+    body: The complete About content is intentionally deferred to M1.
+    skills:
+      - UI Design
+    tools:
+      - Figma
+  contact:
+    email: placeholder@example.com
+    linkedin: https://www.linkedin.com/
+  footer:
+    copyright: Portfolio 2026
+    resumeLabel: View Resume

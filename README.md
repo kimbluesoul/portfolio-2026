@@ -39,4 +39,4 @@ The portfolio should let the work speak through visual presentation, interaction
 
 ## Current phase
 
-Architecture v1 approved. Next: M0 bootstrap by ChatGPT (see `docs/HANDOFF.md`).
+M0 bootstrap is implemented on `feat/m0-bootstrap` and awaiting Claude review. No visual sections have been implemented (see `docs/HANDOFF.md`).

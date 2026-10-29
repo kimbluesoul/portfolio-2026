@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  site: CollectionEntry<'site'>['data'];
+}
+
+const { title, description, site } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">
+      Skip to main content
+    </a>
+    <SiteHeader nav={site.nav} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter
+      copyright={site.footer.copyright}
+      email={site.contact.email}
+      linkedin={site.contact.linkedin}
+      resumeLabel={site.footer.resumeLabel}
+    />
+  </body>
+</html>

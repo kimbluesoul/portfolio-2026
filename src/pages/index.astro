@@ -1,0 +1,28 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const siteEntry = await getEntry('site', 'site');
+if (!siteEntry) throw new Error('Missing site content entry.');
+const site = siteEntry.data;
+---
+
+<BaseLayout
+  title="Portfolio 2026 — M0"
+  description="Portfolio project bootstrap placeholder."
+  site={site}
+>
+  <section class="placeholder-page">
+    <p>{site.hero.eyebrow}</p>
+    <h1>{site.hero.heading}</h1>
+    <p>{site.hero.introduction}</p>
+  </section>
+  <section id="work" class="placeholder-page" aria-labelledby="work-heading">
+    <h2 id="work-heading">Work Placeholder</h2>
+    <p>Project cards and media are intentionally out of scope for M0.</p>
+  </section>
+  <section id="about" class="placeholder-page" aria-labelledby="about-heading">
+    <h2 id="about-heading">{site.about.heading}</h2>
+    <p>{site.about.body}</p>
+  </section>
+</BaseLayout>

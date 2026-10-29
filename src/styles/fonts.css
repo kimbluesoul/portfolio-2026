@@ -1,0 +1,21 @@
+@import url('@fontsource-variable/instrument-sans/wght.css');
+@import url('./noto-sans-tc.generated.css');
+
+@layer typography {
+  body {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-family-display);
+    line-height: var(--line-height-heading);
+  }
+
+  h1 {
+    font-size: var(--font-size-heading);
+  }
+}
