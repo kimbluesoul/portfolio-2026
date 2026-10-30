@@ -27,9 +27,17 @@ Child-node citations are included beside each measured value. Values are direct 
 | Home introduction | 18 / 23 px | 15 / 24.75 px | Noto Sans TC 400 | `360:9`, `474:1073` |
 | Section cue | 14 / 18 px | 12 / 15 px | Instrument Sans 700 / 500 | `360:25`, `474:1258` |
 | About display | 52 / 68 px | 30 / 39.6 px | Noto Sans TC 700 | `451:667`, `474:1259` |
-| About body | — | 15 / 26.25 px | Noto Sans TC 400 | `474:1261` |
+| About body | 20 / 36 px | 15 / 26.25 px | Noto Sans TC 400 | `451:670`, `474:1261` |
+| Project card title | 30 / 39 px | 22 / 30 px | Instrument Sans 700 + Noto Sans TC 700 | `465:1040`, `474:1130` |
+| Project card summary | 20 / 26 px | 15 / 24.75 px | Noto Sans TC 400, text-primary | `465:1043`, `474:1133` |
+| Tag chip | 13 / 17 px | 12 / 17 px | Noto Sans TC 500 (years: Instrument Sans 500) | `465:1045`, `474:1135` |
+| About tool / skill chip | 14 / 20 px | 14 / 20 px | Noto Sans TC 500 | `451:675`, `474:1267` |
+| Nav item | 16 / 18 px | 12.8 / 14.4 px | Instrument Sans 500 | `466:895`, `473:918` |
+| Footer title | 64 px | 38 / 1.1 | Instrument Sans 700 | `212:209`, `473:923` |
 
-Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`). The Noto Sans TC weights used by the approved home are 400, 500, and 700; all three are generated as unicode-range slices (P2-5).
+Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`).
+
+**Noto Sans TC weight usage (implementation constraint, ADR-0012):** 700 only in headings (`h1`–`h3`), 500 only in tag chips (`li`), 400 everywhere else. Fonts are subset per weight to exactly those elements. A new Chinese use of 500 or 700 outside these elements must be added to `scripts/font-text.mjs`, or the glyphs fall back to the system font.
 
 ## Spacing
 
