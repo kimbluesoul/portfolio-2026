@@ -3,7 +3,7 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-30)
-- **Phase**: **M2 Case template + 88Win is implemented** on `feat/m2-case-template` and is ready for Claude's review. M1 remains merged in PR #10.
+- **Phase**: **M2 Case template + 88Win is implemented** on `feat/m2-case-template` in PR #14 and is ready for Claude's review. M1 remains merged in PR #10.
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 
