@@ -51,7 +51,7 @@
 - P2-1: Astro's hashed meta CSP owns resource directives. `_headers` now contains only `frame-ancestors`, `base-uri`, `object-src`, and `form-action`; Playwright applies that header to every route and checks console/CSP violations.
 - P2-2: captioned media now requires `title`, allows optional `caption`, and keeps `media` required.
 - P2-3: project URLs now come only from the content entry ID. The loader rejects filenames outside the seven approved slugs.
-- P1-A: `wrangler.jsonc` configures `dist/` as Workers static assets with 404 fallback and forced trailing slashes; Wrangler is an exact-version dev dependency.
+- P1-A: `wrangler.jsonc` configures `dist/` as Workers static assets with 404 fallback and forced trailing slashes; Wrangler is an exact-version dev dependency. pnpm permits install scripts only for Wrangler's required `esbuild` and `workerd` packages.
 - P1-B: the production pending-media guard now checks `WORKERS_CI_BRANCH === 'main'`.
 - URL configuration uses `https://portfolio-2026.kimbluesoul.workers.dev` for Astro canonical/sitemap generation and `robots.txt`.
 - P2-4 (collection-level order validation) and P2-5 (all Figma font weights) are explicitly deferred to M1 per the Architect review.
