@@ -1,0 +1,69 @@
+:root {
+  --white: #fff;
+  --gray-50: #f3f3f3;
+  --gray-100: #e6e6e6;
+  --gray-300: #d4d4d4;
+  --gray-500: #b3b3b3;
+  --gray-700: #5c5c5c;
+  --gray-900: #222;
+  --black: #111;
+  --black-soft: #141414;
+  --blue-50: #eceefb;
+  --blue-600: #1f3bd6;
+  --blue-700: #182fad;
+
+  --color-bg-canvas: var(--gray-50);
+  --color-bg-surface: var(--white);
+  --color-bg-subtle: var(--gray-100);
+  --color-bg-brand: var(--blue-600);
+  --color-bg-brand-hover: var(--blue-700);
+  --color-bg-inverse: var(--black-soft);
+  --color-bg-inverse-raised: var(--gray-900);
+  --color-text-primary: var(--black);
+  --color-text-secondary: var(--gray-700);
+  --color-text-brand: var(--blue-600);
+  --color-text-on-brand: var(--white);
+  --color-text-on-inverse-muted: var(--gray-500);
+  --color-border-default: var(--gray-300);
+  --color-border-brand: var(--blue-600);
+  --color-project-accent-soft: var(--blue-50);
+
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 280ms;
+  --motion-duration-slow: 640ms;
+  --motion-duration-signature: 900ms;
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --motion-distance-reveal: 24px;
+  --motion-stagger: 80ms;
+
+  /* TODO(DESIGN_SYSTEM): Replace typography placeholders with Figma values in M1. */
+  --font-family-display:
+    'Instrument Sans Variable', 'Instrument Sans', sans-serif;
+  --font-family-body: 'Noto Sans TC', sans-serif;
+  --font-size-body: 1rem;
+  --font-size-heading: 2rem;
+  --line-height-body: 1.6;
+  --line-height-heading: 1.1;
+
+  /* TODO(DESIGN_SYSTEM): Replace spacing placeholders with Figma values in M1. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-section: 4rem;
+
+  --layout-home-max: 108rem;
+  --layout-case-max: 90rem;
+  --layout-text-max: 48rem;
+  --header-height: 4rem;
+  --radius-focus: 0.25rem;
+  --focus-ring-width: 0.1875rem;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1440px;
+}

@@ -1,0 +1,19 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const siteEntry = await getEntry('site', 'site');
+if (!siteEntry) throw new Error('Missing site content entry.');
+---
+
+<BaseLayout
+  title="404 — Page not found"
+  description="The requested page could not be found."
+  site={siteEntry.data}
+>
+  <section class="placeholder-page">
+    <h1>Page not found</h1>
+    <p>The final 404 presentation is intentionally deferred to M5.</p>
+    <a href="/">Return home</a>
+  </section>
+</BaseLayout>
