@@ -1,6 +1,6 @@
 # ADR-0008: Self-hosted fonts with unicode-range subsets
 
-- Status: Accepted (2026-10-29)
+- Status: Superseded for Noto Sans TC by [ADR-0012](0012-build-time-cjk-font-subsetting.md) (2026-10-30); Instrument Sans part still applies
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 

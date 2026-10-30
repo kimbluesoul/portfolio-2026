@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.1 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10.
+**v1.2 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -26,7 +26,7 @@ This project is a UI / interaction-heavy portfolio website. Architecture should 
 | Images | `astro:assets` (`<Picture>`), AVIF + WebP, responsive widths, build-time optimization | [ADR-0006](../ADR/0006-media-pipeline.md) |
 | Video | Self-hosted MP4 (H.264) + required poster, `preload="none"`, never autoplays: hover/focus to play on desktop, tap to play on mobile | [ADR-0006](../ADR/0006-media-pipeline.md) |
 | Motion | CSS-first, motion tokens, IntersectionObserver reveals, native cross-document View Transitions as enhancement. No animation library | [ADR-0007](../ADR/0007-motion-architecture.md) |
-| Fonts | Self-hosted Instrument Sans + Noto Sans TC (unicode-range slices), no third-party font CDN | [ADR-0008](../ADR/0008-self-hosted-fonts.md) |
+| Fonts | Self-hosted Instrument Sans (Fontsource) + Noto Sans TC **subset at build time** to the rendered glyphs (core/ext), no third-party font CDN | [ADR-0012](../ADR/0012-build-time-cjk-font-subsetting.md) |
 | State | No global state, no client store, no browser storage | §6 |
 | Hosting | **Cloudflare Workers static assets** (Workers Builds from GitHub), preview URL per branch, `main` = production | [ADR-0011](../ADR/0011-hosting-cloudflare-workers-static-assets.md) |
 | Quality gates | `pnpm verify` locally + GitHub Actions: lint, format, typecheck, unit, build, e2e + axe, Lighthouse CI budgets | [ADR-0010](../ADR/0010-quality-gates-and-ci.md) |
@@ -203,6 +203,8 @@ type Project = {
 
 Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 3 or 6 details, 1–3 motion steps, 1–2 link cards) are enforced in the schema. Layout fallbacks (for example "fewer than 3 close-ups → 2 columns") are then derived from item count in the component, not from extra flags.
 
+**Content fidelity rule (v1.2).** Every user-visible string, tag, number, and URL in content files is copied **verbatim** from Figma (or from the Product Owner / the resume PDF). Nothing is paraphrased, translated, or invented. If a value is not available yet, use the literal marker `TODO(CONTENT)`. The build lists every remaining marker, and the production build (`WORKERS_CI_BRANCH=main`) fails while any remain, the same way as pending media (§9.3). Schema validity is never a reason to write made-up copy.
+
 `site.yaml` holds nav labels, home hero copy, credentials, About copy, tools/skills tags, contact links (Email, LinkedIn), and footer copy. `resume.yaml` holds the web resume (structure decided when the resume design exists; see Q3).
 
 ### 5.2 Case page renderer
@@ -347,7 +349,7 @@ Measured with Lighthouse CI (mobile emulation) on the built site, and with field
 | TBT | ≤ 150 ms |
 | First-party JS (gzip) | ≤ 15 KB per page |
 | CSS (gzip) | ≤ 40 KB per page |
-| Fonts transferred before first scroll | ≤ 200 KB |
+| Font transfer, cold cache | ≤ 250 KB on `/`; ≤ 400 KB on case pages and `/resume/` (ADR-0012) |
 | Initial page weight before scroll (excl. video) | ≤ 1.2 MB home, ≤ 1.5 MB case |
 | Video bytes before user scroll | **0** (`preload="none"`, posters only) |
 
@@ -371,8 +373,8 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 ---
 
 ## 15. Dependency policy
-- **Runtime/production dependencies are limited to**: `astro`, `@astrojs/sitemap`, `@fontsource-variable/instrument-sans`, `@fontsource/noto-sans-tc` (or the subset approach in ADR-0008). Anything else requires Architect approval in the PR description, or an ADR if it changes an architecture decision.
-- **Dev dependencies (pre-approved)**: `typescript`, `@astrojs/check`, `eslint` + `typescript-eslint` + `eslint-plugin-astro` + `eslint-plugin-jsx-a11y` (Astro a11y rules), `prettier` + `prettier-plugin-astro`, `stylelint` + `stylelint-config-standard`, `vitest`, `@playwright/test`, `@axe-core/playwright`, `@lhci/cli`, `wrangler` (deploy only, ADR-0011).
+- **Runtime/production dependencies are limited to**: `astro`, `@astrojs/sitemap`, `@fontsource-variable/instrument-sans`, and build-time–generated Noto Sans TC subsets (ADR-0012; `@fontsource/noto-sans-tc` is removed). Anything else requires Architect approval in the PR description, or an ADR if it changes an architecture decision.
+- **Dev dependencies (pre-approved)**: `typescript`, `@astrojs/check`, `eslint` + `typescript-eslint` + `eslint-plugin-astro` + `eslint-plugin-jsx-a11y` (Astro a11y rules), `prettier` + `prettier-plugin-astro`, `stylelint` + `stylelint-config-standard`, `vitest`, `@playwright/test`, `@axe-core/playwright`, `@lhci/cli`, `wrangler` (deploy only, ADR-0011), `subset-font` (build only, ADR-0012).
 - **Not allowed without an ADR**: UI frameworks (React/Vue/Svelte/Solid/Preact), Tailwind or other CSS frameworks, CSS-in-JS, animation libraries, carousel/slider libraries, jQuery, icon fonts, analytics/tag managers, any third-party runtime script or CDN.
 - Versions are locked by `pnpm-lock.yaml`. CI uses `pnpm install --frozen-lockfile`. Dependabot (or Renovate) opens grouped monthly update PRs. Majors are reviewed individually.
 - Prefer platform features (CSS, IntersectionObserver, View Transitions, `<dialog>`) over packages.
