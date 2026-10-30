@@ -1,14 +1,15 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getOrderedProjects } from '../../lib/project-content';
 
 interface Props {
   project: CollectionEntry<'projects'>;
 }
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  const projects = await getOrderedProjects();
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },
@@ -28,9 +29,7 @@ if (!siteEntry) throw new Error('Missing site content entry.');
   <article class="placeholder-page">
     <p>{project.data.hero.eyebrow}</p>
     <h1>{project.data.hero.title}</h1>
+    <p>{project.data.hero.headline}</p>
     <p>{project.data.hero.subtitle}</p>
-    <p>
-      Case-study sections and visual media are intentionally deferred to M2.
-    </p>
   </article>
 </BaseLayout>

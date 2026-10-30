@@ -12,6 +12,8 @@ const projectSlug = z.enum([
   'huifa',
 ]);
 
+const contentUrl = z.union([z.url(), z.literal('TODO(CONTENT)')]);
+
 const projects = defineCollection({
   loader: glob({
     base: './src/content/projects',
@@ -163,7 +165,7 @@ const projects = defineCollection({
               kind: z.enum(['prototype', 'live', 'demo']),
               label: z.string().min(1),
               description: z.string().min(1),
-              url: z.url(),
+              url: contentUrl,
             }),
           )
           .min(1)
@@ -177,6 +179,10 @@ const projects = defineCollection({
 const site = defineCollection({
   loader: file('./src/content/site.yaml'),
   schema: z.object({
+    seo: z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+    }),
     nav: z.array(
       z.object({
         label: z.string().min(1),
@@ -188,20 +194,29 @@ const site = defineCollection({
       heading: z.string().min(1),
       introduction: z.string().min(1),
     }),
-    credentials: z.array(z.string().min(1)),
+    credentials: z.array(
+      z.object({
+        label: z.string().min(1),
+        value: z.string().min(1),
+      }),
+    ),
     about: z.object({
       heading: z.string().min(1),
       body: z.string().min(1),
       skills: z.array(z.string().min(1)),
       tools: z.array(z.string().min(1)),
+      resumeLabel: z.string().min(1),
     }),
     contact: z.object({
       email: z.email(),
       linkedin: z.url(),
     }),
     footer: z.object({
+      heading: z.string().min(1),
+      subheading: z.string().min(1),
       copyright: z.string().min(1),
       resumeLabel: z.string().min(1),
+      backToTopLabel: z.string().min(1),
     }),
   }),
 });

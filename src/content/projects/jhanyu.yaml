@@ -1,0 +1,45 @@
+order: 5
+name: JHANYU
+nameZh: 展裕建設
+card:
+  summary: &summary 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
+  tags: [已上線, UI設計, 品牌延伸, 企業網站, 2024–2025]
+  media: &card
+    kind: image
+    src: ../../assets/projects/jhanyu/card.jpg
+    alt: 展裕建設網站作品預覽
+seo:
+  title: 展裕建設 JHANYU｜周泫淇 Syuan Ci
+  description: *summary
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+hero:
+  eyebrow: *todo
+  title: *todo
+  headline: *todo
+  subtitle: *todo
+  stats:
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+  showcase: { layout: single, items: [*card] }
+overview:
+  heading: *todo
+  blocks:
+    - { title: *todo, body: *todo }
+    - { title: *todo, body: *todo }
+  outputs: [*todo]
+keyScreens:
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  main: *card
+  closeups:
+    - { title: *todo, caption: *todo, media: *card }
+    - { title: *todo, caption: *todo, media: *card }
+links:
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  cards:
+    - { kind: live, label: *todo, description: *todo, url: *todo }

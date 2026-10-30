@@ -3,21 +3,54 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-30)
-- **Phase**: **M0 — Architect approved; required P1/P2 corrections applied; Workers preview live; awaiting final CI, Architect re-review, and Product Owner merge.**
-- **Branch / PR**: `feat/m0-bootstrap` / PR #2. Architecture v1.1, ADR-0011, and the full M0 review are in PR #3, which should merge before or together with PR #2.
-- **Quality gate**: `pnpm verify` passes locally after the ADR-0011 hosting corrections (lint, format, Astro check, 42 unit tests, static build, 12 Playwright/axe/CSP checks, and 9 Lighthouse runs across 3 routes). Wrangler 4.155.0 dry run and Workers Builds preview deployment pass.
-- **Scope**: Project scaffold, tooling, CI, content schemas, placeholder routes, and test infrastructure only. No visual section implementation, real project content, media, or motion was added.
-- **Preview**: `https://feat-m0-bootstrap-portfolio-2026.kimbluesoul.workers.dev/`
+- **Phase**: **M1 — Home is implemented and green. It is awaiting independent review by ChatGPT** (temporary role swap, see below).
+- **Branch / PR**: `feat/m1-home` / [PR #10](https://github.com/kimbluesoul/portfolio-2026/pull/10).
+- **Quality gate**: the full `pnpm verify` passes locally:
+  - lint, format, Astro check;
+  - 42 unit tests;
+  - two-pass build with font coverage and media / content / bundle checks;
+  - 18 E2E / axe / CSP tests;
+  - 9 Lighthouse runs.
+
+  Home: LCP ~1.7 s, performance 0.99, fonts 115 KB.
+- **Preview**: `https://feat-m1-home-portfolio-2026.kimbluesoul.workers.dev/`.
+
+## ⚠️ Temporary role swap (2026-10-30)
+ChatGPT ran out of usage partway through the M1 review fixes. At the Product Owner's request:
+- **Claude** acted as **Implementation Engineer** for the rest of M1. Commit `a8025a3` recovers ChatGPT's uncommitted local work verbatim. Commit `3deda7c` and later commits are Claude's.
+- **ChatGPT** acts as **independent Reviewer** for PR #10, focusing on Claude's commits. Claude did not review its own code.
+- After PR #10 is merged, roles return to normal: ChatGPT implements, Claude reviews.
+- **ChatGPT's local checkout** (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) still contains the old uncommitted changes, now superseded by the pushed branch. Before any new work there, run `git fetch origin` and then `git reset --hard origin/feat/m1-home`, or start from a fresh clone. A backup of those files is in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Roles
 - **Product Owner / UI Designer:** user
-- **Architect / Code Reviewer:** Claude
-- **Implementation Engineer:** ChatGPT
+- **Architect / Code Reviewer:** Claude (temporarily also the M1 implementer)
+- **Implementation Engineer:** ChatGPT (temporarily the M1 reviewer)
 
 ## Next owner
-1. **Claude**: re-review PR #2, including the issue #4 platform compatibility note.
-2. **Product Owner**: merge PR #3 before or together with PR #2, then merge M0 after required checks and review pass.
-3. **M1** must not start before M0 is merged. Use the Cloudflare Workers branch preview for visual review.
+1. **ChatGPT (Reviewer)**: **re-review** PR #10. The first review (`b1d08d5`) returned CHANGES REQUESTED with two P2 findings. Both are fixed in `63a2175`:
+   - P2-1: header links have ≥ 44 × 44 px hit areas via an invisible layer. The visible pill and logo are unchanged. E2E probes this at 390 px.
+   - P2-2: every weight's `core` subset includes `CORE_BASELINE` (printable ASCII + common zh-Hant punctuation), with unit tests. ADR-0012 is amended to define the baseline (full-width Latin excluded). Trade-off: home fonts 115 → 158 KB, home LCP ~2.27 s (budget 2.5 s).
+
+   Post `Reviewer: APPROVED` or `Reviewer: CHANGES REQUESTED`.
+2. **Product Owner**: after approval, check the preview, mark PR #10 *Ready for review*, and merge.
+3. After merge, roles return to normal (ChatGPT implements M2, Claude reviews).
+
+## What changed in M1 (for the reviewer)
+- **Content**: all home copy, tags, and links are verbatim from `docs/content/home-copy.md` (Figma). Unknown values are `TODO(CONTENT)`. There are 7 markers, all in case-study fields that belong to M2. Production builds fail while any remain.
+- **Visual fidelity vs Figma** (`360:3`, `474:1057`, `465:662`):
+  - card typography and layout;
+  - nav active state;
+  - hero credentials row;
+  - About tool / skill rows;
+  - footer grid order (mobile vs desktop).
+
+  Values are cited in `docs/DESIGN_SYSTEM.md` → Typography.
+- **Fonts (ADR-0012 + amendment)**: Noto Sans TC is subset per weight (700 = h1–h3, 500 = tag chips, 400 = all text), with core / ext splits and a per-weight coverage gate on `dist/`. Fonts are not preloaded.
+- **Images**: the 7 card images from #12 render through `astro:assets` `<Picture>` (AVIF / WebP). The featured card is eager with `fetchpriority="high"`; the others are lazy.
+- **Known limits**:
+  - Card images are 1× Figma exports. The Product Owner may replace them with 2× files of the same name.
+  - SEO titles / descriptions are set (home, case pages, resume), as chosen by the Product Owner and recorded in `docs/content/home-copy.md` → SEO.
 
 ## Decisions recorded on 2026-10-29
 - **Q1 / A2**: 7 projects in a fixed order (PRODUCT.md updated).
@@ -25,52 +58,54 @@
 - **Q3**: the resume page follows the layout of `public/files/Syuan-Ci-Resume.pdf`.
 - **Q4**: motion tokens and rules are in DESIGN_SYSTEM → Motion. Steps do not auto-advance.
 - **Q5**: AMD 維護 video resolved by the Product Owner.
-- **Q6**: videos never autoplay. Desktop plays on hover / focus, mobile on tap with a play indicator.
-- **A1**: ChatGPT reads Figma directly and exports image assets itself. Videos come from the Product Owner.
+- **Q6**: videos never autoplay. Desktop plays on hover / focus; mobile plays on tap with a play indicator.
+- **A1**: ChatGPT reads Figma directly. In practice, Figma image export was not available to ChatGPT, so Claude exported the M1 images (#12).
 
 ## Decisions recorded on 2026-10-30
 - **ADR-0011**: Cloudflare Workers static assets via Workers Builds supersedes Cloudflare Pages. Production uses `portfolio-2026.kimbluesoul.workers.dev`; previews are branch deployments.
+- **ADR-0012** (+ amendment): build-time Noto Sans TC subsetting per weight, with no font preloads.
+- **ARCHITECTURE §5.1 content fidelity rule**: copy is verbatim from Figma or the Product Owner. Missing values use `TODO(CONTENT)`.
 - **Q8**: no analytics or tracking scripts.
 - **Q9**: Traditional Chinese only. There is no English site or English PDF.
-- **Q10**: hidden Figma layers are never implemented. AMD uses `360:2355`; hidden frame `437:652` is unused. Hwa Fong includes the live link `https://www.duro.com.tw/`. PRODUCT.md project order wins, and 「深藍」 maps to `--color-bg-inverse`.
+- **Q10**: hidden Figma layers are never implemented. AMD uses `360:2355`; hidden frame `437:652` is unused. Hwa Fong includes the live link `https://www.duro.com.tw/`. The PRODUCT.md project order wins, and 「深藍」 maps to `--color-bg-inverse`.
 
 ## Blockers
 | Blocks | Item | Owner |
 |---|---|---|
-| M1 | Type scale, spacing, and layout widths transcribed into DESIGN_SYSTEM from Figma, citing node IDs (A3/A4) | ChatGPT transcribes; Product Owner confirms in the PR |
-| M2–M3 | Delivery of video files per project (MP4 masters) | Product Owner |
-| M5 | Q7: choose a custom production domain if one will be used; `*.workers.dev` remains the fallback | Product Owner |
+| M1 merge | Independent review of PR #10 | ChatGPT (Reviewer) |
+| M2–M3 | Case-study copy (from Figma), assets, and video files | Product Owner |
 
 ## M0 implementation notes
 - Astro 7 static output, Node 24, pnpm, TypeScript strictest, approved dependencies, and all §16.1 scripts are configured.
-- Content schemas enforce the §5.1 media and project cardinality rules. `site.yaml` and one schema-valid 88Win placeholder entry are included.
-- `BaseLayout`, header/footer skeletons, and `/`, `/work/[slug]/`, `/resume/`, `/404` placeholders are present.
-- CSS includes approved color and motion tokens. Typography and spacing remain marked `TODO(DESIGN_SYSTEM)` for M1 transcription and Product Owner confirmation.
-- Noto Sans TC uses generated Fontsource unicode slices based on repository content so CSS/font budgets remain enforced without a third-party font service.
-- `postcss-html` is a dev-only parser required for Stylelint to enforce token rules inside Astro scoped styles; it has no runtime output.
-- CI runs verify → E2E/axe → Lighthouse. Media size, pending media, gzip CSS, and gzip first-party JS budgets are build gates.
-- P2-1: Astro's hashed meta CSP owns resource directives. `_headers` now contains only `frame-ancestors`, `base-uri`, `object-src`, and `form-action`; Playwright applies that header to every route and checks console/CSP violations.
-- P2-2: captioned media now requires `title`, allows optional `caption`, and keeps `media` required.
-- P2-3: project URLs now come only from the content entry ID. The loader rejects filenames outside the seven approved slugs.
-- P1-A: `wrangler.jsonc` configures `dist/` as Workers static assets with 404 fallback and forced trailing slashes; Wrangler is an exact-version dev dependency. pnpm permits install scripts only for Wrangler's required `esbuild` and `workerd` packages.
-- Cloudflare's current Workers Builds preview flow replaces the production deploy command with `npx wrangler preview` on non-`main` branches. Wrangler 4.155.0 therefore requires an empty top-level `previews` block. Issue #4 records this minimal addition because the accepted P1-A snippet predates that platform requirement; production settings remain unchanged.
-- P1-B: the production pending-media guard now checks `WORKERS_CI_BRANCH === 'main'`.
-- URL configuration uses `https://portfolio-2026.kimbluesoul.workers.dev` for Astro canonical/sitemap generation and `robots.txt`.
-- Workers Builds is configured with build command `pnpm build`, deploy command `npx wrangler deploy`, root `/`, Node 24, and pnpm 11.25.0. Retrying an older failed build reuses its old settings snapshot; a new commit is required to validate current settings.
-- Cloudflare Worker URL and Preview URLs are enabled. The live branch preview is `https://feat-m0-bootstrap-portfolio-2026.kimbluesoul.workers.dev/`.
-- P2-4 (collection-level order validation) and P2-5 (all Figma font weights) are explicitly deferred to M1 per the Architect review.
+- Content schemas enforce the §5.1 media and project cardinality rules.
+- `BaseLayout`, header / footer, and the `/`, `/work/[slug]/`, `/resume/`, `/404` routes are present.
+- `postcss-html` is a dev-only parser that Stylelint needs to enforce token rules inside Astro scoped styles. It has no runtime output.
+- CI runs verify → E2E / axe → Lighthouse. Media size, pending media, `TODO(CONTENT)`, gzip CSS, and gzip first-party JS budgets are build gates.
+- P2-1: Astro's hashed meta CSP owns the resource directives. `_headers` contains only `frame-ancestors`, `base-uri`, `object-src`, and `form-action`. Playwright applies that header to every route and checks for console / CSP violations.
+- P2-2: captioned media requires `title`, allows an optional `caption`, and requires `media`.
+- P2-3: project URLs come only from the content entry ID. The loader rejects filenames outside the seven approved slugs.
+- P1-A / Issue #4: `wrangler.jsonc` configures `dist/` as Workers static assets, with a 404 fallback, forced trailing slashes, and an empty `previews` block for branch previews.
+- P1-B: the production pending-media guard checks `WORKERS_CI_BRANCH === 'main'`.
+- Workers Builds: build command `pnpm build`, deploy command `npx wrangler deploy`, root `/`, Node 24, pnpm 11.25.0. Retrying an older failed build reuses its old settings snapshot, so a new commit is required to validate current settings.
+
+## M1 implementation notes
+- P2-4: `getOrderedProjects()` is used by the home page and `[slug].astro`, so duplicate or gapped order values fail every build.
+- P2-5: Noto Sans TC weights 400 / 500 / 700 are all generated (per-weight subsets, ADR-0012 amendment).
+- Card videos are not enabled because no card MP4s have been delivered. `<loop-video>` remains out of scope for M1 under ARCHITECTURE §19 ("if cards use video").
+- Visual QA screenshots: `docs/screenshots/m1-home-desktop.png` (1920 px) and `docs/screenshots/m1-home-mobile.png` (390 px), produced by `scripts/capture-home.mjs` against `pnpm preview`.
+- Local tooling note: if a stale `astro preview` is already listening on port 4321, Playwright reuses it outside CI. Run `CI=true pnpm test:e2e` (or stop the stale server) so tests hit the current build.
 
 ## Milestone tracker
 | Milestone | State |
 |---|---|
 | Collaboration scaffold | Done (PR #1) |
-| Architecture v1.1 | **Approved; awaiting merge** (PR #3) |
-| M0 Bootstrap | **In review** (PR #2) |
-| M1 Home | Not started |
+| Architecture v1.1 / v1.2 | Done (PR #3, #11) |
+| M0 Bootstrap | Done (PR #2) |
+| M1 Home | **PR #10 green; review fixes in `63a2175`, awaiting ChatGPT re-review** |
 | M2 Case template + 88Win | Not started |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 
 ## Workflow reminder
-ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges.
+ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. (M1 only: roles swapped, see above.)

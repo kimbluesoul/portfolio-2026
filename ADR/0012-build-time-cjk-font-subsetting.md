@@ -44,3 +44,9 @@ LCP ≤ 2.5 s and Performance ≥ 0.90 are unchanged.
 - **Raise the budget and keep Fontsource slices** (Issue #9 option 2): ships about 4× more bytes than needed. Rejected.
 - **System CJK fonts for body copy** (option 3): fastest, but Windows renders Microsoft JhengHei, which visibly departs from the design. Rejected because typography is core to the portfolio.
 - **One subset for the whole site**: simpler, but the home page would download every case study's glyphs. The core/ext split costs one extra rule per weight.
+
+## Amendment (2026-10-30, M1 implementation)
+- **Per-weight glyph sets.** Each weight is subset to the text it renders, not to all text. The element→weight rule is a design-system constraint recorded in `docs/DESIGN_SYSTEM.md` and implemented once in `scripts/font-text.mjs`: 700 = `h1`–`h3`, 500 = `li` (tag chips), 400 = all rendered text. The coverage gate (`scripts/check-font-coverage.mjs`) applies the same rule per weight to `dist/`.
+- **No font preloads.** The home LCP element is the featured project image, so preloading fonts only competed with it for bandwidth. Neither Noto Sans TC nor Instrument Sans is preloaded. This supersedes §10.
+- Measured on M1 (Lighthouse mobile, local): home fonts 802 KB → **115 KB**; home LCP 6.2 s → **~1.7 s**; performance 0.63 → **0.99**.
+- **Core baseline (clarifies §5, from the M1 review).** Every weight's `core` subset always contains printable ASCII (U+0020–U+007E) and the common Traditional Chinese punctuation `　，。、；：？！「」『』（）《》〈〉【】…—～・` (`CORE_BASELINE` in `scripts/font-text.mjs`, unit-tested). The full Halfwidth and Fullwidth Forms block is **not** included: its full-width Latin letters and digits are not used in this site's copy, and including them would add roughly 20 KB per weight. Any other punctuation that appears is still captured from rendered text.

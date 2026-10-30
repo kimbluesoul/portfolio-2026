@@ -14,6 +14,7 @@
   body,
   h1,
   h2,
+  h3,
   p {
     margin: 0;
   }
@@ -34,6 +35,12 @@
   body {
     min-width: 20rem;
     min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  button,
+  a {
+    font: inherit;
   }
 
   a {
@@ -48,6 +55,18 @@
 
   main {
     min-height: calc(100vh - var(--header-height));
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: var(--color-bg-brand);
+    color: var(--color-text-on-brand);
   }
 
   [id] {
@@ -80,6 +99,30 @@
   .placeholder-page > * + * {
     margin-block-start: var(--space-4);
   }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  reveal-on-view {
+    display: block;
+  }
+
+  reveal-on-view[data-reveal-ready] {
+    transition:
+      opacity var(--motion-duration-slow) var(--motion-ease-emphasized),
+      transform var(--motion-duration-slow) var(--motion-ease-emphasized);
+  }
+
+  reveal-on-view[data-reveal-ready]:not([data-inview]) {
+    opacity: 0;
+    transform: translateY(var(--motion-distance-reveal));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -94,5 +137,10 @@
 
   @view-transition {
     navigation: none;
+  }
+
+  reveal-on-view[data-reveal-ready] {
+    opacity: 1;
+    transform: none;
   }
 }

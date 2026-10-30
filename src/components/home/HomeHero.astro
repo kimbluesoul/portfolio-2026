@@ -1,0 +1,130 @@
+---
+interface Props {
+  credentials: { label: string; value: string }[];
+  eyebrow: string;
+  heading: string;
+  introduction: string;
+}
+
+const { credentials, eyebrow, heading, introduction } = Astro.props;
+const [headingFirstLine, headingSecondLine = ''] = heading.split('，');
+const headingSecondParts = headingSecondLine.split('瞬間');
+---
+
+<section class="hero" aria-labelledby="home-heading">
+  <div class="hero-copy">
+    <p class="hero-eyebrow">{eyebrow}</p>
+    <h1 id="home-heading">
+      {headingFirstLine}，<br />
+      {headingSecondParts[0]}
+      <span>瞬間</span>
+      {headingSecondParts[1]}
+    </h1>
+    <p class="hero-introduction">{introduction}</p>
+  </div>
+  <ul class="credentials" aria-label="專業領域">
+    {credentials.map((credential) => (
+      <li>
+        <span>{credential.label}</span>
+        <strong>{credential.value}</strong>
+      </li>
+    ))}
+  </ul>
+  <a class="work-cue" href="#work">
+    SELECTED WORK ↓
+  </a>
+</section>
+
+<style>
+  .hero {
+    width: min(
+      calc(100% - (2 * var(--layout-page-gutter))),
+      var(--layout-home-max)
+    );
+    margin-inline: auto;
+    padding-block: var(--space-9) var(--space-12);
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-home-eyebrow);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  h1 {
+    max-width: 67.5rem;
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-home-display);
+    font-weight: 700;
+    line-height: var(--line-height-display);
+  }
+
+  h1 span {
+    color: var(--color-text-brand);
+  }
+
+  .hero-introduction {
+    max-width: 52.125rem;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body-tight);
+  }
+
+  .credentials {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-start: var(--space-7);
+    padding-block-start: var(--space-7);
+    border-block-start: var(--header-border-width) solid
+      var(--color-border-header);
+  }
+
+  /* 360:12–360:20: label (13, 500, 0.12em) over value (18 Noto Regular), gap 8. */
+  .credentials li {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--font-size-body);
+  }
+
+  .credentials span {
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-label);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  .credentials strong {
+    font-family: var(--font-family-body);
+    font-weight: 400;
+  }
+
+  .work-cue {
+    display: inline-block;
+    margin-block-start: var(--space-12);
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-label);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @media (width >= 48rem) {
+    .hero {
+      padding-block: var(--space-24) var(--space-10);
+    }
+
+    .credentials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4) var(--space-16);
+    }
+  }
+</style>

@@ -18,24 +18,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 <html lang="zh-Hant-TW">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
   </head>
-  <body>
+  <body id="top">
     <a class="skip-link" href="#main-content">
-      Skip to main content
+      跳至主要內容
     </a>
     <SiteHeader nav={site.nav} />
     <main id="main-content">
       <slot />
     </main>
     <SiteFooter
+      backToTopLabel={site.footer.backToTopLabel}
       copyright={site.footer.copyright}
       email={site.contact.email}
+      heading={site.footer.heading}
       linkedin={site.contact.linkedin}
       resumeLabel={site.footer.resumeLabel}
+      subheading={site.footer.subheading}
     />
   </body>
 </html>
+
+<script src="../elements/reveal-on-view.ts"></script>

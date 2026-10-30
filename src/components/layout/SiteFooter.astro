@@ -1,47 +1,143 @@
 ---
+import emailIcon from '../../assets/site/icon-email.svg';
+import linkedinIcon from '../../assets/site/icon-linkedin.svg';
+
 interface Props {
+  backToTopLabel: string;
   copyright: string;
   email: string;
+  heading: string;
   linkedin: string;
   resumeLabel: string;
+  subheading: string;
 }
 
-const { copyright, email, linkedin, resumeLabel } = Astro.props;
+const {
+  backToTopLabel,
+  copyright,
+  email,
+  heading,
+  linkedin,
+  resumeLabel,
+  subheading,
+} = Astro.props;
 ---
 
 <footer id="contact" class="site-footer">
-  <p>{copyright}</p>
-  <ul aria-label="Contact links">
-    <li>
-      <a href={`mailto:${email}`}>Email</a>
-    </li>
-    <li>
-      <a href={linkedin} target="_blank" rel="noopener noreferrer">
-        LinkedIn <span class="visually-hidden">(opens in a new tab)</span>
-      </a>
-    </li>
-    <li>
-      <a href="/resume/">{resumeLabel}</a>
-    </li>
-  </ul>
+  <div class="intro">
+    <p class="contact-title">{heading}</p>
+    <p class="contact-subtitle">{subheading}</p>
+  </div>
+  <div class="contact-links" aria-label="聯絡方式">
+    <a href={`mailto:${email}`}>
+      <img src={emailIcon.src} width="21" height="17" alt="" />
+      Email
+    </a>
+    <a href={linkedin} target="_blank" rel="noopener noreferrer">
+      <img src={linkedinIcon.src} width="24" height="24" alt="" />
+      LinkedIn<span class="visually-hidden">（另開新視窗）</span>
+    </a>
+  </div>
+  <a class="resume" href="/resume/">
+    {resumeLabel}
+  </a>
+  <p class="copyright">{copyright}</p>
+  <a class="back-to-top" href="#top">
+    {backToTopLabel}
+  </a>
 </footer>
 
 <style>
+  /* Mobile 473:921: intro → pills → VIEW RESUME → hairline → © | BACK TO TOP.
+     Desktop 360:3419: [intro | BACK TO TOP + pills] then [© | VIEW RESUME]. */
   .site-footer {
-    padding: var(--space-8);
+    display: grid;
+    grid-template-areas:
+      'intro intro'
+      'links links'
+      'resume resume'
+      'copyright back';
+    grid-template-columns: 1fr auto;
+    row-gap: var(--space-8);
+    padding: var(--space-14) var(--layout-page-gutter) var(--space-8);
     background: var(--color-bg-inverse);
     color: var(--color-text-on-brand);
+    font-family: var(--font-family-display);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 26rem;
   }
 
-  ul {
+  .intro {
+    display: grid;
+    grid-area: intro;
+    gap: var(--space-3);
+  }
+
+  .contact-title {
+    font-size: var(--font-size-footer-title);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .contact-subtitle {
+    font-size: var(--font-size-footer-subtitle);
+  }
+
+  .contact-links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-block-start: var(--space-4);
+    grid-area: links;
+    gap: var(--space-3);
   }
 
   a {
     color: var(--color-text-on-brand);
+    text-decoration: none;
+  }
+
+  .contact-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2-5);
+    padding: var(--space-3) var(--space-5-5) var(--space-3) var(--space-4-5);
+    border: var(--header-border-width) solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    color: var(--color-border-default);
+    font-size: var(--font-size-footer-action);
+    font-weight: 500;
+    transition: border-color var(--motion-duration-fast)
+      var(--motion-ease-standard);
+  }
+
+  .contact-links a:hover {
+    border-color: var(--color-text-on-brand);
+  }
+
+  .resume,
+  .copyright {
+    color: var(--color-project-accent-soft);
+    font-size: var(--font-size-footer-meta);
+  }
+
+  .resume {
+    grid-area: resume;
+    text-transform: uppercase;
+  }
+
+  .copyright,
+  .back-to-top {
+    padding-block-start: var(--space-8);
+    border-block-start: var(--header-border-width) solid
+      var(--color-bg-inverse-raised);
+  }
+
+  .copyright {
+    grid-area: copyright;
+  }
+
+  .back-to-top {
+    grid-area: back;
+    font-size: var(--font-size-footer-action);
   }
 
   .visually-hidden {
@@ -51,5 +147,35 @@ const { copyright, email, linkedin, resumeLabel } = Astro.props;
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+
+  @media (width >= 48rem) {
+    .site-footer {
+      grid-template-areas:
+        'intro back'
+        'intro links'
+        'copyright resume';
+      align-items: start;
+      row-gap: var(--space-5);
+      padding: var(--space-10) var(--layout-page-gutter);
+      contain-intrinsic-size: auto 18.5rem;
+    }
+
+    .back-to-top,
+    .contact-links,
+    .resume {
+      justify-self: end;
+    }
+
+    .copyright,
+    .back-to-top {
+      padding-block-start: 0;
+      border-block-start: 0;
+    }
+
+    .copyright,
+    .resume {
+      margin-block-start: var(--space-15);
+    }
   }
 </style>

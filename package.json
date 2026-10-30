@@ -9,6 +9,7 @@
     "pnpm": ">=11 <12"
   },
   "scripts": {
+    "prepare": "node scripts/prepare-font-subsets.mjs",
     "dev": "astro dev",
     "preview": "astro preview",
     "lint": "eslint . && stylelint \"src/**/*.{css,astro}\"",
@@ -16,8 +17,9 @@
     "format:check": "prettier --check . --ignore-unknown",
     "check": "astro check",
     "test": "vitest run",
-    "font:generate": "node scripts/generate-font-css.mjs",
-    "build": "pnpm font:generate && astro build && node scripts/check-media.mjs && node scripts/check-bundles.mjs",
+    "font:prepare": "node scripts/prepare-font-subsets.mjs",
+    "font:subset": "node scripts/subset-fonts.mjs",
+    "build": "pnpm font:prepare && astro build && pnpm font:subset && astro build && node scripts/check-font-coverage.mjs && node scripts/check-media.mjs && node scripts/check-bundles.mjs",
     "test:e2e": "playwright test",
     "lhci": "lhci autorun",
     "verify": "pnpm lint && pnpm format:check && pnpm check && pnpm test && pnpm build && pnpm test:e2e && pnpm lhci"
@@ -25,7 +27,6 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/instrument-sans": "^5.3.0",
-    "@fontsource/noto-sans-tc": "^5.3.1",
     "astro": "^7.4.3"
   },
   "devDependencies": {
@@ -42,6 +43,7 @@
     "prettier-plugin-astro": "^1.1.2",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
+    "subset-font": "^2.9.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",
     "vitest": "^5.0.5",

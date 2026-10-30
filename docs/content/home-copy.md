@@ -70,3 +70,10 @@ Notes:
 | `466:913` | VIEW RESUME → **`/resume/`** |
 
 ⚠️ In Figma, the `VIEW RESUME` link (`466:913`) points to `https://www.fardinevanlimon.app/image/Fardin_Resume.pdf`, which is a leftover from a template and **not** the Product Owner's resume. Never use it.
+
+## SEO (Product Owner, 2026-10-30)
+| Page | Title | Description |
+|---|---|---|
+| Home | 周泫淇 Syuan Ci｜UI/UX 設計師作品集 | 具 6 年以上 UI 與數位介面設計經驗，專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。 |
+| Case study | `{nameZh} {name}｜周泫淇 Syuan Ci` (e.g. 華豐輪胎 Hwa Fong Tire｜周泫淇 Syuan Ci) | The project's card summary |
+| Resume | 履歷｜周泫淇 Syuan Ci | Same as home |

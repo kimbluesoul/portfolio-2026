@@ -1,0 +1,45 @@
+order: 4
+name: SSS
+nameZh: 超透明提案
+card:
+  summary: &summary 把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。
+  tags: [已上線, UI設計, 互動設計, 活動頁面, 2024–2025]
+  media: &card
+    kind: image
+    src: ../../assets/projects/sss/card.jpg
+    alt: SSS 網站作品預覽
+seo:
+  title: 超透明提案 SSS｜周泫淇 Syuan Ci
+  description: *summary
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+hero:
+  eyebrow: *todo
+  title: *todo
+  headline: *todo
+  subtitle: *todo
+  stats:
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+  showcase: { layout: single, items: [*card] }
+overview:
+  heading: *todo
+  blocks:
+    - { title: *todo, body: *todo }
+    - { title: *todo, body: *todo }
+  outputs: [*todo]
+keyScreens:
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  main: *card
+  closeups:
+    - { title: *todo, caption: *todo, media: *card }
+    - { title: *todo, caption: *todo, media: *card }
+links:
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  cards:
+    - { kind: live, label: *todo, description: *todo, url: *todo }

@@ -1,28 +1,65 @@
 ---
 import { getEntry } from 'astro:content';
+import AboutSection from '../components/home/AboutSection.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import ProjectCard from '../components/home/ProjectCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getOrderedProjects } from '../lib/project-content';
 
 const siteEntry = await getEntry('site', 'site');
 if (!siteEntry) throw new Error('Missing site content entry.');
 const site = siteEntry.data;
+const projects = await getOrderedProjects();
+const [featuredProject, ...secondaryProjects] = projects;
+if (!featuredProject) throw new Error('At least one project is required.');
 ---
 
 <BaseLayout
-  title="Portfolio 2026 — M0"
-  description="Portfolio project bootstrap placeholder."
+  title={site.seo.title}
+  description={site.seo.description}
   site={site}
 >
-  <section class="placeholder-page">
-    <p>{site.hero.eyebrow}</p>
-    <h1>{site.hero.heading}</h1>
-    <p>{site.hero.introduction}</p>
+  <HomeHero {...site.hero} credentials={site.credentials} />
+  <section id="work" class="work" aria-label="SELECTED WORK">
+    <ProjectCard project={featuredProject} featured />
+    <div class="project-grid">
+      {secondaryProjects.map((project) => (
+        <reveal-on-view>
+          <ProjectCard project={project} />
+        </reveal-on-view>
+      ))}
+    </div>
   </section>
-  <section id="work" class="placeholder-page" aria-labelledby="work-heading">
-    <h2 id="work-heading">Work Placeholder</h2>
-    <p>Project cards and media are intentionally out of scope for M0.</p>
-  </section>
-  <section id="about" class="placeholder-page" aria-labelledby="about-heading">
-    <h2 id="about-heading">{site.about.heading}</h2>
-    <p>{site.about.body}</p>
-  </section>
+  <reveal-on-view>
+    <AboutSection {...site.about} />
+  </reveal-on-view>
 </BaseLayout>
+
+<style>
+  .work {
+    width: min(
+      calc(100% - (2 * var(--layout-page-gutter))),
+      var(--layout-home-max)
+    );
+    margin-inline: auto;
+    padding-block: var(--space-2) var(--space-18);
+  }
+
+  .project-grid {
+    display: grid;
+    gap: var(--space-12);
+    margin-block-start: var(--space-12);
+  }
+
+  @media (width >= 48rem) {
+    .work {
+      padding-block-end: var(--space-35);
+    }
+
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--layout-card-gap);
+      margin-block-start: var(--layout-card-gap);
+    }
+  }
+</style>

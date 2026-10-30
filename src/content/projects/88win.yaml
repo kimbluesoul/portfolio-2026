@@ -2,65 +2,45 @@ order: 1
 name: 88Win
 nameZh: 線上娛樂城
 card:
-  summary: M0 sample project used to validate the content schema.
-  tags:
-    - UI Design
-  media: &placeholder
+  summary: &summary 整理 PC、H5 與 App 的介面規則，讓不同裝置上的操作與視覺維持一致
+  tags: [已上線, UI設計, 互動設計, PC / H5 / App, 2025–2026]
+  media: &card
     kind: image
-    src: ../../assets/projects/88win/placeholder.svg
-    alt: M0 placeholder graphic
+    src: ../../assets/projects/88win/card.jpg
+    alt: 88Win 網站作品預覽
   featured: true
 seo:
-  title: 88Win — M0 Placeholder
-  description: Schema-valid placeholder content for the M0 project bootstrap.
-next:
-  oneLiner: M0 placeholder
-  meta: Project 01 / 07
-  media: *placeholder
+  title: 線上娛樂城 88Win｜周泫淇 Syuan Ci
+  description: *summary
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
 hero:
-  eyebrow: Project 01
-  title: 88Win
-  headline: M0 placeholder case study
-  subtitle: Visual implementation begins in M2.
+  eyebrow: *todo
+  title: *todo
+  headline: *todo
+  subtitle: *todo
   stats:
-    - label: Role
-      value: UI Designer
-    - label: Platform
-      value: Web
-    - label: Status
-      value: Placeholder
-    - label: Year
-      value: '2026'
-  showcase:
-    layout: single
-    items:
-      - *placeholder
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+  showcase: { layout: single, items: [*card] }
 overview:
-  heading: Overview Placeholder
+  heading: *todo
   blocks:
-    - title: Context
-      body: Placeholder content for schema validation only.
-    - title: Outcome
-      body: Real project content is out of scope for M0.
-  outputs:
-    - Responsive website
+    - { title: *todo, body: *todo }
+    - { title: *todo, body: *todo }
+  outputs: [*todo]
 keyScreens:
-  eyebrow: Key Screens
-  heading: Key Screens Placeholder
-  subtitle: Visual assets are intentionally deferred.
-  main: *placeholder
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  main: *card
   closeups:
-    - title: Placeholder close-up one
-      media: *placeholder
-    - title: Placeholder close-up two
-      caption: Optional caption subline
-      media: *placeholder
+    - { title: *todo, caption: *todo, media: *card }
+    - { title: *todo, caption: *todo, media: *card }
 links:
-  eyebrow: Links
-  heading: Project Links Placeholder
-  subtitle: Final project links will be added with real content.
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
   cards:
-    - kind: prototype
-      label: Figma prototype
-      description: Placeholder external link for schema validation.
-      url: https://www.figma.com/
+    - { kind: live, label: *todo, description: *todo, url: *todo }

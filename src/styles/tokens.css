@@ -23,8 +23,14 @@
   --color-text-secondary: var(--gray-700);
   --color-text-brand: var(--blue-600);
   --color-text-on-brand: var(--white);
+  --color-text-on-inverse: var(--white);
   --color-text-on-inverse-muted: var(--gray-500);
   --color-border-default: var(--gray-300);
+  --color-border-header: color-mix(
+    in srgb,
+    var(--color-text-primary) 10%,
+    transparent
+  );
   --color-border-brand: var(--blue-600);
   --color-project-accent-soft: var(--blue-50);
 
@@ -38,30 +44,81 @@
   --motion-distance-reveal: 24px;
   --motion-stagger: 80ms;
 
-  /* TODO(DESIGN_SYSTEM): Replace typography placeholders with Figma values in M1. */
   --font-family-display:
     'Instrument Sans Variable', 'Instrument Sans', sans-serif;
-  --font-family-body: 'Noto Sans TC', sans-serif;
-  --font-size-body: 1rem;
-  --font-size-heading: 2rem;
-  --line-height-body: 1.6;
-  --line-height-heading: 1.1;
+  --font-family-body:
+    'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --font-size-label: clamp(0.75rem, 0.734rem + 0.064vw, 0.8125rem);
+  --font-size-body: clamp(0.9375rem, 0.889rem + 0.192vw, 1.125rem);
+  --font-size-body-compact: 0.9375rem;
 
-  /* TODO(DESIGN_SYSTEM): Replace spacing placeholders with Figma values in M1. */
+  /* Project card text: mobile 474:1130/474:1133 (22/30, 15/24.75), desktop 465:1040/465:1043 (30/39, 20/26). Fluid 390→1920. */
+  --font-size-card-title: clamp(1.375rem, 1.2475rem + 0.523vw, 1.875rem);
+  --line-height-card-title: clamp(1.875rem, 1.7316rem + 0.588vw, 2.4375rem);
+  --font-size-card-summary: clamp(0.9375rem, 0.8578rem + 0.327vw, 1.25rem);
+  --line-height-card-summary: clamp(1.5469rem, 1.5269rem + 0.0817vw, 1.625rem);
+  --line-height-tag: 1.0625rem;
+
+  /* About body: mobile 474:1261 (15 / 1.75), desktop 451:670 (20 / 36). */
+  --line-height-about-body: clamp(1.6406rem, 1.4853rem + 0.637vw, 2.25rem);
+
+  /* Footer: mobile 473:923/473:924 (38, 14), desktop 212:209/212:210 (64, 16); pills + BACK TO TOP 16 (466:923, 466:904); meta 14 (212:220). */
+  --font-size-footer-title: clamp(2.375rem, 1.9608rem + 1.699vw, 4rem);
+  --font-size-footer-subtitle: clamp(0.875rem, 0.843rem + 0.131vw, 1rem);
+  --font-size-footer-action: 1rem;
+  --font-size-footer-meta: 0.875rem;
+  --font-size-home-eyebrow: clamp(1.625rem, 1.012rem + 2.436vw, 4rem);
+  --font-size-home-display: clamp(1.875rem, 1.327rem + 2.179vw, 4rem);
+  --font-size-about-display: clamp(1.875rem, 1.52rem + 1.41vw, 3.25rem);
+  --line-height-label: 1.25;
+  --line-height-body: clamp(1.65, 2.194 - 0.454vw, 1.75);
+  --line-height-body-tight: 1.2778;
+  --line-height-display: clamp(1.2, 1.325 - 0.104vw, 1.32);
+  --letter-spacing-label: 0.12em;
+
   --space-1: 0.25rem;
+  --space-1-5: 0.375rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
+  --space-2-5: 0.625rem;
+  --space-5: 1.25rem;
+  --space-5-5: 1.375rem;
   --space-6: 1.5rem;
+  --space-4-5: 1.125rem;
+  --space-7: 1.75rem;
+  --space-7-5: 1.875rem;
   --space-8: 2rem;
+  --space-9: 2.25rem;
+  --space-10: 2.5rem;
   --space-12: 3rem;
-  --space-section: 4rem;
+  --space-14: 3.5rem;
+  --space-15: 3.75rem;
+  --space-16: 4rem;
+  --space-18: 4.5rem;
+  --space-24: 6rem;
+  --space-35: 8.75rem;
+  --space-section: clamp(var(--space-18), 7.292vw, var(--space-35));
 
   --layout-home-max: 108rem;
   --layout-case-max: 90rem;
   --layout-text-max: 48rem;
-  --header-height: 4rem;
+  --layout-page-gutter: clamp(var(--space-5), 5vw, var(--space-24));
+  --layout-mobile-content: 21.875rem;
+  --layout-card-gap: var(--space-10);
+  --header-height: 5.75rem;
+  --header-border-width: 0.0625rem;
   --radius-focus: 0.25rem;
+
+  /* Card media radius: mobile 12 (474:1123), desktop 20 (465:1034). */
+  --radius-card: clamp(0.75rem, 0.6225rem + 0.523vw, 1.25rem);
+
+  /* Tag chip radius 4 (465:1045). */
+  --radius-tag: 0.25rem;
+  --radius-pill: 999px;
+
+  /* Minimum interactive target (ARCHITECTURE §10). */
+  --tap-target-min: 2.75rem;
   --focus-ring-width: 0.1875rem;
   --bp-md: 768px;
   --bp-lg: 1024px;
