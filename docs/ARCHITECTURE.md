@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1 — Approved by the Product Owner** (2026-10-29).
+**v1.1 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10.
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -166,6 +166,10 @@ Content is data, not markup. All copy, links, and media references for a case st
 Schema sketch (normative for shape; field names may be refined in M0 with Architect review):
 
 ```ts
+// Captioned — close-ups, mobile panels, detail items (Figma: "Caption title" + "Caption sub")
+type Captioned = { title: string; caption?: string; media: Media };
+type Stat = { label: string; value: string };
+
 // Media — every visual slot is one of these
 type Media =
   | { kind: 'image'; src: ImageMetadata; alt: string }            // alt '' only with decorative: true
@@ -173,7 +177,8 @@ type Media =
       status?: 'ready' | 'pending' };                                 // 'pending' = asset not delivered yet
 
 type Project = {
-  slug: string; order: number;                      // 1..7, unique, contiguous
+  // slug = the content entry id (file name); it must be one of the 7 slugs in §3
+  order: number;                                    // 1..7, unique, contiguous, validated on every build
   name: string; nameZh: string;                     // "AMD", "康健生醫"
   card: { summary: string; tags: string[]; media: Media; featured?: boolean };
   seo: { title: string; description: string; ogImage?: ImageMetadata };
@@ -358,7 +363,9 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 - `public/_headers`:
   - `/_astro/*` and `/media/*` → `Cache-Control: public, max-age=31536000, immutable`
   - HTML → `Cache-Control: public, max-age=0, must-revalidate`
-  - Security: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` (camera/mic/geolocation off), `X-Frame-Options: DENY`, and a CSP (`default-src 'self'`; use Astro's built-in CSP hashing if available in 7.x, otherwise keep inline scripts at zero so `script-src 'self'` holds).
+  - Security: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` (camera/mic/geolocation off), `X-Frame-Options: DENY`.
+  - **CSP has one owner per directive** (v1.1). Astro's built-in CSP (`security.csp`) emits a hashed `<meta>` policy and owns `default-src`, `script-src`, `style-src`, `img-src`, `media-src`, `font-src`, `connect-src`. The `_headers` CSP carries **only** directives a meta tag cannot express: `frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'`. Browsers enforce every policy present, so duplicating resource directives in both places would block Astro's hashed inline output in production.
+  - Because `astro preview` does not apply `_headers`, an E2E test applies the `_headers` CSP to responses and asserts no console errors / CSP violations on every route.
 - The Product Owner creates the Cloudflare account / project and the domain (Q7). Agents never handle account credentials.
 
 ---
@@ -416,10 +423,10 @@ These are raised for the **Product Owner**. The architecture does not decide the
 | Q4 | ~~Motion spec.~~ **Resolved 2026-10-29** (delegated to Architect): see DESIGN_SYSTEM → Motion. Steps do not auto-advance. | — |
 | Q5 | ~~Pending media at launch (AMD 維護 video).~~ **Resolved 2026-10-29** by the Product Owner. The video is delivered with the AMD assets in M3. | — |
 | Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**: no autoplay. Desktop plays on hover / focus, mobile on tap with a play indicator (§7, §9.4). | — |
-| Q7 | **Domain + Cloudflare account** (production URL, needed for canonical/OG/sitemap). | Launch only |
-| Q8 | **Analytics**: none (default) or cookieless Cloudflare Web Analytics? | Launch only |
-| Q9 | **Language**: Traditional Chinese only (assumed), or an English version later? | Routing if "later" |
-| Q10 | **Figma inconsistencies** to resolve: Hwa Fong is marked 「只放原型／未上線」 in the template table but the brief lists `duro.com.tw`. The template table's project order differs from the site order. The template text says dark sections are 「深藍」 but they use `#141414`. AMD has two Interaction & Motion frames (`360:2355`, `437:652`): which is live? | Content accuracy |
+| Q7 | **Cloudflare account + domain.** The Cloudflare Pages project is needed **from M1** for per-PR preview URLs (visual review). A custom domain is optional and only needed at launch. Until then, the site uses `*.pages.dev`. | M1 previews; launch |
+| Q8 | ~~Analytics.~~ **Resolved 2026-10-30**: none. No analytics or tracking scripts. | — |
+| Q9 | ~~Language.~~ **Resolved 2026-10-30**: Traditional Chinese only. No English site or English PDF. English eyebrows and display labels stay as part of the visual style. | — |
+| Q10 | ~~Figma inconsistencies.~~ **Resolved 2026-10-30**: Hwa Fong has prototype + live site (`https://www.duro.com.tw/`). **Hidden Figma layers are never implemented**: AMD uses `360:2355`; `437:652` is hidden and unused. The site order in PRODUCT.md wins over the template suggestion table. 「深藍」 in the template text means `--color-bg-inverse`. | — |
 
 ---
 

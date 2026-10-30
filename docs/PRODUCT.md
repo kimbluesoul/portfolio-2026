@@ -27,7 +27,7 @@ _Updated 2026-10-29 by Product Owner decision: 7 projects, in this order._
 | # | Project | Live site |
 |---|---|---|
 | 01 | 88Win 線上娛樂城 | — (prototype links only) |
-| 02 | 華豐輪胎 Hwa Fong Tire | duro.com.tw |
+| 02 | 華豐輪胎 Hwa Fong Tire | https://www.duro.com.tw/ |
 | 03 | FITZONE 健身房 | fitzone.com.tw |
 | 04 | SSS 超透明提案 | baopu.com.tw/exhibition/SSS1.0 |
 | 05 | 展裕建設 JHANYU | jhanyu.com (+ design demo) |
@@ -41,6 +41,7 @@ Figma Portfolio-2026, page 「Portfolio｜整理版」, is the visual source of 
 - **Case study pages** for all 7 projects, built from the V9 case template. The page ends with "← 所有作品｜NEXT PROJECT 0X / 07", and 07 links back to 01. Link cards are whole-card clickable and open in a new tab.
 - **Web resume page** (responsive) with a "Download PDF" button. Content and layout follow `Syuan-Ci-Resume.pdf`.
 - Desktop and mobile are both in scope.
+- Language: Traditional Chinese only (no English version). No analytics.
 
 ## Delivery order
 1. Home / Project Index (validates the visual system and the collaboration workflow)
