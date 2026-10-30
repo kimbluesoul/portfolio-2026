@@ -1,6 +1,6 @@
 # ADR-0009: Static hosting on Cloudflare Pages
 
-- Status: Accepted (2026-10-29)
+- Status: Superseded by [ADR-0011](0011-hosting-cloudflare-workers-static-assets.md) (2026-10-30)
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 

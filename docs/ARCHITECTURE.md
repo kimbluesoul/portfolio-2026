@@ -28,7 +28,7 @@ This project is a UI / interaction-heavy portfolio website. Architecture should 
 | Motion | CSS-first, motion tokens, IntersectionObserver reveals, native cross-document View Transitions as enhancement. No animation library | [ADR-0007](../ADR/0007-motion-architecture.md) |
 | Fonts | Self-hosted Instrument Sans + Noto Sans TC (unicode-range slices), no third-party font CDN | [ADR-0008](../ADR/0008-self-hosted-fonts.md) |
 | State | No global state, no client store, no browser storage | §6 |
-| Hosting | **Cloudflare Pages** (static), preview deploy per PR, `main` = production | [ADR-0009](../ADR/0009-hosting-cloudflare-pages.md) |
+| Hosting | **Cloudflare Workers static assets** (Workers Builds from GitHub), preview URL per branch, `main` = production | [ADR-0011](../ADR/0011-hosting-cloudflare-workers-static-assets.md) |
 | Quality gates | `pnpm verify` locally + GitHub Actions: lint, format, typecheck, unit, build, e2e + axe, Lighthouse CI budgets | [ADR-0010](../ADR/0010-quality-gates-and-ci.md) |
 | Runtime / tooling | Node.js **24 LTS**, **pnpm** (pinned via `packageManager`) | §14 |
 
@@ -60,7 +60,7 @@ Non-functional priorities, in order: **visual fidelity → performance → acces
 - **Astro 7.x** (latest 7.x minor at bootstrap; exact version locked by `pnpm-lock.yaml`). A major upgrade requires an ADR.
 - `output: 'static'`. Every page is pre-rendered HTML at build. No SSR adapter, no edge functions, no API routes.
 - `trailingSlash: 'always'`, `build.format: 'directory'` → canonical URLs like `/work/88win/`.
-- `site` is set from the production domain (open question Q7). Until it is known, use the Cloudflare Pages default domain.
+- `site` is set from the production domain (open question Q7). Until it is known, use the default `https://portfolio-2026.kimbluesoul.workers.dev/` (ADR-0011).
 - Official integrations allowed: `@astrojs/sitemap`. Others need Architect approval (§15).
 
 Note to the implementer: this document names Astro concepts (content collections, `astro:assets`, scoped `<style>`, processed `<script>`). If an API was renamed in Astro 7, follow the current Astro docs and note it in the PR. That is not an architecture change.
@@ -74,7 +74,7 @@ Note to the implementer: this document names Astro concepts (content collections
 | `/` | `src/pages/index.astro` | Hero, featured project (01), project grid (02–07), About, Footer |
 | `/work/[slug]/` | `src/pages/work/[slug].astro` + `getStaticPaths()` from the `projects` collection | 7 pages |
 | `/resume/` | `src/pages/resume.astro` | Web resume + "Download PDF" |
-| `/404` | `src/pages/404.astro` | Static 404 (served by Cloudflare Pages) |
+| `/404` | `src/pages/404.astro` | Static 404 (served via `not_found_handling: "404-page"`) |
 | `/files/Syuan-Ci-Resume.pdf` | `public/files/` | Supplied by the Product Owner, not generated |
 
 **Slugs** (stable; changing one is a breaking URL change):
@@ -114,7 +114,7 @@ Navigation item → href mapping: `Work` → `/#work`, `About` → `/#about`, `C
 ├─ public/
 │  ├─ media/<slug>/*.mp4        Delivery video files (not processed by Astro)
 │  ├─ files/Syuan-Ci-Resume.pdf
-│  ├─ _headers                  Cloudflare Pages headers (cache + security)
+│  ├─ _headers                  Cloudflare static-asset headers (cache + security)
 │  └─ favicon.svg, robots.txt
 ├─ src/
 │  ├─ assets/
@@ -357,7 +357,7 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 
 ## 14. Build, runtime, and deployment
 - **Node.js 24 LTS** (`.node-version` / `engines`), **pnpm** pinned via `packageManager` + Corepack.
-- Hosting: **Cloudflare Pages** Git integration (ADR-0009).
+- Hosting: **Cloudflare Workers static assets** via Workers Builds (ADR-0011, supersedes ADR-0009). Config in `wrangler.jsonc`.
   - `main` → production; every PR branch → preview URL (used for Claude review and PO visual sign-off).
   - Build command `pnpm build`, output `dist/`.
 - `public/_headers`:
@@ -372,7 +372,7 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 
 ## 15. Dependency policy
 - **Runtime/production dependencies are limited to**: `astro`, `@astrojs/sitemap`, `@fontsource-variable/instrument-sans`, `@fontsource/noto-sans-tc` (or the subset approach in ADR-0008). Anything else requires Architect approval in the PR description, or an ADR if it changes an architecture decision.
-- **Dev dependencies (pre-approved)**: `typescript`, `@astrojs/check`, `eslint` + `typescript-eslint` + `eslint-plugin-astro` + `eslint-plugin-jsx-a11y` (Astro a11y rules), `prettier` + `prettier-plugin-astro`, `stylelint` + `stylelint-config-standard`, `vitest`, `@playwright/test`, `@axe-core/playwright`, `@lhci/cli`.
+- **Dev dependencies (pre-approved)**: `typescript`, `@astrojs/check`, `eslint` + `typescript-eslint` + `eslint-plugin-astro` + `eslint-plugin-jsx-a11y` (Astro a11y rules), `prettier` + `prettier-plugin-astro`, `stylelint` + `stylelint-config-standard`, `vitest`, `@playwright/test`, `@axe-core/playwright`, `@lhci/cli`, `wrangler` (deploy only, ADR-0011).
 - **Not allowed without an ADR**: UI frameworks (React/Vue/Svelte/Solid/Preact), Tailwind or other CSS frameworks, CSS-in-JS, animation libraries, carousel/slider libraries, jQuery, icon fonts, analytics/tag managers, any third-party runtime script or CDN.
 - Versions are locked by `pnpm-lock.yaml`. CI uses `pnpm install --frozen-lockfile`. Dependabot (or Renovate) opens grouped monthly update PRs. Majors are reviewed individually.
 - Prefer platform features (CSS, IntersectionObserver, View Transitions, `<dialog>`) over packages.
@@ -423,7 +423,7 @@ These are raised for the **Product Owner**. The architecture does not decide the
 | Q4 | ~~Motion spec.~~ **Resolved 2026-10-29** (delegated to Architect): see DESIGN_SYSTEM → Motion. Steps do not auto-advance. | — |
 | Q5 | ~~Pending media at launch (AMD 維護 video).~~ **Resolved 2026-10-29** by the Product Owner. The video is delivered with the AMD assets in M3. | — |
 | Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**: no autoplay. Desktop plays on hover / focus, mobile on tap with a play indicator (§7, §9.4). | — |
-| Q7 | **Cloudflare account + domain.** The Cloudflare Pages project is needed **from M1** for per-PR preview URLs (visual review). A custom domain is optional and only needed at launch. Until then, the site uses `*.pages.dev`. | M1 previews; launch |
+| Q7 | **Cloudflare account + domain.** The Cloudflare account exists (2026-10-30); the Worker project is connected per ADR-0011 and is needed **from M1** for preview URLs. A custom domain is optional and only needed at launch. Until then, the site uses `*.workers.dev`. | M1 previews; launch |
 | Q8 | ~~Analytics.~~ **Resolved 2026-10-30**: none. No analytics or tracking scripts. | — |
 | Q9 | ~~Language.~~ **Resolved 2026-10-30**: Traditional Chinese only. No English site or English PDF. English eyebrows and display labels stay as part of the visual style. | — |
 | Q10 | ~~Figma inconsistencies.~~ **Resolved 2026-10-30**: Hwa Fong has prototype + live site (`https://www.duro.com.tw/`). **Hidden Figma layers are never implemented**: AMD uses `360:2355`; `437:652` is hidden and unused. The site order in PRODUCT.md wins over the template suggestion table. 「深藍」 in the template text means `--color-bg-inverse`. | — |
