@@ -14,6 +14,21 @@ const WEIGHT_ELEMENTS = {
   700: ['h1', 'h2', 'h3'],
 };
 
+// ADR-0012 §5 (amended): every weight's `core` subset always contains printable
+// ASCII and the common Traditional Chinese punctuation, so copy edits do not
+// reshuffle these glyphs between core and ext.
+const ZH_HANT_PUNCTUATION = '　，。、；：？！「」『』（）《》〈〉【】…—～・';
+
+export const CORE_BASELINE = new Set([
+  ...Array.from({ length: 0x7e - 0x20 + 1 }, (_, index) => 0x20 + index),
+  ...[...ZH_HANT_PUNCTUATION].map((character) => character.codePointAt(0)),
+]);
+
+/** Returns `codePoints` plus the fixed core baseline. */
+export function withCoreBaseline(codePoints) {
+  return new Set([...CORE_BASELINE, ...codePoints]);
+}
+
 const NAMED_ENTITIES = new Map([
   ['amp', '&'],
   ['apos', "'"],
@@ -49,10 +64,15 @@ function textOf(fragment) {
   return decodeEntities(fragment.replace(/<[^>]+>/gu, ' '));
 }
 
-/** Returns the rendered text of an HTML document, split by Noto Sans TC weight. */
+/**
+ * Returns the rendered text of an HTML document, split by Noto Sans TC weight.
+ * @param {string} html
+ * @returns {Record<number, string>}
+ */
 export function weightedText(html) {
   const body = stripNonText(html);
   const all = textOf(body);
+  /** @type {Record<number, string>} */
   const byWeight = { 400: all };
   for (const [weight, tags] of Object.entries(WEIGHT_ELEMENTS)) {
     byWeight[weight] = tags

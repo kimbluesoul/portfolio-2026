@@ -68,10 +68,20 @@ const currentPath = Astro.url.pathname;
   }
 
   a {
+    position: relative;
     color: var(--color-text-primary);
     font-family: var(--font-family-display);
     font-weight: 500;
     text-decoration: none;
+  }
+
+  /* ARCHITECTURE §10: tap targets ≥ 44 × 44 px. The visible pill and logo keep
+     their Figma size; an invisible layer extends the hit area vertically. */
+  a::after {
+    position: absolute;
+    inset-block: min(0px, calc((100% - var(--tap-target-min)) / 2));
+    inset-inline: 0;
+    content: '';
   }
 
   nav a {
@@ -94,6 +104,7 @@ const currentPath = Astro.url.pathname;
   }
 
   .brand {
+    display: block;
     flex: 0 0 auto;
   }
 

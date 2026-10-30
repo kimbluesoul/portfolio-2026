@@ -116,6 +116,9 @@
   /* Tag chip radius 4 (465:1045). */
   --radius-tag: 0.25rem;
   --radius-pill: 999px;
+
+  /* Minimum interactive target (ARCHITECTURE §10). */
+  --tap-target-min: 2.75rem;
   --focus-ring-width: 0.1875rem;
   --bp-md: 768px;
   --bp-lg: 1024px;

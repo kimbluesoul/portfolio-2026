@@ -81,6 +81,37 @@ for (const route of routes) {
   });
 }
 
+test('header tap targets are at least 44 × 44 px at 390 px', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const misses = await page.evaluate(() => {
+    const minimum = 44;
+    const failures: string[] = [];
+    for (const link of document.querySelectorAll<HTMLAnchorElement>(
+      '.site-header a',
+    )) {
+      const box = link.getBoundingClientRect();
+      const centerX = box.left + box.width / 2;
+      const centerY = box.top + box.height / 2;
+      // Probe just inside the edges of a 44 px box centred on the link.
+      const probes = [
+        [centerX, centerY - minimum / 2 + 1],
+        [centerX, centerY + minimum / 2 - 1],
+        [centerX - minimum / 2 + 1, centerY],
+        [centerX + minimum / 2 - 1, centerY],
+      ];
+      const hit = probes.every(([x, y]) =>
+        link.contains(document.elementFromPoint(x ?? 0, y ?? 0)),
+      );
+      if (!hit) failures.push(link.getAttribute('href') ?? '?');
+    }
+    return failures;
+  });
+  expect(misses).toEqual([]);
+});
+
 test('navigation exposes the public anchor contract', async ({ page }) => {
   await page.goto('/');
   await expect(

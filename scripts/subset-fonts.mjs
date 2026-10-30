@@ -3,7 +3,12 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import process from 'node:process';
 import subsetFont from 'subset-font';
-import { codePointsFrom, FONT_WEIGHTS, weightedText } from './font-text.mjs';
+import {
+  codePointsFrom,
+  FONT_WEIGHTS,
+  weightedText,
+  withCoreBaseline,
+} from './font-text.mjs';
 
 // ADR-0012: subset Noto Sans TC per weight to the glyphs that weight renders.
 // Each weight gets a `core` subset (home page) and an `ext` subset (glyphs only
@@ -110,7 +115,7 @@ for (const weight of FONT_WEIGHTS) {
   const allText = pages.map(({ text }) => text[weight]).join('');
   const extraText = weight === 400 ? cssText : '';
 
-  const core = codePointsFrom(homeText + extraText);
+  const core = withCoreBaseline(codePointsFrom(homeText + extraText));
   const ext = new Set(
     [...codePointsFrom(allText)].filter((codePoint) => !core.has(codePoint)),
   );
