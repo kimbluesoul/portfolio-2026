@@ -17,15 +17,16 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Product Owner**: decide who exports the 88Win images and copy from Figma for M2 (Claude did this for M1 in #12, because Figma image export was not available to ChatGPT). Deliver the 88Win video files when ready.
-2. **ChatGPT**: implement **M2** on `feat/m2-case-template` from `main` (ARCHITECTURE §19):
+1. **Product Owner**: merge this handoff PR. Images (2× exports from Figma) and videos are delivered **after** M2 (Product Owner decision, 2026-10-30). The pending-asset report lists exactly which files are needed.
+2. **ChatGPT**: implement **M2 — case-study template + 88Win structure** on `feat/m2-case-template` from `main` (ARCHITECTURE §19):
+   - first, the **pending-media support** in ARCHITECTURE §9.3 (v1.3): image and video `status: 'pending'` with `expectedFile`, a shared placeholder, a "素材待補" label on previews, and an `expectedFile` list in the pending report;
    - all 9 case section components;
    - the `CaseSections` renderer (order, omission, tone);
    - `<motion-steps>` and `<loop-video>` (hover / focus on desktop, tap on mobile, ARCHITECTURE §7);
-   - 88Win content.
+   - 88Win content. **Every 88Win media slot is `pending`** with its `expectedFile` (§9.1 naming). Copy is verbatim from Figma `360:251` (desktop) / `475:953` (mobile) per §5.1. Anything not in Figma is `TODO(CONTENT)`.
 
-   Copy must be verbatim from Figma `360:251` (desktop) / `475:953` (mobile) per ARCHITECTURE §5.1. Run `pnpm verify` (use `CI=true` for E2E if a stale preview server holds port 4321), then open the PR with the template and preview URL.
-3. **Claude**: review the M2 PR.
+   Run `pnpm verify` (use `CI=true` for E2E if a stale preview server holds port 4321), then open the PR with the template and the branch preview URL.
+3. **Claude**: review the M2 PR, including copy fidelity against Figma.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
@@ -55,8 +56,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 ## Blockers
 | Blocks | Item | Owner |
 |---|---|---|
-| M2 | 88Win images + copy exported from Figma (owner to be decided by the Product Owner) | Product Owner / Claude |
-| M2–M3 | Video files per project | Product Owner |
+| Launch | All pending images (2× Figma exports) and videos, listed by the pending-asset report | Product Owner |
 
 ## M0 implementation notes
 - Astro 7 static output, Node 24, pnpm, TypeScript strictest, approved dependencies, and all §16.1 scripts are configured.
