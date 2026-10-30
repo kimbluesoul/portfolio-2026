@@ -153,7 +153,8 @@ test('home uses the approved copy, links, and card assets', async ({
     ['07 — HUIFA', '匯發營造', 'Motion', '2024–2025'],
   ];
   for (const [index, copy] of expectedCardCopy.entries()) {
-    const text = await cards.nth(index).innerText();
+    // textContent: copy fidelity must not depend on reveal (opacity) state.
+    const text = (await cards.nth(index).textContent()) ?? '';
     for (const value of copy) expect(text).toContain(value);
   }
   await expect(page.locator('#work picture img')).toHaveCount(7);

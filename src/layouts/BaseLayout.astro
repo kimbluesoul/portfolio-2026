@@ -1,9 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import instrumentSansLatin from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
-import fontManifest from '../generated/font-manifest.json';
 import '../styles/global.css';
 
 interface Props {
@@ -22,22 +20,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <link
-      rel="preload"
-      href={instrumentSansLatin}
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    {fontManifest.home700Core && (
-      <link
-        rel="preload"
-        href={fontManifest.home700Core}
-        as="font"
-        type="font/woff2"
-        crossorigin="anonymous"
-      />
-    )}
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
   </head>

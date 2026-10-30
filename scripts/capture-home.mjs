@@ -24,6 +24,12 @@ for (const capture of captures) {
     waitUntil: 'networkidle',
   });
   await page.evaluate(() => document.fonts.ready);
+  // Full-page captures do not scroll, so lazy images below the fold would stay blank.
+  await page.evaluate(async () => {
+    const images = [...document.querySelectorAll('img[loading="lazy"]')];
+    for (const image of images) image.loading = 'eager';
+    await Promise.all(images.map((image) => image.decode().catch(() => {})));
+  });
   await page.addStyleTag({
     content:
       '.project-card, .about, .site-footer { content-visibility: visible !important; }',

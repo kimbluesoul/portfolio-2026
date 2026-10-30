@@ -7,5 +7,4 @@ test-results/
 .DS_Store
 *.log
 public/_fonts/
-src/generated/
 src/styles/noto-sans-tc.generated.css

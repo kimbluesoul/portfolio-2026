@@ -9,7 +9,13 @@ interface Props {
 
 const { body, heading, resumeLabel, skills, tools } = Astro.props;
 const paragraphs = body.split(/\n\n/u);
-const headingParts = heading.split('把畫面做到會動');
+// Figma 451:667: the line after the first full-width comma is brand-coloured.
+const [headingLead = heading, ...headingRest] = heading.split(/(?<=，)/u);
+const headingAccent = headingRest.join('');
+const lists = [
+  { title: 'TOOLS', items: tools },
+  { title: 'SKILLS', items: skills },
+];
 ---
 
 <section id="about" class="about" aria-labelledby="about-heading">
@@ -17,9 +23,8 @@ const headingParts = heading.split('把畫面做到會動');
     <div class="about-intro">
       <p class="eyebrow">ABOUT</p>
       <h2 id="about-heading">
-        {headingParts[0]}
-        <span>把畫面做到會動</span>
-        {headingParts[1]}
+        {headingLead}
+        {headingAccent && <span>{headingAccent}</span>}
       </h2>
     </div>
     <div class="about-content">
@@ -29,22 +34,16 @@ const headingParts = heading.split('把畫面做到會動');
         ))}
       </div>
       <div class="lists">
-        <div>
-          <p class="list-title">TOOLS</p>
-          <ul>
-            {tools.map((tool) => (
-              <li>{tool}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p class="list-title">SKILLS</p>
-          <ul>
-            {skills.map((skill) => (
-              <li>{skill}</li>
-            ))}
-          </ul>
-        </div>
+        {lists.map((list) => (
+          <div class="list">
+            <p class="eyebrow">{list.title}</p>
+            <ul aria-label={list.title}>
+              {list.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
       <a class="resume-link" href="/resume/">
         {resumeLabel} <span aria-hidden="true">↗</span>
@@ -54,6 +53,7 @@ const headingParts = heading.split('把畫面做到會動');
 </section>
 
 <style>
+  /* Mobile 474:1256, desktop 451:662. */
   .about {
     content-visibility: auto;
     contain-intrinsic-size: auto 48rem;
@@ -64,12 +64,16 @@ const headingParts = heading.split('把畫面做到會動');
   .about-inner {
     display: grid;
     width: min(100%, var(--layout-home-max));
-    gap: var(--space-18);
+    gap: var(--space-7);
     margin-inline: auto;
   }
 
-  .eyebrow,
-  .list-title {
+  .about-intro {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .eyebrow {
     color: var(--color-text-brand);
     font-family: var(--font-family-display);
     font-size: var(--font-size-label);
@@ -78,7 +82,6 @@ const headingParts = heading.split('把畫面做到會動');
   }
 
   h2 {
-    margin-block-start: var(--space-3);
     font-family: var(--font-family-body);
     font-size: var(--font-size-about-display);
     font-weight: 700;
@@ -92,7 +95,7 @@ const headingParts = heading.split('把畫面做到會動');
 
   .about-content {
     display: grid;
-    gap: var(--space-8);
+    gap: var(--space-7);
   }
 
   .about-copy {
@@ -101,8 +104,8 @@ const headingParts = heading.split('把畫面做到會動');
   }
 
   .about-copy p {
-    font-size: var(--font-size-body-compact);
-    line-height: 1.75;
+    font-size: var(--font-size-card-summary);
+    line-height: var(--line-height-about-body);
   }
 
   .about-copy p + p {
@@ -111,36 +114,41 @@ const headingParts = heading.split('把畫面做到會動');
 
   .lists {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-8);
+    gap: var(--space-5);
   }
 
-  .lists ul {
+  .list {
+    display: grid;
+    gap: var(--space-2-5);
+  }
+
+  ul {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-block-start: var(--space-3);
   }
 
-  .lists li {
-    padding: var(--space-1) var(--space-3);
+  li {
+    padding: var(--space-1-5) var(--space-3);
     border: var(--header-border-width) solid var(--color-border-default);
-    border-radius: var(--radius-pill);
-    font-size: var(--font-size-label);
+    border-radius: var(--radius-tag);
+    font-size: 0.875rem;
     font-weight: 500;
+    line-height: 1.25rem;
   }
 
   .resume-link {
     display: inline-flex;
-    align-items: center;
     justify-self: start;
     gap: var(--space-2);
-    padding: var(--space-2) var(--space-4);
+    padding: 0.875rem var(--space-7);
     border-radius: var(--radius-pill);
     background: var(--color-bg-brand);
     color: var(--color-text-on-brand);
     font-family: var(--font-family-display);
+    font-size: 1rem;
     font-weight: 600;
+    line-height: 1.375rem;
     text-decoration: none;
     transition: background var(--motion-duration-fast)
       var(--motion-ease-standard);
@@ -152,26 +160,38 @@ const headingParts = heading.split('把畫面做到會動');
 
   @media (width >= 64rem) {
     .about {
-      contain-intrinsic-size: auto 36rem;
+      contain-intrinsic-size: auto 41rem;
       padding-block: var(--space-35);
     }
 
     .about-inner {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-24);
+      grid-template-columns: 37% 50%;
+      justify-content: space-between;
+      gap: 0;
+    }
+
+    .about-intro {
+      align-content: start;
+      gap: var(--space-5);
     }
 
     .about-content {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
+      gap: var(--space-10);
     }
 
     .about-copy {
-      grid-column: 1 / -1;
+      gap: var(--space-5);
     }
 
-    .resume-link {
-      grid-column: 1 / -1;
+    .lists {
+      gap: var(--space-4);
+    }
+
+    /* Desktop 451:673: label (88 px) beside its tags on one row. */
+    .list {
+      grid-template-columns: 5.5rem 1fr;
+      align-items: center;
+      gap: var(--space-2);
     }
   }
 </style>

@@ -50,41 +50,46 @@ const currentPath = Astro.url.pathname;
     justify-content: space-between;
     gap: var(--space-4);
     padding: var(--space-3) var(--layout-page-gutter);
-    border-block-end: var(--header-border-width) solid
-      var(--color-border-header);
     background: var(--color-bg-canvas);
-    backdrop-filter: blur(10px);
   }
 
+  /* Nav pill: mobile 473:917 (0.8× scale), desktop 360:3438 / items 466:895.
+     Item states: default text-primary; hover bg-subtle; active bg-subtle + text-brand. */
   ul {
+    --space-nav-gap: 0.2rem;
+    --space-nav-inset: 0.3rem;
+
     display: flex;
-    gap: var(--space-1);
-    padding: var(--space-1);
-    border: var(--header-border-width) solid var(--color-border-default);
+    gap: var(--space-nav-gap);
+    padding: var(--space-nav-inset);
+    border: var(--header-border-width) solid var(--color-border-header);
     border-radius: var(--radius-pill);
+    background: var(--color-bg-surface);
   }
 
   a {
     color: var(--color-text-primary);
     font-family: var(--font-family-display);
-    font-size: var(--font-size-body-compact);
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
-    transition: color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
   nav a {
     display: block;
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-2) 0.9rem;
     border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    line-height: 0.9rem;
+    transition: background-color var(--motion-duration-fast)
+      var(--motion-ease-standard);
+  }
+
+  nav a:hover {
+    background: var(--color-bg-subtle);
   }
 
   nav a.active {
-    background: var(--color-bg-brand);
-    color: var(--color-text-on-brand);
-  }
-
-  a:hover {
+    background: var(--color-bg-subtle);
     color: var(--color-text-brand);
   }
 
@@ -93,13 +98,29 @@ const currentPath = Astro.url.pathname;
   }
 
   .brand img {
-    width: 5.6875rem;
-    height: 2.75rem;
+    width: 4.0788rem;
+    height: 1.98rem;
   }
 
   @media (width >= 48rem) {
     .site-header {
       padding-block: var(--space-5);
+    }
+
+    ul {
+      --space-nav-gap: var(--space-1);
+      --space-nav-inset: 0.4375rem;
+    }
+
+    nav a {
+      padding: var(--space-2-5) var(--space-4-5);
+      font-size: 1rem;
+      line-height: var(--space-4-5);
+    }
+
+    .brand img {
+      width: 5.665rem;
+      height: 2.75rem;
     }
   }
 </style>

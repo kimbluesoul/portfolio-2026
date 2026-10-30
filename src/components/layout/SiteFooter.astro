@@ -24,120 +24,158 @@ const {
 ---
 
 <footer id="contact" class="site-footer">
-  <div class="footer-main">
-    <div class="footer-copy">
-      <p class="contact-title">{heading}</p>
-      <p class="contact-subtitle">{subheading}</p>
-    </div>
-    <a class="back-to-top" href="#top">
-      {backToTopLabel}
-    </a>
+  <div class="intro">
+    <p class="contact-title">{heading}</p>
+    <p class="contact-subtitle">{subheading}</p>
   </div>
   <div class="contact-links" aria-label="聯絡方式">
     <a href={`mailto:${email}`}>
-      <img src={emailIcon.src} width="20" height="20" alt="" />
+      <img src={emailIcon.src} width="21" height="17" alt="" />
       Email
     </a>
     <a href={linkedin} target="_blank" rel="noopener noreferrer">
-      <img src={linkedinIcon.src} width="20" height="20" alt="" />
-      LinkedIn
+      <img src={linkedinIcon.src} width="24" height="24" alt="" />
+      LinkedIn<span class="visually-hidden">（另開新視窗）</span>
     </a>
   </div>
-  <div class="footer-meta">
-    <p>{copyright}</p>
-    <a href="/resume/">{resumeLabel}</a>
-  </div>
+  <a class="resume" href="/resume/">
+    {resumeLabel}
+  </a>
+  <p class="copyright">{copyright}</p>
+  <a class="back-to-top" href="#top">
+    {backToTopLabel}
+  </a>
 </footer>
 
 <style>
+  /* Mobile 473:921: intro → pills → VIEW RESUME → hairline → © | BACK TO TOP.
+     Desktop 360:3419: [intro | BACK TO TOP + pills] then [© | VIEW RESUME]. */
   .site-footer {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 24rem;
+    display: grid;
+    grid-template-areas:
+      'intro intro'
+      'links links'
+      'resume resume'
+      'copyright back';
+    grid-template-columns: 1fr auto;
+    row-gap: var(--space-8);
     padding: var(--space-14) var(--layout-page-gutter) var(--space-8);
     background: var(--color-bg-inverse);
-    color: var(--color-text-on-inverse);
+    color: var(--color-text-on-brand);
+    font-family: var(--font-family-display);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 26rem;
   }
 
-  .footer-main,
-  .footer-meta {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-6);
-  }
-
-  .footer-copy {
+  .intro {
     display: grid;
+    grid-area: intro;
     gap: var(--space-3);
   }
 
   .contact-title {
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-home-eyebrow);
-    font-weight: 600;
-    line-height: 1;
+    font-size: var(--font-size-footer-title);
+    font-weight: 700;
+    line-height: 1.1;
   }
 
   .contact-subtitle {
-    color: var(--color-text-on-inverse-muted);
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-body-compact);
-  }
-
-  a {
-    color: var(--color-text-on-inverse);
-    font-family: var(--font-family-display);
-    text-decoration: none;
-  }
-
-  .back-to-top,
-  .footer-meta {
-    font-size: var(--font-size-label);
-    font-weight: 500;
-    letter-spacing: var(--letter-spacing-label);
+    font-size: var(--font-size-footer-subtitle);
   }
 
   .contact-links {
     display: flex;
     flex-wrap: wrap;
+    grid-area: links;
     gap: var(--space-3);
-    margin-block-start: var(--space-8);
+  }
+
+  a {
+    color: var(--color-text-on-brand);
+    text-decoration: none;
   }
 
   .contact-links a {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-5);
-    border: var(--header-border-width) solid var(--color-bg-inverse-raised);
+    gap: var(--space-2-5);
+    padding: var(--space-3) var(--space-5-5) var(--space-3) var(--space-4-5);
+    border: var(--header-border-width) solid var(--color-border-default);
     border-radius: var(--radius-pill);
-  }
-
-  .footer-meta a {
-    color: var(--color-text-on-inverse-muted);
+    color: var(--color-border-default);
+    font-size: var(--font-size-footer-action);
+    font-weight: 500;
+    transition: border-color var(--motion-duration-fast)
+      var(--motion-ease-standard);
   }
 
   .contact-links a:hover {
-    border-color: var(--color-text-on-inverse-muted);
+    border-color: var(--color-text-on-brand);
   }
 
-  .contact-links img {
-    width: var(--space-5);
-    height: var(--space-5);
+  .resume,
+  .copyright {
+    color: var(--color-project-accent-soft);
+    font-size: var(--font-size-footer-meta);
   }
 
-  .footer-meta {
-    margin-block-start: var(--space-8);
-    padding-block-start: var(--space-6);
+  .resume {
+    grid-area: resume;
+    text-transform: uppercase;
+  }
+
+  .copyright,
+  .back-to-top {
+    padding-block-start: var(--space-8);
     border-block-start: var(--header-border-width) solid
       var(--color-bg-inverse-raised);
-    color: var(--color-text-on-inverse-muted);
+  }
+
+  .copyright {
+    grid-area: copyright;
+  }
+
+  .back-to-top {
+    grid-area: back;
+    font-size: var(--font-size-footer-action);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   @media (width >= 48rem) {
     .site-footer {
-      contain-intrinsic-size: auto 20rem;
-      padding-block-start: var(--space-18);
+      grid-template-areas:
+        'intro back'
+        'intro links'
+        'copyright resume';
+      align-items: start;
+      row-gap: var(--space-5);
+      padding: var(--space-10) var(--layout-page-gutter);
+      contain-intrinsic-size: auto 18.5rem;
+    }
+
+    .back-to-top,
+    .contact-links,
+    .resume {
+      justify-self: end;
+    }
+
+    .copyright,
+    .back-to-top {
+      padding-block-start: 0;
+      border-block-start: 0;
+    }
+
+    .copyright,
+    .resume {
+      margin-block-start: var(--space-15);
     }
   }
 </style>
