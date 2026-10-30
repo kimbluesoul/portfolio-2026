@@ -11,9 +11,12 @@ card:
 seo:
   title: 華豐輪胎 Hwa Fong Tire｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+next:
+  oneLiner: 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
+  meta: 華豐輪胎　·　品牌網站　·　UI 設計　·　互動設計　·　2024–2025
+  media: *card
 hero:
-  eyebrow: *todo
+  eyebrow: &todo TODO(CONTENT)
   title: *todo
   headline: *todo
   subtitle: *todo
@@ -44,6 +47,7 @@ links:
   cards:
     - {
         kind: live,
+        eyebrow: *todo,
         label: *todo,
         description: *todo,
         url: 'https://www.duro.com.tw/',

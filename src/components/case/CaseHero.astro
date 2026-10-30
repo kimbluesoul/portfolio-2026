@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
+import AccentText from '../ui/AccentText.astro';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionShell from '../ui/SectionShell.astro';
 
@@ -15,12 +16,14 @@ const { hero } = project.data;
 
 <SectionShell class="case-hero" tone={tone}>
   <a class="back-link" href="/#work">
-    ← BACK TO WORK
+    ← 所有作品
   </a>
   <div class="hero-copy">
     <p class="case-eyebrow">{hero.eyebrow}</p>
     <h1>{hero.title}</h1>
-    <p class="hero-headline">{hero.headline}</p>
+    <p class="hero-headline">
+      <AccentText text={hero.headline} />
+    </p>
     <p class="hero-subtitle">{hero.subtitle}</p>
   </div>
   <dl class="hero-stats">

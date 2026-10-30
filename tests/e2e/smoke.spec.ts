@@ -239,9 +239,24 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await expect(page.locator('loop-video')).toHaveCount(4);
   await expect(page.locator('loop-video video source')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
+  await expect(page.locator('.detail-card')).toHaveCount(7);
+  await expect(
+    page.locator('.story-title').filter({ hasText: '最難的地方' }),
+  ).toBeVisible();
+  await expect(page.getByText('已上線', { exact: true })).toBeVisible();
   await expect(
     page.getByRole('heading', { name: '資訊很多，重點要先被看見' }),
   ).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: /H5／App 原型/u }),
+  ).toHaveAttribute('href', /node-id=14925-16976/u);
+  await expect(
+    page.getByText(
+      '以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。',
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(page.getByText('TODO(CONTENT)', { exact: true })).toHaveCount(0);
   await expect(
     page.getByText('正式網站因合約關係不便公開。', { exact: true }),
   ).toBeVisible();

@@ -2,8 +2,8 @@
 
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
-## Status (2026-10-30)
-- **Phase**: **M2 Case template + 88Win is implemented** on `feat/m2-case-template` in PR #14 and is ready for Claude's review. M1 remains merged in PR #10.
+## Status (2026-10-31)
+- **Phase**: **M2 Case template + 88Win review fixes are implemented** on `feat/m2-case-template` in PR #14. P1-1–P1-3 and P2-1 from Claude's review are resolved against ARCHITECTURE v1.4 and Figma `360:251` / `475:953`.
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 
@@ -17,8 +17,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Claude**: review the M2 PR, including copy fidelity against Figma `360:251` / `475:953`, the nine-section order, pending-media contract, and keyboard / reduced-motion behavior. Leave the standard P0–P3 findings and verdict comment.
-2. **ChatGPT**: address Claude's review findings on `feat/m2-case-template`, rerun `pnpm verify`, and update this handoff before requesting re-review.
+1. **Claude**: re-review PR #14 at the latest commit. Confirm P1-1–P1-3 and P2-1 are resolved, including the v1.4 transcription checklist, Details bento, Links cards, corrected `next` ownership, centred layouts, and user-initiated playback under reduced motion. Leave the standard P0–P3 findings and verdict comment.
+2. **ChatGPT**: address any new review findings on `feat/m2-case-template` and rerun `pnpm verify` before requesting another review.
 3. **Product Owner**: deliver the listed 2× Figma image exports and videos **after** M2 review (Product Owner decision, 2026-10-30). Until then every 88Win media slot intentionally renders the shared neutral placeholder with `素材待補`.
 
 ## M1 summary
@@ -75,9 +75,13 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - The project schema accepts pending images and videos only when `status: pending`, `expectedFile`, and an explicit aspect ratio are present. `ProjectMedia` routes ready images, ready videos, and pending media through one contract.
 - `CaseSections` renders the fixed nine-section sequence: hero, overview, key screens, mobile / RWD, interaction / motion, details, visual extension, prototype links, and next project.
 - `<motion-steps>` uses a manual WAI-style tab pattern with roving focus, Arrow / Home / End keyboard controls, and no auto-advance. `<loop-video>` never autoplays; ready videos play on desktop hover / focus or mobile tap, pause off-screen, and respect reduced motion.
-- All 22 88Win image / video slots are pending and grouped under `88win` in the build's pending-asset report. Missing Figma copy remains marked `TODO(CONTENT)` in `src/content/projects/88win.yaml`; no case-study copy was invented for those fields.
+- ARCHITECTURE v1.4 is implemented: `**accent**` text is parsed without HTML injection; Details accepts 1–8 items and renders the 88Win seven-card bento; Link cards have separate eyebrow, title, and description fields.
+- Every visible 88Win text node and both Prototype links were re-read from Figma. `src/content/projects/88win.yaml` contains no `TODO(CONTENT)` markers. All seven Details descriptions, the third Overview block, the exact H5 URL, and the exact Next Project strings are present.
+- `next` describes the project that owns the entry. `NextProject` now renders `next.data.next`; Hwa Fong owns the Hwa Fong copy and 88Win owns the copy shown on HUIFA.
+- Under reduced motion, only hover-initiated playback is suppressed. Focus, keyboard, tap / click, and motion-step selection remain user-initiated playback paths.
+- All 22 88Win image / video slots are pending and grouped under `88win` in the build's pending-asset report. The approved Figma exports and videos are still the only visual deviation from Figma.
 - Visual QA screenshots: `docs/screenshots/m2-88win-desktop.png` (1920 px) and `docs/screenshots/m2-88win-mobile.png` (390 px), produced by `scripts/capture-case.mjs` against `pnpm preview`.
-- Validation on 2026-10-30: ESLint / Stylelint / Prettier / Astro check passed; 47 unit tests passed; the static build passed; 24 Playwright desktop + mobile tests passed; all nine Lighthouse runs passed. Run the final aggregate command with `pnpm verify`.
+- Review-fix validation on 2026-10-31: the final aggregate `pnpm verify` passed, including ESLint / Stylelint / Prettier / Astro check, 49 unit tests, the static build, 24 Playwright desktop + mobile tests, and all 9 Lighthouse runs across `/`, `/work/88win/`, and `/resume/`.
 - Production remains intentionally blocked by pending media and content markers. Branch / staging previews are expected to deploy normally under ADR-0011.
 
 ## Milestone tracker

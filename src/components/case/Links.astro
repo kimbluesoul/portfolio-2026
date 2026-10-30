@@ -23,13 +23,15 @@ const { data, tone } = Astro.props;
       const unavailable = card.url === 'TODO(CONTENT)';
       return unavailable ? (
         <div class="link-card is-disabled" aria-disabled="true">
-          <span>{card.description}</span>
+          <span class="link-eyebrow">{card.eyebrow}</span>
           <strong>{card.label}</strong>
+          <span class="link-description">{card.description}</span>
         </div>
       ) : (
         <a class="link-card" href={card.url} target="_blank" rel="noreferrer">
-          <span>{card.description}</span>
+          <span class="link-eyebrow">{card.eyebrow}</span>
           <strong>{card.label}</strong>
+          <span class="link-description">{card.description}</span>
           <span class="link-arrow" aria-hidden="true">
             ↗
           </span>

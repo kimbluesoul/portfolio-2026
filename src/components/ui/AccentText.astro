@@ -1,0 +1,13 @@
+---
+import { splitAccent } from '../../lib/accent';
+
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+{splitAccent(text).map((segment) =>
+  segment.accent ? <span class="accent">{segment.text}</span> : segment.text,
+)}

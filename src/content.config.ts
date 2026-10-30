@@ -92,6 +92,14 @@ const projects = defineCollection({
       media,
     });
 
+    const detailItem = z.object({
+      eyebrow: z.string().min(1).optional(),
+      title: z.string().min(1),
+      caption: z.string().optional(),
+      media,
+      size: z.enum(['third', 'half', 'half-tall', 'full']).optional(),
+    });
+
     const stat = z.object({
       label: z.string().min(1),
       value: z.string().min(1),
@@ -175,11 +183,7 @@ const projects = defineCollection({
           eyebrow: z.string().min(1),
           heading: z.string().min(1),
           subtitle: z.string().min(1),
-          items: z
-            .array(captioned)
-            .refine((items) => items.length === 3 || items.length === 6, {
-              message: 'Details must contain exactly 3 or 6 items.',
-            }),
+          items: z.array(detailItem).min(1).max(8),
         })
         .optional(),
       visualExtension: z
@@ -196,6 +200,7 @@ const projects = defineCollection({
           .array(
             z.object({
               kind: z.enum(['prototype', 'live', 'demo']),
+              eyebrow: z.string().min(1),
               label: z.string().min(1),
               description: z.string().min(1),
               url: contentUrl,

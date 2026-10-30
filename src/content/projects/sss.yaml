@@ -42,4 +42,10 @@ links:
   heading: *todo
   subtitle: *todo
   cards:
-    - { kind: live, label: *todo, description: *todo, url: *todo }
+    - {
+        kind: live,
+        eyebrow: *todo,
+        label: *todo,
+        description: *todo,
+        url: *todo,
+      }

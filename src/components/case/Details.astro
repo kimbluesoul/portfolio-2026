@@ -21,12 +21,13 @@ const { data, tone } = Astro.props;
   />
   <div class="details-grid">
     {data.items.map((item) => (
-      <figure>
-        <ProjectMedia media={item.media} />
+      <figure class={`detail-card size-${item.size ?? 'half'}`}>
         <figcaption>
+          {item.eyebrow && <span class="detail-eyebrow">{item.eyebrow}</span>}
           <strong>{item.title}</strong>
-          {item.caption}
+          {item.caption && <span>{item.caption}</span>}
         </figcaption>
+        <ProjectMedia media={item.media} />
       </figure>
     ))}
   </div>

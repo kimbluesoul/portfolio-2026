@@ -46,7 +46,7 @@ const sections = assignTones(
       );
     if (key === 'links') return <Links data={project.data.links} tone={tone} />;
     if (key === 'nextProject')
-      return <NextProject current={project} next={nextProject} tone={tone} />;
+      return <NextProject next={nextProject} tone={tone} />;
     return null;
   })}
 </article>

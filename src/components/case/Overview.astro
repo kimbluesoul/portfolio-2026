@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
+import AccentText from '../ui/AccentText.astro';
 import SectionShell from '../ui/SectionShell.astro';
 
 interface Props {
@@ -14,7 +15,9 @@ const { data, tone } = Astro.props;
 <SectionShell class="overview" tone={tone}>
   <div class="overview-heading">
     <p class="case-eyebrow">OVERVIEW</p>
-    <h2>{data.heading}</h2>
+    <h2>
+      <AccentText text={data.heading} />
+    </h2>
   </div>
   <div class="overview-story">
     {data.blocks.map((block, index) => (

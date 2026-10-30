@@ -5,29 +5,31 @@ import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionShell from '../ui/SectionShell.astro';
 
 interface Props {
-  current: CollectionEntry<'projects'>;
   next: CollectionEntry<'projects'>;
   tone: SectionTone;
 }
 
-const { current, next, tone } = Astro.props;
+const { next, tone } = Astro.props;
 ---
 
 <SectionShell class="next-project" tone={tone}>
-  <p class="case-eyebrow">NEXT PROJECT</p>
+  <div class="next-topline">
+    <a class="back-link" href="/#work">
+      ← 所有作品
+    </a>
+    <p class="case-eyebrow">
+      NEXT PROJECT {String(next.data.order).padStart(2, '0')} / 07
+    </p>
+  </div>
   <a href={`/work/${next.id}/`}>
     <div class="next-heading">
-      <p class="next-counter">{String(next.data.order).padStart(2, '0')}</p>
       <h2>{next.data.name}</h2>
       <span class="next-arrow" aria-hidden="true">
-        ↗
+        →
       </span>
     </div>
-    <p class="next-meta">{current.data.next.meta}</p>
-    <p class="next-body">{current.data.next.oneLiner}</p>
-    <ProjectMedia media={current.data.next.media} />
-  </a>
-  <a class="back-link" href="/#work">
-    ← BACK TO ALL WORK
+    <p class="next-meta">{next.data.next.meta}</p>
+    <p class="next-body">{next.data.next.oneLiner}</p>
+    <ProjectMedia media={next.data.next.media} />
   </a>
 </SectionShell>

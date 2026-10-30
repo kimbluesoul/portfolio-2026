@@ -72,12 +72,16 @@
   --font-size-about-display: clamp(1.875rem, 1.52rem + 1.41vw, 3.25rem);
 
   /* Case-study type: desktop 360:251, mobile 475:953. */
-  --font-size-case-eyebrow: 0.8125rem;
+  --font-size-case-eyebrow: clamp(0.875rem, 0.843rem + 0.131vw, 1rem);
   --font-size-case-title: clamp(4rem, 1.5rem + 10vw, 10rem);
-  --font-size-case-headline: clamp(2rem, 1.354rem + 2.647vw, 4.5rem);
-  --font-size-case-heading: clamp(2rem, 1.483rem + 2.118vw, 4rem);
+  --font-size-case-headline: clamp(2rem, 1.613rem + 1.588vw, 3.5rem);
+  --font-size-case-heading: clamp(2rem, 1.548rem + 1.853vw, 3.75rem);
   --font-size-case-subheading: clamp(1.25rem, 1.056rem + 0.794vw, 2rem);
-  --font-size-case-stat: clamp(1.125rem, 0.996rem + 0.529vw, 1.625rem);
+  --font-size-case-subtitle: clamp(1rem, 0.935rem + 0.265vw, 1.25rem);
+  --font-size-case-stat: clamp(1.25rem, 1.121rem + 0.529vw, 1.75rem);
+  --font-size-link-title: clamp(1.75rem, 1.621rem + 0.529vw, 2.25rem);
+  --font-size-next-title: clamp(3.5rem, 1.758rem + 7.147vw, 10.25rem);
+  --size-next-arrow: clamp(5.5rem, 4.08rem + 5.823vw, 11rem);
   --line-height-label: 1.25;
   --line-height-body: clamp(1.65, 2.194 - 0.454vw, 1.75);
   --line-height-body-tight: 1.2778;

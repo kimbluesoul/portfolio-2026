@@ -10,7 +10,7 @@ class LoopVideoElement extends HTMLElement {
     this.hoverCapable = matchMedia(
       '(hover: hover) and (pointer: fine)',
     ).matches;
-    this.addEventListener('pointerenter', this.handleEnter);
+    this.addEventListener('pointerenter', this.handlePointerEnter);
     this.addEventListener('pointerleave', this.pause);
     this.addEventListener('focusin', this.handleEnter);
     this.addEventListener('focusout', this.pause);
@@ -26,7 +26,7 @@ class LoopVideoElement extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.removeEventListener('pointerenter', this.handleEnter);
+    this.removeEventListener('pointerenter', this.handlePointerEnter);
     this.removeEventListener('pointerleave', this.pause);
     this.removeEventListener('focusin', this.handleEnter);
     this.removeEventListener('focusout', this.pause);
@@ -36,8 +36,7 @@ class LoopVideoElement extends HTMLElement {
   }
 
   play = async () => {
-    if (!this.video || matchMedia('(prefers-reduced-motion: reduce)').matches)
-      return;
+    if (!this.video) return;
     try {
       await this.video.play();
       this.dataset.state = 'playing';
@@ -51,9 +50,16 @@ class LoopVideoElement extends HTMLElement {
     if (this.dataset.state !== 'pending') this.dataset.state = 'paused';
   };
 
-  private handleEnter = () => {
-    if (this.hoverCapable) void this.play();
+  private handlePointerEnter = () => {
+    if (
+      this.hoverCapable &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      void this.play();
+    }
   };
+
+  private handleEnter = () => void this.play();
 
   private handleClick = () => {
     if (!this.video) return;
