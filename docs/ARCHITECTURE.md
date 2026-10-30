@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.2 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1).
+**v1.3 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -175,6 +175,7 @@ type Media =
   | { kind: 'image'; src: ImageMetadata; alt: string }            // alt '' only with decorative: true
   | { kind: 'video'; src: `/media/${string}.mp4`; poster: ImageMetadata; alt: string;
       status?: 'ready' | 'pending' };                                 // 'pending' = asset not delivered yet
+// v1.3: image media may also be { status: 'pending'; expectedFile: string } (§9.3)
 
 type Project = {
   // slug = the content entry id (file name); it must be one of the 7 slugs in §3
@@ -294,9 +295,15 @@ Rules:
 - No embeds (YouTube/Vimeo/Figma iframes). Prototypes are external links only.
 - Repository weight: masters stay **out of git**. If committed delivery media exceeds **300 MB**, open an ADR (Git LFS or R2 object storage).
 
-### 9.3 Missing assets
-- `status: 'pending'` media renders a poster/placeholder in development and preview builds.
-- The **production build fails** if any media is still `pending`. The build also prints a **pending-asset report** on every run, so nothing ships pending by accident.
+### 9.3 Missing assets (template-first delivery, v1.3)
+The Product Owner delivers images (2× exports from Figma) and videos **after** the templates are built. Layout and code must therefore never wait for media.
+- **Both images and videos** may be `status: 'pending'`. A pending entry carries `expectedFile`, the exact path the real file will have (§9.1 naming, e.g. `src/assets/projects/88win/key-main-poster.jpg` or `public/media/88win/motion-1.mp4`).
+  - Pending images point `src` at a shared neutral placeholder, `src/assets/placeholders/placeholder.png`.
+  - Pending videos render their poster (or the same placeholder) and emit no `<source>`.
+- In development and preview builds, pending media renders a neutral box at the slot's real aspect ratio, with a small "素材待補" label so missing assets are obvious on preview URLs. Layout must be identical with placeholder or real media; slot sizes come from CSS, not from the file.
+- The **pending-asset report** printed on every build lists each `expectedFile` grouped by project. This is the Product Owner's asset to-do list.
+- The **production build fails** while any media is `pending` (as before).
+- Delivering an asset = add the file at `expectedFile`, point `src` at it, and delete `status` / `expectedFile`. No component changes.
 
 ### 9.4 Play indicator
 - Touch devices show a play indicator on video posters (§7). Figma has no design for it. In M1, the implementer adds a minimal token-based indicator (a circular `--color-bg-brand` fill with a white triangle, matching the Next-arrow button style), lists it under "Deviations from Figma", and the Product Owner approves or replaces it on the preview deploy.
