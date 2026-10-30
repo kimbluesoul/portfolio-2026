@@ -52,6 +52,7 @@
 - P2-2: captioned media now requires `title`, allows optional `caption`, and keeps `media` required.
 - P2-3: project URLs now come only from the content entry ID. The loader rejects filenames outside the seven approved slugs.
 - P1-A: `wrangler.jsonc` configures `dist/` as Workers static assets with 404 fallback and forced trailing slashes; Wrangler is an exact-version dev dependency. pnpm permits install scripts only for Wrangler's required `esbuild` and `workerd` packages.
+- Cloudflare's current Workers Builds preview flow replaces the production deploy command with `npx wrangler preview` on non-`main` branches. Wrangler 4.155.0 therefore requires an empty top-level `previews` block. Issue #4 records this minimal addition because the accepted P1-A snippet predates that platform requirement; production settings remain unchanged.
 - P1-B: the production pending-media guard now checks `WORKERS_CI_BRANCH === 'main'`.
 - URL configuration uses `https://portfolio-2026.kimbluesoul.workers.dev` for Astro canonical/sitemap generation and `robots.txt`.
 - Workers Builds is configured with build command `pnpm build`, deploy command `npx wrangler deploy`, root `/`, Node 24, and pnpm 11.25.0. Retrying an older failed build reuses its old settings snapshot; a new commit is required to validate current settings.
