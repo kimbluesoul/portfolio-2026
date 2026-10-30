@@ -1,0 +1,52 @@
+order: 3
+name: FITZONE
+nameZh: 健身房
+card:
+  summary: 從介面設計到 Motion 都一起處理，最後也真的落地到正式網站，不是只停在 Figma 裡
+  tags: [UI Design, Motion, Development]
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: FITZONE 健身房網站作品預覽
+seo:
+  {
+    title: FITZONE 健身房 — Syuan Ci,
+    description: FITZONE 健身房網站介面、動態與落地實作作品。,
+  }
+next: { oneLiner: 從設計到正式上線, meta: Project 03 / 07, media: *placeholder }
+hero:
+  eyebrow: Project 03
+  title: FITZONE
+  headline: 讓訓練感受先在畫面裡發生
+  subtitle: 健身房網站與動態體驗
+  stats:
+    - { label: Role, value: UI Designer }
+    - { label: Platform, value: Web }
+    - { label: Focus, value: Motion }
+    - { label: Year, value: '2026' }
+  showcase: { layout: single, items: [*placeholder] }
+overview:
+  heading: Overview
+  blocks:
+    - { title: Context, body: 以高張力視覺傳達訓練氛圍。 }
+    - { title: Outcome, body: 完成介面、Motion 與前端落地協作。 }
+  outputs: [Responsive website]
+keyScreens:
+  eyebrow: Key Screens
+  heading: 主要畫面
+  subtitle: 從首頁到課程內容的完整體驗。
+  main: *placeholder
+  closeups:
+    - { title: 首頁, media: *placeholder }
+    - { title: 課程頁, media: *placeholder }
+links:
+  eyebrow: Links
+  heading: 專案連結
+  subtitle: 前往正式網站
+  cards:
+    - {
+        kind: live,
+        label: Live site,
+        description: FITZONE 正式網站,
+        url: 'https://fitzone.com.tw/',
+      }

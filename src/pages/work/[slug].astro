@@ -1,14 +1,15 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getOrderedProjects } from '../../lib/project-content';
 
 interface Props {
   project: CollectionEntry<'projects'>;
 }
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  const projects = await getOrderedProjects();
   return projects.map((project) => ({
     params: { slug: project.id },
     props: { project },

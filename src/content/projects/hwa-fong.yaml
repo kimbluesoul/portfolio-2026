@@ -1,0 +1,51 @@
+order: 2
+name: Hwa Fong Tire
+nameZh: 華豐輪胎
+card:
+  summary: 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
+  tags: [Web Design, Interaction, Motion]
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: 華豐輪胎網站作品預覽
+seo:
+  title: 華豐輪胎 Hwa Fong Tire — Syuan Ci
+  description: 華豐輪胎品牌網站介面與互動設計作品。
+next:
+  { oneLiner: 品牌網站與互動體驗, meta: Project 02 / 07, media: *placeholder }
+hero:
+  eyebrow: Project 02
+  title: Hwa Fong Tire
+  headline: DURO for Durability
+  subtitle: 品牌網站介面與互動設計
+  stats:
+    - { label: Role, value: UI Designer }
+    - { label: Platform, value: Web }
+    - { label: Focus, value: Interaction }
+    - { label: Year, value: '2026' }
+  showcase: { layout: single, items: [*placeholder] }
+overview:
+  heading: Overview
+  blocks:
+    - { title: Context, body: 重新整理品牌、產品與技術內容的瀏覽體驗。 }
+    - { title: Outcome, body: 以動態細節建立可靠又有記憶點的品牌印象。 }
+  outputs: [Responsive website]
+keyScreens:
+  eyebrow: Key Screens
+  heading: 主要畫面
+  subtitle: 品牌與產品內容的完整網站體驗。
+  main: *placeholder
+  closeups:
+    - { title: 首頁, media: *placeholder }
+    - { title: 產品頁, media: *placeholder }
+links:
+  eyebrow: Links
+  heading: 專案連結
+  subtitle: 前往正式網站
+  cards:
+    - {
+        kind: live,
+        label: Live site,
+        description: 華豐輪胎官方網站,
+        url: 'https://www.duro.com.tw/',
+      }

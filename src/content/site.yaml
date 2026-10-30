@@ -7,22 +7,32 @@ site:
     - label: Contact
       href: '#contact'
   hero:
-    eyebrow: Portfolio 2026
-    heading: M0 Bootstrap Placeholder
-    introduction: Content will be transcribed from the approved Figma source in M1.
+    eyebrow: HELLO, I’M SYUAN CI
+    heading: 設計畫面，也設計畫面之間的瞬間。
+    introduction: 專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。
   credentials:
     - UI Design
     - Interaction Design
+    - Motion Design
   about:
-    heading: About Placeholder
-    body: The complete About content is intentionally deferred to M1.
+    heading: 從需求到上線，把畫面做到會動
+    body: |-
+      我是 Syuan Ci，具 6 年以上 UI 與數位介面設計經驗。習慣從需求溝通就開始參與，主動提出設計方向，一路做到正式上線，不只停在 Figma 裡。
+
+      Motion 是我最喜歡的部分：拆解主視覺、安排內容怎麼進場與轉場，並和前端密切溝通實作細節，讓網站不只好看，也好逛、讓人記得住。
     skills:
       - UI Design
+      - Interaction Design
+      - Motion Design
+      - Design System
     tools:
       - Figma
+      - After Effects
+      - Illustrator
+      - Photoshop
   contact:
-    email: placeholder@example.com
-    linkedin: https://www.linkedin.com/
+    email: kimbluesoul@gmail.com
+    linkedin: https://www.linkedin.com/in/syuanci/
   footer:
-    copyright: Portfolio 2026
+    copyright: © 2026 SYUAN CI. ALL RIGHTS RESERVED.
     resumeLabel: View Resume

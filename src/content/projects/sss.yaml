@@ -1,0 +1,53 @@
+order: 4
+name: SSS 1.0
+nameZh: 超透明提案
+card:
+  summary: 以展覽概念為主軸，將議題、空間與數位內容整理成清晰且具有節奏的瀏覽體驗
+  tags: [Web Design, Editorial, Motion]
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: SSS 超透明提案網站作品預覽
+seo:
+  {
+    title: SSS 超透明提案 — Syuan Ci,
+    description: SSS 超透明提案展覽網站設計作品。,
+  }
+next:
+  { oneLiner: 展覽內容的數位敘事, meta: Project 04 / 07, media: *placeholder }
+hero:
+  eyebrow: Project 04
+  title: SSS 1.0
+  headline: 把展覽概念變成可探索的數位敘事
+  subtitle: 展覽網站設計
+  stats:
+    - { label: Role, value: UI Designer }
+    - { label: Platform, value: Web }
+    - { label: Focus, value: Editorial }
+    - { label: Year, value: '2026' }
+  showcase: { layout: single, items: [*placeholder] }
+overview:
+  heading: Overview
+  blocks:
+    - { title: Context, body: 將展覽資訊重新編排成線上體驗。 }
+    - { title: Outcome, body: 以視覺節奏引導讀者理解議題。 }
+  outputs: [Responsive website]
+keyScreens:
+  eyebrow: Key Screens
+  heading: 主要畫面
+  subtitle: 展覽內容與視覺敘事。
+  main: *placeholder
+  closeups:
+    - { title: 首頁, media: *placeholder }
+    - { title: 內容頁, media: *placeholder }
+links:
+  eyebrow: Links
+  heading: 專案連結
+  subtitle: 前往正式網站
+  cards:
+    - {
+        kind: live,
+        label: Live site,
+        description: SSS 1.0 展覽網站,
+        url: 'https://baopu.com.tw/exhibition/SSS1.0',
+      }

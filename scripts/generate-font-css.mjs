@@ -4,12 +4,9 @@ import process from 'node:process';
 
 const root = process.cwd();
 const sourceDirectory = join(root, 'src');
-const fontSource = join(
-  root,
-  'node_modules',
-  '@fontsource',
-  'noto-sans-tc',
-  '400.css',
+const fontWeights = [400, 500, 700];
+const fontSources = fontWeights.map((weight) =>
+  join(root, 'node_modules', '@fontsource', 'noto-sans-tc', `${weight}.css`),
 );
 const output = join(root, 'src', 'styles', 'noto-sans-tc.generated.css');
 const contentExtensions = new Set(['.astro', '.ts', '.yaml', '.yml']);
@@ -44,7 +41,9 @@ const codePoints = new Set(
   [...sourceText].map((character) => character.codePointAt(0)),
 );
 
-const fontCss = await readFile(fontSource, 'utf8');
+const fontCss = (
+  await Promise.all(fontSources.map((source) => readFile(source, 'utf8')))
+).join('\n');
 const blocks = fontCss.match(/\/\*[^*]+\*\/\s*@font-face\s*\{[^}]+\}/g) ?? [];
 const selected = blocks.filter((block) => {
   const unicodeRange = block.match(/unicode-range:\s*([^;]+);/)?.[1];
@@ -67,5 +66,5 @@ const css = `${[
 
 await writeFile(output, css, 'utf8');
 process.stdout.write(
-  `Generated ${selected.length} Noto Sans TC unicode slices.\n`,
+  `Generated ${selected.length} Noto Sans TC unicode slices for weights ${fontWeights.join(', ')}.\n`,
 );

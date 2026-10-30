@@ -79,21 +79,45 @@ for (const route of routes) {
 
 test('navigation exposes the public anchor contract', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('link', { name: 'Work' })).toHaveAttribute(
-    'href',
-    '/#work',
-  );
-  await expect(page.getByRole('link', { name: 'About' })).toHaveAttribute(
-    'href',
-    '/#about',
-  );
-  await expect(page.getByRole('link', { name: 'Contact' })).toHaveAttribute(
-    'href',
-    '#contact',
-  );
+  await expect(
+    page.getByRole('link', { name: 'Work', exact: true }),
+  ).toHaveAttribute('href', '/#work');
+  await expect(
+    page.getByRole('link', { name: 'About', exact: true }),
+  ).toHaveAttribute('href', '/#about');
+  await expect(
+    page.getByRole('link', { name: 'Contact', exact: true }),
+  ).toHaveAttribute('href', '#contact');
   await expect(page.locator('#work')).toHaveCount(1);
   await expect(page.locator('#about')).toHaveCount(1);
   await expect(page.locator('#contact')).toHaveCount(1);
+});
+
+test('home renders the complete ordered project index', async ({ page }) => {
+  await page.goto('/');
+  const projectLinks = page.locator('#work article > a');
+  await expect(projectLinks).toHaveCount(7);
+  expect(
+    await projectLinks.evaluateAll((links) =>
+      links.map((link) => link.getAttribute('href')),
+    ),
+  ).toEqual([
+    '/work/88win/',
+    '/work/hwa-fong/',
+    '/work/fitzone/',
+    '/work/sss/',
+    '/work/jhanyu/',
+    '/work/amd/',
+    '/work/huifa/',
+  ]);
+});
+
+test('home remains complete with reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('reveal-on-view')).toHaveCount(8);
+  await expect(page.locator('#about')).toBeVisible();
+  await expect(page.locator('#work article').last()).toBeVisible();
 });
 
 test('resume links to the supplied PDF', async ({ page, request }) => {

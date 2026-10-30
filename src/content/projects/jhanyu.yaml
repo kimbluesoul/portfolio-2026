@@ -1,0 +1,53 @@
+order: 5
+name: JHANYU
+nameZh: 展裕建設
+card:
+  summary: 以建築尺度與留白建立沉穩的品牌印象，讓建案資訊在桌機與手機上都清楚易讀
+  tags: [Brand Website, UI Design, RWD]
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: 展裕建設網站作品預覽
+seo:
+  {
+    title: 展裕建設 JHANYU — Syuan Ci,
+    description: 展裕建設品牌網站介面設計作品。,
+  }
+next:
+  { oneLiner: 建築品牌的數位尺度, meta: Project 05 / 07, media: *placeholder }
+hero:
+  eyebrow: Project 05
+  title: JHANYU
+  headline: 以留白與尺度呈現建築品牌
+  subtitle: 建設品牌網站設計
+  stats:
+    - { label: Role, value: UI Designer }
+    - { label: Platform, value: Web }
+    - { label: Focus, value: Branding }
+    - { label: Year, value: '2026' }
+  showcase: { layout: single, items: [*placeholder] }
+overview:
+  heading: Overview
+  blocks:
+    - { title: Context, body: 建立建設品牌一致的數位形象。 }
+    - { title: Outcome, body: 清楚呈現品牌、建案與聯絡資訊。 }
+  outputs: [Responsive website]
+keyScreens:
+  eyebrow: Key Screens
+  heading: 主要畫面
+  subtitle: 品牌與建案內容。
+  main: *placeholder
+  closeups:
+    - { title: 首頁, media: *placeholder }
+    - { title: 建案頁, media: *placeholder }
+links:
+  eyebrow: Links
+  heading: 專案連結
+  subtitle: 前往正式網站
+  cards:
+    - {
+        kind: live,
+        label: Live site,
+        description: 展裕建設官方網站,
+        url: 'https://jhanyu.com/',
+      }

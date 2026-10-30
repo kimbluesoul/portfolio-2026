@@ -8,7 +8,74 @@ ChatGPT may transcribe values from Figma into this document only with a source c
 This document records approved design decisions. It does **not** define engineering architecture.
 
 ## Current status
-Foundation only. Detailed tokens and component specifications should be added from the approved Figma direction before implementation.
+M1 home tokens transcribed from the approved Figma frames on 2026-10-30. Values below are flagged for Product Owner confirmation in the M1 PR.
+
+## Figma source
+
+- Desktop home: `360:3` (1920 px frame)
+- Mobile home: `474:1057` (390 px frame)
+- Interactive components and hover states: `465:662`
+
+Child-node citations are included beside each measured value. Values are direct Dev Mode measurements, not visual estimates.
+
+## Typography
+
+| Use | Desktop | Mobile | Family / weight | Source |
+|---|---:|---:|---|---|
+| Home English display | 64 / 83 px | 26 / 31.2 px | Instrument Sans 600 | `360:7`, `474:1071` |
+| Home Chinese display | 64 / 83 px | 30 / 39.6 px | Noto Sans TC 700 | `360:8`, `474:1072` |
+| Home introduction | 18 / 23 px | 15 / 24.75 px | Noto Sans TC 400 | `360:9`, `474:1073` |
+| Section cue | 14 / 18 px | 12 / 15 px | Instrument Sans 700 / 500 | `360:25`, `474:1258` |
+| About display | 52 / 68 px | 30 / 39.6 px | Noto Sans TC 700 | `451:667`, `474:1259` |
+| About body | — | 15 / 26.25 px | Noto Sans TC 400 | `474:1261` |
+
+Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`). The Noto Sans TC weights used by the approved home are 400, 500, and 700; all three are generated as unicode-range slices (P2-5).
+
+## Spacing
+
+Reusable spacing tokens are a 4 px base sequence: 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48, 56, 72, 96, and 140 px.
+
+| Area | Desktop | Mobile | Source |
+|---|---|---|---|
+| Navigation padding | 20 px vertical / 96 px horizontal | 12 px vertical / 20 px horizontal | `360:3438`, `474:1058` |
+| Hero stack gap | 26 px | 28 px | `360:5`, `474:1069` |
+| Hero section padding | measured through 96 px page gutter | 36 px top / 20 px sides / 48 px bottom | `360:3`, `474:1069` |
+| Credentials divider offset | 28 px top | included in 28 px Hero stack | `360:10`, `474:1075` |
+| Work heading padding | 40 px vertical | 8 px top at section start | `360:26`, `474:1085` |
+| Featured card content gap | 30 px | 16 px | `465:999`, `474:1086` |
+| Project grid gap | 40 px horizontal and vertical | 48 px vertical | `360:84`, `474:1085` |
+| About section | 140 px vertical / 96 px horizontal; 72 px stack gap | 72 px vertical / 20 px horizontal | `451:662`, `474:1256` |
+| Footer | desktop uses 96 px page gutter | 56 px top / 20 px sides / 32 px bottom; 32 px gap | `360:220`, `474:1287` |
+
+## Grid and layout widths
+
+| Token / use | Value | Source |
+|---|---:|---|
+| Desktop frame | 1920 px | `360:3` |
+| Home content maximum | 1728 px | `360:5`, `360:26`, `465:999` |
+| Desktop page gutter | 96 px | `360:3438`, `451:662` |
+| Secondary grid column | 844 px | `465:1080`, `465:1149` |
+| Secondary grid gutter | 40 px | derived from 1728 − 844 × 2; confirmed by `360:84` |
+| Mobile frame | 390 px | `474:1057` |
+| Mobile content width | 350 px | `474:1058`, `474:1069`, `474:1085` |
+| Mobile page gutter | 20 px | same nodes above |
+
+The implementation is mobile-first. The two-column work grid switches at 768 px, matching ARCHITECTURE §10; 768–1439 px uses the same two-column relationship with fluid gutters. The exact reference points remain 390 px and 1920 px.
+
+## Card geometry and media
+
+- Featured desktop card: 1728 × 667 px with a 1728 × 558 px media region and 30 px content gap (`465:999`, child `521:617`).
+- Secondary desktop cards: 844 × 575 px (`465:1080`, `465:1149`).
+- Mobile featured card: 350 × 384 px; secondary card heights vary with content, e.g. 350 × 338 and 350 × 313 px (`474:1086`, `474:1122`, `474:1145`).
+- Card media stays clipped while the media layer scales to 1.02 on hover. The whole card lifts 4 px; the entire card is one link (`465:662`).
+
+## Breakpoints
+
+| Token | Value | Use |
+|---|---:|---|
+| `--bp-md` | 768 px | two-column work grid and wider navigation |
+| `--bp-lg` | 1024 px | About two-column composition |
+| `--bp-xl` | 1440 px | desktop-scale spacing approaches the 1920 reference |
 
 ## Visual direction
 - Work-first composition

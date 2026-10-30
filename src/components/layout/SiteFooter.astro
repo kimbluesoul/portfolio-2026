@@ -10,46 +10,113 @@ const { copyright, email, linkedin, resumeLabel } = Astro.props;
 ---
 
 <footer id="contact" class="site-footer">
-  <p>{copyright}</p>
-  <ul aria-label="Contact links">
-    <li>
-      <a href={`mailto:${email}`}>Email</a>
-    </li>
-    <li>
-      <a href={linkedin} target="_blank" rel="noopener noreferrer">
-        LinkedIn <span class="visually-hidden">(opens in a new tab)</span>
-      </a>
-    </li>
-    <li>
-      <a href="/resume/">{resumeLabel}</a>
-    </li>
-  </ul>
+  <div class="footer-main">
+    <div>
+      <p class="eyebrow">CONTACT</p>
+      <p class="contact-title">
+        LET’S MAKE
+        <br />
+        SOMETHING MOVE.
+      </p>
+    </div>
+    <ul aria-label="聯絡方式">
+      <li>
+        <span>Email</span>
+        <a href={`mailto:${email}`}>{email} ↗</a>
+      </li>
+      <li>
+        <span>LinkedIn</span>
+        <a href={linkedin} target="_blank" rel="noopener noreferrer">
+          SYUAN CI ↗<span class="visually-hidden">（另開新分頁）</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="footer-meta">
+    <p>{copyright}</p>
+    <a href="/resume/">{resumeLabel.toUpperCase()} ↗</a>
+    <a href="#top">BACK TO TOP ↑</a>
+  </div>
 </footer>
 
 <style>
   .site-footer {
-    padding: var(--space-8);
+    padding: var(--space-14) var(--layout-page-gutter) var(--space-8);
     background: var(--color-bg-inverse);
-    color: var(--color-text-on-brand);
+    color: var(--color-text-on-inverse);
+  }
+
+  .footer-main {
+    display: grid;
+    gap: var(--space-8);
   }
 
   ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-block-start: var(--space-4);
+    display: grid;
+    gap: var(--space-6);
   }
 
   a {
-    color: var(--color-text-on-brand);
+    color: var(--color-text-on-inverse);
+    font-family: var(--font-family-display);
+    text-decoration: none;
   }
 
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  li {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  li span,
+  .eyebrow,
+  .footer-meta {
+    color: var(--color-text-on-inverse-muted);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-label);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing-label);
+    text-transform: uppercase;
+  }
+
+  li a {
+    font-size: var(--font-size-body);
+  }
+
+  .contact-title {
+    margin-block-start: var(--space-3);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-home-eyebrow);
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-6);
+    border-block-start: var(--header-border-width) solid
+      var(--color-bg-inverse-raised);
+  }
+
+  .footer-meta a {
+    color: var(--color-text-on-inverse-muted);
+  }
+
+  @media (width >= 48rem) {
+    .site-footer {
+      padding-block-start: var(--space-18);
+    }
+
+    .footer-main {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+    }
+
+    ul {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>

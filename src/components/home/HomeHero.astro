@@ -1,0 +1,126 @@
+---
+interface Props {
+  credentials: string[];
+  eyebrow: string;
+  heading: string;
+  introduction: string;
+}
+
+const { credentials, eyebrow, heading, introduction } = Astro.props;
+const [headingFirstLine, headingSecondLine = ''] = heading.split('，');
+const headingSecondParts = headingSecondLine.split('瞬間');
+---
+
+<section class="hero" aria-labelledby="home-heading">
+  <div class="hero-copy">
+    <p class="hero-eyebrow">{eyebrow}</p>
+    <h1 id="home-heading">
+      {headingFirstLine}，<br />
+      {headingSecondParts[0]}
+      <span>瞬間</span>
+      {headingSecondParts[1]}
+    </h1>
+    <p class="hero-introduction">{introduction}</p>
+  </div>
+  <ul class="credentials" aria-label="專業領域">
+    {credentials.map((credential, index) => (
+      <li>
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        {credential}
+      </li>
+    ))}
+  </ul>
+  <a class="work-cue" href="#work">
+    SELECTED WORK ↓
+  </a>
+</section>
+
+<style>
+  .hero {
+    width: min(
+      calc(100% - (2 * var(--layout-page-gutter))),
+      var(--layout-home-max)
+    );
+    margin-inline: auto;
+    padding-block: var(--space-9) var(--space-12);
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-home-eyebrow);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  h1 {
+    max-width: 67.5rem;
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-home-display);
+    font-weight: 700;
+    line-height: var(--line-height-display);
+  }
+
+  h1 span {
+    color: var(--color-text-brand);
+  }
+
+  .hero-introduction {
+    max-width: 52.125rem;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body-tight);
+  }
+
+  .credentials {
+    display: grid;
+    gap: var(--space-4);
+    margin-block-start: var(--space-7);
+    padding-block-start: var(--space-7);
+    border-block-start: var(--header-border-width) solid
+      var(--color-border-header);
+  }
+
+  .credentials li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-body-compact);
+    font-weight: 600;
+  }
+
+  .credentials span {
+    color: var(--color-text-brand);
+    font-size: var(--font-size-label);
+  }
+
+  .work-cue {
+    display: inline-block;
+    margin-block-start: var(--space-12);
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-label);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @media (width >= 48rem) {
+    .hero {
+      padding-block: var(--space-24) var(--space-10);
+    }
+
+    .credentials {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .credentials li {
+      justify-content: flex-start;
+    }
+  }
+</style>

@@ -1,0 +1,53 @@
+order: 6
+name: AMD
+nameZh: 康健生醫
+card:
+  summary: 重新整理醫療與健康資訊的層級，讓專業內容更容易理解，也維持品牌可信度
+  tags: [Healthcare, UI Design, RWD]
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: AMD 康健生醫網站作品預覽
+seo:
+  {
+    title: AMD 康健生醫 — Syuan Ci,
+    description: AMD 康健生醫網站介面設計作品。,
+  }
+next:
+  { oneLiner: 清楚可信的健康資訊, meta: Project 06 / 07, media: *placeholder }
+hero:
+  eyebrow: Project 06
+  title: AMD
+  headline: 讓專業健康資訊清楚而可信
+  subtitle: 生醫品牌網站設計
+  stats:
+    - { label: Role, value: UI Designer }
+    - { label: Platform, value: Web }
+    - { label: Focus, value: Information }
+    - { label: Year, value: '2026' }
+  showcase: { layout: single, items: [*placeholder] }
+overview:
+  heading: Overview
+  blocks:
+    - { title: Context, body: 整理產品、技術與健康知識的資訊架構。 }
+    - { title: Outcome, body: 建立可信且容易瀏覽的品牌網站。 }
+  outputs: [Responsive website]
+keyScreens:
+  eyebrow: Key Screens
+  heading: 主要畫面
+  subtitle: 產品與健康內容。
+  main: *placeholder
+  closeups:
+    - { title: 首頁, media: *placeholder }
+    - { title: 產品頁, media: *placeholder }
+links:
+  eyebrow: Links
+  heading: 專案連結
+  subtitle: 前往正式網站
+  cards:
+    - {
+        kind: live,
+        label: Live site,
+        description: AMD 康健生醫官方網站,
+        url: 'https://amdintl.com.tw/',
+      }

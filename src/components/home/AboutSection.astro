@@ -1,0 +1,162 @@
+---
+interface Props {
+  body: string;
+  heading: string;
+  skills: string[];
+  tools: string[];
+}
+
+const { body, heading, skills, tools } = Astro.props;
+const paragraphs = body.split(/\n\n/u);
+const headingParts = heading.split('把畫面做到會動');
+---
+
+<section id="about" class="about" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <div class="about-intro">
+      <p class="eyebrow">ABOUT</p>
+      <h2 id="about-heading">
+        {headingParts[0]}
+        <span>把畫面做到會動</span>
+        {headingParts[1]}
+      </h2>
+    </div>
+    <div class="about-content">
+      <div class="about-copy">
+        {paragraphs.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+      <div class="lists">
+        <div>
+          <p class="list-title">TOOLS</p>
+          <ul>
+            {tools.map((tool) => (
+              <li>{tool}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="list-title">SKILLS</p>
+          <ul>
+            {skills.map((skill) => (
+              <li>{skill}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <a class="resume-link" href="/resume/">
+        View Resume <span>↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: var(--space-18) var(--layout-page-gutter);
+    background: var(--color-bg-surface);
+  }
+
+  .about-inner {
+    display: grid;
+    width: min(100%, var(--layout-home-max));
+    gap: var(--space-18);
+    margin-inline: auto;
+  }
+
+  .eyebrow,
+  .list-title {
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-label);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  h2 {
+    margin-block-start: var(--space-3);
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-about-display);
+    font-weight: 700;
+    line-height: var(--line-height-display);
+  }
+
+  h2 span {
+    display: block;
+    color: var(--color-text-brand);
+  }
+
+  .about-content {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .about-copy {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .about-copy p {
+    font-size: var(--font-size-body-compact);
+    line-height: 1.75;
+  }
+
+  .lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+
+  .lists ul {
+    display: grid;
+    gap: var(--space-2);
+    margin-block-start: var(--space-3);
+  }
+
+  .lists li {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-body-compact);
+  }
+
+  .resume-link {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg-brand);
+    color: var(--color-text-on-brand);
+    font-family: var(--font-family-display);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background var(--motion-duration-fast)
+      var(--motion-ease-standard);
+  }
+
+  .resume-link:hover {
+    background: var(--color-bg-brand-hover);
+  }
+
+  @media (width >= 64rem) {
+    .about {
+      padding-block: var(--space-35);
+    }
+
+    .about-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-24);
+    }
+
+    .about-content {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+
+    .about-copy {
+      grid-column: 1 / -1;
+    }
+
+    .resume-link {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

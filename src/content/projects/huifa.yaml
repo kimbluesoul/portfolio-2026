@@ -1,0 +1,53 @@
+order: 7
+name: HUIFA
+nameZh: 匯發營造
+card:
+  summary: 將工程實績、服務內容與品牌精神整合成俐落的企業網站，建立專業而穩定的第一印象
+  tags: [Corporate, UI Design, RWD]
+  media: &placeholder
+    kind: image
+    src: ../../assets/projects/88win/placeholder.svg
+    alt: 匯發營造網站作品預覽
+seo:
+  {
+    title: 匯發營造 HUIFA — Syuan Ci,
+    description: 匯發營造企業網站介面設計作品。,
+  }
+next:
+  { oneLiner: 工程品牌的專業形象, meta: Project 07 / 07, media: *placeholder }
+hero:
+  eyebrow: Project 07
+  title: HUIFA
+  headline: 讓工程實績成為品牌的第一印象
+  subtitle: 營造企業網站設計
+  stats:
+    - { label: Role, value: UI Designer }
+    - { label: Platform, value: Web }
+    - { label: Focus, value: Corporate }
+    - { label: Year, value: '2026' }
+  showcase: { layout: single, items: [*placeholder] }
+overview:
+  heading: Overview
+  blocks:
+    - { title: Context, body: 整合企業、服務與工程實績內容。 }
+    - { title: Outcome, body: 建立穩定而專業的品牌網站。 }
+  outputs: [Responsive website]
+keyScreens:
+  eyebrow: Key Screens
+  heading: 主要畫面
+  subtitle: 企業與工程實績內容。
+  main: *placeholder
+  closeups:
+    - { title: 首頁, media: *placeholder }
+    - { title: 實績頁, media: *placeholder }
+links:
+  eyebrow: Links
+  heading: 專案連結
+  subtitle: 前往正式網站
+  cards:
+    - {
+        kind: live,
+        label: Live site,
+        description: 匯發營造官方網站,
+        url: 'https://huifa.com.tw/',
+      }

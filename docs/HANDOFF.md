@@ -3,11 +3,11 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-30)
-- **Phase**: **M0 — Architect approved; required P1/P2 corrections applied; Workers preview live; awaiting final CI, Architect re-review, and Product Owner merge.**
-- **Branch / PR**: `feat/m0-bootstrap` / PR #2. Architecture v1.1, ADR-0011, and the full M0 review are in PR #3, which should merge before or together with PR #2.
-- **Quality gate**: `pnpm verify` passes locally after the ADR-0011 hosting corrections (lint, format, Astro check, 42 unit tests, static build, 12 Playwright/axe/CSP checks, and 9 Lighthouse runs across 3 routes). Wrangler 4.155.0 dry run and Workers Builds preview deployment pass.
-- **Scope**: Project scaffold, tooling, CI, content schemas, placeholder routes, and test infrastructure only. No visual section implementation, real project content, media, or motion was added.
-- **Preview**: `https://feat-m0-bootstrap-portfolio-2026.kimbluesoul.workers.dev/`
+- **Phase**: **M1 — Home implementation complete locally; review is blocked only by the CJK font architecture decision in Issue #9.**
+- **Branch / PR**: `feat/m1-home`; PR not opened yet.
+- **Quality gate**: the final `pnpm verify` run on 2026-10-30 passed format, lint, Astro check, unit tests (42), E2E/axe/CSP tests (16), build, media checks, and bundle checks. Lighthouse is the sole failing gate: font transfer is 802,008 bytes against the 204,800-byte budget, median LCP is 6,214.076 ms, and the median performance score is 0.63.
+- **Implemented scope**: Figma token transcription, 7-project home content, Hero, project cards/grid, About, Footer, navigation, hover/focus states, reduced-motion behavior, and `<reveal-on-view>`.
+- **Preview**: pending first M1 push. Expected branch URL: `https://feat-m1-home-portfolio-2026.kimbluesoul.workers.dev/`.
 
 ## Roles
 - **Product Owner / UI Designer:** user
@@ -15,9 +15,9 @@
 - **Implementation Engineer:** ChatGPT
 
 ## Next owner
-1. **Claude**: re-review PR #2, including the issue #4 platform compatibility note.
-2. **Product Owner**: merge PR #3 before or together with PR #2, then merge M0 after required checks and review pass.
-3. **M1** must not start before M0 is merged. Use the Cloudflare Workers branch preview for visual review.
+1. **Claude / Architect**: decide Architecture Issue #9. The recommended path is build-time Noto Sans TC glyph subsetting in a superseding ADR; the alternatives are a larger font budget or a system-font fallback.
+2. **ChatGPT**: after that decision, apply the approved font strategy, make `pnpm verify` green, update this handoff, and move the M1 PR out of draft.
+3. **Product Owner**: confirm the transcribed Figma values in `docs/DESIGN_SYSTEM.md`, the lightweight project-card poster direction, and the Workers preview.
 
 ## Decisions recorded on 2026-10-29
 - **Q1 / A2**: 7 projects in a fixed order (PRODUCT.md updated).
@@ -37,7 +37,7 @@
 ## Blockers
 | Blocks | Item | Owner |
 |---|---|---|
-| M1 | Type scale, spacing, and layout widths transcribed into DESIGN_SYSTEM from Figma, citing node IDs (A3/A4) | ChatGPT transcribes; Product Owner confirms in the PR |
+| M1 review-ready | [Issue #9](https://github.com/kimbluesoul/portfolio-2026/issues/9): the approved full Noto Sans TC unicode slices exceed the M0 200 KB font budget. A superseding architecture decision is required. | Claude / Architect |
 | M2–M3 | Delivery of video files per project (MP4 masters) | Product Owner |
 | M5 | Q7: choose a custom production domain if one will be used; `*.workers.dev` remains the fallback | Product Owner |
 
@@ -60,13 +60,23 @@
 - Cloudflare Worker URL and Preview URLs are enabled. The live branch preview is `https://feat-m0-bootstrap-portfolio-2026.kimbluesoul.workers.dev/`.
 - P2-4 (collection-level order validation) and P2-5 (all Figma font weights) are explicitly deferred to M1 per the Architect review.
 
+## M1 implementation notes
+- Figma desktop `360:3`, mobile `474:1057`, and interactive component section `465:662` were read in Dev Mode. Exact typography, spacing, layout widths, and child-node citations are recorded in `docs/DESIGN_SYSTEM.md`.
+- P2-4 is implemented through `getOrderedProjects()`. Both the home page and `[slug].astro` call it, so duplicate/gapped order values fail every production build.
+- P2-5 is implemented by generating Noto Sans TC unicode-range CSS for weights 400, 500, and 700.
+- The 7 home project entries now exist in the approved PRODUCT order. Case-study bodies remain M2/M3 scope; their schema-valid fields are intentionally minimal.
+- Home videos are not enabled because the Product Owner has not delivered the M1 card MP4 files. Cards use lightweight in-code poster compositions and the approved CSS hover behavior; `<loop-video>` therefore remains out of scope under ARCHITECTURE §19 (“if cards use video”).
+- Visual QA screenshots are committed at `docs/screenshots/m1-home-desktop.png` (1920 px) and `docs/screenshots/m1-home-mobile.png` (390 px).
+- All local checks are green except Lighthouse. The browser loads 24 Noto Sans TC WOFF2 slices (802,008 bytes); the final `pnpm verify` measured median LCP at 6,214.076 ms and performance score at 0.63. This cannot be changed inside M1 without superseding ADR-0008, so Architecture Issue #9 was raised instead of silently changing the decision.
+- Exact resume point if this session stops: the final `pnpm verify` has been run with the result above; commit and push `feat/m1-home`, confirm the expected Workers preview URL, then open a **Draft PR** using the repository template. The PR must link Issue #9 and must not claim the Lighthouse/font gate is green.
+
 ## Milestone tracker
 | Milestone | State |
 |---|---|
 | Collaboration scaffold | Done (PR #1) |
-| Architecture v1.1 | **Approved; awaiting merge** (PR #3) |
-| M0 Bootstrap | **In review** (PR #2) |
-| M1 Home | Not started |
+| Architecture v1.1 | Done (PR #3) |
+| M0 Bootstrap | Done (PR #2) |
+| M1 Home | **Implementation complete; architecture-blocked** (`feat/m1-home`, Issue #9) |
 | M2 Case template + 88Win | Not started |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
