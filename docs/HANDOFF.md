@@ -3,11 +3,11 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-30)
-- **Phase**: **M1 — Home implementation complete locally; review is blocked only by the CJK font architecture decision in Issue #9.**
-- **Branch / PR**: `feat/m1-home`; PR not opened yet.
+- **Phase**: **M1 — Home implementation is deployed in Draft PR #10; review-ready status is blocked only by the CJK font architecture decision in Issue #9.**
+- **Branch / PR**: `feat/m1-home` / [PR #10](https://github.com/kimbluesoul/portfolio-2026/pull/10) (Draft).
 - **Quality gate**: the final `pnpm verify` run on 2026-10-30 passed format, lint, Astro check, unit tests (42), E2E/axe/CSP tests (16), build, media checks, and bundle checks. Lighthouse is the sole failing gate: font transfer is 802,008 bytes against the 204,800-byte budget, median LCP is 6,214.076 ms, and the median performance score is 0.63.
 - **Implemented scope**: Figma token transcription, 7-project home content, Hero, project cards/grid, About, Footer, navigation, hover/focus states, reduced-motion behavior, and `<reveal-on-view>`.
-- **Preview**: pending first M1 push. Expected branch URL: `https://feat-m1-home-portfolio-2026.kimbluesoul.workers.dev/`.
+- **Preview**: Cloudflare Workers build succeeded; live branch URL: `https://feat-m1-home-portfolio-2026.kimbluesoul.workers.dev/`.
 
 ## Roles
 - **Product Owner / UI Designer:** user
@@ -15,7 +15,7 @@
 - **Implementation Engineer:** ChatGPT
 
 ## Next owner
-1. **Claude / Architect**: decide Architecture Issue #9. The recommended path is build-time Noto Sans TC glyph subsetting in a superseding ADR; the alternatives are a larger font budget or a system-font fallback.
+1. **Claude / Architect**: review Draft PR #10 and decide Architecture Issue #9. The recommended path is build-time Noto Sans TC glyph subsetting in a superseding ADR; the alternatives are a larger font budget or a system-font fallback.
 2. **ChatGPT**: after that decision, apply the approved font strategy, make `pnpm verify` green, update this handoff, and move the M1 PR out of draft.
 3. **Product Owner**: confirm the transcribed Figma values in `docs/DESIGN_SYSTEM.md`, the lightweight project-card poster direction, and the Workers preview.
 
@@ -68,7 +68,7 @@
 - Home videos are not enabled because the Product Owner has not delivered the M1 card MP4 files. Cards use lightweight in-code poster compositions and the approved CSS hover behavior; `<loop-video>` therefore remains out of scope under ARCHITECTURE §19 (“if cards use video”).
 - Visual QA screenshots are committed at `docs/screenshots/m1-home-desktop.png` (1920 px) and `docs/screenshots/m1-home-mobile.png` (390 px).
 - All local checks are green except Lighthouse. The browser loads 24 Noto Sans TC WOFF2 slices (802,008 bytes); the final `pnpm verify` measured median LCP at 6,214.076 ms and performance score at 0.63. This cannot be changed inside M1 without superseding ADR-0008, so Architecture Issue #9 was raised instead of silently changing the decision.
-- Exact resume point if this session stops: the final `pnpm verify` has been run with the result above; commit and push `feat/m1-home`, confirm the expected Workers preview URL, then open a **Draft PR** using the repository template. The PR must link Issue #9 and must not claim the Lighthouse/font gate is green.
+- Exact resume point if this session stops: Draft PR #10 and its Workers preview are live. Wait for Claude's decision on Issue #9; then apply the approved font strategy, rerun `pnpm verify`, update this file and the PR, and mark the PR ready only when the required gates are green.
 
 ## Milestone tracker
 | Milestone | State |
@@ -76,7 +76,7 @@
 | Collaboration scaffold | Done (PR #1) |
 | Architecture v1.1 | Done (PR #3) |
 | M0 Bootstrap | Done (PR #2) |
-| M1 Home | **Implementation complete; architecture-blocked** (`feat/m1-home`, Issue #9) |
+| M1 Home | **Draft PR #10; architecture-blocked** (`feat/m1-home`, Issue #9) |
 | M2 Case template + 88Win | Not started |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
