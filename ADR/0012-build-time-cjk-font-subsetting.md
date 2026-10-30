@@ -14,7 +14,7 @@ M1 measured **802 KB** of font transfer on the home page (24 WOFF2 requests acro
 
 1. **Source font**: Noto Sans TC from `google/fonts` (OFL-1.1), variable `NotoSansTC[wght].ttf`, pinned to a specific upstream commit. Commit the source under `fonts-src/noto-sans-tc/` with `OFL.txt` and a recorded SHA-256. It is a build input only and is never deployed. If variable instancing proves unreliable, use the static per-weight TTFs from the same commit instead.
 2. **Tool**: `subset-font` (harfbuzz WASM, no native build) as an approved **dev dependency**.
-3. **Weights**: only the CJK weights recorded in `docs/DESIGN_SYSTEM.md` (currently **400 and 700**). Produce one static instance per weight (`variationAxes: { wght: N }`). Drop 500 unless DESIGN_SYSTEM records a Chinese use for it.
+3. **Weights**: only the CJK weights recorded in `docs/DESIGN_SYSTEM.md` (currently **400, 500, 700**: body, tag chips, headings). Produce one static instance per weight (`variationAxes: { wght: N }`). Add or drop a weight only when DESIGN_SYSTEM records it.
 4. **Glyph source = built output**: extract the rendered text of `dist/**/*.html` (including visually-hidden text) and CSS `content:` strings. `alt` / `aria-label` values are excluded because they are not drawn with the font. Source files are not scanned, so the subset matches exactly what is rendered.
 5. **Two subsets per weight**, both in the same `font-family`, with exact `unicode-range` lists:
    - `core`: glyphs on `/` plus shared chrome (header, footer). Fetched on every page and cached.
