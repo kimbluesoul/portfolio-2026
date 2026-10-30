@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.3 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment).
+**v1.4 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -168,6 +168,9 @@ Schema sketch (normative for shape; field names may be refined in M0 with Archit
 ```ts
 // Captioned — close-ups, mobile panels, detail items (Figma: "Caption title" + "Caption sub")
 type Captioned = { title: string; caption?: string; media: Media };
+// v1.4: Details items carry an eyebrow and a bento size (88Win 360:376 has 7 cards of mixed size)
+type DetailItem = { eyebrow?: string; title: string; caption?: string; media: Media;
+                    size?: 'third' | 'half' | 'half-tall' | 'full' /* default third */ };
 type Stat = { label: string; value: string };
 
 // Media — every visual slot is one of these
@@ -194,17 +197,21 @@ type Project = {
   mobile?:     { eyebrow: string; heading: string; subtitle: string; panels: Captioned[] /* 3 */ };
   motion?:     { eyebrow: string; heading: string; subtitle: string;
                  steps: { title: string; body: string; media: Media }[] /* 1–3 */ };
-  details?:    { eyebrow: string; heading: string; subtitle: string; items: Captioned[] /* 3 | 6 */ };
+  details?:    { eyebrow: string; heading: string; subtitle: string; items: DetailItem[] /* 1–8 */ };
   visualExtension?: { variant: 'mosaic' | 'grid'; items: Media[] };
   links:       { eyebrow: string; heading: string; subtitle: string;
-                 cards: { kind: 'prototype' | 'live' | 'demo'; label: string; description: string;
+                 cards: { kind: 'prototype' | 'live' | 'demo'; eyebrow: string; label: string; description: string;
                           url: string }[] /* 1–2 */; note?: string };
 };
 ```
 
-Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 3 or 6 details, 1–3 motion steps, 1–2 link cards) are enforced in the schema. Layout fallbacks (for example "fewer than 3 close-ups → 2 columns") are then derived from item count in the component, not from extra flags.
+Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 1–3 motion steps, 1–2 link cards) are enforced in the schema. **Details** follow the Product Owner's Figma rather than the template table: 1–8 items, each with a `size` that maps to the bento grid (`third` = 1/3 row, `half` = 1/2 row, `half-tall` = 1/2 column spanning two half rows, `full` = full row). 88Win uses `half-tall`, `half`, `half`, `full`, `third` ×3. The other projects use three `third` cards. Layout fallbacks (for example "fewer than 3 close-ups → 2 columns") are then derived from item count in the component, not from extra flags.
 
 **Content fidelity rule (v1.2).** Every user-visible string, tag, number, and URL in content files is copied **verbatim** from Figma (or from the Product Owner / the resume PDF). Nothing is paraphrased, translated, or invented. If a value is not available yet, use the literal marker `TODO(CONTENT)`. The build lists every remaining marker, and the production build (`WORKERS_CI_BRANCH=main`) fails while any remain, the same way as pending media (§9.3). Schema validity is never a reason to write made-up copy.
+
+**Accent markup (v1.4).** Figma headings colour key words with `--color-text-brand` (e.g. 「延伸到**三個裝置**」 in `360:283`, 「PC・H5・App **跨裝置**介面設計」 in `360:255`). Content strings mark these words with `**double asterisks**`. One shared helper (`src/lib/accent.ts`) splits the string into plain text and `<span class="accent">` parts. Astro escapes the text, so no HTML is ever injected. The helper is used by every heading, title, and headline that can carry an accent. Asterisks never reach the rendered page. Each `**…**` must match a brand-coloured span in Figma exactly.
+
+**Transcription checklist.** For every section, the implementer reads **every** text node and link (`href`) in the Figma frame, including card eyebrows, descriptions, captions, counters, and Next-project meta. A Figma field must never be left as `TODO(CONTENT)` when the frame contains it. `TODO(CONTENT)` is only for copy that does not exist in Figma.
 
 `site.yaml` holds nav labels, home hero copy, credentials, About copy, tools/skills tags, contact links (Email, LinkedIn), and footer copy. `resume.yaml` holds the web resume (structure decided when the resume design exists; see Q3).
 
