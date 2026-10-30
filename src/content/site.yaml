@@ -1,4 +1,7 @@
 site:
+  seo:
+    title: TODO(CONTENT)
+    description: TODO(CONTENT)
   nav:
     - label: Work
       href: /#work
@@ -11,9 +14,12 @@ site:
     heading: 設計畫面，也設計畫面之間的瞬間。
     introduction: 專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。
   credentials:
-    - UI Design
-    - Interaction Design
-    - Motion Design
+    - label: EXPERIENCE
+      value: 6 年以上 UI 與數位介面設計
+    - label: FOCUS
+      value: 介面設計・互動設計・動態設計・原型設計
+    - label: CURRENTLY
+      value: Available for opportunities
   about:
     heading: 從需求到上線，把畫面做到會動
     body: |-
@@ -21,18 +27,21 @@ site:
 
       Motion 是我最喜歡的部分：拆解主視覺、安排內容怎麼進場與轉場，並和前端密切溝通實作細節，讓網站不只好看，也好逛、讓人記得住。
     skills:
-      - UI Design
-      - Interaction Design
-      - Motion Design
-      - Design System
+      - UI
+      - Interaction
+      - Motion
+      - Prototype
     tools:
       - Figma
-      - After Effects
-      - Illustrator
       - Photoshop
+      - Illustrator
+    resumeLabel: View Resume
   contact:
     email: kimbluesoul@gmail.com
-    linkedin: https://www.linkedin.com/in/syuanci/
+    linkedin: https://www.linkedin.com/in/syuanci-chou-design
   footer:
-    copyright: © 2026 SYUAN CI. ALL RIGHTS RESERVED.
-    resumeLabel: View Resume
+    heading: Thanks for scrolling.
+    subheading: Based in Taiwan, Feel free to get in touch.
+    copyright: © 2026 SYUAN CI
+    resumeLabel: VIEW RESUME
+    backToTopLabel: BACK TO TOP ↑

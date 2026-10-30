@@ -2,52 +2,44 @@ order: 5
 name: JHANYU
 nameZh: 展裕建設
 card:
-  summary: 以建築尺度與留白建立沉穩的品牌印象，讓建案資訊在桌機與手機上都清楚易讀
-  tags: [Brand Website, UI Design, RWD]
-  media: &placeholder
+  summary: 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
+  tags: [已上線, UI設計, 品牌延伸, 企業網站, 2024–2025]
+  media: &card
     kind: image
-    src: ../../assets/projects/88win/placeholder.svg
+    src: ../../assets/projects/jhanyu/card.jpg
     alt: 展裕建設網站作品預覽
 seo:
-  {
-    title: 展裕建設 JHANYU — Syuan Ci,
-    description: 展裕建設品牌網站介面設計作品。,
-  }
-next:
-  { oneLiner: 建築品牌的數位尺度, meta: Project 05 / 07, media: *placeholder }
+  title: &todo TODO(CONTENT)
+  description: *todo
+next: { oneLiner: *todo, meta: *todo, media: *card }
 hero:
-  eyebrow: Project 05
-  title: JHANYU
-  headline: 以留白與尺度呈現建築品牌
-  subtitle: 建設品牌網站設計
+  eyebrow: *todo
+  title: *todo
+  headline: *todo
+  subtitle: *todo
   stats:
-    - { label: Role, value: UI Designer }
-    - { label: Platform, value: Web }
-    - { label: Focus, value: Branding }
-    - { label: Year, value: '2026' }
-  showcase: { layout: single, items: [*placeholder] }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+  showcase: { layout: single, items: [*card] }
 overview:
-  heading: Overview
+  heading: *todo
   blocks:
-    - { title: Context, body: 建立建設品牌一致的數位形象。 }
-    - { title: Outcome, body: 清楚呈現品牌、建案與聯絡資訊。 }
-  outputs: [Responsive website]
+    - { title: *todo, body: *todo }
+    - { title: *todo, body: *todo }
+  outputs: [*todo]
 keyScreens:
-  eyebrow: Key Screens
-  heading: 主要畫面
-  subtitle: 品牌與建案內容。
-  main: *placeholder
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  main: *card
   closeups:
-    - { title: 首頁, media: *placeholder }
-    - { title: 建案頁, media: *placeholder }
+    - { title: *todo, caption: *todo, media: *card }
+    - { title: *todo, caption: *todo, media: *card }
 links:
-  eyebrow: Links
-  heading: 專案連結
-  subtitle: 前往正式網站
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
   cards:
-    - {
-        kind: live,
-        label: Live site,
-        description: 展裕建設官方網站,
-        url: 'https://jhanyu.com/',
-      }
+    - { kind: live, label: *todo, description: *todo, url: *todo }

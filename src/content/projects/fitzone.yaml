@@ -3,50 +3,43 @@ name: FITZONE
 nameZh: 健身房
 card:
   summary: 從介面設計到 Motion 都一起處理，最後也真的落地到正式網站，不是只停在 Figma 裡
-  tags: [UI Design, Motion, Development]
-  media: &placeholder
+  tags: [已上線, UI設計, Motion, 品牌網站, 2024–2025]
+  media: &card
     kind: image
-    src: ../../assets/projects/88win/placeholder.svg
-    alt: FITZONE 健身房網站作品預覽
+    src: ../../assets/projects/fitzone/card.jpg
+    alt: FITZONE 網站作品預覽
 seo:
-  {
-    title: FITZONE 健身房 — Syuan Ci,
-    description: FITZONE 健身房網站介面、動態與落地實作作品。,
-  }
-next: { oneLiner: 從設計到正式上線, meta: Project 03 / 07, media: *placeholder }
+  title: &todo TODO(CONTENT)
+  description: *todo
+next: { oneLiner: *todo, meta: *todo, media: *card }
 hero:
-  eyebrow: Project 03
-  title: FITZONE
-  headline: 讓訓練感受先在畫面裡發生
-  subtitle: 健身房網站與動態體驗
+  eyebrow: *todo
+  title: *todo
+  headline: *todo
+  subtitle: *todo
   stats:
-    - { label: Role, value: UI Designer }
-    - { label: Platform, value: Web }
-    - { label: Focus, value: Motion }
-    - { label: Year, value: '2026' }
-  showcase: { layout: single, items: [*placeholder] }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+  showcase: { layout: single, items: [*card] }
 overview:
-  heading: Overview
+  heading: *todo
   blocks:
-    - { title: Context, body: 以高張力視覺傳達訓練氛圍。 }
-    - { title: Outcome, body: 完成介面、Motion 與前端落地協作。 }
-  outputs: [Responsive website]
+    - { title: *todo, body: *todo }
+    - { title: *todo, body: *todo }
+  outputs: [*todo]
 keyScreens:
-  eyebrow: Key Screens
-  heading: 主要畫面
-  subtitle: 從首頁到課程內容的完整體驗。
-  main: *placeholder
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  main: *card
   closeups:
-    - { title: 首頁, media: *placeholder }
-    - { title: 課程頁, media: *placeholder }
+    - { title: *todo, caption: *todo, media: *card }
+    - { title: *todo, caption: *todo, media: *card }
 links:
-  eyebrow: Links
-  heading: 專案連結
-  subtitle: 前往正式網站
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
   cards:
-    - {
-        kind: live,
-        label: Live site,
-        description: FITZONE 正式網站,
-        url: 'https://fitzone.com.tw/',
-      }
+    - { kind: live, label: *todo, description: *todo, url: *todo }

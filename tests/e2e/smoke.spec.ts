@@ -112,10 +112,83 @@ test('home renders the complete ordered project index', async ({ page }) => {
   ]);
 });
 
+test('home uses the approved copy, links, and card assets', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  await expect(page.locator('header img[alt="Syuan Ci"]')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Work', exact: true }),
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByText('HELLO, I’M SYUAN CI')).toBeVisible();
+  await expect(
+    page.getByText(
+      '專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。',
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(page.getByText('精選作品', { exact: true })).toHaveCount(0);
+
+  const credentials = page.locator('.credentials li');
+  await expect(credentials).toHaveCount(3);
+  await expect(credentials.nth(0)).toContainText(
+    /EXPERIENCE\s*6 年以上 UI 與數位介面設計/u,
+  );
+  await expect(credentials.nth(1)).toContainText(
+    /FOCUS\s*介面設計・互動設計・動態設計・原型設計/u,
+  );
+  await expect(credentials.nth(2)).toContainText(
+    /CURRENTLY\s*Available for opportunities/u,
+  );
+
+  const cards = page.locator('#work article');
+  const expectedCardCopy = [
+    ['01 — 88Win', '線上娛樂城', 'PC / H5 / App', '2025–2026'],
+    ['02 — Hwa Fong Tire', '華豐輪胎', '品牌網站', '2024–2025'],
+    ['03 — FITZONE', '健身房', 'Motion', '2024–2025'],
+    ['04 — SSS', '超透明提案', '活動頁面', '2024–2025'],
+    ['05 — JHANYU', '展裕建設', '品牌延伸', '2024–2025'],
+    ['06 — AMD', '康健生醫', '互動設計', '2024–2025'],
+    ['07 — HUIFA', '匯發營造', 'Motion', '2024–2025'],
+  ];
+  for (const [index, copy] of expectedCardCopy.entries()) {
+    const text = await cards.nth(index).innerText();
+    for (const value of copy) expect(text).toContain(value);
+  }
+  await expect(page.locator('#work picture img')).toHaveCount(7);
+  for (const image of await page.locator('#work picture img').all()) {
+    await expect(image).toHaveAttribute('src', /\/_astro\/card\./u);
+  }
+
+  await expect(
+    page.getByText('Thanks for scrolling.', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Based in Taiwan, Feel free to get in touch.', {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Email' })).toHaveAttribute(
+    'href',
+    'mailto:kimbluesoul@gmail.com',
+  );
+  await expect(page.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/syuanci-chou-design',
+  );
+  await expect(
+    page.getByRole('link', { name: 'View Resume', exact: true }),
+  ).toHaveAttribute('href', '/resume/');
+  await expect(
+    page.getByRole('link', { name: 'VIEW RESUME', exact: true }),
+  ).toHaveAttribute('href', '/resume/');
+});
+
 test('home remains complete with reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.locator('reveal-on-view')).toHaveCount(8);
+  await expect(page.locator('reveal-on-view')).toHaveCount(7);
   await expect(page.locator('#about')).toBeVisible();
   await expect(page.locator('#work article').last()).toBeVisible();
 });

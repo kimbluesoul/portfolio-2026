@@ -4,7 +4,7 @@ import process from 'node:process';
 
 const root = process.cwd();
 const mediaDirectory = join(root, 'public', 'media');
-const contentDirectory = join(root, 'src', 'content', 'projects');
+const contentDirectory = join(root, 'src', 'content');
 const limits = {
   keyScreen: 8 * 1024 * 1024,
   motion: 4 * 1024 * 1024,
@@ -55,10 +55,16 @@ const contentFiles = (await filesBelow(contentDirectory)).filter((file) =>
   ['.yaml', '.yml'].includes(extname(file)),
 );
 const pending = [];
+const contentTodos = [];
 for (const file of contentFiles) {
   const source = await readFile(file, 'utf8');
   if (/^\s*status:\s*pending\s*$/m.test(source))
     pending.push(relative(root, file));
+  source.split(/\r?\n/u).forEach((line, index) => {
+    if (line.includes('TODO(CONTENT)')) {
+      contentTodos.push(`${relative(root, file)}:${index + 1}`);
+    }
+  });
 }
 
 process.stdout.write(
@@ -69,7 +75,22 @@ process.stdout.write(
   }\n`,
 );
 
+process.stdout.write(
+  `${
+    contentTodos.length === 0
+      ? 'Content-marker report: no TODO(CONTENT) markers.'
+      : `Content-marker report (${contentTodos.length}): ${contentTodos.join(', ')}`
+  }\n`,
+);
+
 if (pending.length > 0 && process.env.WORKERS_CI_BRANCH === 'main') {
   process.stderr.write('Production builds cannot contain pending media.\n');
+  process.exitCode = 1;
+}
+
+if (contentTodos.length > 0 && process.env.WORKERS_CI_BRANCH === 'main') {
+  process.stderr.write(
+    'Production builds cannot contain TODO(CONTENT) markers.\n',
+  );
   process.exitCode = 1;
 }

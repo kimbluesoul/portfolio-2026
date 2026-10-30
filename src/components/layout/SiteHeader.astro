@@ -1,4 +1,6 @@
 ---
+import logo from '../../assets/site/logo.svg';
+
 interface NavItem {
   label: string;
   href: string;
@@ -9,19 +11,31 @@ interface Props {
 }
 
 const { nav } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header">
   <a class="brand" href="/" aria-label="Syuan Ci 首頁">
-    SYUAN CI
+    <img src={logo.src} width="91" height="44" alt="Syuan Ci" />
   </a>
   <nav aria-label="主要導覽">
     <ul>
-      {nav.map((item) => (
-        <li>
-          <a href={item.href}>{item.label}</a>
-        </li>
-      ))}
+      {nav.map((item) => {
+        const isActive =
+          item.label === 'Work' &&
+          (currentPath === '/' || currentPath.startsWith('/work/'));
+        return (
+          <li>
+            <a
+              href={item.href}
+              class:list={{ active: isActive }}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   </nav>
 </header>
@@ -44,7 +58,10 @@ const { nav } = Astro.props;
 
   ul {
     display: flex;
-    gap: var(--space-6);
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border: var(--header-border-width) solid var(--color-border-default);
+    border-radius: var(--radius-pill);
   }
 
   a {
@@ -56,21 +73,33 @@ const { nav } = Astro.props;
     transition: color var(--motion-duration-fast) var(--motion-ease-standard);
   }
 
+  nav a {
+    display: block;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+  }
+
+  nav a.active {
+    background: var(--color-bg-brand);
+    color: var(--color-text-on-brand);
+  }
+
   a:hover {
     color: var(--color-text-brand);
   }
 
   .brand {
-    letter-spacing: -0.02em;
+    flex: 0 0 auto;
+  }
+
+  .brand img {
+    width: 5.6875rem;
+    height: 2.75rem;
   }
 
   @media (width >= 48rem) {
     .site-header {
       padding-block: var(--space-5);
-    }
-
-    ul {
-      gap: var(--space-10);
     }
   }
 </style>

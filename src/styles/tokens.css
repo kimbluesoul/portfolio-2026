@@ -46,7 +46,8 @@
 
   --font-family-display:
     'Instrument Sans Variable', 'Instrument Sans', sans-serif;
-  --font-family-body: 'Noto Sans TC', sans-serif;
+  --font-family-body:
+    'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   --font-size-label: clamp(0.75rem, 0.734rem + 0.064vw, 0.8125rem);
   --font-size-body: clamp(0.9375rem, 0.889rem + 0.192vw, 1.125rem);
   --font-size-body-compact: 0.9375rem;
@@ -86,6 +87,8 @@
   --header-height: 5.75rem;
   --header-border-width: 0.0625rem;
   --radius-focus: 0.25rem;
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
   --focus-ring-width: 0.1875rem;
   --bp-md: 768px;
   --bp-lg: 1024px;

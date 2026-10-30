@@ -1,53 +1,45 @@
 order: 4
-name: SSS 1.0
+name: SSS
 nameZh: 超透明提案
 card:
-  summary: 以展覽概念為主軸，將議題、空間與數位內容整理成清晰且具有節奏的瀏覽體驗
-  tags: [Web Design, Editorial, Motion]
-  media: &placeholder
+  summary: 把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。
+  tags: [已上線, UI設計, 互動設計, 活動頁面, 2024–2025]
+  media: &card
     kind: image
-    src: ../../assets/projects/88win/placeholder.svg
-    alt: SSS 超透明提案網站作品預覽
+    src: ../../assets/projects/sss/card.jpg
+    alt: SSS 網站作品預覽
 seo:
-  {
-    title: SSS 超透明提案 — Syuan Ci,
-    description: SSS 超透明提案展覽網站設計作品。,
-  }
-next:
-  { oneLiner: 展覽內容的數位敘事, meta: Project 04 / 07, media: *placeholder }
+  title: &todo TODO(CONTENT)
+  description: *todo
+next: { oneLiner: *todo, meta: *todo, media: *card }
 hero:
-  eyebrow: Project 04
-  title: SSS 1.0
-  headline: 把展覽概念變成可探索的數位敘事
-  subtitle: 展覽網站設計
+  eyebrow: *todo
+  title: *todo
+  headline: *todo
+  subtitle: *todo
   stats:
-    - { label: Role, value: UI Designer }
-    - { label: Platform, value: Web }
-    - { label: Focus, value: Editorial }
-    - { label: Year, value: '2026' }
-  showcase: { layout: single, items: [*placeholder] }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+    - { label: *todo, value: *todo }
+  showcase: { layout: single, items: [*card] }
 overview:
-  heading: Overview
+  heading: *todo
   blocks:
-    - { title: Context, body: 將展覽資訊重新編排成線上體驗。 }
-    - { title: Outcome, body: 以視覺節奏引導讀者理解議題。 }
-  outputs: [Responsive website]
+    - { title: *todo, body: *todo }
+    - { title: *todo, body: *todo }
+  outputs: [*todo]
 keyScreens:
-  eyebrow: Key Screens
-  heading: 主要畫面
-  subtitle: 展覽內容與視覺敘事。
-  main: *placeholder
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
+  main: *card
   closeups:
-    - { title: 首頁, media: *placeholder }
-    - { title: 內容頁, media: *placeholder }
+    - { title: *todo, caption: *todo, media: *card }
+    - { title: *todo, caption: *todo, media: *card }
 links:
-  eyebrow: Links
-  heading: 專案連結
-  subtitle: 前往正式網站
+  eyebrow: *todo
+  heading: *todo
+  subtitle: *todo
   cards:
-    - {
-        kind: live,
-        label: Live site,
-        description: SSS 1.0 展覽網站,
-        url: 'https://baopu.com.tw/exhibition/SSS1.0',
-      }
+    - { kind: live, label: *todo, description: *todo, url: *todo }

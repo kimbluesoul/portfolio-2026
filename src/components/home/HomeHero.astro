@@ -1,6 +1,6 @@
 ---
 interface Props {
-  credentials: string[];
+  credentials: { label: string; value: string }[];
   eyebrow: string;
   heading: string;
   introduction: string;
@@ -23,10 +23,10 @@ const headingSecondParts = headingSecondLine.split('瞬間');
     <p class="hero-introduction">{introduction}</p>
   </div>
   <ul class="credentials" aria-label="專業領域">
-    {credentials.map((credential, index) => (
+    {credentials.map((credential) => (
       <li>
-        <span>{String(index + 1).padStart(2, '0')}</span>
-        {credential}
+        <span>{credential.label}</span>
+        <strong>{credential.value}</strong>
       </li>
     ))}
   </ul>
@@ -87,8 +87,7 @@ const headingSecondParts = headingSecondLine.split('瞬間');
   }
 
   .credentials li {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     gap: var(--space-4);
     font-family: var(--font-family-display);
     font-size: var(--font-size-body-compact);
@@ -98,6 +97,11 @@ const headingSecondParts = headingSecondLine.split('瞬間');
   .credentials span {
     color: var(--color-text-brand);
     font-size: var(--font-size-label);
+  }
+
+  .credentials strong {
+    font-family: var(--font-family-body);
+    font-weight: 400;
   }
 
   .work-cue {
@@ -117,10 +121,6 @@ const headingSecondParts = headingSecondLine.split('瞬間');
 
     .credentials {
       grid-template-columns: repeat(3, 1fr);
-    }
-
-    .credentials li {
-      justify-content: flex-start;
     }
   }
 </style>

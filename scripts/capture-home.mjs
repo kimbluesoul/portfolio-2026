@@ -16,6 +16,7 @@ const captures = [
 
 for (const capture of captures) {
   const page = await browser.newPage({
+    bypassCSP: true,
     viewport: { width: capture.width, height: capture.height },
     reducedMotion: 'reduce',
   });
@@ -23,6 +24,10 @@ for (const capture of captures) {
     waitUntil: 'networkidle',
   });
   await page.evaluate(() => document.fonts.ready);
+  await page.addStyleTag({
+    content:
+      '.project-card, .about, .site-footer { content-visibility: visible !important; }',
+  });
   await page.screenshot({
     path: join(outputDirectory, capture.name),
     fullPage: true,

@@ -2,11 +2,12 @@
 interface Props {
   body: string;
   heading: string;
+  resumeLabel: string;
   skills: string[];
   tools: string[];
 }
 
-const { body, heading, skills, tools } = Astro.props;
+const { body, heading, resumeLabel, skills, tools } = Astro.props;
 const paragraphs = body.split(/\n\n/u);
 const headingParts = heading.split('把畫面做到會動');
 ---
@@ -46,7 +47,7 @@ const headingParts = heading.split('把畫面做到會動');
         </div>
       </div>
       <a class="resume-link" href="/resume/">
-        View Resume <span>↗</span>
+        {resumeLabel} <span aria-hidden="true">↗</span>
       </a>
     </div>
   </div>
@@ -54,6 +55,8 @@ const headingParts = heading.split('把畫面做到會動');
 
 <style>
   .about {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 48rem;
     padding: var(--space-18) var(--layout-page-gutter);
     background: var(--color-bg-surface);
   }
@@ -102,6 +105,10 @@ const headingParts = heading.split('把畫面做到會動');
     line-height: 1.75;
   }
 
+  .about-copy p + p {
+    color: var(--color-text-secondary);
+  }
+
   .lists {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -109,20 +116,27 @@ const headingParts = heading.split('把畫面做到會動');
   }
 
   .lists ul {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-2);
     margin-block-start: var(--space-3);
   }
 
   .lists li {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-body-compact);
+    padding: var(--space-1) var(--space-3);
+    border: var(--header-border-width) solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-label);
+    font-weight: 500;
   }
 
   .resume-link {
-    display: flex;
-    justify-content: space-between;
-    padding: var(--space-4) var(--space-5);
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
     background: var(--color-bg-brand);
     color: var(--color-text-on-brand);
     font-family: var(--font-family-display);
@@ -138,6 +152,7 @@ const headingParts = heading.split('把畫面做到會動');
 
   @media (width >= 64rem) {
     .about {
+      contain-intrinsic-size: auto 36rem;
       padding-block: var(--space-35);
     }
 
