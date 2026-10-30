@@ -3,9 +3,9 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-30)
-- **Phase**: **M0 — Architect approved; required P2 corrections applied; awaiting final CI and Product Owner merge.**
-- **Branch / PR**: `feat/m0-bootstrap` / PR #2. Architecture v1.1 and the full M0 review are in PR #3, which should merge before or together with PR #2.
-- **Quality gate**: `pnpm verify` passes locally after the review fixes (lint, format, Astro check, 42 unit tests, static build, 12 Playwright/axe/CSP checks, and 9 Lighthouse runs across 3 routes).
+- **Phase**: **M0 — Architect approved; required P1/P2 corrections applied; awaiting final CI, Workers preview, and Product Owner merge.**
+- **Branch / PR**: `feat/m0-bootstrap` / PR #2. Architecture v1.1, ADR-0011, and the full M0 review are in PR #3, which should merge before or together with PR #2.
+- **Quality gate**: `pnpm verify` passes locally after the ADR-0011 hosting corrections (lint, format, Astro check, 42 unit tests, static build, 12 Playwright/axe/CSP checks, and 9 Lighthouse runs across 3 routes). Wrangler 4.155.0 dry run also passes.
 - **Scope**: Project scaffold, tooling, CI, content schemas, placeholder routes, and test infrastructure only. No visual section implementation, real project content, media, or motion was added.
 
 ## Roles
@@ -14,9 +14,9 @@
 - **Implementation Engineer:** ChatGPT
 
 ## Next owner
-1. **GitHub Actions**: confirm the required checks are green for the latest PR #2 commit. Claude's review says no re-review is required unless the fix changes architecture.
+1. **ChatGPT**: run `pnpm verify`, push the ADR-0011 corrections, confirm GitHub Actions and Workers Builds pass, and add the branch preview URL to PR #2.
 2. **Product Owner**: merge PR #3 before or together with PR #2, then merge M0 after required checks pass.
-3. **M1** must not start before M0 is merged. Its visual review requires a Cloudflare Pages preview URL.
+3. **M1** must not start before M0 is merged. Use the Cloudflare Workers branch preview for visual review.
 
 ## Decisions recorded on 2026-10-29
 - **Q1 / A2**: 7 projects in a fixed order (PRODUCT.md updated).
@@ -28,6 +28,7 @@
 - **A1**: ChatGPT reads Figma directly and exports image assets itself. Videos come from the Product Owner.
 
 ## Decisions recorded on 2026-10-30
+- **ADR-0011**: Cloudflare Workers static assets via Workers Builds supersedes Cloudflare Pages. Production uses `portfolio-2026.kimbluesoul.workers.dev`; previews are branch deployments.
 - **Q8**: no analytics or tracking scripts.
 - **Q9**: Traditional Chinese only. There is no English site or English PDF.
 - **Q10**: hidden Figma layers are never implemented. AMD uses `360:2355`; hidden frame `437:652` is unused. Hwa Fong includes the live link `https://www.duro.com.tw/`. PRODUCT.md project order wins, and 「深藍」 maps to `--color-bg-inverse`.
@@ -36,9 +37,8 @@
 | Blocks | Item | Owner |
 |---|---|---|
 | M1 | Type scale, spacing, and layout widths transcribed into DESIGN_SYSTEM from Figma, citing node IDs (A3/A4) | ChatGPT transcribes; Product Owner confirms in the PR |
-| M1 visual review | Q7: create the Cloudflare Pages project so PRs receive preview URLs | Product Owner |
 | M2–M3 | Delivery of video files per project (MP4 masters) | Product Owner |
-| M5 | Q7: choose a custom production domain if one will be used; `*.pages.dev` remains the fallback | Product Owner |
+| M5 | Q7: choose a custom production domain if one will be used; `*.workers.dev` remains the fallback | Product Owner |
 
 ## M0 implementation notes
 - Astro 7 static output, Node 24, pnpm, TypeScript strictest, approved dependencies, and all §16.1 scripts are configured.
@@ -51,6 +51,9 @@
 - P2-1: Astro's hashed meta CSP owns resource directives. `_headers` now contains only `frame-ancestors`, `base-uri`, `object-src`, and `form-action`; Playwright applies that header to every route and checks console/CSP violations.
 - P2-2: captioned media now requires `title`, allows optional `caption`, and keeps `media` required.
 - P2-3: project URLs now come only from the content entry ID. The loader rejects filenames outside the seven approved slugs.
+- P1-A: `wrangler.jsonc` configures `dist/` as Workers static assets with 404 fallback and forced trailing slashes; Wrangler is an exact-version dev dependency.
+- P1-B: the production pending-media guard now checks `WORKERS_CI_BRANCH === 'main'`.
+- URL configuration uses `https://portfolio-2026.kimbluesoul.workers.dev` for Astro canonical/sitemap generation and `robots.txt`.
 - P2-4 (collection-level order validation) and P2-5 (all Figma font weights) are explicitly deferred to M1 per the Architect review.
 
 ## Milestone tracker

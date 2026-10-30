@@ -2,7 +2,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://portfolio-2026.pages.dev',
+  site: 'https://portfolio-2026.kimbluesoul.workers.dev',
   integrations: [
     sitemap({
       filter: (page) => !page.endsWith('/404/'),

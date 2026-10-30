@@ -69,7 +69,7 @@ process.stdout.write(
   }\n`,
 );
 
-if (pending.length > 0 && process.env.CF_PAGES_BRANCH === 'main') {
+if (pending.length > 0 && process.env.WORKERS_CI_BRANCH === 'main') {
   process.stderr.write('Production builds cannot contain pending media.\n');
   process.exitCode = 1;
 }
