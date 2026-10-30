@@ -2,8 +2,23 @@ import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+const projectSlug = z.enum([
+  '88win',
+  'hwa-fong',
+  'fitzone',
+  'sss',
+  'jhanyu',
+  'amd',
+  'huifa',
+]);
+
 const projects = defineCollection({
-  loader: glob({ base: './src/content/projects', pattern: '**/*.{yaml,yml}' }),
+  loader: glob({
+    base: './src/content/projects',
+    pattern: '**/*.{yaml,yml}',
+    generateId: ({ entry }) =>
+      projectSlug.parse(entry.replace(/\.(?:yaml|yml)$/u, '')),
+  }),
   schema: ({ image }) => {
     const imageMedia = z.object({
       kind: z.literal('image'),
@@ -37,7 +52,8 @@ const projects = defineCollection({
       });
 
     const captioned = z.object({
-      caption: z.string(),
+      title: z.string().min(1),
+      caption: z.string().optional(),
       media,
     });
 
@@ -47,7 +63,6 @@ const projects = defineCollection({
     });
 
     return z.object({
-      slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
       order: z.number().int().min(1).max(7),
       name: z.string().min(1),
       nameZh: z.string(),
