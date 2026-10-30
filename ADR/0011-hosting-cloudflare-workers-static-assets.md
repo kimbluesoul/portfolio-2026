@@ -47,3 +47,12 @@ Repository configuration (`wrangler.jsonc` at the repo root):
 ## Alternatives considered
 - **Hunt for the legacy Pages flow**: may still exist, but it is being de-emphasized. Building on it now risks a forced migration later.
 - **Vercel / Netlify**: rejected for the reasons in ADR-0009.
+
+## Amendment (2026-10-30, from Architecture Issue #4)
+Workers Builds runs the Cloudflare-managed preview command for non-production branches, and Wrangler 4.155 requires a top-level `previews` block for it. `wrangler.jsonc` therefore also contains:
+
+```jsonc
+"previews": {}
+```
+
+This is configuration completeness, not a change of decision. Production still deploys `main` with `npx wrangler deploy`. Verified on the `feat/m0-bootstrap` preview: routes return 200, unknown paths return the 404 page, `_headers` are applied, and the trailing-slash redirect works.
