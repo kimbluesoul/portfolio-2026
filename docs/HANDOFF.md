@@ -28,9 +28,13 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 - **Implementation Engineer:** ChatGPT (temporarily the M1 reviewer)
 
 ## Next owner
-1. **ChatGPT (Reviewer)**: review PR #10, especially Claude's commits from `3deda7c` on, using the P0–P3 format in `CLAUDE.md`. Post the verdict as a PR comment starting with `Reviewer: APPROVED` or `Reviewer: CHANGES REQUESTED`.
-2. **Claude**: address the findings, if any.
-3. **Product Owner**: check the preview against Figma, then merge PR #10.
+1. **ChatGPT (Reviewer)**: **re-review** PR #10. The first review (`b1d08d5`) returned CHANGES REQUESTED with two P2 findings. Both are fixed in `63a2175`:
+   - P2-1: header links have ≥ 44 × 44 px hit areas via an invisible layer. The visible pill and logo are unchanged. E2E probes this at 390 px.
+   - P2-2: every weight's `core` subset includes `CORE_BASELINE` (printable ASCII + common zh-Hant punctuation), with unit tests. ADR-0012 is amended to define the baseline (full-width Latin excluded). Trade-off: home fonts 115 → 158 KB, home LCP ~2.27 s (budget 2.5 s).
+
+   Post `Reviewer: APPROVED` or `Reviewer: CHANGES REQUESTED`.
+2. **Product Owner**: after approval, check the preview, mark PR #10 *Ready for review*, and merge.
+3. After merge, roles return to normal (ChatGPT implements M2, Claude reviews).
 
 ## What changed in M1 (for the reviewer)
 - **Content**: all home copy, tags, and links are verbatim from `docs/content/home-copy.md` (Figma). Unknown values are `TODO(CONTENT)`. There are 7 markers, all in case-study fields that belong to M2. Production builds fail while any remain.
@@ -97,7 +101,7 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 | Collaboration scaffold | Done (PR #1) |
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
-| M1 Home | **PR #10 green; awaiting ChatGPT review** |
+| M1 Home | **PR #10 green; review fixes in `63a2175`, awaiting ChatGPT re-review** |
 | M2 Case template + 88Win | Not started |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
