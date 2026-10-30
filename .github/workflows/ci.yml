@@ -70,4 +70,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      # Real visitors always have a system CJK font (PingFang, JhengHei, Noto CJK)
+      # as the swap fallback; the bare runner has none, which inflates CLS when
+      # Noto Sans TC loads. Install a small CJK font so the fallback is realistic.
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-wqy-microhei
       - run: pnpm lhci
