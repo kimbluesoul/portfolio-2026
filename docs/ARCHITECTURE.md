@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.4 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1).
+**v1.5 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -170,6 +170,7 @@ Schema sketch (normative for shape; field names may be refined in M0 with Archit
 type Captioned = { title: string; caption?: string; media: Media };
 // v1.4: Details items carry an eyebrow and a bento size (88Win 360:376 has 7 cards of mixed size)
 type DetailItem = { eyebrow?: string; title: string; caption?: string; media: Media;
+                    mobileMedia?: Media /* v1.5: art-directed 390 visual, §9.1 */;
                     size?: 'third' | 'half' | 'half-tall' | 'full' /* default third */ };
 type Stat = { label: string; value: string };
 
@@ -282,10 +283,14 @@ Rules:
 ### 9.1 Images
 - Source rasters live in `src/assets/projects/<slug>/` and are rendered only through `ResponsivePicture` (`astro:assets` `<Picture>`), with `formats: ['avif', 'webp']`, a fallback, and explicit `widths` + `sizes` per slot.
 - **Export from Figma** at **2× the largest rendered CSS size**, capped at 2880 px wide (3840 px for full-bleed 1920 slots). Use PNG for UI/flat graphics and JPG q90 for photographic content. Max 6 MB per source file.
-- File naming: `kebab-case` by slot, e.g. `hero-showcase.png`, `key-main-poster.jpg`, `closeup-1.png`, `mobile-2.png`, `mosaic-04.jpg`.
+- File naming: `kebab-case` by slot, e.g. `hero-showcase.jpg`, `key-navigation.jpg`, `mobile-app.jpg`, `detail-card.png`, `visual-mosaic.jpg`. The per-project list of exact names, Figma nodes, and pixel sizes is [`docs/ASSETS.md`](ASSETS.md); content `expectedFile` values must match it.
+- **Export shapes (v1.5).** Every slot is one of three shapes. The shape decides how many files exist, so components must not assume more.
+  - **Composite**: the Figma frame is exported as one pre-composed image, including device mockups, overlaps, and tilt. Used for the **hero showcase** (`hero-showcase.jpg`, frame `360:270` on 88Win) and the **Visual Extension mosaic** (`visual-mosaic.jpg`, `360:1297`). The 390 frames are uniform scales of the 1920 composition (hero ×0.38, mosaic ×0.32, centred and clipped), so mobile uses the **same file**: the slot sets the scaled width, centres it, and clips overflow. Content uses `hero.showcase.layout: 'single'` with one item, and `visualExtension.variant: 'mosaic'` with one item. The hero slot shows the top 1920 × 820 of the 1920 × 920 frame (`object-position: top`), matching the Figma clip.
+  - **Crop**: the Figma frame that clips a larger screenshot is exported as shown (close-ups, Mobile/RWD panels). Desktop and 390 crops have the same aspect ratio, so there is one file per slot.
+  - **Art-directed (Details)**: only the visual area of a Details card is exported. Eyebrow, title, and caption stay HTML text. The 390 Details cards **reflow** their visuals (e.g. Color swatches go from one row to a column), so each item has `detail-<name>.png` (1920 frame) and `detail-<name>-mobile.png` (390 frame) in `media` / `mobileMedia`, rendered as one `<picture>` whose mobile `<source>` applies below the section's layout switch point (§10). Both files are PNG.
 - Every `<img>` has intrinsic `width`/`height` (CLS). The LCP image per page (home featured card / case hero showcase) is `loading="eager" fetchpriority="high"`. All others are `loading="lazy" decoding="async"`.
 - `alt` is required in the schema. Decorative imagery must set `alt: ''` **and** `decorative: true` explicitly.
-- Details section: the template says "prefer Figma vector components". Export those as **SVG** when they are pure vector, through `<img>` (not inlined) unless they need theming.
+- Details section (v1.5, supersedes the earlier SVG preference): Details visuals mix vectors, raster game art, and labels, so they are delivered as 2× PNG per the art-directed shape above. A slot's aspect ratio comes from its Figma visual area (e.g. 88Win Color 647 × 140 desktop, 310 × 280 mobile), not from the whole card.
 
 ### 9.2 Video
 - Delivery format: **MP4, H.264 (High), yuv420p, no audio track, `+faststart`**. Posters are required (`poster` in schema, rendered via `astro:assets`). WebM/AV1 alternates are optional later.
@@ -298,7 +303,7 @@ Rules:
   | Home card / Next-project preview | ≤ 1280 wide | ≤ 2 MB | 3 MB |
 
   Clip length ≤ 20 s, 24–30 fps. A CI script fails on any file over its hard cap.
-- Files live in `public/media/<slug>/`, named by slot (`key-main.mp4`, `motion-1.mp4`, …). Changing a video changes its filename (`motion-1.v2.mp4`) so it can be cached as immutable.
+- Files live in `public/media/<slug>/`, named by slot (`key-main.mp4`, `motion-1.mp4`, …). Each video's poster is `src/assets/projects/<slug>/<video-name>-poster.jpg` (e.g. `key-main-poster.jpg`, `motion-1-poster.jpg`), exported at 2× the slot. Motion step slots use the Figma ratio **960 / 532**, not 16 / 9. Changing a video changes its filename (`motion-1.v2.mp4`) so it can be cached as immutable.
 - No embeds (YouTube/Vimeo/Figma iframes). Prototypes are external links only.
 - Repository weight: masters stay **out of git**. If committed delivery media exceeds **300 MB**, open an ADR (Git LFS or R2 object storage).
 
@@ -306,7 +311,7 @@ Rules:
 The Product Owner delivers images (2× exports from Figma) and videos **after** the templates are built. Layout and code must therefore never wait for media.
 - **Both images and videos** may be `status: 'pending'`. A pending entry carries `expectedFile`, the exact path the real file will have (§9.1 naming, e.g. `src/assets/projects/88win/key-main-poster.jpg` or `public/media/88win/motion-1.mp4`).
   - Pending images point `src` at a shared neutral placeholder, `src/assets/placeholders/placeholder.png`.
-  - Pending videos render their poster (or the same placeholder) and emit no `<source>`.
+  - Pending videos render their poster (or the same placeholder) and emit no `<source>`. While a video is pending its poster is pending too: the pending-asset report lists the video's `expectedFile` **and** the derived poster path (§9.2 naming), so the Product Owner sees both files.
 - In development and preview builds, pending media renders a neutral box at the slot's real aspect ratio, with a small "素材待補" label so missing assets are obvious on preview URLs. Layout must be identical with placeholder or real media; slot sizes come from CSS, not from the file.
 - The **pending-asset report** printed on every build lists each `expectedFile` grouped by project. This is the Product Owner's asset to-do list.
 - The **production build fails** while any media is `pending` (as before).
