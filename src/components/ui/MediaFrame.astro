@@ -1,0 +1,25 @@
+---
+interface Props {
+  aspectRatio?: string | undefined;
+  class?: string | undefined;
+  pending?: boolean;
+}
+
+const {
+  aspectRatio = '16 / 9',
+  class: className,
+  pending = false,
+} = Astro.props;
+const ratioClass = `ratio-${aspectRatio
+  .replaceAll(' ', '')
+  .replaceAll('.', '_')
+  .replace('/', 'x')}`;
+---
+
+<div
+  class:list={['media-frame', ratioClass, className, { 'is-pending': pending }]}
+  data-pending={pending ? '' : undefined}
+>
+  <slot />
+  {pending && <span class="pending-label">素材待補</span>}
+</div>

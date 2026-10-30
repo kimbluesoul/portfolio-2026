@@ -22,23 +22,56 @@ const projects = defineCollection({
       projectSlug.parse(entry.replace(/\.(?:yaml|yml)$/u, '')),
   }),
   schema: ({ image }) => {
-    const imageMedia = z.object({
+    const expectedFile = z
+      .string()
+      .regex(/^(?:src\/assets\/projects|public\/media)\/[a-z0-9-]+\/.+/);
+    const aspectRatio = z
+      .string()
+      .regex(/^\d+(?:\.\d+)?\s*\/\s*\d+(?:\.\d+)?$/);
+
+    const readyImageMedia = z.object({
       kind: z.literal('image'),
       src: image(),
       alt: z.string(),
       decorative: z.boolean().optional(),
+      aspectRatio: aspectRatio.optional(),
     });
 
-    const videoMedia = z.object({
+    const pendingImageMedia = z.object({
+      kind: z.literal('image'),
+      src: image(),
+      alt: z.string(),
+      decorative: z.boolean().optional(),
+      aspectRatio,
+      status: z.literal('pending'),
+      expectedFile,
+    });
+
+    const readyVideoMedia = z.object({
       kind: z.literal('video'),
       src: z.string().regex(/^\/media\/.+\.mp4$/),
       poster: image(),
       alt: z.string().min(1),
-      status: z.enum(['ready', 'pending']).optional(),
+      aspectRatio: aspectRatio.optional(),
+    });
+
+    const pendingVideoMedia = z.object({
+      kind: z.literal('video'),
+      src: z.string().regex(/^\/media\/.+\.mp4$/),
+      poster: image(),
+      alt: z.string().min(1),
+      aspectRatio,
+      status: z.literal('pending'),
+      expectedFile,
     });
 
     const media = z
-      .union([imageMedia, videoMedia])
+      .union([
+        pendingImageMedia,
+        pendingVideoMedia,
+        readyImageMedia,
+        readyVideoMedia,
+      ])
       .superRefine((value, context) => {
         if (
           value.kind === 'image' &&

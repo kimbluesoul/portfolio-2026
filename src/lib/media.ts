@@ -7,8 +7,9 @@ export const MEDIA_SIZE_LIMITS = {
 } as const satisfies Record<MediaSlot, number>;
 
 export interface PendingMedia {
+  expectedFile: string;
   path: string;
-  src: string;
+  project: string;
 }
 
 export function inferMediaSlot(fileName: string): MediaSlot {
@@ -35,10 +36,19 @@ export function collectPendingMedia(
 
   const record = value as Record<string, unknown>;
   const current =
-    record.kind === 'video' &&
+    (record.kind === 'video' || record.kind === 'image') &&
     record.status === 'pending' &&
-    typeof record.src === 'string'
-      ? [{ path, src: record.src }]
+    typeof record.expectedFile === 'string'
+      ? [
+          {
+            expectedFile: record.expectedFile,
+            path,
+            project:
+              record.expectedFile.match(
+                /(?:projects|media)\/([a-z0-9-]+)\//u,
+              )?.[1] ?? 'unknown',
+          },
+        ]
       : [];
 
   const nested = Object.entries(record).flatMap(([key, nestedValue]) =>

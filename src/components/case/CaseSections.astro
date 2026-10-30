@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { assignTones, getCaseSections } from '../../lib/sections';
+import CaseHero from './CaseHero.astro';
+import Details from './Details.astro';
+import InteractionMotion from './InteractionMotion.astro';
+import KeyScreens from './KeyScreens.astro';
+import Links from './Links.astro';
+import MobileRwd from './MobileRwd.astro';
+import NextProject from './NextProject.astro';
+import Overview from './Overview.astro';
+import VisualExtension from './VisualExtension.astro';
+
+interface Props {
+  nextProject: CollectionEntry<'projects'>;
+  project: CollectionEntry<'projects'>;
+}
+
+const { nextProject, project } = Astro.props;
+const sections = assignTones(
+  getCaseSections({
+    details: Boolean(project.data.details),
+    mobile: Boolean(project.data.mobile),
+    motion: Boolean(project.data.motion),
+    visualExtension: Boolean(project.data.visualExtension),
+  }),
+);
+---
+
+<article class="case-study">
+  {sections.map(({ key, tone }) => {
+    if (key === 'hero') return <CaseHero project={project} tone={tone} />;
+    if (key === 'overview')
+      return <Overview data={project.data.overview} tone={tone} />;
+    if (key === 'keyScreens')
+      return <KeyScreens data={project.data.keyScreens} tone={tone} />;
+    if (key === 'mobile' && project.data.mobile)
+      return <MobileRwd data={project.data.mobile} tone={tone} />;
+    if (key === 'motion' && project.data.motion)
+      return <InteractionMotion data={project.data.motion} tone={tone} />;
+    if (key === 'details' && project.data.details)
+      return <Details data={project.data.details} tone={tone} />;
+    if (key === 'visualExtension' && project.data.visualExtension)
+      return (
+        <VisualExtension data={project.data.visualExtension} tone={tone} />
+      );
+    if (key === 'links') return <Links data={project.data.links} tone={tone} />;
+    if (key === 'nextProject')
+      return <NextProject current={project} next={nextProject} tone={tone} />;
+    return null;
+  })}
+</article>
+
+<script src="../../elements/loop-video.ts"></script>
+<script src="../../elements/motion-steps.ts"></script>

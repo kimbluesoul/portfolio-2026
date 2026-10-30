@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import LoopVideo from './LoopVideo.astro';
+import ResponsivePicture from './ResponsivePicture.astro';
+
+type ProjectData = CollectionEntry<'projects'>['data'];
+type Media = ProjectData['hero']['showcase']['items'][number];
+
+interface Props {
+  media: Media;
+  eager?: boolean;
+  class?: string | undefined;
+}
+
+const { class: className, eager = false, media } = Astro.props;
+---
+
+{media.kind === 'image' ? (
+  <ResponsivePicture media={media} eager={eager} class={className} />
+) : (
+  <LoopVideo media={media} class={className} />
+)}

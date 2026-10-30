@@ -20,22 +20,34 @@ describe('media helpers', () => {
     );
   });
 
-  it('reports pending video media recursively', () => {
+  it('reports pending image and video media recursively', () => {
     expect(
       collectPendingMedia({
-        hero: { kind: 'image', src: 'hero.png' },
+        hero: {
+          kind: 'image',
+          src: 'placeholder.png',
+          status: 'pending',
+          expectedFile: 'src/assets/projects/88win/hero.png',
+        },
         motion: [
           {
             kind: 'video',
             src: '/media/88win/motion-1.mp4',
             status: 'pending',
+            expectedFile: 'public/media/88win/motion-1.mp4',
           },
         ],
       }),
     ).toEqual([
       {
+        expectedFile: 'src/assets/projects/88win/hero.png',
+        path: 'root.hero',
+        project: '88win',
+      },
+      {
+        expectedFile: 'public/media/88win/motion-1.mp4',
         path: 'root.motion[0]',
-        src: '/media/88win/motion-1.mp4',
+        project: '88win',
       },
     ]);
   });

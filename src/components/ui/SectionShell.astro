@@ -1,0 +1,17 @@
+---
+import type { SectionTone } from '../../lib/sections';
+
+interface Props {
+  class?: string;
+  id?: string;
+  tone: SectionTone;
+}
+
+const { class: className, id, tone } = Astro.props;
+---
+
+<section id={id} class:list={['case-section', `tone-${tone}`, className]}>
+  <div class="case-container">
+    <slot />
+  </div>
+</section>

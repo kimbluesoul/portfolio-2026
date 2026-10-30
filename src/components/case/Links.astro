@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import SectionIntro from '../ui/SectionIntro.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  data: CollectionEntry<'projects'>['data']['links'];
+  tone: SectionTone;
+}
+
+const { data, tone } = Astro.props;
+---
+
+<SectionShell class="case-links" tone={tone}>
+  <SectionIntro
+    eyebrow={data.eyebrow}
+    heading={data.heading}
+    subtitle={data.subtitle}
+  />
+  <div class="link-cards">
+    {data.cards.map((card) => {
+      const unavailable = card.url === 'TODO(CONTENT)';
+      return unavailable ? (
+        <div class="link-card is-disabled" aria-disabled="true">
+          <span>{card.description}</span>
+          <strong>{card.label}</strong>
+        </div>
+      ) : (
+        <a class="link-card" href={card.url} target="_blank" rel="noreferrer">
+          <span>{card.description}</span>
+          <strong>{card.label}</strong>
+          <span class="link-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+      );
+    })}
+  </div>
+  {data.note && <p class="link-note">{data.note}</p>}
+</SectionShell>

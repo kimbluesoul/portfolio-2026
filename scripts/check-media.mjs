@@ -54,12 +54,22 @@ if (oversized.length > 0) {
 const contentFiles = (await filesBelow(contentDirectory)).filter((file) =>
   ['.yaml', '.yml'].includes(extname(file)),
 );
-const pending = [];
+const pending = new Map();
 const contentTodos = [];
 for (const file of contentFiles) {
   const source = await readFile(file, 'utf8');
-  if (/^\s*status:\s*pending\s*$/m.test(source))
-    pending.push(relative(root, file));
+  for (const match of source.matchAll(
+    /^\s*expectedFile:\s*(?:'([^']+)'|"([^"]+)"|([^\s#]+))\s*$/gmu,
+  )) {
+    const expectedFile = match[1] ?? match[2] ?? match[3];
+    if (!expectedFile) continue;
+    const project =
+      expectedFile.match(/(?:projects|media)\/([a-z0-9-]+)\//u)?.[1] ??
+      'unknown';
+    const files = pending.get(project) ?? [];
+    files.push(expectedFile);
+    pending.set(project, files);
+  }
   source.split(/\r?\n/u).forEach((line, index) => {
     if (line.includes('TODO(CONTENT)')) {
       contentTodos.push(`${relative(root, file)}:${index + 1}`);
@@ -69,9 +79,14 @@ for (const file of contentFiles) {
 
 process.stdout.write(
   `${
-    pending.length === 0
+    pending.size === 0
       ? 'Pending-asset report: no pending media.'
-      : `Pending-asset report: ${pending.join(', ')}`
+      : `Pending-asset report:\n${[...pending.entries()]
+          .map(
+            ([project, files]) =>
+              `  ${project}:\n${files.map((file) => `    - ${file}`).join('\n')}`,
+          )
+          .join('\n')}`
   }\n`,
 );
 
@@ -83,7 +98,7 @@ process.stdout.write(
   }\n`,
 );
 
-if (pending.length > 0 && process.env.WORKERS_CI_BRANCH === 'main') {
+if (pending.size > 0 && process.env.WORKERS_CI_BRANCH === 'main') {
   process.stderr.write('Production builds cannot contain pending media.\n');
   process.exitCode = 1;
 }

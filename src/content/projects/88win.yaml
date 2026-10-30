@@ -4,7 +4,7 @@ nameZh: 線上娛樂城
 card:
   summary: &summary 整理 PC、H5 與 App 的介面規則，讓不同裝置上的操作與視覺維持一致
   tags: [已上線, UI設計, 互動設計, PC / H5 / App, 2025–2026]
-  media: &card
+  media:
     kind: image
     src: ../../assets/projects/88win/card.jpg
     alt: 88Win 網站作品預覽
@@ -12,35 +12,247 @@ card:
 seo:
   title: 線上娛樂城 88Win｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+next:
+  oneLiner: 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
+  meta: 品牌網站 · UI設計 · 互動設計 · 2024–2025
+  media:
+    kind: image
+    src: ../../assets/placeholders/placeholder.png
+    alt: 華豐輪胎下一案例預覽
+    aspectRatio: 1440 / 720
+    status: pending
+    expectedFile: src/assets/projects/88win/next-hwa-fong.jpg
 hero:
-  eyebrow: *todo
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 01 · 線上娛樂平台
+  title: 88WIN
+  headline: PC・H5・App 跨裝置介面設計
+  subtitle: PC 和 H5／App 是分開設計的兩套畫面，我把介面規則整理成同一套，換裝置也認得出是同一個產品。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-  showcase: { layout: single, items: [*card] }
+    - { label: ROLE, value: UI / Interaction }
+    - { label: PLATFORM, value: PC・H5・App }
+    - { label: SCOPE, value: Design System }
+    - { label: YEAR, value: 2025–2026 }
+  showcase:
+    layout: isometric
+    items:
+      - kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win PC 首頁案例展示
+        aspectRatio: 16 / 10
+        status: pending
+        expectedFile: src/assets/projects/88win/hero-desktop.jpg
+      - kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win H5 與 App 案例展示
+        aspectRatio: 9 / 16
+        status: pending
+        expectedFile: src/assets/projects/88win/hero-mobile.jpg
 overview:
-  heading: *todo
+  heading: 一套介面規則，延伸到三個裝置
   blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
+    - title: 從零開始的第一版
+      body: 88Win 的第一版是我從零開始設計的，PC 和 H5／App 加起來有一百多頁。當時的畫面還沒有現在這麼乾淨，但這是整個平台的起點。
+    - title: 和設計師一起翻新
+      body: 後來和其他設計師一起翻新畫面，同時把介面做成元件，讓整個網站模組化。之後要換色，直接套用就好。
+  outputs: [PC, H5, App, Design System]
 keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
+  eyebrow: DESKTOP
+  heading: 資訊很多，重點要先被看見
+  subtitle: 娛樂城首頁什麼都想放：活動、遊戲、公告、各種入口。我先排好誰最重要，讓畫面再滿也看得到重點。
+  main:
+    kind: video
+    src: /media/88win/key-main.mp4
+    poster: ../../assets/placeholders/placeholder.png
+    alt: 88Win PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/88win/key-main.mp4
   closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+    - title: Navigation
+      caption: 常用入口固定在同一個位置
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 導覽列特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/88win/key-navigation.jpg
+    - title: Promotion
+      caption: 活動圖可以很吸睛，但不能蓋過操作
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 活動區特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/88win/key-promotion.jpg
+    - title: Game Content
+      caption: 先選分類再看遊戲，找起來比較快
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 遊戲內容特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/88win/key-game-content.jpg
+mobile:
+  eyebrow: MOBILE
+  heading: 畫面變小，操作邏輯不變
+  subtitle: 手機放不下那麼多東西，所以次要資訊先收起來，存款、遊戲這些常用入口往前放。
+  panels:
+    - title: H5 首頁
+      caption: 依手機重新設計，不是把 PC 直接縮小
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win H5 首頁
+        aspectRatio: 459 / 690
+        status: pending
+        expectedFile: src/assets/projects/88win/mobile-h5-home.jpg
+    - title: App
+      caption: iOS／Android App
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win App 實機畫面
+        aspectRatio: 458 / 690
+        status: pending
+        expectedFile: src/assets/projects/88win/mobile-app.jpg
+    - title: 遊戲列表
+      caption: 左邊選分類，右邊直接滑遊戲
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 手機遊戲列表
+        aspectRatio: 459 / 690
+        status: pending
+        expectedFile: src/assets/projects/88win/mobile-game-list.jpg
+motion:
+  eyebrow: INTERACTION & MOTION
+  heading: 找遊戲的每一步，都有回應
+  subtitle: 玩家在 88Win 最常做的事就是找遊戲。從滑入類別、挑選廠商或遊戲，到進入遊戲，每一步的回饋我都先用 Prototype 試過節奏。
+  steps:
+    - title: 01 滑入遊戲類別
+      body: 滑過選單時列表跟著展開，選中的分類一眼就看得出來。
+      media:
+        kind: video
+        src: /media/88win/motion-1.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 滑入遊戲類別互動
+        aspectRatio: 16 / 9
+        status: pending
+        expectedFile: public/media/88win/motion-1.mp4
+    - title: 02 選擇廠商／遊戲
+      body: 滑過遊戲卡片時給出回饋，知道這張點得到。
+      media:
+        kind: video
+        src: /media/88win/motion-2.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 選擇廠商與遊戲互動
+        aspectRatio: 16 / 9
+        status: pending
+        expectedFile: public/media/88win/motion-2.mp4
+    - title: 03 進入遊戲
+      body: 從列表進到遊戲的轉場，讓畫面接得起來，不會突然跳走。
+      media:
+        kind: video
+        src: /media/88win/motion-3.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 進入遊戲轉場
+        aspectRatio: 16 / 9
+        status: pending
+        expectedFile: public/media/88win/motion-3.mp4
+details:
+  eyebrow: COMPONENTS
+  heading: 一套元件，撐起所有頁面
+  subtitle: 翻新時，我們把 Icon、顏色、按鈕、卡片都做成元件，讓整個網站模組化。之後換色或加新頁面，都從這套直接套用。
+  items:
+    - title: Icon
+      caption: TODO(CONTENT)
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win Icon 元件規格
+        aspectRatio: 701 / 742
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-icon.jpg
+    - title: Color
+      caption: 以主色為中心，往深、淺兩側延伸。名稱裡的 100、200、300 代表深淺階層，工程師對照色票時直接用名稱就能找到對應色碼，不用猜。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 色彩元件規格
+        aspectRatio: 704 / 348
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-color.jpg
+    - title: Category
+      caption: TODO(CONTENT)
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 遊戲分類元件規格
+        aspectRatio: 704 / 334
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-category.jpg
+    - title: Card
+      caption: 等比例的遊戲圖面適應各裝置，不用額外重新作圖。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 卡片元件規格
+        aspectRatio: 1440 / 508
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-card.jpg
+    - title: Header
+      caption: TODO(CONTENT)
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win Header 元件規格
+        aspectRatio: 458.67 / 384
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-header.jpg
+    - title: Button
+      caption: TODO(CONTENT)
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win Button 元件規格
+        aspectRatio: 458.67 / 384
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-button.jpg
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: 88Win 延伸視覺一
+      aspectRatio: 4 / 5
+      status: pending
+      expectedFile: src/assets/projects/88win/visual-1.jpg
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: 88Win 延伸視覺二
+      aspectRatio: 16 / 9
+      status: pending
+      expectedFile: src/assets/projects/88win/visual-2.jpg
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: 88Win 延伸視覺三
+      aspectRatio: 16 / 9
+      status: pending
+      expectedFile: src/assets/projects/88win/visual-3.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: PROTOTYPE
+  heading: 直接操作原型
+  subtitle: PC 和 H5／App 的 Figma 原型都可以點擊操作，看實際的頁面與互動。
   cards:
-    - { kind: live, label: *todo, description: *todo, url: *todo }
+    - kind: prototype
+      label: PC 原型
+      description: PC PROTOTYPE
+      url: https://www.figma.com/proto/f3uq40FyHuEPrCMPWv6nQN/88Win--%E6%A8%A1%E6%9D%BF%E5%8C%96%E6%95%B4%E7%90%86-?node-id=2644-10423&viewport=-2003%2C345%2C0.13&t=8IkXVsgFxr9hJPr5-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2644%3A10423&page-id=2%3A2&hide-ui=1
+    - kind: prototype
+      label: H5／APP 原型
+      description: H5／APP PROTOTYPE
+      url: TODO(CONTENT)
+  note: 正式網站因合約關係不便公開。

@@ -1,0 +1,38 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  data: CollectionEntry<'projects'>['data']['overview'];
+  tone: SectionTone;
+}
+
+const { data, tone } = Astro.props;
+---
+
+<SectionShell class="overview" tone={tone}>
+  <div class="overview-heading">
+    <p class="case-eyebrow">OVERVIEW</p>
+    <h2>{data.heading}</h2>
+  </div>
+  <div class="overview-story">
+    {data.blocks.map((block, index) => (
+      <article>
+        <p class="story-title">
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          {block.title}
+        </p>
+        <p>{block.body}</p>
+      </article>
+    ))}
+    <div class="outputs">
+      <p class="outputs-label">OUTPUT</p>
+      <ul>
+        {data.outputs.map((output) => (
+          <li>{output}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</SectionShell>

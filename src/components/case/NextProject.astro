@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import ProjectMedia from '../ui/ProjectMedia.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  current: CollectionEntry<'projects'>;
+  next: CollectionEntry<'projects'>;
+  tone: SectionTone;
+}
+
+const { current, next, tone } = Astro.props;
+---
+
+<SectionShell class="next-project" tone={tone}>
+  <p class="case-eyebrow">NEXT PROJECT</p>
+  <a href={`/work/${next.id}/`}>
+    <div class="next-heading">
+      <p class="next-counter">{String(next.data.order).padStart(2, '0')}</p>
+      <h2>{next.data.name}</h2>
+      <span class="next-arrow" aria-hidden="true">
+        ↗
+      </span>
+    </div>
+    <p class="next-meta">{current.data.next.meta}</p>
+    <p class="next-body">{current.data.next.oneLiner}</p>
+    <ProjectMedia media={current.data.next.media} />
+  </a>
+  <a class="back-link" href="/#work">
+    ← BACK TO ALL WORK
+  </a>
+</SectionShell>

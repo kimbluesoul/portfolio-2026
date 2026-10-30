@@ -229,6 +229,37 @@ test('home remains complete with reduced motion', async ({ page }) => {
   await expect(page.locator('#work article').last()).toBeVisible();
 });
 
+test('88Win renders the M2 case template and pending-media contract', async ({
+  page,
+}) => {
+  await page.goto('/work/88win/');
+
+  await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(22);
+  await expect(page.locator('loop-video')).toHaveCount(4);
+  await expect(page.locator('loop-video video source')).toHaveCount(0);
+  await expect(page.locator('motion-steps')).toHaveCount(1);
+  await expect(
+    page.getByRole('heading', { name: '資訊很多，重點要先被看見' }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('正式網站因合約關係不便公開。', { exact: true }),
+  ).toBeVisible();
+});
+
+test('motion steps support roving keyboard navigation', async ({ page }) => {
+  await page.goto('/work/88win/');
+  const tabs = page.getByRole('tab');
+  await expect(tabs).toHaveCount(3);
+  await tabs.first().focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(tabs.nth(1)).toBeFocused();
+  await expect(
+    page.getByRole('tabpanel', { name: /02 選擇廠商／遊戲/u }),
+  ).toBeVisible();
+});
+
 test('resume links to the supplied PDF', async ({ page, request }) => {
   await page.goto('/resume/');
   await expect(
