@@ -76,6 +76,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - `CaseSections` renders the fixed nine-section sequence: hero, overview, key screens, mobile / RWD, interaction / motion, details, visual extension, prototype links, and next project.
 - `<motion-steps>` uses a manual WAI-style tab pattern with roving focus, Arrow / Home / End keyboard controls, and no auto-advance. `<loop-video>` never autoplays; ready videos play on desktop hover / focus or mobile tap, pause off-screen, and respect reduced motion.
 - All 22 88Win image / video slots are pending and grouped under `88win` in the build's pending-asset report. Missing Figma copy remains marked `TODO(CONTENT)` in `src/content/projects/88win.yaml`; no case-study copy was invented for those fields.
+- Visual QA screenshots: `docs/screenshots/m2-88win-desktop.png` (1920 px) and `docs/screenshots/m2-88win-mobile.png` (390 px), produced by `scripts/capture-case.mjs` against `pnpm preview`.
 - Validation on 2026-10-30: ESLint / Stylelint / Prettier / Astro check passed; 47 unit tests passed; the static build passed; 24 Playwright desktop + mobile tests passed; all nine Lighthouse runs passed. Run the final aggregate command with `pnpm verify`.
 - Production remains intentionally blocked by pending media and content markers. Branch / staging previews are expected to deploy normally under ADR-0011.
 
