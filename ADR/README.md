@@ -12,7 +12,8 @@ Owner: Claude (Architect). The format is defined in [ADR-0001](0001-record-archi
 | [0006](0006-media-pipeline.md) | Media pipeline: astro:assets images, self-hosted MP4 video | Accepted |
 | [0007](0007-motion-architecture.md) | CSS-first motion, no animation library | Accepted |
 | [0008](0008-self-hosted-fonts.md) | Self-hosted fonts with unicode-range subsets | Accepted |
-| [0009](0009-hosting-cloudflare-pages.md) | Static hosting on Cloudflare Pages | Accepted |
+| [0009](0009-hosting-cloudflare-pages.md) | Static hosting on Cloudflare Pages | Superseded by 0011 |
 | [0010](0010-quality-gates-and-ci.md) | Quality gates and CI | Accepted |
+| [0011](0011-hosting-cloudflare-workers-static-assets.md) | Static hosting on Cloudflare Workers (static assets) | Accepted |
 
 Architecture v1 was approved by the Product Owner on 2026-10-29.
