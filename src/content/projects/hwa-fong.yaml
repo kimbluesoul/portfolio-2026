@@ -2,16 +2,16 @@ order: 2
 name: Hwa Fong Tire
 nameZh: 華豐輪胎
 card:
-  summary: 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
+  summary: &summary 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
   tags: [已上線, UI設計, 互動設計, 品牌網站, 2024–2025]
   media: &card
     kind: image
     src: ../../assets/projects/hwa-fong/card.jpg
     alt: 華豐輪胎網站作品預覽
 seo:
-  title: &todo TODO(CONTENT)
-  description: *todo
-next: { oneLiner: *todo, meta: *todo, media: *card }
+  title: 華豐輪胎 Hwa Fong Tire｜周泫淇 Syuan Ci
+  description: *summary
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
 hero:
   eyebrow: *todo
   title: *todo

@@ -21,6 +21,10 @@ for (const route of routes) {
     context,
     page,
   }) => {
+    // axe must judge the settled design, not text mid-way through a reveal
+    // fade (half-opacity text fails contrast). Reduced motion skips reveals.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+
     const consoleErrors: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') consoleErrors.push(message.text());

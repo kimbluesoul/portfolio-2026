@@ -36,9 +36,13 @@ function decodeEntities(value) {
 }
 
 function stripNonText(html) {
-  return html
-    .replace(/<!--[\s\S]*?-->/gu, ' ')
-    .replace(/<(script|style|svg)\b[\s\S]*?<\/\1>/giu, ' ');
+  return (
+    html
+      .replace(/<!--[\s\S]*?-->/gu, ' ')
+      // <head> text (title, meta) is never drawn with the page font.
+      .replace(/<head\b[\s\S]*?<\/head>/giu, ' ')
+      .replace(/<(script|style|svg)\b[\s\S]*?<\/\1>/giu, ' ')
+  );
 }
 
 function textOf(fragment) {

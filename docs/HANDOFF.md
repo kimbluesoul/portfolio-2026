@@ -33,7 +33,7 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 3. **Product Owner**: check the preview against Figma, then merge PR #10.
 
 ## What changed in M1 (for the reviewer)
-- **Content**: all home copy, tags, and links are verbatim from `docs/content/home-copy.md` (Figma). Unknown values are `TODO(CONTENT)`. There are 9 markers: case-study SEO / next fields and the site SEO title / description. Production builds fail while any remain.
+- **Content**: all home copy, tags, and links are verbatim from `docs/content/home-copy.md` (Figma). Unknown values are `TODO(CONTENT)`. There are 7 markers, all in case-study fields that belong to M2. Production builds fail while any remain.
 - **Visual fidelity vs Figma** (`360:3`, `474:1057`, `465:662`):
   - card typography and layout;
   - nav active state;
@@ -46,7 +46,7 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 - **Images**: the 7 card images from #12 render through `astro:assets` `<Picture>` (AVIF / WebP). The featured card is eager with `fetchpriority="high"`; the others are lazy.
 - **Known limits**:
   - Card images are 1× Figma exports. The Product Owner may replace them with 2× files of the same name.
-  - The site SEO title / description need Product Owner copy before launch.
+  - SEO titles / descriptions are set (home, case pages, resume), as chosen by the Product Owner and recorded in `docs/content/home-copy.md` → SEO.
 
 ## Decisions recorded on 2026-10-29
 - **Q1 / A2**: 7 projects in a fixed order (PRODUCT.md updated).
@@ -69,7 +69,6 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 | Blocks | Item | Owner |
 |---|---|---|
 | M1 merge | Independent review of PR #10 | ChatGPT (Reviewer) |
-| Launch (M5) | Site SEO title + description copy (`TODO(CONTENT)` in `site.yaml`) | Product Owner |
 | M2–M3 | Case-study copy (from Figma), assets, and video files | Product Owner |
 
 ## M0 implementation notes

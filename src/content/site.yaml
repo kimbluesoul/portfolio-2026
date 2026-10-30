@@ -1,7 +1,7 @@
 site:
   seo:
-    title: TODO(CONTENT)
-    description: TODO(CONTENT)
+    title: 周泫淇 Syuan Ci｜UI/UX 設計師作品集
+    description: 具 6 年以上 UI 與數位介面設計經驗，專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。
   nav:
     - label: Work
       href: /#work
