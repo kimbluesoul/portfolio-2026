@@ -56,3 +56,8 @@ Workers Builds runs the Cloudflare-managed preview command for non-production br
 ```
 
 This is configuration completeness, not a change of decision. Production still deploys `main` with `npx wrangler deploy`. Verified on the `feat/m0-bootstrap` preview: routes return 200, unknown paths return the 404 page, `_headers` are applied, and the trailing-slash redirect works.
+
+## Amendment (2026-10-30, after M1): staging mirror
+- **Production deploys only content-complete builds.** `main` builds fail while any `TODO(CONTENT)` marker remains (ARCHITECTURE §5.1), so the production URL keeps the last complete deploy. The Product Owner chose this over publishing the home page early (option A, 2026-10-30). Until launch, a red "Workers Builds" check on `main` is **expected**.
+- **`staging` branch = latest `main`.** `.github/workflows/sync-staging.yml` force-pushes `main` to `staging` on every merge. Workers Builds publishes it as a branch preview, where the content guard does not apply: `https://staging-portfolio-2026.kimbluesoul.workers.dev/`. Nobody commits to `staging` directly.
+- Feature branches keep their own preview URLs (`<branch>-portfolio-2026.kimbluesoul.workers.dev`), which disappear when the branch is deleted after merge.

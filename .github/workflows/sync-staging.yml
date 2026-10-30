@@ -1,0 +1,28 @@
+name: Sync staging
+
+# ADR-0011 amendment (2026-10-30): production (`main`) does not deploy while
+# any TODO(CONTENT) marker remains (ARCHITECTURE §5.1). `staging` mirrors
+# `main` so Workers Builds always publishes the latest merged site at
+# https://staging-portfolio-2026.kimbluesoul.workers.dev/ for review.
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-staging
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    name: Mirror main to staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git push --force origin HEAD:refs/heads/staging

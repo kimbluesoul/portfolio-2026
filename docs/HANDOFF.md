@@ -3,54 +3,36 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-30)
-- **Phase**: **M1 — Home is implemented and green. It is awaiting independent review by ChatGPT** (temporary role swap, see below).
-- **Branch / PR**: `feat/m1-home` / [PR #10](https://github.com/kimbluesoul/portfolio-2026/pull/10).
-- **Quality gate**: the full `pnpm verify` passes locally:
-  - lint, format, Astro check;
-  - 42 unit tests;
-  - two-pass build with font coverage and media / content / bundle checks;
-  - 18 E2E / axe / CSP tests;
-  - 9 Lighthouse runs.
+- **Phase**: **M1 Home is done and merged** (PR #10, approved by ChatGPT as independent reviewer). **Next: M2, the case-study template + 88Win.**
+- **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
+- **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 
-  Home: LCP ~1.7 s, performance 0.99, fonts 115 KB.
-- **Preview**: `https://feat-m1-home-portfolio-2026.kimbluesoul.workers.dev/`.
-
-## ⚠️ Temporary role swap (2026-10-30)
-ChatGPT ran out of usage partway through the M1 review fixes. At the Product Owner's request:
-- **Claude** acted as **Implementation Engineer** for the rest of M1. Commit `a8025a3` recovers ChatGPT's uncommitted local work verbatim. Commit `3deda7c` and later commits are Claude's.
-- **ChatGPT** acts as **independent Reviewer** for PR #10, focusing on Claude's commits. Claude did not review its own code.
-- After PR #10 is merged, roles return to normal: ChatGPT implements, Claude reviews.
-- **ChatGPT's local checkout** (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) still contains the old uncommitted changes, now superseded by the pushed branch. Before any new work there, run `git fetch origin` and then `git reset --hard origin/feat/m1-home`, or start from a fresh clone. A backup of those files is in `%LOCALAPPDATA%\Temp\pf-backup`.
-
-## Roles
+## Roles (restored after M1)
 - **Product Owner / UI Designer:** user
-- **Architect / Code Reviewer:** Claude (temporarily also the M1 implementer)
-- **Implementation Engineer:** ChatGPT (temporarily the M1 reviewer)
+- **Architect / Code Reviewer:** Claude
+- **Implementation Engineer:** ChatGPT
+
+During M1 the roles were temporarily swapped: Claude implemented the review fixes and ChatGPT reviewed (`a8025a3` recovered ChatGPT's uncommitted work; `3deda7c`–`b333100` are Claude's). This ended with the merge of PR #10.
+
+**ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **ChatGPT (Reviewer)**: **re-review** PR #10. The first review (`b1d08d5`) returned CHANGES REQUESTED with two P2 findings. Both are fixed in `63a2175`:
-   - P2-1: header links have ≥ 44 × 44 px hit areas via an invisible layer. The visible pill and logo are unchanged. E2E probes this at 390 px.
-   - P2-2: every weight's `core` subset includes `CORE_BASELINE` (printable ASCII + common zh-Hant punctuation), with unit tests. ADR-0012 is amended to define the baseline (full-width Latin excluded). Trade-off: home fonts 115 → 158 KB, home LCP ~2.27 s (budget 2.5 s).
+1. **Product Owner**: decide who exports the 88Win images and copy from Figma for M2 (Claude did this for M1 in #12, because Figma image export was not available to ChatGPT). Deliver the 88Win video files when ready.
+2. **ChatGPT**: implement **M2** on `feat/m2-case-template` from `main` (ARCHITECTURE §19):
+   - all 9 case section components;
+   - the `CaseSections` renderer (order, omission, tone);
+   - `<motion-steps>` and `<loop-video>` (hover / focus on desktop, tap on mobile, ARCHITECTURE §7);
+   - 88Win content.
 
-   Post `Reviewer: APPROVED` or `Reviewer: CHANGES REQUESTED`.
-2. **Product Owner**: after approval, check the preview, mark PR #10 *Ready for review*, and merge.
-3. After merge, roles return to normal (ChatGPT implements M2, Claude reviews).
+   Copy must be verbatim from Figma `360:251` (desktop) / `475:953` (mobile) per ARCHITECTURE §5.1. Run `pnpm verify` (use `CI=true` for E2E if a stale preview server holds port 4321), then open the PR with the template and preview URL.
+3. **Claude**: review the M2 PR.
 
-## What changed in M1 (for the reviewer)
-- **Content**: all home copy, tags, and links are verbatim from `docs/content/home-copy.md` (Figma). Unknown values are `TODO(CONTENT)`. There are 7 markers, all in case-study fields that belong to M2. Production builds fail while any remain.
-- **Visual fidelity vs Figma** (`360:3`, `474:1057`, `465:662`):
-  - card typography and layout;
-  - nav active state;
-  - hero credentials row;
-  - About tool / skill rows;
-  - footer grid order (mobile vs desktop).
-
-  Values are cited in `docs/DESIGN_SYSTEM.md` → Typography.
-- **Fonts (ADR-0012 + amendment)**: Noto Sans TC is subset per weight (700 = h1–h3, 500 = tag chips, 400 = all text), with core / ext splits and a per-weight coverage gate on `dist/`. Fonts are not preloaded.
-- **Images**: the 7 card images from #12 render through `astro:assets` `<Picture>` (AVIF / WebP). The featured card is eager with `fetchpriority="high"`; the others are lazy.
-- **Known limits**:
-  - Card images are 1× Figma exports. The Product Owner may replace them with 2× files of the same name.
-  - SEO titles / descriptions are set (home, case pages, resume), as chosen by the Product Owner and recorded in `docs/content/home-copy.md` → SEO.
+## M1 summary
+- **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
+- **Visual fidelity**: values are cited per Figma node in `docs/DESIGN_SYSTEM.md` → Typography.
+- **Fonts**: ADR-0012 + amendments. Per-weight subsets (700 = h1–h3, 500 = tag chips, 400 = all) with a fixed `CORE_BASELINE` and a per-weight coverage gate. No preloads. Home fonts 158 KB, home LCP ~2.3 s.
+- **Accessibility**: header tap targets ≥ 44 px via an invisible hit layer (E2E-tested at 390 px). axe runs with reduced motion so contrast is judged after reveals settle.
+- **Known limits**: card images are 1× Figma exports. Same-name 2× files can replace them.
 
 ## Decisions recorded on 2026-10-29
 - **Q1 / A2**: 7 projects in a fixed order (PRODUCT.md updated).
@@ -63,7 +45,8 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 
 ## Decisions recorded on 2026-10-30
 - **ADR-0011**: Cloudflare Workers static assets via Workers Builds supersedes Cloudflare Pages. Production uses `portfolio-2026.kimbluesoul.workers.dev`; previews are branch deployments.
-- **ADR-0012** (+ amendment): build-time Noto Sans TC subsetting per weight, with no font preloads.
+- **ADR-0012** (+ amendments): build-time Noto Sans TC subsetting per weight, a fixed core baseline, and no font preloads.
+- **ADR-0011 amendment**: production deploys only content-complete builds (option A); `staging` mirrors `main` for review.
 - **ARCHITECTURE §5.1 content fidelity rule**: copy is verbatim from Figma or the Product Owner. Missing values use `TODO(CONTENT)`.
 - **Q8**: no analytics or tracking scripts.
 - **Q9**: Traditional Chinese only. There is no English site or English PDF.
@@ -72,8 +55,8 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 ## Blockers
 | Blocks | Item | Owner |
 |---|---|---|
-| M1 merge | Independent review of PR #10 | ChatGPT (Reviewer) |
-| M2–M3 | Case-study copy (from Figma), assets, and video files | Product Owner |
+| M2 | 88Win images + copy exported from Figma (owner to be decided by the Product Owner) | Product Owner / Claude |
+| M2–M3 | Video files per project | Product Owner |
 
 ## M0 implementation notes
 - Astro 7 static output, Node 24, pnpm, TypeScript strictest, approved dependencies, and all §16.1 scripts are configured.
@@ -101,11 +84,11 @@ ChatGPT ran out of usage partway through the M1 review fixes. At the Product Own
 | Collaboration scaffold | Done (PR #1) |
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
-| M1 Home | **PR #10 green; review fixes in `63a2175`, awaiting ChatGPT re-review** |
+| M1 Home | **Done (PR #10)** |
 | M2 Case template + 88Win | Not started |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 
 ## Workflow reminder
-ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. (M1 only: roles swapped, see above.)
+ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 
