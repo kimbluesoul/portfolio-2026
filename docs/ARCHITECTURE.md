@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.7 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2).
+**v1.8 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2). v1.8 (2026-10-31, from the PR #21 review) adds a per-project mobile hero title size (`hero.titleSizeMobile`) and −4 % title tracking (§5.1), fixes the 390 back link as centred for every case page, and sets 360 px as the minimum supported width (§10).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -193,6 +193,7 @@ type Project = {
   next: { oneLiner: string; meta: string; media: Media };   // how this project appears in the previous page's "Next project"
 
   hero:        { eyebrow: string; title: string; headline: string; subtitle: string;
+                 titleSizeMobile?: number /* v1.8: px at 390, from the project's 390 frame */;
                  stats: [Stat, Stat, Stat, Stat];   // Role / Platform / Status / Year
                  showcase: { layout: 'isometric' | 'single'; items: Media[] } };
   overview:    { heading: string; blocks: { title: string; body: string }[] /* 2–3 */; outputs: string[] };
@@ -346,6 +347,8 @@ The Product Owner delivers images (2× exports from Figma) and videos **after** 
 - Use **container queries** for reusable components whose layout depends on their slot (ProjectCard in featured vs grid, LinkCard).
 - Desktop max layout width follows Figma: 1728 px content on Home, 1440 px on case pages, centered beyond 1920.
 - Touch: hover-only affordances must have an equivalent visible state under `(hover: none)`. Tap targets ≥ 44×44 px.
+- **Case hero at 390 (v1.8).** Figma sizes the project title per project at 390 (88Win 76 px `475:973`, Hwa Fong 56 px `483:1318`), so the title fits its designed line breaks. Content sets `hero.titleSizeMobile` (px, from the spec sheet). Below the case layout switch point, the title uses `calc(titleSizeMobile / 390 * 100vw)`, capped at that px value, and falls back to `--font-size-case-title` when the field is absent. The case title uses `letter-spacing: -0.04em` at every width (Figma −4 %). The 390 back link ("← 所有作品") is **centred** on every case page (Product Owner, 2026-10-31). The Hwa Fong frame's left-aligned link is not followed.
+- **Minimum supported width: 360 px.** Nothing may overflow or clip between 360 and 389. Text may wrap there, because Figma only anchors 390. An E2E test at 360 × 800 guards each page type.
 - Mobile layouts follow the 390 frames. Where a mobile frame omits something present on desktop, follow the mobile frame and do not invent a layout. If a needed mobile state is missing, raise it in the PR under "Deviations from Figma".
 
 ---
