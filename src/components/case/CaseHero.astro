@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { caseTitleMobileClass } from '../../lib/case-title';
 import type { SectionTone } from '../../lib/sections';
 import AccentText from '../ui/AccentText.astro';
 import ProjectMedia from '../ui/ProjectMedia.astro';
@@ -21,8 +22,9 @@ const { hero } = project.data;
   <div class="hero-copy">
     <p class="case-eyebrow">{hero.eyebrow}</p>
     <h1
-      class:list={{ 'has-mobile-title-size': Boolean(hero.titleSizeMobile) }}
-      data-title-size-mobile={hero.titleSizeMobile}
+      class:list={[
+        hero.titleSizeMobile && caseTitleMobileClass(hero.titleSizeMobile),
+      ]}
     >
       {hero.title}
     </h1>

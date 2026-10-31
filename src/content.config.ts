@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { caseTitleSizesMobile, isCaseTitleSizeMobile } from './lib/case-title';
 
 const projectSlug = z.enum([
   '88win',
@@ -139,7 +140,12 @@ const projects = defineCollection({
       hero: z.object({
         eyebrow: z.string().min(1),
         title: z.string().min(1),
-        titleSizeMobile: z.number().positive().optional(),
+        titleSizeMobile: z
+          .number()
+          .refine(isCaseTitleSizeMobile, {
+            message: `Use one of ${caseTitleSizesMobile.join(', ')} (src/lib/case-title.ts).`,
+          })
+          .optional(),
         headline: z.string().min(1),
         subtitle: z.string().min(1),
         stats: z.tuple([stat, stat, stat, stat]),

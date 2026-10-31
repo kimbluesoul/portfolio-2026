@@ -730,7 +730,6 @@ figcaption strong {
   }
 
   .case-hero {
-    min-height: min(784px, 201.0256vw);
     padding-block: var(--space-3) 0;
   }
 
@@ -753,9 +752,25 @@ figcaption strong {
     );
   }
 
+  /* 390 hero rhythm from `475:966`: eyebrow +10 title +8 headline +12
+     subtitle, then 32 to the stats and 32 to the showcase. */
   .case-hero .hero-copy {
-    gap: var(--space-3);
-    margin: 0 auto var(--space-case-hero-copy-to-stats);
+    gap: 0;
+    margin: 0 auto var(--space-8);
+  }
+
+  .case-hero h1 {
+    margin-block-start: var(--space-2-5);
+  }
+
+  .case-hero .hero-headline {
+    margin-block-start: var(--space-2);
+  }
+
+  .case-hero .hero-subtitle {
+    margin-block-start: var(--space-3);
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .case-hero .hero-stats {
@@ -765,7 +780,6 @@ figcaption strong {
 
   .case-hero .hero-showcase {
     width: 100%;
-    margin-block-end: calc(-1 * var(--space-3));
   }
 
   .case-hero .media-frame {
@@ -776,24 +790,23 @@ figcaption strong {
     line-height: 1;
   }
 
-  .hero-copy h1.has-mobile-title-size {
-    font-size: attr(
-      data-title-size-mobile px,
-      var(--font-size-case-title-mobile)
-    );
+  /* One rule per size in `src/lib/case-title.ts` (unit-tested). */
+  .hero-copy h1.title-mobile-56 {
+    font-size: 3.5rem;
   }
 
-  /* Fallback for engines that do not yet support typed attr() values. */
-  .hero-copy h1[data-title-size-mobile='76'] {
-    font-size: 76px;
-  }
-
-  .hero-copy h1[data-title-size-mobile='56'] {
-    font-size: 56px;
+  .hero-copy h1.title-mobile-76 {
+    font-size: 4.75rem;
   }
 
   .hero-headline {
     line-height: var(--line-height-case-headline-mobile);
+  }
+
+  .case-eyebrow {
+    font-size: var(--font-size-case-eyebrow-mobile);
+    letter-spacing: 0.16em;
+    line-height: 1.25;
   }
 
   .hero-stats div {
@@ -847,7 +860,7 @@ figcaption strong {
   }
 
   .detail-card .media-frame {
-    margin-inline: var(--space-5);
+    margin: 0 var(--space-5) var(--space-5);
   }
 
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
@@ -895,74 +908,104 @@ figcaption strong {
     scroll-snap-align: start;
   }
 
+  /* Every 390 section intro (`475:953`): eyebrow +12 h2 +12 subtitle, then
+     28 to the content. */
   .section-intro {
-    gap: var(--space-2-5);
-    margin-block-end: var(--space-12);
+    gap: var(--space-3);
+    margin-block-end: var(--space-7);
   }
 
   .section-intro h2 {
-    font-size: 1.75rem;
+    font-size: var(--font-size-case-heading-mobile);
+    line-height: var(--line-height-case-heading-mobile);
   }
 
   .section-intro .section-subtitle {
-    font-size: 0.9375rem;
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
-  .caption-grid,
-  .mobile-panels,
-  .details-grid {
+  .caption-grid {
     margin-block-start: var(--space-5);
   }
 
+  /* 390 overview from `475:1003`: heading (eyebrow +12 h2), 24 to the
+     story, contiguous 22 / 22 padded blocks, 8 to the outputs. */
   .overview .case-container {
     gap: var(--space-6);
   }
 
+  .overview-heading {
+    gap: var(--space-3);
+  }
+
+  .overview h2 {
+    font-size: var(--font-size-case-heading-mobile);
+    line-height: var(--line-height-case-heading-mobile);
+  }
+
   .overview-story {
-    gap: var(--space-6);
+    gap: 0;
   }
 
   .overview article {
-    gap: var(--space-3);
-    padding-block-start: var(--space-4);
+    gap: var(--space-2-5);
+    padding-block: var(--space-5-5);
+  }
+
+  .overview article > p:last-child {
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .story-title {
-    font-size: 1.375rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
   }
 
+  .overview .outputs {
+    margin-block-start: var(--space-2);
+  }
+
+  /* 390 captions (`Close-up item`, `Panel item`): 16 px title, 14 / 1.5
+     text, 4 apart; 10 below a close-up, 12 below a panel. */
   figcaption {
     gap: var(--space-1);
+    padding-block-start: var(--space-2-5);
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: 1.5;
+  }
+
+  figcaption strong {
+    font-size: var(--font-size-case-caption-title-mobile);
+    line-height: 1.2;
+  }
+
+  .mobile-panels figcaption {
     padding-block-start: var(--space-3);
-  }
-
-  .mobile-rwd {
-    min-height: min(717px, 183.8462vw);
-    padding-block-end: var(--space-4);
-  }
-
-  .interaction-motion .section-intro {
-    margin-block-end: var(--space-8);
   }
 
   .interaction-motion motion-steps {
     gap: var(--space-8);
   }
 
-  .details .section-intro {
-    margin-block-end: var(--space-10);
-  }
-
   .details-grid {
-    gap: var(--space-8);
+    gap: var(--space-4);
   }
 
+  /* 390 spec card (`Spec / Icon`): 20 padding, eyebrow +6 title +6 text. */
   .detail-card figcaption {
-    padding: var(--space-6);
+    gap: var(--space-1-5);
+    padding: var(--space-5);
   }
 
-  .case-links .section-intro {
-    margin-block-end: var(--space-9);
+  .detail-card figcaption strong {
+    line-height: 1.2;
+  }
+
+  .detail-card figcaption > span:last-child {
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .link-cards {
@@ -973,34 +1016,6 @@ figcaption strong {
     gap: var(--space-3);
   }
 
-  .overview {
-    min-height: min(791px, 202.8205vw);
-  }
-
-  .key-screens {
-    min-height: min(740px, 189.7436vw);
-  }
-
-  .key-screens .section-intro {
-    margin-block-end: var(--space-8);
-  }
-
-  .key-screens .caption-grid {
-    margin-block-start: var(--space-4);
-  }
-
-  .interaction-motion {
-    min-height: min(792px, 203.0769vw);
-  }
-
-  .details {
-    min-height: min(3461px, 887.4359vw);
-  }
-
-  .case-links {
-    min-height: min(659px, 168.9744vw);
-  }
-
   .motion-tabs {
     position: relative;
     margin-inline-start: var(--space-2);
@@ -1008,10 +1023,22 @@ figcaption strong {
       var(--color-text-on-inverse-muted);
   }
 
+  /* 390 steps (`475:953` Steps): 18 px title +6 text, 28 between steps. */
   .motion-tabs button {
     position: relative;
-    padding: 0 0 var(--space-6) var(--space-6);
+    gap: var(--space-1-5);
+    padding: 0 0 var(--space-7) var(--space-6);
     border-block-start: 0;
+  }
+
+  .motion-tabs strong {
+    font-size: var(--font-size-case-step-title-mobile);
+    line-height: 1.2;
+  }
+
+  .motion-tabs button > span {
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: 1.65;
   }
 
   .motion-tabs button:last-child {
@@ -1049,7 +1076,6 @@ figcaption strong {
   }
 
   .next-project {
-    min-height: var(--size-case-next-mobile);
     padding-block: var(--space-10) 0;
   }
 
