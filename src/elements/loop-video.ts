@@ -4,6 +4,7 @@ class LoopVideoElement extends HTMLElement {
   private viewObserver: IntersectionObserver | null = null;
   private hoverCapable = false;
   private inView = false;
+  private observing = false;
   private playGeneration = 0;
   private endedVideos = new Set<HTMLVideoElement>();
 
@@ -28,18 +29,15 @@ class LoopVideoElement extends HTMLElement {
     interactionTarget.addEventListener('focusin', this.handleFocusIn);
     this.addEventListener('click', this.handleClick);
 
-    this.lazyObserver = new IntersectionObserver(this.handleNearView, {
-      rootMargin: '100% 0px',
-    });
-    this.lazyObserver.observe(this);
-
-    this.viewObserver = new IntersectionObserver(this.handleViewChange, {
-      threshold: [0, 0.5],
-    });
-    this.viewObserver.observe(this);
+    if (document.readyState === 'complete') {
+      this.startObserving();
+    } else {
+      window.addEventListener('load', this.startObserving, { once: true });
+    }
   }
 
   disconnectedCallback() {
+    window.removeEventListener('load', this.startObserving);
     const interactionTarget = this.closest('a') ?? this;
     interactionTarget.removeEventListener(
       'pointerenter',
@@ -52,7 +50,23 @@ class LoopVideoElement extends HTMLElement {
     }
     this.lazyObserver?.disconnect();
     this.viewObserver?.disconnect();
+    this.observing = false;
   }
+
+  private startObserving = () => {
+    if (this.observing || !this.isConnected) return;
+    this.observing = true;
+
+    this.lazyObserver = new IntersectionObserver(this.handleNearView, {
+      rootMargin: '100% 0px',
+    });
+    this.lazyObserver.observe(this);
+
+    this.viewObserver = new IntersectionObserver(this.handleViewChange, {
+      threshold: [0, 0.5],
+    });
+    this.viewObserver.observe(this);
+  };
 
   play = async () => {
     this.attachSources();

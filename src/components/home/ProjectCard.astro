@@ -88,7 +88,7 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
               widths={compositeDesktopWidths}
               sizes={compositeDesktopSizes}
               quality={70}
-              loading="lazy"
+              loading="eager"
               decoding="async"
             />
             <Picture
@@ -100,7 +100,7 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
               widths={compositePhoneWidths}
               sizes={compositePhoneSizes}
               quality={70}
-              loading="lazy"
+              loading="eager"
               decoding="async"
             />
             <video

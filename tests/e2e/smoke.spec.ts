@@ -147,6 +147,43 @@ test('home renders the complete ordered project index', async ({ page }) => {
   ]);
 });
 
+test('home starts no media requests before load', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.addEventListener(
+      'load',
+      () => {
+        const navigation = performance.getEntriesByType(
+          'navigation',
+        )[0] as PerformanceNavigationTiming;
+        (
+          window as typeof window & { __mediaRequestsBeforeLoad?: string[] }
+        ).__mediaRequestsBeforeLoad = performance
+          .getEntriesByType('resource')
+          .filter(
+            (entry) =>
+              new URL(entry.name).pathname.startsWith('/media/') &&
+              entry.startTime < navigation.loadEventStart,
+          )
+          .map((entry) => entry.name);
+      },
+      { once: true },
+    );
+  });
+
+  await page.goto('/');
+
+  expect(
+    await page.evaluate(
+      () =>
+        (
+          window as typeof window & {
+            __mediaRequestsBeforeLoad?: string[];
+          }
+        ).__mediaRequestsBeforeLoad ?? [],
+    ),
+  ).toEqual([]);
+});
+
 test('home uses the approved copy, links, and card assets', async ({
   page,
 }) => {
