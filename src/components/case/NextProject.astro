@@ -11,6 +11,7 @@ interface Props {
 }
 
 const { next, projectCount, tone } = Astro.props;
+const [firstNameWord, ...remainingNameWords] = next.data.name.split(' ');
 ---
 
 <SectionShell class="next-project" tone={tone}>
@@ -25,13 +26,20 @@ const { next, projectCount, tone } = Astro.props;
   </div>
   <a href={`/work/${next.id}/`}>
     <div class="next-heading">
-      <h2>{next.data.name}</h2>
+      <h2>
+        {firstNameWord}
+        {remainingNameWords.length > 0 && (
+          <>
+            <br class="next-name-break" /> {remainingNameWords.join(' ')}
+          </>
+        )}
+      </h2>
       <span class="next-arrow" aria-hidden="true">
         →
       </span>
     </div>
     <p class="next-meta">{next.data.next.meta}</p>
     <p class="next-body">{next.data.next.oneLiner}</p>
-    <ProjectMedia media={next.data.next.media} />
+    <ProjectMedia class="next-preview" media={next.data.next.media} />
   </a>
 </SectionShell>

@@ -3,7 +3,7 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-31)
-- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is in review on PR #14**. ChatGPT has completed Claude's re-review fixes (P1, P2-1–P2-3, P3) and the architecture v1.5 asset alignment; the next action is Claude re-review.
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. ChatGPT has completed Claude's required fidelity follow-up on `fix/m2-fidelity`; the next action is Claude review of the follow-up PR.
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
@@ -18,7 +18,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Claude**: re-review PR #14. Check the touch-video regression test, 1920 px no-wrap rules, authored hard breaks, mobile scroll-snap rows, derived project total, and the architecture v1.5 media contract. Before M3 starts, write the spec sheet for the next project (`docs/specs/hwa-fong.md`) with Figma reference images, and add its rows to `docs/ASSETS.md`.
+1. **Claude**: review the `fix/m2-fidelity` follow-up PR. Check the 1920 px Next Project title / preview and 960 × 532 motion geometry; the 390 px Hero, stats, Next Project, Details margins, and full-bleed swipe rows; and the row-by-row Figma differences in the PR body. Before M3 starts, write the spec sheet for the next project (`docs/specs/hwa-fong.md`) with Figma reference images, and add its rows to `docs/ASSETS.md`.
 2. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
@@ -80,7 +80,9 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - Architecture v1.5 media: Hero uses one `hero-showcase.jpg` composite (`1920 / 820`, top-aligned); Visual Extension uses one `visual-mosaic.jpg`; motion slots use `960 / 532`; every Details card has desktop and mobile PNG media rendered through `<picture>` at the documented breakpoint.
 - The pending-asset report lists all 30 88Win deliverables from [`docs/ASSETS.md`](ASSETS.md), including `key-main-poster.jpg` and the three motion posters. `check-media.mjs` fails if an 88Win pending filename is not documented.
 - Visual QA: the 18 section screenshots are in [`docs/screenshots/88win/`](screenshots/88win/) and correspond one-to-one with [`docs/specs/88win/`](specs/88win/). The capture script hides the persistent site chrome so each image compares only the matching Figma section.
-- Validation: `CI=true pnpm verify` passes (51 unit tests; 29 E2E tests passed with 3 intentional project-specific skips; all 9 Lighthouse URLs passed).
+- Fidelity follow-up: Next Project uses Figma's `-0.04em` display tracking and `1440 / 741` preview; motion is `960 × 532` with its timeline at desktop x=1280. At 390 px, Hero is 784 px with a full-bleed `390 × 312` showcase, stats are a 110 px 2 × 2 grid, Next Project is 530 px with a 64 px arrow, Details media keeps 20 px side margins, and both swipe rows bleed to the viewport with their first item at x=20.
+- `check-media.mjs` now validates pending filenames for every project that has its own project section in [`docs/ASSETS.md`](ASSETS.md), rather than special-casing 88Win.
+- Validation: `CI=true pnpm verify` passes (51 unit tests; 30 E2E tests passed with 4 intentional project-specific skips; all 9 Lighthouse runs passed).
 
 ## Milestone tracker
 | Milestone | State |
@@ -89,7 +91,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
 | M1 Home | **Done (PR #10)** |
-| M2 Case template + 88Win | **In review (PR #14)** |
+| M2 Case template + 88Win | **Done (PR #14); fidelity follow-up in review** |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |

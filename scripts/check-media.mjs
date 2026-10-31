@@ -6,10 +6,23 @@ const root = process.cwd();
 const mediaDirectory = join(root, 'public', 'media');
 const contentDirectory = join(root, 'src', 'content');
 const assetsDocument = await readFile(join(root, 'docs', 'ASSETS.md'), 'utf8');
-const documentedAssetNames = new Set(
-  [...assetsDocument.matchAll(/`([^`/]+\.(?:jpg|mp4|png))`/gu)].map(
-    (match) => match[1],
-  ),
+const projectSections = [
+  ...assetsDocument.matchAll(/^## .+?[（(]`([a-z0-9-]+)`[）)]\s*$/gmu),
+];
+const documentedAssetsByProject = new Map(
+  projectSections.map((section, index) => {
+    const project = section[1];
+    const start = section.index ?? 0;
+    const end = projectSections[index + 1]?.index ?? assetsDocument.length;
+    const names = new Set(
+      [
+        ...assetsDocument
+          .slice(start, end)
+          .matchAll(/`([^`/]+\.(?:jpg|mp4|png))`/gu),
+      ].map((match) => match[1]),
+    );
+    return [project, names];
+  }),
 );
 const limits = {
   keyScreen: 8 * 1024 * 1024,
@@ -85,7 +98,8 @@ for (const file of contentFiles) {
     }
     files.push(...expectedFiles);
     pending.set(project, files);
-    if (project === '88win') {
+    const documentedAssetNames = documentedAssetsByProject.get(project);
+    if (documentedAssetNames) {
       for (const pendingFile of expectedFiles) {
         if (!documentedAssetNames.has(basename(pendingFile))) {
           undocumentedPending.push(pendingFile);

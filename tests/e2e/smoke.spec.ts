@@ -326,6 +326,15 @@ test('case swipe rows match the mobile Figma widths', async ({
   const devices = page.getByRole('region', { name: '手機畫面' });
   await expect(closeups).toHaveCSS('scroll-snap-type', 'x mandatory');
   await expect(devices).toHaveCSS('scroll-snap-type', 'x mandatory');
+  for (const row of [closeups, devices]) {
+    const rowBox = await row.boundingBox();
+    const firstBox = await row.locator('figure').first().boundingBox();
+    expect(rowBox).not.toBeNull();
+    expect(firstBox).not.toBeNull();
+    expect(rowBox?.x).toBe(0);
+    expect(rowBox?.width).toBe(390);
+    expect(firstBox?.x).toBe(20);
+  }
   expect(
     await closeups
       .locator('figure')
@@ -338,6 +347,72 @@ test('case swipe rows match the mobile Figma widths', async ({
       .first()
       .evaluate((node) => node.clientWidth),
   ).toBe(250);
+});
+
+test('390 case hero and next project match the mobile Figma geometry', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+  await page.goto('/work/88win/');
+
+  const hero = page.locator('.case-hero');
+  const backLink = hero.locator('.back-link');
+  const headline = hero.locator('.hero-headline');
+  const stats = hero.locator('.hero-stats');
+  const showcase = hero.locator('.hero-showcase .media-frame');
+  const heroBox = await hero.boundingBox();
+  const backBox = await backLink.boundingBox();
+  const statsBox = await stats.boundingBox();
+  const showcaseBox = await showcase.boundingBox();
+
+  expect(heroBox?.height).toBeCloseTo(784, 0);
+  expect((backBox?.x ?? 0) + (backBox?.width ?? 0) / 2).toBeCloseTo(195, 0);
+  await expect(headline).toHaveCSS('white-space', 'nowrap');
+  expect(
+    await headline.evaluate((node) => node.scrollWidth <= node.clientWidth),
+  ).toBe(true);
+  expect(statsBox?.height).toBe(110);
+  expect(showcaseBox).toMatchObject({ x: 0, width: 390, height: 312 });
+
+  for (const value of await stats.locator('dd').all()) {
+    expect(
+      await value.evaluate((node) => node.scrollWidth <= node.clientWidth),
+    ).toBe(true);
+  }
+
+  const firstDetail = page.locator('.detail-card').first();
+  const detailBox = await firstDetail.boundingBox();
+  const detailMediaBox = await firstDetail
+    .locator('.media-frame')
+    .boundingBox();
+  expect((detailMediaBox?.x ?? 0) - (detailBox?.x ?? 0)).toBe(20);
+  expect(
+    (detailBox?.x ?? 0) +
+      (detailBox?.width ?? 0) -
+      ((detailMediaBox?.x ?? 0) + (detailMediaBox?.width ?? 0)),
+  ).toBe(20);
+
+  const next = page.locator('.next-project');
+  const nextBox = await next.boundingBox();
+  const nextHeadingBox = await next.locator('.next-heading').boundingBox();
+  const nextArrowBox = await next.locator('.next-arrow').boundingBox();
+  const nextPreviewBox = await next.locator('.next-preview').boundingBox();
+  const nextMeta = next.locator('.next-meta');
+  expect(nextBox?.height).toBeCloseTo(530, 0);
+  expect(nextArrowBox?.width).toBe(64);
+  expect(nextArrowBox?.height).toBe(64);
+  expect(nextArrowBox?.y).toBeGreaterThanOrEqual(nextHeadingBox?.y ?? 0);
+  expect(
+    (nextArrowBox?.y ?? 0) + (nextArrowBox?.height ?? 0),
+  ).toBeLessThanOrEqual(
+    (nextHeadingBox?.y ?? 0) + (nextHeadingBox?.height ?? 0),
+  );
+  expect(nextPreviewBox?.width).toBe(350);
+  expect(nextPreviewBox?.height).toBeCloseTo(180, 0);
+  await expect(nextMeta).toHaveCSS('white-space', 'nowrap');
+  expect(
+    await nextMeta.evaluate((node) => node.scrollWidth <= node.clientWidth),
+  ).toBe(true);
 });
 
 test('1920 case headings and stats stay on one line', async ({
@@ -361,6 +436,19 @@ test('1920 case headings and stats stay on one line', async ({
       await locator.evaluate((node) => node.scrollWidth <= node.clientWidth),
     ).toBe(true);
   }
+
+  await expect(page.locator('.next-project h2')).toHaveCSS(
+    'letter-spacing',
+    '-6.56px',
+  );
+
+  const motionStage = await page.locator('.motion-stage').boundingBox();
+  const motionTimeline = await page.locator('.motion-tabs').boundingBox();
+  const nextPreview = await page.locator('.next-preview').boundingBox();
+  expect(motionStage).toMatchObject({ x: 240, width: 960, height: 532 });
+  expect(motionTimeline?.x).toBe(1280);
+  expect(nextPreview?.width).toBe(1440);
+  expect(nextPreview?.height).toBe(741);
 });
 
 test('home preserves the explicit Figma heading breaks', async ({ page }) => {
