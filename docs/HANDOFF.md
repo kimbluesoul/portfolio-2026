@@ -3,7 +3,8 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-31)
-- **Phase**: **M2 Case template + 88Win review fixes are implemented** on `feat/m2-case-template` in PR #14. P1-1–P1-3 and P2-1 from Claude's review are resolved against ARCHITECTURE v1.4 and Figma `360:251` / `475:953`.
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is in review on PR #14**: Claude's re-review of `b05ef30` is CHANGES REQUESTED (1 × P1, 3 × P2, 1 × P3).
+- **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 
@@ -17,9 +18,9 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Claude**: re-review PR #14 at the latest commit. Confirm P1-1–P1-3 and P2-1 are resolved, including the v1.4 transcription checklist, Details bento, Links cards, corrected `next` ownership, centred layouts, and user-initiated playback under reduced motion. Leave the standard P0–P3 findings and verdict comment.
-2. **ChatGPT**: address any new review findings on `feat/m2-case-template` and rerun `pnpm verify` before requesting another review.
-3. **Product Owner**: deliver the listed 2× Figma image exports and videos **after** M2 review (Product Owner decision, 2026-10-30). Until then every 88Win media slot intentionally renders the shared neutral placeholder with `素材待補`.
+1. **ChatGPT**: fix PR #14 per Claude's re-review, plus the v1.5 asset alignment: hero and mosaic become one composite image each, video posters follow `<video>-poster.jpg`, Details items get `mobileMedia`, and every `expectedFile` matches [`docs/ASSETS.md`](ASSETS.md) (ARCHITECTURE §9.1–9.3 v1.5). Fill the new "Figma vs page" table in the PR.
+2. **Claude**: re-review PR #14. Before M3 starts, write the spec sheet for the next project (`docs/specs/hwa-fong.md`) with Figma reference images, and add its rows to `docs/ASSETS.md`.
+3. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
@@ -36,6 +37,10 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - **Q5**: AMD 維護 video resolved by the Product Owner.
 - **Q6**: videos never autoplay. Desktop plays on hover / focus; mobile plays on tap with a play indicator.
 - **A1**: ChatGPT reads Figma directly. In practice, Figma image export was not available to ChatGPT, so Claude exported the M1 images (#12).
+
+## Decisions recorded on 2026-10-31
+- **Process options 2 and 3 adopted**: page spec sheets written by Claude before implementation, and a Figma vs page side-by-side table in every UI PR ([`docs/specs/README.md`](specs/README.md), PR template).
+- **ARCHITECTURE v1.5 (§9)**: export shapes (composite / crop / art-directed Details), poster naming, motion slot ratio 960 / 532, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md).
 
 ## Decisions recorded on 2026-10-30
 - **ADR-0011**: Cloudflare Workers static assets via Workers Builds supersedes Cloudflare Pages. Production uses `portfolio-2026.kimbluesoul.workers.dev`; previews are branch deployments.
@@ -71,19 +76,6 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - Visual QA screenshots: `docs/screenshots/m1-home-desktop.png` (1920 px) and `docs/screenshots/m1-home-mobile.png` (390 px), produced by `scripts/capture-home.mjs` against `pnpm preview`.
 - Local tooling note: if a stale `astro preview` is already listening on port 4321, Playwright reuses it outside CI. Run `CI=true pnpm test:e2e` (or stop the stale server) so tests hit the current build.
 
-## M2 implementation notes
-- The project schema accepts pending images and videos only when `status: pending`, `expectedFile`, and an explicit aspect ratio are present. `ProjectMedia` routes ready images, ready videos, and pending media through one contract.
-- `CaseSections` renders the fixed nine-section sequence: hero, overview, key screens, mobile / RWD, interaction / motion, details, visual extension, prototype links, and next project.
-- `<motion-steps>` uses a manual WAI-style tab pattern with roving focus, Arrow / Home / End keyboard controls, and no auto-advance. `<loop-video>` never autoplays; ready videos play on desktop hover / focus or mobile tap, pause off-screen, and respect reduced motion.
-- ARCHITECTURE v1.4 is implemented: `**accent**` text is parsed without HTML injection; Details accepts 1–8 items and renders the 88Win seven-card bento; Link cards have separate eyebrow, title, and description fields.
-- Every visible 88Win text node and both Prototype links were re-read from Figma. `src/content/projects/88win.yaml` contains no `TODO(CONTENT)` markers. All seven Details descriptions, the third Overview block, the exact H5 URL, and the exact Next Project strings are present.
-- `next` describes the project that owns the entry. `NextProject` now renders `next.data.next`; Hwa Fong owns the Hwa Fong copy and 88Win owns the copy shown on HUIFA.
-- Under reduced motion, only hover-initiated playback is suppressed. Focus, keyboard, tap / click, and motion-step selection remain user-initiated playback paths.
-- All 22 88Win image / video slots are pending and grouped under `88win` in the build's pending-asset report. The approved Figma exports and videos are still the only visual deviation from Figma.
-- Visual QA screenshots: `docs/screenshots/m2-88win-desktop.png` (1920 px) and `docs/screenshots/m2-88win-mobile.png` (390 px), produced by `scripts/capture-case.mjs` against `pnpm preview`.
-- Review-fix validation on 2026-10-31: the final aggregate `pnpm verify` passed, including ESLint / Stylelint / Prettier / Astro check, 49 unit tests, the static build, 24 Playwright desktop + mobile tests, and all 9 Lighthouse runs across `/`, `/work/88win/`, and `/resume/`.
-- Production remains intentionally blocked by pending media and content markers. Branch / staging previews are expected to deploy normally under ADR-0011.
-
 ## Milestone tracker
 | Milestone | State |
 |---|---|
@@ -91,10 +83,10 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
 | M1 Home | **Done (PR #10)** |
-| M2 Case template + 88Win | **In review (`feat/m2-case-template`)** |
+| M2 Case template + 88Win | **In review (PR #14)** |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 
 ## Workflow reminder
-ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 
+Claude writes the page spec sheet → ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template (with the Figma vs page table) → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 
