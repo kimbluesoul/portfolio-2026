@@ -121,7 +121,7 @@ Behavior rules:
 - **Quiet by default.** Sections reveal once with opacity 0 → 1 and translateY 24px → 0 (`slow`, `emphasized`). They do not re-animate on scroll back.
 - **Two signature moments per case page** (Hero showcase, Visual Extension): opacity + scale 0.96 → 1 (`signature`, `emphasized`). Nothing else gets more than the quiet reveal.
 - **Hover**: project cards lift by translateY -4px, and the media scales 1.02 inside its clipped frame (`base`, `standard`). Buttons and links change color only (`fast`). Use the exact hover colors and states in Figma `465:662`.
-- **Interaction & Motion steps**: switching steps crossfades the video (`base`). The step indicator moves with `base` / `standard`. **No auto-advance**: the selected video loops until the user picks another step.
+- **Interaction & Motion steps**: switching steps crossfades the video (`base`). The step indicator moves with `base` / `standard`. **No auto-advance**: the selected video plays once (on entering view or on selection) and stays on its last frame until the user picks another step (ADR-0013).
 - **Page transitions**: a cross-document fade (`base`) where the browser supports it. Otherwise, a normal navigation.
 - **Reduced motion**: every duration above becomes ~0, and reveals are skipped. Hover color changes stay.
 

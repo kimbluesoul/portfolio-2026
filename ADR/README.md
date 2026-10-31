@@ -16,5 +16,6 @@ Owner: Claude (Architect). The format is defined in [ADR-0001](0001-record-archi
 | [0010](0010-quality-gates-and-ci.md) | Quality gates and CI | Accepted |
 | [0011](0011-hosting-cloudflare-workers-static-assets.md) | Static hosting on Cloudflare Workers (static assets) | Accepted |
 | [0012](0012-build-time-cjk-font-subsetting.md) | Build-time CJK font subsetting | Accepted |
+| [0013](0013-video-play-once-in-view.md) | Videos play once when scrolled into view | Accepted (supersedes the no-autoplay rule in 0006 / 0007) |
 
 Architecture v1 was approved by the Product Owner on 2026-10-29.

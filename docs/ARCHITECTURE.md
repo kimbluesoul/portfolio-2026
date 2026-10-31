@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.6 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md).
+**v1.7 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -24,7 +24,7 @@ This project is a UI / interaction-heavy portfolio website. Architecture should 
 | Styling | **Plain CSS** + CSS custom-property tokens mirrored from Figma variables, Astro scoped styles, cascade layers. No Tailwind / CSS-in-JS | [ADR-0004](../ADR/0004-css-and-design-tokens.md) |
 | Content | **Astro content collections** (YAML + Zod schemas); case pages rendered by a fixed-order section renderer that encodes the V9 template rules | [ADR-0005](../ADR/0005-content-model-and-case-template.md) |
 | Images | `astro:assets` (`<Picture>`), AVIF + WebP, responsive widths, build-time optimization | [ADR-0006](../ADR/0006-media-pipeline.md) |
-| Video | Self-hosted MP4 (H.264) + required poster, `preload="none"`, never autoplays: hover/focus to play on desktop, tap to play on mobile | [ADR-0006](../ADR/0006-media-pipeline.md) |
+| Video | Self-hosted MP4 (H.264) + required poster, `preload="none"`, lazy source, plays once on entering view, hover / re-entry replays | [ADR-0006](../ADR/0006-media-pipeline.md), [ADR-0013](../ADR/0013-video-play-once-in-view.md) |
 | Motion | CSS-first, motion tokens, IntersectionObserver reveals, native cross-document View Transitions as enhancement. No animation library | [ADR-0007](../ADR/0007-motion-architecture.md) |
 | Fonts | Self-hosted Instrument Sans (Fontsource) + Noto Sans TC **subset at build time** to the rendered glyphs (core/ext), no third-party font CDN | [ADR-0012](../ADR/0012-build-time-cjk-font-subsetting.md) |
 | State | No global state, no client store, no browser storage | §6 |
@@ -180,12 +180,15 @@ type Media =
   | { kind: 'video'; src: `/media/${string}.mp4`; poster: ImageMetadata; alt: string;
       status?: 'ready' | 'pending' };                                 // 'pending' = asset not delivered yet
 // v1.3: image media may also be { status: 'pending'; expectedFile: string } (§9.3)
+// v1.7: featured Home card only (ADR-0013): a background image plus two videos placed from Figma
+type Composite = { kind: 'composite'; alt: string;
+                   background: Media /* image */; desktop: Media /* video */; phone: Media /* video */ };
 
 type Project = {
   // slug = the content entry id (file name); it must be one of the 7 slugs in §3
   order: number;                                    // 1..7, unique, contiguous, validated on every build
   name: string; nameZh: string;                     // "AMD", "康健生醫"
-  card: { summary: string; tags: string[]; media: Media; featured?: boolean };
+  card: { summary: string; tags: string[]; media: Media | Composite /* v1.7 */; featured?: boolean };
   seo: { title: string; description: string; ogImage?: ImageMetadata };
   next: { oneLiner: string; meta: string; media: Media };   // how this project appears in the previous page's "Next project"
 
@@ -255,8 +258,8 @@ All interactivity is **progressive enhancement**. With JavaScript disabled, ever
 
 | Element | Responsibility |
 |---|---|
-| `<loop-video>` | Wraps `<video muted playsinline loop preload="none" poster>`. **Never autoplays.** Playback is always user-initiated (Product Owner decision Q6, 2026-10-29). **Hover-capable devices** (`(hover: hover)`): play on `pointerenter` / keyboard `focus-within`, pause on `pointerleave` / `focusout`. When the video sits inside a whole-card link, hovering or focusing the card triggers it. **Touch devices** (`(hover: none)`): the poster shows a **play indicator**, and tapping toggles play/pause. Inside a link card, the indicator is a separate button outside the link's hit area, so tapping the card still navigates. A video also pauses when it scrolls out of view. The element exposes `data-state="idle|playing|paused"` for styling and tests. |
-| `<motion-steps>` | Interaction & Motion step switcher, used by every project (AMD 404 / 維護 is one instance). Semantics: WAI-ARIA **Tabs** (`tablist` / `tab` / `tabpanel`), arrow-key + Home/End navigation, roving tabindex. **Selecting a step plays that step's video** (a user action on every device). The initial step shows its poster until the user hovers / taps / selects. |
+| `<loop-video>` | **v1.7, ADR-0013.** Wraps one or more `<video muted playsinline preload="none" poster>` (no `loop`). Attaches the source when within one viewport of the screen. **Plays once from 0 each time it enters view** (≥ 50 %), then stays on the last frame. Pauses when it leaves view. **Hover-capable devices** (`(hover: hover) and (pointer: fine)`): `pointerenter` / keyboard `focus-within` on the video or its whole-card link replays it from 0. **Touch**: no play indicator. Tapping a video that is not inside a link replays it, and inside a link a tap only navigates. **Reduced motion or Save-Data**: no playback on view, only on hover / focus / tap. Multiple `<video>` children (the featured composition) start together and end with the longest. Exposes `data-state="idle|playing|ended|paused"` for styling and tests. |
+| `<motion-steps>` | Interaction & Motion step switcher, used by every project (AMD 404 / 維護 is one instance). Semantics: WAI-ARIA **Tabs** (`tablist` / `tab` / `tabpanel`), arrow-key + Home/End navigation, roving tabindex. **Selecting a step plays that step's video once** from 0. When the section enters view, the selected step's video plays once (ADR-0013). No auto-advance to the next step. |
 | `<reveal-on-view>` | Adds `data-inview` once when the element enters the viewport. CSS does the animation. Disconnects after firing. |
 
 Rules:
@@ -318,7 +321,20 @@ The Product Owner delivers images (2× exports from Figma) and videos **after** 
 - Delivering an asset = add the file at `expectedFile`, point `src` at it, and delete `status` / `expectedFile`. No component changes.
 
 ### 9.4 Play indicator
-- Touch devices show a play indicator on video posters (§7). Figma has no design for it. In M1, the implementer adds a minimal token-based indicator (a circular `--color-bg-brand` fill with a white triangle, matching the Next-arrow button style), lists it under "Deviations from Figma", and the Product Owner approves or replaces it on the preview deploy.
+- **Removed in v1.7** (ADR-0013). Videos play on view, so touch devices no longer need a play indicator.
+
+### 9.5 Home card videos and the featured composition (v1.7)
+- Every Home card uses a video: `public/media/<slug>/card.mp4` with the poster `src/assets/projects/<slug>/card-poster.jpg` (the first frame). The clip is the first 10 s, 1280 px wide, H.264, no audio, ≤ 3 MB. `next.media` uses the same video, so the Next Project preview plays it too.
+- The featured 88Win card is `kind: 'composite'`: `card-bg.jpg` (3456 × 1000), `card-pc.mp4` (1280 × 704) and `card-mobile.mp4` (320 × 660, the phone with its bezel, cropped from the delivered recording), each video with a `-poster.jpg`. Positions as a percentage of the card, from Figma:
+
+  | Layer | Desktop `465:999` (card 1728 × 500) | 390 `474:1087` (card 350 × 200) |
+  |---|---|---|
+  | Background | cover, image 1728 × 1262 at y −365 (centred on the card's vertical middle) | cover, 691 × 505 at x −187, y −146 |
+  | PC video | x 397, y 81, 844 × 477 (bottom clipped by the card) | x −2, y 0, 353 × 200 (fills the card) |
+  | Phone video | x 1185, y 250, 146 × 301 (bottom clipped) | x 266, y 100, 58 × 120 (bottom clipped) |
+
+  The phone video's black surround is clipped with a corner radius of 15 % of its width. Values are percentages of the card box, so the composition scales with the card. The 88Win `next.media` uses `card-pc.mp4` alone.
+- `card.jpg` stays as the SEO / Open Graph fallback image and is no longer rendered in the cards.
 
 ---
 
@@ -347,7 +363,7 @@ The Product Owner delivers images (2× exports from Figma) and videos **after** 
 Target: **WCAG 2.2 AA**.
 - Contrast: all text/background token pairs are verified ≥ 4.5:1 (≥ 3:1 for large text and UI boundaries). **Known constraint:** brand blue `#1F3BD6` on `#141414` / `#222222` is **≈ 2.3:1**, so brand-blue text is not allowed on dark sections. Blue as a fill with white text/icon (7.9:1) is fine.
 - Keyboard: everything operable by keyboard, with a visible `:focus-visible` ring (token-defined) and a skip link to `main`.
-- Motion: `prefers-reduced-motion` honored (§8). Videos never autoplay (hover / focus / tap to play), so no separate pause control is needed (WCAG 2.2.2).
+- Motion: `prefers-reduced-motion` honored (§8). Videos play once on entering view and stop by themselves (ADR-0013). Reduced motion and Save-Data turn this off. **Open (Q11):** clips longer than 5 s that start automatically need a pause mechanism under WCAG 2.2.2.
 - Scope note: there is no legal accessibility obligation for a personal portfolio in Taiwan. The Product Owner chose a **pragmatic baseline**: automated checks plus keyboard / contrast / alt text / reduced motion. It must not add design work beyond what Figma already shows.
 - Links: "opens in new tab" announced; generic labels like "Figma 原型" get context via `aria-describedby` / visually hidden project name.
 - Media: meaningful `alt`; videos are decorative demonstrations (no audio) and are described by the adjacent caption / step text.
@@ -418,7 +434,7 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 
 ### 16.2 Required tests
 - **Unit**: `projects.ts` (ordering, next wrap 07→01, unique order), `sections.ts` (order, omission, tone alternation for all optional-section combinations), `media.ts` (pending detection, size helpers).
-- **E2E smoke**: every route returns 200 and has one `h1`. Nav anchors land on `#work` / `#about` / `#contact`. Next-project chain visits all 7 and returns to 88Win. Every link card has `target="_blank"` + `rel` containing `noopener`. `<motion-steps>` keyboard behavior. `<loop-video>` never plays without user action (no `playing` state after load and scroll). The resume page links to an existing PDF. No console errors.
+- **E2E smoke**: every route returns 200 and has one `h1`. Nav anchors land on `#work` / `#about` / `#contact`. Next-project chain visits all 7 and returns to 88Win. Every link card has `target="_blank"` + `rel` containing `noopener`. `<motion-steps>` keyboard behavior. `<loop-video>` (v1.7): no source is attached before the element nears the viewport; it reaches `playing` after scrolling into view and `ended` without looping; with `reducedMotion: 'reduce'` it stays `idle` after scrolling; hover replays from 0 on a fine pointer; inside a link a tap navigates. The resume page links to an existing PDF. No console errors.
 - **Accessibility**: axe zero serious/critical on all routes.
 - **Visual regression**: not a blocking gate in v1. The Claude review compares preview deploys against Figma screenshots. It can be added later as an ADR.
 
@@ -445,11 +461,12 @@ These are raised for the **Product Owner**. The architecture does not decide the
 | Q3 | ~~Resume page design.~~ **Resolved 2026-10-29**: `public/files/Syuan-Ci-Resume.pdf` is the desktop design reference for `/resume/`. Mobile stacks the two-column rows. | — |
 | Q4 | ~~Motion spec.~~ **Resolved 2026-10-29** (delegated to Architect): see DESIGN_SYSTEM → Motion. Steps do not auto-advance. | — |
 | Q5 | ~~Pending media at launch (AMD 維護 video).~~ **Resolved 2026-10-29** by the Product Owner. The video is delivered with the AMD assets in M3. | — |
-| Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**: no autoplay. Desktop plays on hover / focus, mobile on tap with a play indicator (§7, §9.4). | — |
+| Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**, **revised 2026-10-31 (ADR-0013)**: videos play once on entering view. Desktop hover replays, mobile replays on re-entry, and reduced motion / Save-Data keep the old user-initiated behaviour (§7). | — |
 | Q7 | **Cloudflare account + domain.** The Cloudflare account exists (2026-10-30); the Worker project is connected per ADR-0011 and is needed **from M1** for preview URLs. A custom domain is optional and only needed at launch. Until then, the site uses `*.workers.dev`. | M1 previews; launch |
 | Q8 | ~~Analytics.~~ **Resolved 2026-10-30**: none. No analytics or tracking scripts. | — |
 | Q9 | ~~Language.~~ **Resolved 2026-10-30**: Traditional Chinese only. No English site or English PDF. English eyebrows and display labels stay as part of the visual style. | — |
 | Q10 | ~~Figma inconsistencies.~~ **Resolved 2026-10-30**: Hwa Fong has prototype + live site (`https://www.duro.com.tw/`). **Hidden Figma layers are never implemented**: AMD uses `360:2355`; `437:652` is hidden and unused. The site order in PRODUCT.md wins over the template suggestion table. 「深藍」 in the template text means `--color-bg-inverse`. | — |
+| Q11 | **Auto-started video and WCAG 2.2.2** (2026-10-31). Clips play once for 10 s without a pause control. Options: (a) trim Home clips to ≤ 5 s, which is exempt; (b) add a small pause button per video, which needs a design; (c) accept the gap for v1. The Product Owner decides before launch (M5). | M5 |
 
 ---
 
