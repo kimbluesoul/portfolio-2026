@@ -42,9 +42,21 @@
               "error",
               { "maxNumericValue": 150, "aggregationMethod": "median" }
             ],
-            "resource-summary:total:size": [
+            "resource-summary:image:size": [
               "error",
-              { "maxNumericValue": 1258291 }
+              { "maxNumericValue": 819200 }
+            ],
+            "resource-summary:script:size": [
+              "error",
+              { "maxNumericValue": 51200 }
+            ],
+            "resource-summary:stylesheet:size": [
+              "error",
+              { "maxNumericValue": 51200 }
+            ],
+            "resource-summary:document:size": [
+              "error",
+              { "maxNumericValue": 51200 }
             ]
           }
         },
@@ -54,6 +66,10 @@
             "resource-summary:font:size": [
               "error",
               { "maxNumericValue": 256000 }
+            ],
+            "resource-summary:media:size": [
+              "error",
+              { "maxNumericValue": 2097152 }
             ]
           }
         },
@@ -63,6 +79,10 @@
             "resource-summary:font:size": [
               "error",
               { "maxNumericValue": 409600 }
+            ],
+            "resource-summary:media:size": [
+              "error",
+              { "maxNumericValue": 3145728 }
             ]
           }
         }

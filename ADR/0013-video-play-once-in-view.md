@@ -33,6 +33,11 @@ The 88Win featured card on Home is a composition of three assets (`465:999` / `4
 
 **Budgets** are unchanged: card / Next preview ≤ 3 MB per file (target ≤ 2 MB), key-screen ≤ 8 MB, motion step ≤ 4 MB, ≤ 20 s. Home card clips are trimmed to the **first 10 s** (Product Owner, 2026-10-31).
 
+## Amendment (2026-10-31, ARCHITECTURE v1.9, PR #23 review)
+- **Start after `load`.** `<loop-video>` starts its IntersectionObservers only after the window `load` event (immediately if the page has already loaded). Measured on PR #23 (`676f7ab`, Lighthouse mobile, local): with the observers starting at once, four MP4s (≈ 1.3 MB) began downloading during first paint, and home LCP was 2509 / 2517 ms. Starting after `load` gave 2431 / 1941 / 2431 ms, and the LCP element was the background image every time.
+- **Posters are image layers.** Each video has a `<Picture>` poster layer underneath, `aria-hidden`. It is lazy, except in the above-the-fold featured card, where it is eager without high priority. A lazy image in the first viewport became the LCP element with 1.1 s of load delay.
+- **Budgets.** Video bytes are not part of the 1.2 MB / 1.5 MB page weight (§13). They have their own lab cap instead.
+
 ## Consequences
 - Home and case pages feel alive without the user doing anything, which is what the Product Owner wants.
 - Data use goes up. It stays bounded because loading is lazy, clips are short, there are per-file caps, and Save-Data / reduced motion are respected.
