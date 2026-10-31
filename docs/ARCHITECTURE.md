@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.5 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9).
+**v1.6 — Approved by the Product Owner** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -412,7 +412,9 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 | `pnpm build` | Astro build (content schemas validated) + media size check + pending-asset report |
 | `pnpm test:e2e` | Playwright against `astro preview`: Chromium desktop + WebKit iPhone viewport, with axe scan on every route |
 | `pnpm lhci` | Lighthouse CI on `dist/` with the §13 budgets |
-| **`pnpm verify`** | All of the above, in order. **Must pass before requesting review** (AGENTS.md rule 6) |
+| **`pnpm verify`** | All of the above, in order. **Must pass before the first review of a PR** (AGENTS.md rule 6) |
+
+**Fix rounds (v1.6).** After the first review, each fix round runs the fast gates locally: `pnpm lint && pnpm format:check && pnpm check && pnpm test && pnpm build`. Add `pnpm test:e2e` only when the round changes markup, routes, links, or client scripts. Run `pnpm lhci` locally only when the round changes media, fonts, or CSS that affects layout. CI still runs every gate on every push, and a red CI blocks approval, so nothing is skipped. Only the duplicate local run is.
 
 ### 16.2 Required tests
 - **Unit**: `projects.ts` (ordering, next wrap 07→01, unique order), `sections.ts` (order, omission, tone alternation for all optional-section combinations), `media.ts` (pending detection, size helpers).
