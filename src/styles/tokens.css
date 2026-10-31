@@ -87,6 +87,7 @@
   --line-height-body-tight: 1.2778;
   --line-height-display: clamp(1.2, 1.325 - 0.104vw, 1.32);
   --line-height-case-headline-mobile: 1.4;
+
   /* 390 case typography from the mobile Figma frames (`475:953`). */
   --font-size-case-eyebrow-mobile: 0.75rem;
   --font-size-case-heading-mobile: 1.75rem;

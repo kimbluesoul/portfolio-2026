@@ -763,10 +763,6 @@ figcaption strong {
     margin-block-start: var(--space-2-5);
   }
 
-  .case-hero .hero-headline {
-    margin-block-start: var(--space-2);
-  }
-
   .case-hero .hero-subtitle {
     margin-block-start: var(--space-3);
     font-size: var(--font-size-case-body-mobile);
@@ -800,6 +796,7 @@ figcaption strong {
   }
 
   .hero-headline {
+    margin-block-start: var(--space-2);
     line-height: var(--line-height-case-headline-mobile);
   }
 
@@ -898,6 +895,7 @@ figcaption strong {
 
   .caption-grid {
     grid-auto-columns: var(--size-case-swipe-closeup);
+    margin-block-start: var(--space-5);
   }
 
   .mobile-panels {
@@ -923,10 +921,6 @@ figcaption strong {
   .section-intro .section-subtitle {
     font-size: var(--font-size-case-body-mobile);
     line-height: var(--line-height-case-body-mobile);
-  }
-
-  .caption-grid {
-    margin-block-start: var(--space-5);
   }
 
   /* 390 overview from `475:1003`: heading (eyebrow +12 h2), 24 to the
@@ -993,21 +987,6 @@ figcaption strong {
     gap: var(--space-4);
   }
 
-  /* 390 spec card (`Spec / Icon`): 20 padding, eyebrow +6 title +6 text. */
-  .detail-card figcaption {
-    gap: var(--space-1-5);
-    padding: var(--space-5);
-  }
-
-  .detail-card figcaption strong {
-    line-height: 1.2;
-  }
-
-  .detail-card figcaption > span:last-child {
-    font-size: var(--font-size-case-caption-mobile);
-    line-height: var(--line-height-case-body-mobile);
-  }
-
   .link-cards {
     gap: var(--space-3);
   }
@@ -1039,6 +1018,21 @@ figcaption strong {
   .motion-tabs button > span {
     font-size: var(--font-size-case-caption-mobile);
     line-height: 1.65;
+  }
+
+  /* 390 spec card (`Spec / Icon`): 20 padding, eyebrow +6 title +6 text. */
+  .detail-card figcaption {
+    gap: var(--space-1-5);
+    padding: var(--space-5);
+  }
+
+  .detail-card figcaption strong {
+    line-height: 1.2;
+  }
+
+  .detail-card figcaption > span:last-child {
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .motion-tabs button:last-child {
