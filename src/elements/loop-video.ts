@@ -173,21 +173,3 @@ class LoopVideoElement extends HTMLElement {
 if (!customElements.get('loop-video')) {
   customElements.define('loop-video', LoopVideoElement);
 }
-
-const mountDeferredLoopVideos = () => {
-  for (const template of document.querySelectorAll<HTMLTemplateElement>(
-    'template[data-deferred-loop-video]',
-  )) {
-    template.replaceWith(template.content.cloneNode(true));
-  }
-};
-
-if (document.readyState === 'complete') {
-  requestAnimationFrame(mountDeferredLoopVideos);
-} else {
-  window.addEventListener(
-    'load',
-    () => requestAnimationFrame(mountDeferredLoopVideos),
-    { once: true },
-  );
-}

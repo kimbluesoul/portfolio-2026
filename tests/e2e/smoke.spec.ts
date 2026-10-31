@@ -194,14 +194,14 @@ test('home uses the approved copy, links, and card assets', async ({
   }
   await expect(page.locator('#work loop-video')).toHaveCount(7);
   await expect(page.locator('#work loop-video video')).toHaveCount(8);
-  await expect(page.locator('#work .card-composite picture img')).toHaveCount(
-    1,
-  );
+  await expect(
+    page.locator('#work picture:has(> img.composite-background)'),
+  ).toHaveCount(1);
   expect(
     await page
       .locator('#work article')
       .nth(1)
-      .locator('source')
+      .locator('video source')
       .evaluate(
         (source) =>
           source.getAttribute('src') ?? source.getAttribute('data-src'),

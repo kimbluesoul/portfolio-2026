@@ -1,5 +1,5 @@
 ---
-import { getImage, Picture } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -10,22 +10,16 @@ interface Props {
 const { project, featured = false } = Astro.props;
 const number = String(project.data.order).padStart(2, '0');
 const media = project.data.card.media;
-const poster =
-  media.kind === 'video'
-    ? await getImage({ src: media.poster, format: 'webp' })
-    : undefined;
-const desktopPoster =
-  media.kind === 'composite'
-    ? await getImage({ src: media.desktop.poster, format: 'webp' })
-    : undefined;
-const phonePoster =
-  media.kind === 'composite'
-    ? await getImage({ src: media.phone.poster, format: 'webp' })
-    : undefined;
 const widths = featured ? [350, 700, 1152, 1728] : [350, 700, 844];
 const sizes = featured
   ? '(min-width: 48rem) calc(100vw - 12rem), calc(100vw - 2.5rem)'
   : '(min-width: 48rem) calc((100vw - 14.5rem) / 2), calc(100vw - 2.5rem)';
+const compositeDesktopWidths = [350, 600];
+const compositeDesktopSizes =
+  '(min-width: 48rem) calc((100vw - 12rem) * 0.488426), calc((100vw - 2.5rem) * 1.008571)';
+const compositePhoneWidths = [80, 160];
+const compositePhoneSizes =
+  '(min-width: 48rem) calc((100vw - 12rem) * 0.07), calc((100vw - 2.5rem) * 0.14)';
 const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
 ---
 
@@ -45,18 +39,29 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
         />
       )}
       {media.kind === 'video' && (
-        <loop-video data-state="idle" role="img" aria-label={media.alt}>
-          <video
-            muted
-            playsinline
-            controls
-            preload="none"
-            data-poster={poster?.src}
+        <>
+          <Picture
+            class="video-poster"
+            src={media.poster}
+            alt=""
             aria-hidden="true"
+            formats={['avif', 'webp']}
+            widths={widths}
+            sizes={sizes}
+            loading="lazy"
+            decoding="async"
+          />
+          <loop-video
+            class="card-video"
+            data-state="idle"
+            role="img"
+            aria-label={media.alt}
           >
-            <source data-src={media.src} type="video/mp4" />
-          </video>
-        </loop-video>
+            <video muted playsinline preload="none" aria-hidden="true">
+              <source data-src={media.src} type="video/mp4" />
+            </video>
+          </loop-video>
+        </>
       )}
       {media.kind === 'composite' && (
         <>
@@ -73,32 +78,50 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
             fetchpriority="high"
             decoding="sync"
           />
-          <template data-deferred-loop-video>
-            <loop-video class="card-composite" data-state="idle">
-              <video
-                class="composite-pc"
-                muted
-                playsinline
-                controls
-                preload="none"
-                data-poster={desktopPoster?.src}
-                aria-hidden="true"
-              >
-                <source data-src={media.desktop.src} type="video/mp4" />
-              </video>
-              <video
-                class="composite-phone"
-                muted
-                playsinline
-                controls
-                preload="none"
-                data-poster={phonePoster?.src}
-                aria-hidden="true"
-              >
-                <source data-src={media.phone.src} type="video/mp4" />
-              </video>
-            </loop-video>
-          </template>
+          <loop-video class="card-composite" data-state="idle">
+            <Picture
+              class="composite-pc composite-poster"
+              src={media.desktop.poster}
+              alt=""
+              aria-hidden="true"
+              formats={['avif', 'webp']}
+              widths={compositeDesktopWidths}
+              sizes={compositeDesktopSizes}
+              quality={70}
+              loading="lazy"
+              decoding="async"
+            />
+            <Picture
+              class="composite-phone composite-poster"
+              src={media.phone.poster}
+              alt=""
+              aria-hidden="true"
+              formats={['avif', 'webp']}
+              widths={compositePhoneWidths}
+              sizes={compositePhoneSizes}
+              quality={70}
+              loading="lazy"
+              decoding="async"
+            />
+            <video
+              class="composite-pc"
+              muted
+              playsinline
+              preload="none"
+              aria-hidden="true"
+            >
+              <source data-src={media.desktop.src} type="video/mp4" />
+            </video>
+            <video
+              class="composite-phone"
+              muted
+              playsinline
+              preload="none"
+              aria-hidden="true"
+            >
+              <source data-src={media.phone.src} type="video/mp4" />
+            </video>
+          </loop-video>
         </>
       )}
     </div>
@@ -165,14 +188,15 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
     object-fit: cover;
   }
 
+  .media :global(.card-video) {
+    position: absolute;
+    inset: 0;
+  }
+
   .media :global(.card-composite) {
     position: absolute;
     inset: 0;
     overflow: hidden;
-  }
-
-  .media :global(.card-composite[data-state='idle']) {
-    visibility: hidden;
   }
 
   .composite-background {
@@ -185,18 +209,21 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
   }
 
   .media :global(.card-composite .composite-pc),
-  .media :global(.card-composite .composite-phone) {
+  .media :global(.card-composite .composite-phone),
+  .media :global(.card-composite img.composite-poster) {
     position: absolute;
   }
 
-  .media :global(.card-composite .composite-pc) {
+  .media :global(.card-composite .composite-pc),
+  .media :global(.card-composite img.composite-poster.composite-pc) {
     top: 0;
     left: -0.5714%;
     width: 100.8571%;
     height: 100%;
   }
 
-  .media :global(.card-composite .composite-phone) {
+  .media :global(.card-composite .composite-phone),
+  .media :global(.card-composite img.composite-poster.composite-phone) {
     top: 50%;
     left: 76%;
     width: 16.5714%;
@@ -300,14 +327,16 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
       object-position: 50% 48%;
     }
 
-    .media :global(.card-composite .composite-pc) {
+    .media :global(.card-composite .composite-pc),
+    .media :global(.card-composite img.composite-poster.composite-pc) {
       top: 16.2%;
       left: 22.9745%;
       width: 48.8426%;
       height: 95.4%;
     }
 
-    .media :global(.card-composite .composite-phone) {
+    .media :global(.card-composite .composite-phone),
+    .media :global(.card-composite img.composite-poster.composite-phone) {
       top: 50%;
       left: 68.5764%;
       width: 8.4491%;
