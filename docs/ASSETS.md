@@ -77,8 +77,39 @@ Interaction & Motion 在 Figma 只有一個影片框（`360:365`），網頁上�
 
 ---
 
+## 華豐輪胎 Hwa Fong Tire（`hwa-fong`）
+
+Figma：Desktop `360:1603`／Mobile `483:1298`。規格表：[`docs/specs/hwa-fong.md`](specs/hwa-fong.md)。
+圖片放 `src/assets/projects/hwa-fong/`，影片放 `public/media/hwa-fong/`（交件時都放同一個資料夾即可）。
+這個專案**沒有** Mobile／RWD 和 Details 區塊（Figma 裡是隱藏的），所以沒有手機面板圖和元件規格圖。
+
+### 圖片
+
+| # | 區塊 | 檔名 | Figma 節點（Desktop） | 匯出方式 | 匯出尺寸（2x） | 備註 |
+|---|---|---|---|---|---|---|
+| 1 | Hero | `hero-showcase.jpg` | `360:1622` Hero showcase | 整張合成圖 | 3840 × 1840 | PC 畫面＋手機一起匯出。網頁只顯示上方 820 px 高的部分。手機版 `483:1338` 是同一張縮小。 |
+| 2 | 主要畫面 | `key-tire-guide.jpg` | `360:1674`（輪胎指南） | 裁切框 | 918 × 600 | Figma 圖層名稱是 Navigation close-up |
+| 3 | 主要畫面 | `key-tire-types.jpg` | `360:1678`（五大胎種） | 裁切框 | 918 × 600 | 圖層名稱是 Promotion close-up |
+| 4 | 主要畫面 | `key-tire-category.jpg` | `360:1682`（胎種專區） | 裁切框 | 918 × 600 | 圖層名稱是 Game Content close-up |
+| 5 | Visual Extension | `visual-mosaic.jpg` | `360:1758` Mosaic band | 整張合成圖 | 3840 × 2560 | 15 張頁面拼貼整片一起匯出。手機版 `483:1459` 是同一張縮小。 |
+
+### 影片
+
+| # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
+|---|---|---|---|---|---|---|
+| 6 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:1673`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 7 | Interaction & Motion | `motion-1.mp4` | 01 逐字點亮 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 8 | Interaction & Motion | `motion-2.mp4` | 02 完整品牌 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 9 | Interaction & Motion | `motion-3.mp4` | 03 探索式互動 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
+
+Interaction & Motion 在 Figma 只有一個影片框（`376:657`），和 88Win 一樣，點選 01／02／03 會切換成對應的影片，所以需要三支。如果 01 和 02 其實是同一段捲動錄影，可以剪成兩段。
+
+**華豐輪胎合計：圖片 9 張（5 張畫面＋4 張影片封面）、影片 4 支。**
+
+---
+
 ## 其他專案（M3）
-華豐輪胎、FITZONE、SSS、展裕建設、AMD、匯發營造 的清單，會在各專案開工前由 Claude 寫進該頁的規格表（`docs/specs/<slug>.md`），再整理到這份文件。命名規則同上，資料夾名稱用專案代號：
+FITZONE、SSS、展裕建設、AMD、匯發營造 的清單，會在各專案開工前由 Claude 寫進該頁的規格表（`docs/specs/<slug>.md`），再整理到這份文件。命名規則同上，資料夾名稱用專案代號：
 
 | 順序 | 專案 | 代號（資料夾名稱） |
 |---|---|---|
