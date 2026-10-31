@@ -20,7 +20,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 ## Next owner
 1. **Claude**: review the Hwa Fong Tire content PR (`feat/m3-hwa-fong`). Its media remains `pending`; the PR records the template-level visual differences without changing architecture.
 2. **ChatGPT** (after Hwa Fong, separate PR `feat/video-play-once`): implement ADR-0013 / ARCHITECTURE v1.7. Change `<loop-video>` and `<motion-steps>` to play once on view, Home cards to the delivered videos (already in `public/media/*/card*.mp4` with posters), and the 88Win featured composition (§9.5). Replace the old "never plays" E2E test (§16.2).
-3. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
+3. **ChatGPT** (after the video PR, `fix/case-template-fidelity`): the template items from the PR #17 / #21 reviews. Implement `hero.titleSizeMobile` and −0.04em title tracking (ARCHITECTURE §10 v1.8; values in the spec sheets: 88Win 76, Hwa Fong 56), keep the 390 back link centred, add the mobile Motion vertical rail, and size 390 section spacing from the `475:953` child frames. Add a 360 × 800 no-overflow E2E for the case page.
+4. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
