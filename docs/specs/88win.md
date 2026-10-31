@@ -4,6 +4,9 @@ Figma: desktop `360:251`, mobile 390 `475:953`.
 
 88Win was implemented (PR #14) before spec sheets existed. Its copy was checked node by node in the PR #14 reviews, so this sheet only has the reference images and media slots. Spec sheets for M3 projects follow the full format in [README.md](README.md).
 
+## Template values (v1.8)
+- `hero.titleSizeMobile`: `76` (`475:973`, the 390 title fits one line).
+
 ## Figma reference images
 1× exports by Claude, 2026-10-31. Use these for the "Figma vs page" table.
 

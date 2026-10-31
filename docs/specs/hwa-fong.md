@@ -27,6 +27,7 @@ Copy strings exactly as written here, including full-width characters (`，` `�
 |---|---|---|
 | `hero.eyebrow` | `CASE STUDY 02 · 輪胎品牌` | `360:1605` |
 | `hero.title` | `HWA FONG TIRE` | `360:1606` |
+| `hero.titleSizeMobile` | `56` (390 title size, wraps `HWA FONG` / `TIRE`) | `483:1318` |
 | `hero.headline` | `華豐輪胎**品牌網站**設計` | `360:1607` |
 | `hero.subtitle` | `從「DURO for Durability」出發，把華豐輪胎可靠的品牌形象與二輪到四輪的完整產品線，整理成一個好找、好逛，也有品牌感的網站。` | `360:1608` |
 | `hero.stats[0]` | label `ROLE`, value `UI / Interaction` | `360:1610` / `360:1609` |

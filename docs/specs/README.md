@@ -8,7 +8,7 @@ In M2, most review findings were copy or layout that did not match Figma. ChatGP
 ## Spec sheet (option 2)
 Before ChatGPT starts a page, Claude writes `docs/specs/<slug>.md` (home and resume use `home.md` / `resume.md`). It contains, section by section in render order (ARCHITECTURE §5.2):
 
-1. **Copy**: every visible string, verbatim, with its Figma node ID. Accent words are already marked `**…**` (§5.1 v1.4). Hard line breaks that exist in Figma are marked explicitly.
+1. **Copy**: every visible string, verbatim, with its Figma node ID, plus the 390 hero title size (`hero.titleSizeMobile`, ARCHITECTURE §10 v1.8). This includes the **next project's** Next-section meta and one-liner that appear in this page's frame, which go into the next project's `next` fields. Accent words are already marked `**…**` (§5.1 v1.4). Hard line breaks that exist in Figma are marked explicitly.
 2. **Links**: exact URLs and labels.
 3. **Media slots**: export shape, `expectedFile`, slot aspect ratio, desktop and 390 node IDs, and alt text. These rows are also added to [`docs/ASSETS.md`](../ASSETS.md).
 4. **Layout notes**: anything the 390 frame does differently (swipe rows, reflowed visuals, omitted items).
