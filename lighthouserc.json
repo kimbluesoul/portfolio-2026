@@ -88,6 +88,9 @@
         }
       ]
     },
-    "upload": { "target": "filesystem", "outputDir": ".lighthouseci/reports" }
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci/reports"
+    }
   }
 }
