@@ -2,8 +2,8 @@
 
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
-## Status (2026-10-31)
-- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is in review** on `feat/m3-hwa-fong`.
+## Status (2026-11-01)
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The first fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is done (PR #21)**, and play-once video behavior is done (PR #23). The 390 case-template fidelity follow-up is in review on `fix/case-template-fidelity`.
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
@@ -18,10 +18,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Claude**: review the Hwa Fong Tire content PR (`feat/m3-hwa-fong`). Its media remains `pending`; the PR records the template-level visual differences without changing architecture.
-2. **ChatGPT** (after Hwa Fong, separate PR `feat/video-play-once`): implement ADR-0013 / ARCHITECTURE v1.7. Change `<loop-video>` and `<motion-steps>` to play once on view, Home cards to the delivered videos (already in `public/media/*/card*.mp4` with posters), and the 88Win featured composition (§9.5). Replace the old "never plays" E2E test (§16.2).
-3. **ChatGPT** (after the video PR, `fix/case-template-fidelity`): the template items from the PR #17 / #21 reviews. Implement `hero.titleSizeMobile` and −0.04em title tracking (ARCHITECTURE §10 v1.8; values in the spec sheets: 88Win 76, Hwa Fong 56), keep the 390 back link centred, add the mobile Motion vertical rail, and size 390 section spacing from the `475:953` child frames. Add a 360 × 800 no-overflow E2E for the case page.
-4. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
+1. **Claude**: review `fix/case-template-fidelity` against ARCHITECTURE v1.9, the 88Win `475:953` child frames, and the PR screenshot table.
+2. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
@@ -82,7 +80,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - Architecture v1.5 media: Hero uses one `hero-showcase.jpg` composite (`1920 / 820`, top-aligned); Visual Extension uses one `visual-mosaic.jpg`; motion slots use `960 / 532`; every Details card has desktop and mobile PNG media rendered through `<picture>` at the documented breakpoint.
 - The pending-asset report lists all 30 88Win deliverables from [`docs/ASSETS.md`](ASSETS.md), including `key-main-poster.jpg` and the three motion posters. `check-media.mjs` fails if an 88Win pending filename is not documented.
 - Visual QA: the 18 section screenshots are in [`docs/screenshots/88win/`](screenshots/88win/) and correspond one-to-one with [`docs/specs/88win/`](specs/88win/). The capture script hides the persistent site chrome so each image compares only the matching Figma section.
-- Fidelity follow-up: Next Project uses Figma's `-0.04em` display tracking and `1440 / 741` preview; motion is `960 × 532` with its timeline at desktop x=1280. At 390 px, Hero is 784 px with a full-bleed `390 × 312` showcase, stats are a 110 px 2 × 2 grid, Next Project is 530 px with a 64 px arrow, Details media keeps 20 px side margins, and both swipe rows bleed to the viewport with their first item at x=20.
+- Fidelity follow-up: Next Project uses Figma's `-0.04em` display tracking and `1440 / 741` preview; motion is `960 × 532` with its timeline at desktop x=1280. At 390 px, Hero is 784 px with a full-bleed `390 × 312` showcase clipped by the child frame at its lower edge, stats are a 110 px 2 × 2 grid, Next Project is 530 px with a 64 px arrow, Details media keeps 20 px side margins, and both swipe rows bleed to the viewport with their first item at x=20.
+- Case-template fidelity follow-up: `hero.titleSizeMobile` supplies the 88Win 76 px and Hwa Fong 56 px mobile title sizes without inline styles; case titles use `-0.04em` tracking, the 390 back link remains centred, and mobile Motion uses a vertical step rail. The 88Win 390 child frames measure 784 / 791 / 740 / 717 / 792 / 3461 / 410 / 659 / 530 px (each E2E-gated at ±1 px). Chromium reports a 9454 px full document, or 9388 px without the 66 px global site header, versus the 9365 px Figma case canvas. Full-page 1920 and 390 captures are in the 88Win and Hwa Fong screenshot folders.
 - `check-media.mjs` now validates pending filenames for every project that has its own project section in [`docs/ASSETS.md`](ASSETS.md), rather than special-casing 88Win.
 - Validation: `CI=true pnpm verify` passes (51 unit tests; 30 E2E tests passed with 4 intentional project-specific skips; all 9 Lighthouse runs passed).
 
@@ -93,8 +92,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
 | M1 Home | **Done (PR #10)** |
-| M2 Case template + 88Win | **Done (PR #14); fidelity follow-up in review** |
-| M3 Remaining case studies | **In progress**: Hwa Fong implementation in review |
+| M2 Case template + 88Win | **Done (PR #14); 390 template fidelity follow-up in review** |
+| M3 Remaining case studies | **In progress**: Hwa Fong done (PR #21) |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 

@@ -139,6 +139,7 @@ const projects = defineCollection({
       hero: z.object({
         eyebrow: z.string().min(1),
         title: z.string().min(1),
+        titleSizeMobile: z.number().positive().optional(),
         headline: z.string().min(1),
         subtitle: z.string().min(1),
         stats: z.tuple([stat, stat, stat, stat]),

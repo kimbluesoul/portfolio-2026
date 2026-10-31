@@ -114,6 +114,7 @@
 .hero-copy h1 {
   font-family: var(--font-family-display);
   font-size: var(--font-size-case-title);
+  letter-spacing: -0.04em;
   line-height: var(--line-height-body-tight);
 }
 
@@ -724,7 +725,12 @@ figcaption strong {
 }
 
 @media (width < 48rem) {
+  .case-section:where(:not(.tone-media, .case-hero, .next-project)) {
+    padding-block: var(--space-16);
+  }
+
   .case-hero {
+    min-height: min(784px, 201.0256vw);
     padding-block: var(--space-3) 0;
   }
 
@@ -759,6 +765,7 @@ figcaption strong {
 
   .case-hero .hero-showcase {
     width: 100%;
+    margin-block-end: calc(-1 * var(--space-3));
   }
 
   .case-hero .media-frame {
@@ -767,6 +774,22 @@ figcaption strong {
 
   .hero-copy h1 {
     line-height: 1;
+  }
+
+  .hero-copy h1.has-mobile-title-size {
+    font-size: attr(
+      data-title-size-mobile px,
+      var(--font-size-case-title-mobile)
+    );
+  }
+
+  /* Fallback for engines that do not yet support typed attr() values. */
+  .hero-copy h1[data-title-size-mobile='76'] {
+    font-size: 76px;
+  }
+
+  .hero-copy h1[data-title-size-mobile='56'] {
+    font-size: 56px;
   }
 
   .hero-headline {
@@ -870,6 +893,149 @@ figcaption strong {
 
   .swipe-row > figure {
     scroll-snap-align: start;
+  }
+
+  .section-intro {
+    gap: var(--space-2-5);
+    margin-block-end: var(--space-12);
+  }
+
+  .section-intro h2 {
+    font-size: 1.75rem;
+  }
+
+  .section-intro .section-subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .caption-grid,
+  .mobile-panels,
+  .details-grid {
+    margin-block-start: var(--space-5);
+  }
+
+  .overview .case-container {
+    gap: var(--space-6);
+  }
+
+  .overview-story {
+    gap: var(--space-6);
+  }
+
+  .overview article {
+    gap: var(--space-3);
+    padding-block-start: var(--space-4);
+  }
+
+  .story-title {
+    font-size: 1.375rem;
+  }
+
+  figcaption {
+    gap: var(--space-1);
+    padding-block-start: var(--space-3);
+  }
+
+  .mobile-rwd {
+    min-height: min(717px, 183.8462vw);
+    padding-block-end: var(--space-4);
+  }
+
+  .interaction-motion .section-intro {
+    margin-block-end: var(--space-8);
+  }
+
+  .interaction-motion motion-steps {
+    gap: var(--space-8);
+  }
+
+  .details .section-intro {
+    margin-block-end: var(--space-10);
+  }
+
+  .details-grid {
+    gap: var(--space-8);
+  }
+
+  .detail-card figcaption {
+    padding: var(--space-6);
+  }
+
+  .case-links .section-intro {
+    margin-block-end: var(--space-9);
+  }
+
+  .link-cards {
+    gap: var(--space-3);
+  }
+
+  .link-card {
+    gap: var(--space-3);
+  }
+
+  .overview {
+    min-height: min(791px, 202.8205vw);
+  }
+
+  .key-screens {
+    min-height: min(740px, 189.7436vw);
+  }
+
+  .key-screens .section-intro {
+    margin-block-end: var(--space-8);
+  }
+
+  .key-screens .caption-grid {
+    margin-block-start: var(--space-4);
+  }
+
+  .interaction-motion {
+    min-height: min(792px, 203.0769vw);
+  }
+
+  .details {
+    min-height: min(3461px, 887.4359vw);
+  }
+
+  .case-links {
+    min-height: min(659px, 168.9744vw);
+  }
+
+  .motion-tabs {
+    position: relative;
+    margin-inline-start: var(--space-2);
+    border-inline-start: var(--header-border-width) solid
+      var(--color-text-on-inverse-muted);
+  }
+
+  .motion-tabs button {
+    position: relative;
+    padding: 0 0 var(--space-6) var(--space-6);
+    border-block-start: 0;
+  }
+
+  .motion-tabs button:last-child {
+    padding-block-end: 0;
+  }
+
+  .motion-tabs button::before {
+    position: absolute;
+    inset-block-start: 0.375rem;
+    inset-inline-start: calc(var(--size-motion-marker) / -2);
+    width: var(--size-motion-marker);
+    height: var(--size-motion-marker);
+    border: var(--header-border-width) solid var(--color-text-on-inverse);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-inverse);
+    content: '';
+  }
+
+  .motion-tabs button[aria-selected='true']::before {
+    inset-block-start: 0.25rem;
+    inset-inline-start: -0.5rem;
+    width: var(--space-4);
+    height: var(--space-4);
+    background: var(--color-text-on-inverse);
   }
 
   .hero-showcase.layout-isometric,

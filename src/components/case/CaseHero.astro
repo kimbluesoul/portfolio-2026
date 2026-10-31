@@ -20,7 +20,12 @@ const { hero } = project.data;
   </a>
   <div class="hero-copy">
     <p class="case-eyebrow">{hero.eyebrow}</p>
-    <h1>{hero.title}</h1>
+    <h1
+      class:list={{ 'has-mobile-title-size': Boolean(hero.titleSizeMobile) }}
+      data-title-size-mobile={hero.titleSizeMobile}
+    >
+      {hero.title}
+    </h1>
     <p class="hero-headline">
       <AccentText text={hero.headline} />
     </p>

@@ -37,6 +37,7 @@ next:
 hero:
   eyebrow: CASE STUDY 01 · 線上娛樂平台
   title: 88WIN
+  titleSizeMobile: 76
   headline: PC・H5・App **跨裝置**介面設計
   subtitle: PC 和 H5／App 是分開設計的兩套畫面，我把介面規則整理成同一套，換裝置也認得出是同一個產品。
   stats:
