@@ -367,7 +367,6 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
 
   expect(heroBox?.height).toBeCloseTo(784, 0);
   expect((backBox?.x ?? 0) + (backBox?.width ?? 0) / 2).toBeCloseTo(195, 0);
-  await expect(headline).toHaveCSS('white-space', 'nowrap');
   expect(
     await headline.evaluate((node) => node.scrollWidth <= node.clientWidth),
   ).toBe(true);
@@ -409,10 +408,41 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   );
   expect(nextPreviewBox?.width).toBe(350);
   expect(nextPreviewBox?.height).toBeCloseTo(180, 0);
-  await expect(nextMeta).toHaveCSS('white-space', 'nowrap');
   expect(
     await nextMeta.evaluate((node) => node.scrollWidth <= node.clientWidth),
   ).toBe(true);
+});
+
+test('360 case hero and next project stay within their containers', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('/work/88win/');
+
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth === window.innerWidth,
+    ),
+  ).toBe(true);
+
+  for (const selector of [
+    '.case-hero .case-container',
+    '.next-project .case-container',
+  ]) {
+    const failures = await page.locator(selector).evaluate((container) => {
+      const tolerance = 2;
+      const bounds = container.getBoundingClientRect();
+      return Array.from(container.children)
+        .map((child) => child.getBoundingClientRect())
+        .filter(
+          (child) =>
+            child.left < bounds.left - tolerance ||
+            child.right > bounds.right + tolerance,
+        ).length;
+    });
+    expect(failures).toBe(0);
+  }
 });
 
 test('1920 case headings and stats stay on one line', async ({

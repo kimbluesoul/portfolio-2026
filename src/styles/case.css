@@ -572,6 +572,7 @@ figcaption strong {
 
 .next-topline {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
@@ -579,6 +580,7 @@ figcaption strong {
 
 .next-project .case-container > a:not(.back-link) {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-5);
   color: var(--color-text-primary);
   text-decoration: none;
@@ -746,7 +748,7 @@ figcaption strong {
   }
 
   .case-hero .hero-stats {
-    height: var(--size-case-mobile-stats);
+    min-height: var(--size-case-mobile-stats);
     margin-block-end: var(--space-8);
   }
 
@@ -764,7 +766,6 @@ figcaption strong {
 
   .hero-headline {
     line-height: var(--line-height-case-headline-mobile);
-    white-space: nowrap;
   }
 
   .hero-stats div {
@@ -777,11 +778,6 @@ figcaption strong {
   .hero-stats div:nth-child(even) {
     border-inline-start: var(--header-border-width) solid
       var(--color-border-default);
-  }
-
-  .hero-stats dt,
-  .hero-stats dd {
-    white-space: nowrap;
   }
 
   .mobile-ratio-310x234 {
@@ -902,7 +898,6 @@ figcaption strong {
   .next-meta {
     margin-block-end: var(--space-4);
     font-size: var(--font-size-label);
-    white-space: nowrap;
   }
 
   .next-body {
