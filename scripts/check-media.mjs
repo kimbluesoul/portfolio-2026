@@ -1,10 +1,16 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
-import { extname, join, relative } from 'node:path';
+import { basename, extname, join, relative } from 'node:path';
 import process from 'node:process';
 
 const root = process.cwd();
 const mediaDirectory = join(root, 'public', 'media');
 const contentDirectory = join(root, 'src', 'content');
+const assetsDocument = await readFile(join(root, 'docs', 'ASSETS.md'), 'utf8');
+const documentedAssetNames = new Set(
+  [...assetsDocument.matchAll(/`([^`/]+\.(?:jpg|mp4|png))`/gu)].map(
+    (match) => match[1],
+  ),
+);
 const limits = {
   keyScreen: 8 * 1024 * 1024,
   motion: 4 * 1024 * 1024,
@@ -56,6 +62,7 @@ const contentFiles = (await filesBelow(contentDirectory)).filter((file) =>
 );
 const pending = new Map();
 const contentTodos = [];
+const undocumentedPending = [];
 for (const file of contentFiles) {
   const source = await readFile(file, 'utf8');
   for (const match of source.matchAll(
@@ -67,8 +74,24 @@ for (const file of contentFiles) {
       expectedFile.match(/(?:projects|media)\/([a-z0-9-]+)\//u)?.[1] ??
       'unknown';
     const files = pending.get(project) ?? [];
-    files.push(expectedFile);
+    const expectedFiles = [expectedFile];
+    const pendingVideo = expectedFile.match(
+      /^public\/media\/([a-z0-9-]+)\/(.+)\.mp4$/u,
+    );
+    if (pendingVideo?.[1] && pendingVideo[2]) {
+      expectedFiles.push(
+        `src/assets/projects/${pendingVideo[1]}/${pendingVideo[2]}-poster.jpg`,
+      );
+    }
+    files.push(...expectedFiles);
     pending.set(project, files);
+    if (project === '88win') {
+      for (const pendingFile of expectedFiles) {
+        if (!documentedAssetNames.has(basename(pendingFile))) {
+          undocumentedPending.push(pendingFile);
+        }
+      }
+    }
   }
   source.split(/\r?\n/u).forEach((line, index) => {
     if (line.includes('TODO(CONTENT)')) {
@@ -89,6 +112,13 @@ process.stdout.write(
           .join('\n')}`
   }\n`,
 );
+
+if (undocumentedPending.length > 0) {
+  process.stderr.write(
+    `Pending assets missing from docs/ASSETS.md: ${undocumentedPending.join(', ')}\n`,
+  );
+  process.exitCode = 1;
+}
 
 process.stdout.write(
   `${

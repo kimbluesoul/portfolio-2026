@@ -11,7 +11,9 @@ site:
       href: '#contact'
   hero:
     eyebrow: HELLO, I’M SYUAN CI
-    heading: 設計畫面，也設計畫面之間的瞬間。
+    heading: |-
+      設計畫面，
+      也設計畫面之間的**瞬間**。
     introduction: 專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。
   credentials:
     - label: EXPERIENCE
@@ -21,7 +23,9 @@ site:
     - label: CURRENTLY
       value: Available for opportunities
   about:
-    heading: 從需求到上線，把畫面做到會動
+    heading: |-
+      從需求到上線，
+      **把畫面做到會動**
     body: |-
       我是 Syuan Ci，具 6 年以上 UI 與數位介面設計經驗。習慣從需求溝通就開始參與，主動提出設計方向，一路做到正式上線，不只停在 Figma 裡。
 

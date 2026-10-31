@@ -235,11 +235,19 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
-  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(22);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(19);
   await expect(page.locator('loop-video')).toHaveCount(4);
   await expect(page.locator('loop-video video source')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
+  await expect(page.locator('.detail-card picture')).toHaveCount(7);
+  await expect(
+    page.locator('.detail-card source[media="(width < 48rem)"]'),
+  ).toHaveCount(14);
+  await expect(page.locator('.case-hero .hero-showcase')).toHaveCount(1);
+  await expect(
+    page.locator('.visual-extension .visual-grid > .media-frame'),
+  ).toHaveCount(1);
   await expect(
     page.locator('.story-title').filter({ hasText: '最難的地方' }),
   ).toBeVisible();
@@ -260,6 +268,105 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await expect(
     page.getByText('正式網站因合約關係不便公開。', { exact: true }),
   ).toBeVisible();
+  await expect(page.locator('.overview-heading h2 br')).toHaveCount(1);
+  await expect(page.getByText('NEXT PROJECT 02 / 07')).toBeVisible();
+});
+
+test('touch tap starts a ready loop video without focus cancelling it', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'webkit-iphone', 'Touch-only behavior.');
+  await page.goto('/work/88win/');
+  await page.evaluate(() => {
+    Object.defineProperty(HTMLMediaElement.prototype, 'paused', {
+      configurable: true,
+      get(this: HTMLMediaElement) {
+        return this.dataset.testPlaying !== 'true';
+      },
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, 'play', {
+      configurable: true,
+      value(this: HTMLMediaElement) {
+        this.dataset.testPlaying = 'true';
+        return Promise.resolve();
+      },
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
+      configurable: true,
+      value(this: HTMLMediaElement) {
+        this.dataset.testPlaying = 'false';
+      },
+    });
+
+    const fixture = document.createElement('loop-video');
+    fixture.id = 'touch-video-fixture';
+    fixture.dataset.state = 'ready';
+    fixture.setAttribute('role', 'button');
+    fixture.setAttribute('tabindex', '0');
+    fixture.style.width = '100px';
+    fixture.style.height = '100px';
+    fixture.innerHTML = '<video muted playsinline loop></video>';
+    document.body.prepend(fixture);
+  });
+
+  const fixture = page.locator('#touch-video-fixture');
+  await fixture.focus();
+  await expect(fixture).toHaveAttribute('data-state', 'ready');
+  await fixture.click();
+  await expect(fixture).toHaveAttribute('data-state', 'playing');
+});
+
+test('case swipe rows match the mobile Figma widths', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+  await page.goto('/work/88win/');
+
+  const closeups = page.getByRole('region', { name: '主要畫面特寫' });
+  const devices = page.getByRole('region', { name: '手機畫面' });
+  await expect(closeups).toHaveCSS('scroll-snap-type', 'x mandatory');
+  await expect(devices).toHaveCSS('scroll-snap-type', 'x mandatory');
+  expect(
+    await closeups
+      .locator('figure')
+      .first()
+      .evaluate((node) => node.clientWidth),
+  ).toBe(280);
+  expect(
+    await devices
+      .locator('figure')
+      .first()
+      .evaluate((node) => node.clientWidth),
+  ).toBe(250);
+});
+
+test('1920 case headings and stats stay on one line', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Desktop-only layout.',
+  );
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('/work/88win/');
+
+  for (const locator of [
+    page.locator('.hero-headline'),
+    page.locator('.hero-stats dd').nth(0),
+    page.locator('.hero-stats dd').nth(1),
+    page.locator('.next-project h2'),
+  ]) {
+    await expect(locator).toHaveCSS('white-space', 'nowrap');
+    expect(
+      await locator.evaluate((node) => node.scrollWidth <= node.clientWidth),
+    ).toBe(true);
+  }
+});
+
+test('home preserves the explicit Figma heading breaks', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#home-heading br')).toHaveCount(1);
+  await expect(page.locator('#about-heading br')).toHaveCount(1);
 });
 
 test('motion steps support roving keyboard navigation', async ({ page }) => {

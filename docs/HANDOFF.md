@@ -3,7 +3,7 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-31)
-- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is in review on PR #14**: Claude's re-review of `b05ef30` is CHANGES REQUESTED (1 × P1, 3 × P2, 1 × P3).
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is in review on PR #14**. ChatGPT has completed Claude's re-review fixes (P1, P2-1–P2-3, P3) and the architecture v1.5 asset alignment; the next action is Claude re-review.
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
@@ -18,9 +18,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **ChatGPT**: fix PR #14 per Claude's re-review, plus the v1.5 asset alignment: hero and mosaic become one composite image each, video posters follow `<video>-poster.jpg`, Details items get `mobileMedia`, and every `expectedFile` matches [`docs/ASSETS.md`](ASSETS.md) (ARCHITECTURE §9.1–9.3 v1.5). Fill the new "Figma vs page" table in the PR.
-2. **Claude**: re-review PR #14. Before M3 starts, write the spec sheet for the next project (`docs/specs/hwa-fong.md`) with Figma reference images, and add its rows to `docs/ASSETS.md`.
-3. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
+1. **Claude**: re-review PR #14. Check the touch-video regression test, 1920 px no-wrap rules, authored hard breaks, mobile scroll-snap rows, derived project total, and the architecture v1.5 media contract. Before M3 starts, write the spec sheet for the next project (`docs/specs/hwa-fong.md`) with Figma reference images, and add its rows to `docs/ASSETS.md`.
+2. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
@@ -75,6 +74,13 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - Card videos are not enabled because no card MP4s have been delivered. `<loop-video>` remains out of scope for M1 under ARCHITECTURE §19 ("if cards use video").
 - Visual QA screenshots: `docs/screenshots/m1-home-desktop.png` (1920 px) and `docs/screenshots/m1-home-mobile.png` (390 px), produced by `scripts/capture-home.mjs` against `pnpm preview`.
 - Local tooling note: if a stale `astro preview` is already listening on port 4321, Playwright reuses it outside CI. Run `CI=true pnpm test:e2e` (or stop the stale server) so tests hit the current build.
+
+## M2 implementation notes
+- Claude re-review: focus / hover playback now runs only on hover-capable, non-reduced-motion devices; explicit mobile tap remains available and is covered by a WebKit touch fixture. Hero heading, stats, and Next Project heading stay on one line at 1920 px. Authored `\n` values render as `<br>`. Mobile close-ups and device panels use keyboard-focusable CSS scroll-snap rows. Next Project derives `/ 07` from the content collection.
+- Architecture v1.5 media: Hero uses one `hero-showcase.jpg` composite (`1920 / 820`, top-aligned); Visual Extension uses one `visual-mosaic.jpg`; motion slots use `960 / 532`; every Details card has desktop and mobile PNG media rendered through `<picture>` at the documented breakpoint.
+- The pending-asset report lists all 30 88Win deliverables from [`docs/ASSETS.md`](ASSETS.md), including `key-main-poster.jpg` and the three motion posters. `check-media.mjs` fails if an 88Win pending filename is not documented.
+- Visual QA: the 18 section screenshots are in [`docs/screenshots/88win/`](screenshots/88win/) and correspond one-to-one with [`docs/specs/88win/`](specs/88win/). The capture script hides the persistent site chrome so each image compares only the matching Figma section.
+- Validation: `CI=true pnpm verify` passes (51 unit tests; 29 E2E tests passed with 3 intentional project-specific skips; all 9 Lighthouse URLs passed).
 
 ## Milestone tracker
 | Milestone | State |

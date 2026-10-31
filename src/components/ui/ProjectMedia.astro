@@ -8,15 +8,21 @@ type Media = ProjectData['hero']['showcase']['items'][number];
 
 interface Props {
   media: Media;
+  mobileMedia?: Media | undefined;
   eager?: boolean;
   class?: string | undefined;
 }
 
-const { class: className, eager = false, media } = Astro.props;
+const { class: className, eager = false, media, mobileMedia } = Astro.props;
 ---
 
 {media.kind === 'image' ? (
-  <ResponsivePicture media={media} eager={eager} class={className} />
+  <ResponsivePicture
+    media={media}
+    mobileMedia={mobileMedia?.kind === 'image' ? mobileMedia : undefined}
+    eager={eager}
+    class={className}
+  />
 ) : (
   <LoopVideo media={media} class={className} />
 )}

@@ -51,15 +51,16 @@ class LoopVideoElement extends HTMLElement {
   };
 
   private handlePointerEnter = () => {
-    if (
-      this.hoverCapable &&
-      !matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      void this.play();
-    }
+    if (this.canAutoPlay()) void this.play();
   };
 
-  private handleEnter = () => void this.play();
+  private handleEnter = () => {
+    if (this.canAutoPlay()) void this.play();
+  };
+
+  private canAutoPlay = () =>
+    this.hoverCapable &&
+    !matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   private handleClick = () => {
     if (!this.video) return;

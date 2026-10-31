@@ -1,4 +1,5 @@
 ---
+/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- The mobile scroll-snap region must be keyboard-scrollable. */
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
 import ProjectMedia from '../ui/ProjectMedia.astro';
@@ -19,7 +20,12 @@ const { data, tone } = Astro.props;
     heading={data.heading}
     subtitle={data.subtitle}
   />
-  <div class="mobile-panels">
+  <div
+    class="mobile-panels swipe-row"
+    tabindex="0"
+    role="region"
+    aria-label="手機畫面"
+  >
     {data.panels.map((panel) => (
       <figure>
         <ProjectMedia media={panel.media} />

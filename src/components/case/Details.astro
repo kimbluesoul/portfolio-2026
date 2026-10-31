@@ -27,7 +27,7 @@ const { data, tone } = Astro.props;
           <strong>{item.title}</strong>
           {item.caption && <span>{item.caption}</span>}
         </figcaption>
-        <ProjectMedia media={item.media} />
+        <ProjectMedia media={item.media} mobileMedia={item.mobileMedia} />
       </figure>
     ))}
   </div>

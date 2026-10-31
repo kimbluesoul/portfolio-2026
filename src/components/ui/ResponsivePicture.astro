@@ -1,34 +1,79 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import MediaFrame from './MediaFrame.astro';
 
+interface ImageMedia {
+  alt: string;
+  aspectRatio?: string | undefined;
+  decorative?: boolean | undefined;
+  expectedFile?: string | undefined;
+  objectPosition?: 'center' | 'top' | undefined;
+  src: ImageMetadata;
+  status?: 'pending' | undefined;
+}
+
 interface Props {
-  media: {
-    alt: string;
-    aspectRatio?: string | undefined;
-    decorative?: boolean | undefined;
-    expectedFile?: string | undefined;
-    src: ImageMetadata;
-    status?: 'pending' | undefined;
-  };
+  media: ImageMedia;
+  mobileMedia?: ImageMedia | undefined;
   eager?: boolean;
   class?: string | undefined;
 }
 
-const { class: className, eager = false, media } = Astro.props;
+const { class: className, eager = false, media, mobileMedia } = Astro.props;
+const frameClass = [
+  className,
+  media.objectPosition === 'top' ? 'object-position-top' : undefined,
+]
+  .filter(Boolean)
+  .join(' ');
+const artDirected = mobileMedia
+  ? await Promise.all([
+      getImage({ src: mobileMedia.src, format: 'avif' }),
+      getImage({ src: mobileMedia.src, format: 'webp' }),
+      getImage({ src: media.src, format: 'avif' }),
+      getImage({ src: media.src, format: 'webp' }),
+      getImage({ src: media.src }),
+    ])
+  : undefined;
 ---
 
 <MediaFrame
   aspectRatio={media.aspectRatio}
-  class={className}
-  pending={media.status === 'pending'}
+  mobileAspectRatio={mobileMedia?.aspectRatio}
+  class={frameClass}
+  pending={media.status === 'pending' || mobileMedia?.status === 'pending'}
 >
-  <Image
-    src={media.src}
-    alt={media.decorative ? '' : media.alt}
-    loading={eager ? 'eager' : 'lazy'}
-    fetchpriority={eager ? 'high' : 'auto'}
-    decoding="async"
-  />
+  {mobileMedia && artDirected ? (
+    <picture>
+      <source
+        media="(width < 48rem)"
+        srcset={artDirected[0].src}
+        type="image/avif"
+      />
+      <source
+        media="(width < 48rem)"
+        srcset={artDirected[1].src}
+        type="image/webp"
+      />
+      <source srcset={artDirected[2].src} type="image/avif" />
+      <source srcset={artDirected[3].src} type="image/webp" />
+      <img
+        src={artDirected[4].src}
+        {...artDirected[4].attributes}
+        alt={media.decorative ? '' : media.alt}
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+        decoding="async"
+      />
+    </picture>
+  ) : (
+    <Image
+      src={media.src}
+      alt={media.decorative ? '' : media.alt}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      decoding="async"
+    />
+  )}
 </MediaFrame>

@@ -14,9 +14,10 @@ import VisualExtension from './VisualExtension.astro';
 interface Props {
   nextProject: CollectionEntry<'projects'>;
   project: CollectionEntry<'projects'>;
+  projectCount: number;
 }
 
-const { nextProject, project } = Astro.props;
+const { nextProject, project, projectCount } = Astro.props;
 const sections = assignTones(
   getCaseSections({
     details: Boolean(project.data.details),
@@ -46,7 +47,13 @@ const sections = assignTones(
       );
     if (key === 'links') return <Links data={project.data.links} tone={tone} />;
     if (key === 'nextProject')
-      return <NextProject next={nextProject} tone={tone} />;
+      return (
+        <NextProject
+          next={nextProject}
+          projectCount={projectCount}
+          tone={tone}
+        />
+      );
     return null;
   })}
 </article>

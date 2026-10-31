@@ -1,4 +1,6 @@
 ---
+import AccentText from '../ui/AccentText.astro';
+
 interface Props {
   body: string;
   heading: string;
@@ -9,9 +11,6 @@ interface Props {
 
 const { body, heading, resumeLabel, skills, tools } = Astro.props;
 const paragraphs = body.split(/\n\n/u);
-// Figma 451:667: the line after the first full-width comma is brand-coloured.
-const [headingLead = heading, ...headingRest] = heading.split(/(?<=，)/u);
-const headingAccent = headingRest.join('');
 const lists = [
   { title: 'TOOLS', items: tools },
   { title: 'SKILLS', items: skills },
@@ -23,8 +22,7 @@ const lists = [
     <div class="about-intro">
       <p class="eyebrow">ABOUT</p>
       <h2 id="about-heading">
-        {headingLead}
-        {headingAccent && <span>{headingAccent}</span>}
+        <AccentText text={heading} />
       </h2>
     </div>
     <div class="about-content">
@@ -86,11 +84,6 @@ const lists = [
     font-size: var(--font-size-about-display);
     font-weight: 700;
     line-height: var(--line-height-display);
-  }
-
-  h2 span {
-    display: block;
-    color: var(--color-text-brand);
   }
 
   .about-content {

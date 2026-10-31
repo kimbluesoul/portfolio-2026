@@ -120,6 +120,9 @@
   --layout-card-gap: var(--space-10);
   --layout-case-copy: 47.5rem;
   --layout-case-narrow: 40rem;
+  --layout-case-stats: 75rem;
+  --size-case-swipe-closeup: 17.5rem;
+  --size-case-swipe-device: 15.625rem;
   --header-height: 5.75rem;
   --header-border-width: 0.0625rem;
   --radius-focus: 0.25rem;

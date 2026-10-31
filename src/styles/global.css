@@ -74,6 +74,10 @@
   }
 }
 
+.accent {
+  color: var(--color-text-brand);
+}
+
 @layer utilities {
   .skip-link {
     position: fixed;

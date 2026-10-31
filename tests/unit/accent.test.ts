@@ -14,4 +14,11 @@ describe('splitAccent', () => {
       { accent: false, text: '一套**介面規則' },
     ]);
   });
+
+  it('preserves explicit line breaks for the renderer', () => {
+    expect(splitAccent('第一行，\n第二行**重點**')).toEqual([
+      { accent: false, text: '第一行，\n第二行' },
+      { accent: true, text: '重點' },
+    ]);
+  });
 });

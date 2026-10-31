@@ -27,22 +27,19 @@ hero:
     - { label: STATUS, value: 已上線 }
     - { label: YEAR, value: 2025–2026 }
   showcase:
-    layout: isometric
+    layout: single
     items:
       - kind: image
         src: ../../assets/placeholders/placeholder.png
-        alt: 88Win PC 首頁案例展示
-        aspectRatio: 16 / 10
+        alt: 88Win PC 與手機首頁案例展示
+        aspectRatio: 1920 / 820
+        objectPosition: top
         status: pending
-        expectedFile: src/assets/projects/88win/hero-desktop.jpg
-      - kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win H5 與 App 案例展示
-        aspectRatio: 9 / 16
-        status: pending
-        expectedFile: src/assets/projects/88win/hero-mobile.jpg
+        expectedFile: src/assets/projects/88win/hero-showcase.jpg
 overview:
-  heading: 一套介面規則，延伸到**三個裝置**
+  heading: |-
+    一套介面規則，
+    延伸到**三個裝置**
   blocks:
     - title: 從零開始的第一版
       body: 88Win 的第一版是我從零開始設計的，PC 和 H5／App 加起來有一百多頁。當時的畫面還沒有現在這麼乾淨，但這是整個平台的起點。
@@ -135,7 +132,7 @@ motion:
         src: /media/88win/motion-1.mp4
         poster: ../../assets/placeholders/placeholder.png
         alt: 滑入遊戲類別互動
-        aspectRatio: 16 / 9
+        aspectRatio: 960 / 532
         status: pending
         expectedFile: public/media/88win/motion-1.mp4
     - title: 02 選擇廠商／遊戲
@@ -145,7 +142,7 @@ motion:
         src: /media/88win/motion-2.mp4
         poster: ../../assets/placeholders/placeholder.png
         alt: 選擇廠商與遊戲互動
-        aspectRatio: 16 / 9
+        aspectRatio: 960 / 532
         status: pending
         expectedFile: public/media/88win/motion-2.mp4
     - title: 03 進入遊戲
@@ -155,7 +152,7 @@ motion:
         src: /media/88win/motion-3.mp4
         poster: ../../assets/placeholders/placeholder.png
         alt: 進入遊戲轉場
-        aspectRatio: 16 / 9
+        aspectRatio: 960 / 532
         status: pending
         expectedFile: public/media/88win/motion-3.mp4
 details:
@@ -171,9 +168,16 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win Icon 元件規格
-        aspectRatio: 701 / 742
+        aspectRatio: 637 / 550
         status: pending
-        expectedFile: src/assets/projects/88win/detail-icon.jpg
+        expectedFile: src/assets/projects/88win/detail-icon.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win Icon 元件規格手機版
+        aspectRatio: 310 / 234
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-icon-mobile.png
     - eyebrow: COLOR
       title: 顏色
       caption: 以主色為中心，往深、淺兩側延伸。名稱裡的 100、200、300 代表深淺階層，工程師對照色票時直接用名稱就能找到對應色碼，不用猜。
@@ -182,9 +186,16 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win 色彩元件規格
-        aspectRatio: 704 / 348
+        aspectRatio: 647 / 140
         status: pending
-        expectedFile: src/assets/projects/88win/detail-color.jpg
+        expectedFile: src/assets/projects/88win/detail-color.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 色彩元件規格手機版
+        aspectRatio: 310 / 280
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-color-mobile.png
     - eyebrow: CATEGORY
       title: 分類側欄
       caption: 分類 icon 走活潑路線，圖案和配色都比較跳；選中時整顆換成主色藍，一眼就知道現在在哪個分類。
@@ -193,9 +204,16 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win 遊戲分類元件規格
-        aspectRatio: 704 / 334
+        aspectRatio: 640 / 134
         status: pending
-        expectedFile: src/assets/projects/88win/detail-category.jpg
+        expectedFile: src/assets/projects/88win/detail-category.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 遊戲分類元件規格手機版
+        aspectRatio: 310 / 268
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-category-mobile.png
     - eyebrow: CARD
       title: 遊戲圖面
       caption: 等比例的遊戲圖面適應各裝置，不用額外重新作圖。
@@ -204,9 +222,16 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win 卡片元件規格
-        aspectRatio: 1440 / 508
+        aspectRatio: 1322 / 300
         status: pending
-        expectedFile: src/assets/projects/88win/detail-card.jpg
+        expectedFile: src/assets/projects/88win/detail-card.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 卡片元件規格手機版
+        aspectRatio: 310 / 707
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-card-mobile.png
     - eyebrow: HEADER
       title: 導覽列
       caption: 登入前引導登入，登入後直接顯示餘額和存、提、轉、VIP 入口。
@@ -215,9 +240,16 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win Header 元件規格
-        aspectRatio: 458.67 / 384
+        aspectRatio: 373 / 148
         status: pending
-        expectedFile: src/assets/projects/88win/detail-header.jpg
+        expectedFile: src/assets/projects/88win/detail-header.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win Header 元件規格手機版
+        aspectRatio: 620 / 225
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-header-mobile.png
     - eyebrow: BUTTON
       title: 按鈕
       caption: 依照擺放的區域和狀態設計不同按鈕，像一般、選中、停用，每個位置都有對應的樣式。
@@ -226,9 +258,16 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win Button 元件規格
-        aspectRatio: 458.67 / 384
+        aspectRatio: 399 / 187
         status: pending
-        expectedFile: src/assets/projects/88win/detail-button.jpg
+        expectedFile: src/assets/projects/88win/detail-button.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win Button 元件規格手機版
+        aspectRatio: 613 / 274
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-button-mobile.png
     - eyebrow: NAVIGATION
       title: 導覽
       caption: App／H5 的底部導覽列。常用入口固定在底部，中間的首頁用圓形按鈕突出。
@@ -237,30 +276,25 @@ details:
         kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: 88Win 手機底部導覽元件規格
-        aspectRatio: 458.67 / 384
+        aspectRatio: 393 / 105
         status: pending
-        expectedFile: src/assets/projects/88win/detail-navigation.jpg
+        expectedFile: src/assets/projects/88win/detail-navigation.png
+      mobileMedia:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 88Win 手機底部導覽元件規格手機版
+        aspectRatio: 310 / 83
+        status: pending
+        expectedFile: src/assets/projects/88win/detail-navigation-mobile.png
 visualExtension:
   variant: mosaic
   items:
     - kind: image
       src: ../../assets/placeholders/placeholder.png
-      alt: 88Win 延伸視覺一
-      aspectRatio: 4 / 5
+      alt: 88Win 延伸視覺拼貼
+      aspectRatio: 1920 / 1280
       status: pending
-      expectedFile: src/assets/projects/88win/visual-1.jpg
-    - kind: image
-      src: ../../assets/placeholders/placeholder.png
-      alt: 88Win 延伸視覺二
-      aspectRatio: 16 / 9
-      status: pending
-      expectedFile: src/assets/projects/88win/visual-2.jpg
-    - kind: image
-      src: ../../assets/placeholders/placeholder.png
-      alt: 88Win 延伸視覺三
-      aspectRatio: 16 / 9
-      status: pending
-      expectedFile: src/assets/projects/88win/visual-3.jpg
+      expectedFile: src/assets/projects/88win/visual-mosaic.jpg
 links:
   eyebrow: PROTOTYPE
   heading: 直接操作原型

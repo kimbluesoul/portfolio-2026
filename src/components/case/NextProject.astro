@@ -6,10 +6,11 @@ import SectionShell from '../ui/SectionShell.astro';
 
 interface Props {
   next: CollectionEntry<'projects'>;
+  projectCount: number;
   tone: SectionTone;
 }
 
-const { next, tone } = Astro.props;
+const { next, projectCount, tone } = Astro.props;
 ---
 
 <SectionShell class="next-project" tone={tone}>
@@ -18,7 +19,8 @@ const { next, tone } = Astro.props;
       ← 所有作品
     </a>
     <p class="case-eyebrow">
-      NEXT PROJECT {String(next.data.order).padStart(2, '0')} / 07
+      NEXT PROJECT {String(next.data.order).padStart(2, '0')} /{' '}
+      {String(projectCount).padStart(2, '0')}
     </p>
   </div>
   <a href={`/work/${next.id}/`}>

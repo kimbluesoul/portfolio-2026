@@ -35,6 +35,7 @@ const projects = defineCollection({
       alt: z.string(),
       decorative: z.boolean().optional(),
       aspectRatio: aspectRatio.optional(),
+      objectPosition: z.enum(['center', 'top']).optional(),
     });
 
     const pendingImageMedia = z.object({
@@ -45,6 +46,7 @@ const projects = defineCollection({
       aspectRatio,
       status: z.literal('pending'),
       expectedFile,
+      objectPosition: z.enum(['center', 'top']).optional(),
     });
 
     const readyVideoMedia = z.object({
@@ -97,6 +99,7 @@ const projects = defineCollection({
       title: z.string().min(1),
       caption: z.string().optional(),
       media,
+      mobileMedia: media.optional(),
       size: z.enum(['third', 'half', 'half-tall', 'full']).optional(),
     });
 

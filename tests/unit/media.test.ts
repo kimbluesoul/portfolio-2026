@@ -4,6 +4,7 @@ import {
   collectPendingMedia,
   inferMediaSlot,
   isWithinMediaLimit,
+  pendingVideoPoster,
 } from '../../src/lib/media';
 
 describe('media helpers', () => {
@@ -49,6 +50,18 @@ describe('media helpers', () => {
         path: 'root.motion[0]',
         project: '88win',
       },
+      {
+        expectedFile: 'src/assets/projects/88win/motion-1-poster.jpg',
+        path: 'root.motion[0]',
+        project: '88win',
+      },
     ]);
+  });
+
+  it('derives the required poster name for pending video assets', () => {
+    expect(pendingVideoPoster('public/media/88win/key-main.mp4')).toBe(
+      'src/assets/projects/88win/key-main-poster.jpg',
+    );
+    expect(pendingVideoPoster('src/assets/projects/88win/card.jpg')).toBeNull();
   });
 });

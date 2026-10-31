@@ -75,10 +75,6 @@
   line-height: var(--line-height-body);
 }
 
-.accent {
-  color: var(--color-text-brand);
-}
-
 .tone-inverse .section-subtitle {
   color: var(--color-text-on-inverse-muted);
 }
@@ -95,6 +91,7 @@
 }
 
 .case-hero .back-link {
+  justify-self: start;
   padding: var(--space-3) var(--space-5);
   border: var(--header-border-width) solid var(--color-border-default);
   border-radius: var(--radius-pill);
@@ -120,7 +117,7 @@
 }
 
 .hero-headline {
-  max-width: var(--layout-case-copy);
+  max-width: var(--layout-case-max);
   color: var(--color-text-primary);
   font-size: var(--font-size-case-headline);
   font-weight: 700;
@@ -134,7 +131,7 @@
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, var(--layout-case-copy));
+  width: min(100%, var(--layout-case-stats));
   margin: 0 auto;
 }
 
@@ -185,6 +182,10 @@
   aspect-ratio: 16 / 10;
 }
 
+.ratio-1920x820 {
+  aspect-ratio: 1920 / 820;
+}
+
 .ratio-9x16 {
   aspect-ratio: 9 / 16;
 }
@@ -225,19 +226,66 @@
   aspect-ratio: 458.67 / 384;
 }
 
+.ratio-960x532 {
+  aspect-ratio: 960 / 532;
+}
+
+.ratio-637x550 {
+  aspect-ratio: 637 / 550;
+}
+
+.ratio-647x140 {
+  aspect-ratio: 647 / 140;
+}
+
+.ratio-640x134 {
+  aspect-ratio: 640 / 134;
+}
+
+.ratio-1322x300 {
+  aspect-ratio: 1322 / 300;
+}
+
+.ratio-373x148 {
+  aspect-ratio: 373 / 148;
+}
+
+.ratio-399x187 {
+  aspect-ratio: 399 / 187;
+}
+
+.ratio-393x105 {
+  aspect-ratio: 393 / 105;
+}
+
+.ratio-1920x1280 {
+  aspect-ratio: 1920 / 1280;
+}
+
 .ratio-4x5 {
   aspect-ratio: 4 / 5;
 }
 
+.object-position-top img {
+  object-position: top;
+}
+
 .media-frame > img,
-.media-frame > video {
+.media-frame > video,
+.media-frame > picture,
+.media-frame > picture > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+.media-frame > picture {
+  display: block;
+}
+
 .media-frame.is-pending > img,
-.media-frame.is-pending > video {
+.media-frame.is-pending > video,
+.media-frame.is-pending > picture {
   opacity: 0;
 }
 
@@ -432,6 +480,8 @@ figcaption strong {
 }
 
 .detail-card .media-frame {
+  width: auto;
+  margin: 0 var(--space-8) var(--space-2);
   border-radius: 0;
 }
 
@@ -445,6 +495,10 @@ figcaption strong {
 .visual-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.visual-grid.variant-mosaic {
+  grid-template-columns: 1fr;
 }
 
 .visual-grid > :first-child {
@@ -619,6 +673,86 @@ figcaption strong {
 }
 
 @media (width < 48rem) {
+  .mobile-ratio-310x234 {
+    aspect-ratio: 310 / 234;
+  }
+
+  .mobile-ratio-310x280 {
+    aspect-ratio: 310 / 280;
+  }
+
+  .mobile-ratio-310x268 {
+    aspect-ratio: 310 / 268;
+  }
+
+  .mobile-ratio-310x707 {
+    aspect-ratio: 310 / 707;
+  }
+
+  .mobile-ratio-620x225 {
+    aspect-ratio: 620 / 225;
+  }
+
+  .mobile-ratio-613x274 {
+    aspect-ratio: 613 / 274;
+  }
+
+  .mobile-ratio-310x83 {
+    aspect-ratio: 310 / 83;
+  }
+
+  .visual-extension .variant-mosaic {
+    --composite-mobile-aspect: 390 / 410;
+    --composite-mobile-width: 157.5%;
+  }
+
+  .case-hero .layout-single {
+    --composite-mobile-aspect: 390 / 312;
+    --composite-mobile-width: 187.2%;
+  }
+
+  :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
+    .media-frame {
+    aspect-ratio: var(--composite-mobile-aspect);
+  }
+
+  :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
+    .media-frame
+    > img,
+  :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
+    .media-frame
+    > picture
+    > img {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 50%;
+    width: var(--composite-mobile-width);
+    max-width: none;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  .swipe-row {
+    grid-auto-flow: column;
+    gap: var(--space-3);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: var(--space-5);
+    scroll-snap-type: x mandatory;
+  }
+
+  .caption-grid {
+    grid-auto-columns: var(--size-case-swipe-closeup);
+  }
+
+  .mobile-panels {
+    grid-auto-columns: var(--size-case-swipe-device);
+  }
+
+  .swipe-row > figure {
+    scroll-snap-align: start;
+  }
+
   .hero-stats div {
     border-block-start: var(--header-border-width) solid
       var(--color-border-default);
@@ -632,5 +766,13 @@ figcaption strong {
   .next-topline {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (width >= 90rem) {
+  .hero-headline,
+  .hero-stats dd,
+  .next-project h2 {
+    white-space: nowrap;
   }
 }
