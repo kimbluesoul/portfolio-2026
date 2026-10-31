@@ -147,6 +147,43 @@ test('home renders the complete ordered project index', async ({ page }) => {
   ]);
 });
 
+test('home starts no media requests before load', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.addEventListener(
+      'load',
+      () => {
+        const navigation = performance.getEntriesByType(
+          'navigation',
+        )[0] as PerformanceNavigationTiming;
+        (
+          window as typeof window & { __mediaRequestsBeforeLoad?: string[] }
+        ).__mediaRequestsBeforeLoad = performance
+          .getEntriesByType('resource')
+          .filter(
+            (entry) =>
+              new URL(entry.name).pathname.startsWith('/media/') &&
+              entry.startTime < navigation.loadEventStart,
+          )
+          .map((entry) => entry.name);
+      },
+      { once: true },
+    );
+  });
+
+  await page.goto('/');
+
+  expect(
+    await page.evaluate(
+      () =>
+        (
+          window as typeof window & {
+            __mediaRequestsBeforeLoad?: string[];
+          }
+        ).__mediaRequestsBeforeLoad ?? [],
+    ),
+  ).toEqual([]);
+});
+
 test('home uses the approved copy, links, and card assets', async ({
   page,
 }) => {
@@ -192,10 +229,21 @@ test('home uses the approved copy, links, and card assets', async ({
     const text = (await cards.nth(index).textContent()) ?? '';
     for (const value of copy) expect(text).toContain(value);
   }
-  await expect(page.locator('#work picture img')).toHaveCount(7);
-  for (const image of await page.locator('#work picture img').all()) {
-    await expect(image).toHaveAttribute('src', /\/_astro\/card\./u);
-  }
+  await expect(page.locator('#work loop-video')).toHaveCount(7);
+  await expect(page.locator('#work loop-video video')).toHaveCount(8);
+  await expect(
+    page.locator('#work picture:has(> img.composite-background)'),
+  ).toHaveCount(1);
+  expect(
+    await page
+      .locator('#work article')
+      .nth(1)
+      .locator('video source')
+      .evaluate(
+        (source) =>
+          source.getAttribute('src') ?? source.getAttribute('data-src'),
+      ),
+  ).toBe('/media/hwa-fong/card.mp4');
 
   await expect(
     page.getByText('Thanks for scrolling.', { exact: true }),
@@ -236,8 +284,8 @@ test('88Win renders the M2 case template and pending-media contract', async ({
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
   await expect(page.getByText('素材待補', { exact: true })).toHaveCount(19);
-  await expect(page.locator('loop-video')).toHaveCount(4);
-  await expect(page.locator('loop-video video source')).toHaveCount(0);
+  await expect(page.locator('loop-video')).toHaveCount(5);
+  await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
   await expect(page.locator('.detail-card picture')).toHaveCount(7);
@@ -272,48 +320,144 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await expect(page.getByText('NEXT PROJECT 02 / 07')).toBeVisible();
 });
 
-test('touch tap starts a ready loop video without focus cancelling it', async ({
-  page,
-}, testInfo) => {
-  test.skip(testInfo.project.name !== 'webkit-iphone', 'Touch-only behavior.');
-  await page.goto('/work/88win/');
-  await page.evaluate(() => {
-    Object.defineProperty(HTMLMediaElement.prototype, 'paused', {
+const stubMediaPlayback = async (page: import('@playwright/test').Page) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(HTMLMediaElement.prototype, 'readyState', {
       configurable: true,
-      get(this: HTMLMediaElement) {
-        return this.dataset.testPlaying !== 'true';
+      get: () => HTMLMediaElement.HAVE_FUTURE_DATA,
+    });
+    Object.defineProperty(HTMLMediaElement.prototype, 'load', {
+      configurable: true,
+      value(this: HTMLMediaElement) {
+        this.dispatchEvent(new Event('canplay'));
       },
     });
     Object.defineProperty(HTMLMediaElement.prototype, 'play', {
       configurable: true,
       value(this: HTMLMediaElement) {
-        this.dataset.testPlaying = 'true';
+        const count = Number(this.dataset.testPlayCount ?? '0') + 1;
+        this.dataset.testPlayCount = String(count);
         return Promise.resolve();
       },
     });
     Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
       configurable: true,
-      value(this: HTMLMediaElement) {
-        this.dataset.testPlaying = 'false';
-      },
+      value() {},
     });
+  });
+};
 
-    const fixture = document.createElement('loop-video');
-    fixture.id = 'touch-video-fixture';
-    fixture.dataset.state = 'ready';
-    fixture.setAttribute('role', 'button');
-    fixture.setAttribute('tabindex', '0');
-    fixture.style.width = '100px';
-    fixture.style.height = '100px';
-    fixture.innerHTML = '<video muted playsinline loop></video>';
-    document.body.prepend(fixture);
+test('loop video lazy-loads, plays once in view, and ends without looping', async ({
+  page,
+}) => {
+  await stubMediaPlayback(page);
+  await page.goto('/');
+
+  const card = page.locator('#work article').last();
+  const player = card.locator('loop-video');
+  const video = player.locator('video');
+  const source = video.locator('source');
+  await expect(source).not.toHaveAttribute('src', /.+/u);
+
+  await card.scrollIntoViewIfNeeded();
+  await expect(source).toHaveAttribute('src', '/media/huifa/card.mp4');
+  await expect(player).toHaveAttribute('data-state', 'playing');
+  expect(await video.evaluate((node) => (node as HTMLVideoElement).loop)).toBe(
+    false,
+  );
+
+  await video.evaluate((node) => node.dispatchEvent(new Event('ended')));
+  await expect(player).toHaveAttribute('data-state', 'ended');
+  await expect(video).toHaveAttribute('data-test-play-count', '1');
+});
+
+test('reduced motion keeps scroll playback idle but still allows hover replay', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Fine-pointer behavior.',
+  );
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await stubMediaPlayback(page);
+  await page.goto('/');
+
+  const card = page.locator('#work article').last();
+  const player = card.locator('loop-video');
+  const video = player.locator('video');
+  await card.scrollIntoViewIfNeeded();
+  await expect(video.locator('source')).toHaveAttribute(
+    'src',
+    '/media/huifa/card.mp4',
+  );
+  await expect(player).toHaveAttribute('data-state', 'idle');
+  await expect(video).not.toHaveAttribute('data-test-play-count', /.+/u);
+
+  await card.locator('a').hover();
+  await expect(player).toHaveAttribute('data-state', 'playing');
+  await expect(video).toHaveAttribute('data-test-play-count', '1');
+});
+
+test('Save-Data prevents playback on entry', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'connection', {
+      configurable: true,
+      value: { saveData: true },
+    });
+  });
+  await stubMediaPlayback(page);
+  await page.goto('/');
+
+  const card = page.locator('#work article').last();
+  const player = card.locator('loop-video');
+  await card.scrollIntoViewIfNeeded();
+  await expect(player.locator('source')).toHaveAttribute(
+    'src',
+    '/media/huifa/card.mp4',
+  );
+  await expect(player).toHaveAttribute('data-state', 'idle');
+  await expect(player.locator('video')).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
+});
+
+test('fine-pointer hover replays from the beginning', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Fine-pointer behavior.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/');
+
+  const card = page.locator('#work article').last();
+  const player = card.locator('loop-video');
+  const video = player.locator('video');
+  await card.scrollIntoViewIfNeeded();
+  await expect(player).toHaveAttribute('data-state', 'playing');
+  await video.evaluate((node) => {
+    (node as HTMLVideoElement).currentTime = 4;
   });
 
-  const fixture = page.locator('#touch-video-fixture');
-  await fixture.focus();
-  await expect(fixture).toHaveAttribute('data-state', 'ready');
-  await fixture.click();
-  await expect(fixture).toHaveAttribute('data-state', 'playing');
+  await card.locator('a').hover();
+  await expect(video).toHaveAttribute('data-test-play-count', '2');
+  expect(
+    await video.evaluate((node) => (node as HTMLVideoElement).currentTime),
+  ).toBe(0);
+});
+
+test('tapping a card video follows its link instead of replaying', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'webkit-iphone', 'Touch-only behavior.');
+  await stubMediaPlayback(page);
+  await page.goto('/');
+
+  const card = page.locator('#work article').first();
+  await card.locator('.media').tap();
+  await expect(page).toHaveURL(/\/work\/88win\/$/u);
 });
 
 test('case swipe rows match the mobile Figma widths', async ({

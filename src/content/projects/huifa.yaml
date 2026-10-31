@@ -4,14 +4,15 @@ nameZh: 匯發營造
 card:
   summary: &summary 客戶不想要一般網站的瀏覽方式，於是像排投影片一樣，設計每段內容怎麼進場、怎麼轉到下一段。
   tags: [已上線, UI設計, Motion, 企業網站, 2024–2025]
-  media: &card
-    kind: image
-    src: ../../assets/projects/huifa/card.jpg
+  media: &cardVideo
+    kind: video
+    src: /media/huifa/card.mp4
+    poster: ../../assets/projects/huifa/card-poster.jpg
     alt: 匯發營造網站作品預覽
 seo:
   title: 匯發營造 HUIFA｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
 hero:
   eyebrow: *todo
   title: *todo
@@ -22,7 +23,13 @@ hero:
     - { label: *todo, value: *todo }
     - { label: *todo, value: *todo }
     - { label: *todo, value: *todo }
-  showcase: { layout: single, items: [*card] }
+  showcase:
+    layout: single
+    items:
+      - &card
+        kind: image
+        src: ../../assets/projects/huifa/card.jpg
+        alt: 匯發營造網站作品預覽
 overview:
   heading: *todo
   blocks:

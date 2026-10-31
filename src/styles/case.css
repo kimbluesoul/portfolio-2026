@@ -614,7 +614,12 @@ figcaption strong {
 }
 
 .next-preview {
+  display: block;
   aspect-ratio: 1440 / 741;
+}
+
+.next-preview .media-frame {
+  aspect-ratio: inherit;
 }
 
 .next-name-break {

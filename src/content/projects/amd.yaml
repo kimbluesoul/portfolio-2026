@@ -4,14 +4,15 @@ nameZh: 康健生醫
 card:
   summary: &summary 客群在海外，以英文開版避免換語系跑版；依客戶指定的內容與動態，重新設計產品區與描線產品圖。
   tags: [已上線, UI設計, 互動設計, 企業網站, 2024–2025]
-  media: &card
-    kind: image
-    src: ../../assets/projects/amd/card.jpg
+  media: &cardVideo
+    kind: video
+    src: /media/amd/card.mp4
+    poster: ../../assets/projects/amd/card-poster.jpg
     alt: AMD 網站作品預覽
 seo:
   title: 康健生醫 AMD｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
 hero:
   eyebrow: *todo
   title: *todo
@@ -22,7 +23,13 @@ hero:
     - { label: *todo, value: *todo }
     - { label: *todo, value: *todo }
     - { label: *todo, value: *todo }
-  showcase: { layout: single, items: [*card] }
+  showcase:
+    layout: single
+    items:
+      - &card
+        kind: image
+        src: ../../assets/projects/amd/card.jpg
+        alt: AMD 網站作品預覽
 overview:
   heading: *todo
   blocks:
