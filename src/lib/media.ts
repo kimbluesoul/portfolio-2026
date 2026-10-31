@@ -7,8 +7,15 @@ export const MEDIA_SIZE_LIMITS = {
 } as const satisfies Record<MediaSlot, number>;
 
 export interface PendingMedia {
+  expectedFile: string;
   path: string;
-  src: string;
+  project: string;
+}
+
+export function pendingVideoPoster(expectedFile: string): string | null {
+  const match = expectedFile.match(/^public\/media\/([a-z0-9-]+)\/(.+)\.mp4$/u);
+  if (!match?.[1] || !match[2]) return null;
+  return `src/assets/projects/${match[1]}/${match[2]}-poster.jpg`;
 }
 
 export function inferMediaSlot(fileName: string): MediaSlot {
@@ -34,11 +41,27 @@ export function collectPendingMedia(
   if (typeof value !== 'object' || value === null) return [];
 
   const record = value as Record<string, unknown>;
-  const current =
-    record.kind === 'video' &&
+  const current: PendingMedia[] =
+    (record.kind === 'video' || record.kind === 'image') &&
     record.status === 'pending' &&
-    typeof record.src === 'string'
-      ? [{ path, src: record.src }]
+    typeof record.expectedFile === 'string'
+      ? (() => {
+          const project =
+            record.expectedFile.match(
+              /(?:projects|media)\/([a-z0-9-]+)\//u,
+            )?.[1] ?? 'unknown';
+          const files = [record.expectedFile];
+          const poster =
+            record.kind === 'video'
+              ? pendingVideoPoster(record.expectedFile)
+              : null;
+          if (poster) files.push(poster);
+          return files.map((expectedFile) => ({
+            expectedFile,
+            path,
+            project,
+          }));
+        })()
       : [];
 
   const nested = Object.entries(record).flatMap(([key, nestedValue]) =>

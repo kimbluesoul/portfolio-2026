@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import AccentText from '../ui/AccentText.astro';
+import ProjectMedia from '../ui/ProjectMedia.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  tone: SectionTone;
+}
+
+const { project, tone } = Astro.props;
+const { hero } = project.data;
+---
+
+<SectionShell class="case-hero" tone={tone}>
+  <a class="back-link" href="/#work">
+    ← 所有作品
+  </a>
+  <div class="hero-copy">
+    <p class="case-eyebrow">{hero.eyebrow}</p>
+    <h1>{hero.title}</h1>
+    <p class="hero-headline">
+      <AccentText text={hero.headline} />
+    </p>
+    <p class="hero-subtitle">{hero.subtitle}</p>
+  </div>
+  <dl class="hero-stats">
+    {hero.stats.map((stat) => (
+      <div>
+        <dt>{stat.label}</dt>
+        <dd>{stat.value}</dd>
+      </div>
+    ))}
+  </dl>
+  <div class:list={['hero-showcase', `layout-${hero.showcase.layout}`]}>
+    {hero.showcase.items.map((media, index) => (
+      <ProjectMedia media={media} eager={index === 0} />
+    ))}
+  </div>
+</SectionShell>

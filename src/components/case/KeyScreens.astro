@@ -1,0 +1,40 @@
+---
+/* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- The mobile scroll-snap region must be keyboard-scrollable. */
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import ProjectMedia from '../ui/ProjectMedia.astro';
+import SectionIntro from '../ui/SectionIntro.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  data: CollectionEntry<'projects'>['data']['keyScreens'];
+  tone: SectionTone;
+}
+
+const { data, tone } = Astro.props;
+---
+
+<SectionShell class="key-screens" tone={tone}>
+  <SectionIntro
+    eyebrow={data.eyebrow}
+    heading={data.heading}
+    subtitle={data.subtitle}
+  />
+  <ProjectMedia media={data.main} />
+  <div
+    class="caption-grid swipe-row"
+    tabindex="0"
+    role="region"
+    aria-label="主要畫面特寫"
+  >
+    {data.closeups.map((item) => (
+      <figure>
+        <ProjectMedia media={item.media} />
+        <figcaption>
+          <strong>{item.title}</strong>
+          {item.caption}
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</SectionShell>

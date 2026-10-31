@@ -1,0 +1,38 @@
+---
+interface Props {
+  aspectRatio?: string | undefined;
+  class?: string | undefined;
+  mobileAspectRatio?: string | undefined;
+  pending?: boolean;
+}
+
+const {
+  aspectRatio = '16 / 9',
+  class: className,
+  mobileAspectRatio,
+  pending = false,
+} = Astro.props;
+const ratioClassName = (prefix: string, ratio: string) =>
+  `${prefix}-${ratio
+    .replaceAll(' ', '')
+    .replaceAll('.', '_')
+    .replace('/', 'x')}`;
+const ratioClass = ratioClassName('ratio', aspectRatio);
+const mobileRatioClass = mobileAspectRatio
+  ? ratioClassName('mobile-ratio', mobileAspectRatio)
+  : undefined;
+---
+
+<div
+  class:list={[
+    'media-frame',
+    ratioClass,
+    mobileRatioClass,
+    className,
+    { 'is-pending': pending },
+  ]}
+  data-pending={pending ? '' : undefined}
+>
+  <slot />
+  {pending && <span class="pending-label">素材待補</span>}
+</div>

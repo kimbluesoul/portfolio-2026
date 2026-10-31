@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import ProjectMedia from '../ui/ProjectMedia.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  data: NonNullable<CollectionEntry<'projects'>['data']['visualExtension']>;
+  tone: SectionTone;
+}
+
+const { data, tone } = Astro.props;
+---
+
+<SectionShell class="visual-extension" tone={tone}>
+  <h2 class="visually-hidden">Visual extension</h2>
+  <div class:list={['visual-grid', `variant-${data.variant}`]}>
+    {data.items.map((media) => (
+      <ProjectMedia media={media} />
+    ))}
+  </div>
+</SectionShell>

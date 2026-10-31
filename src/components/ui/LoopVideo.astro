@@ -1,0 +1,47 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import MediaFrame from './MediaFrame.astro';
+
+interface Props {
+  media: {
+    alt: string;
+    aspectRatio?: string | undefined;
+    expectedFile?: string | undefined;
+    poster: ImageMetadata;
+    src: string;
+    status?: 'pending' | undefined;
+  };
+  class?: string | undefined;
+}
+
+const { class: className, media } = Astro.props;
+const pending = media.status === 'pending';
+const poster = await getImage({ src: media.poster, format: 'webp' });
+---
+
+<loop-video
+  class={className}
+  data-state={pending ? 'pending' : 'ready'}
+  aria-label={media.alt}
+  role={pending ? undefined : 'button'}
+  tabindex={pending ? undefined : '0'}
+>
+  <MediaFrame aspectRatio={media.aspectRatio} pending={pending}>
+    <video
+      muted
+      playsinline
+      loop
+      preload="none"
+      poster={poster.src}
+      aria-label={media.alt}
+    >
+      {!pending && <source src={media.src} type="video/mp4" />}
+    </video>
+    {!pending && (
+      <span class="play-indicator" aria-hidden="true">
+        <span></span>
+      </span>
+    )}
+  </MediaFrame>
+</loop-video>

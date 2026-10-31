@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import ProjectMedia from '../ui/ProjectMedia.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  next: CollectionEntry<'projects'>;
+  projectCount: number;
+  tone: SectionTone;
+}
+
+const { next, projectCount, tone } = Astro.props;
+---
+
+<SectionShell class="next-project" tone={tone}>
+  <div class="next-topline">
+    <a class="back-link" href="/#work">
+      ← 所有作品
+    </a>
+    <p class="case-eyebrow">
+      NEXT PROJECT {String(next.data.order).padStart(2, '0')} /{' '}
+      {String(projectCount).padStart(2, '0')}
+    </p>
+  </div>
+  <a href={`/work/${next.id}/`}>
+    <div class="next-heading">
+      <h2>{next.data.name}</h2>
+      <span class="next-arrow" aria-hidden="true">
+        →
+      </span>
+    </div>
+    <p class="next-meta">{next.data.next.meta}</p>
+    <p class="next-body">{next.data.next.oneLiner}</p>
+    <ProjectMedia media={next.data.next.media} />
+  </a>
+</SectionShell>

@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { SectionTone } from '../../lib/sections';
+import ProjectMedia from '../ui/ProjectMedia.astro';
+import SectionIntro from '../ui/SectionIntro.astro';
+import SectionShell from '../ui/SectionShell.astro';
+
+interface Props {
+  data: NonNullable<CollectionEntry<'projects'>['data']['details']>;
+  tone: SectionTone;
+}
+
+const { data, tone } = Astro.props;
+---
+
+<SectionShell class="details" tone={tone}>
+  <SectionIntro
+    eyebrow={data.eyebrow}
+    heading={data.heading}
+    subtitle={data.subtitle}
+  />
+  <div class="details-grid">
+    {data.items.map((item) => (
+      <figure class={`detail-card size-${item.size ?? 'half'}`}>
+        <figcaption>
+          {item.eyebrow && <span class="detail-eyebrow">{item.eyebrow}</span>}
+          <strong>{item.title}</strong>
+          {item.caption && <span>{item.caption}</span>}
+        </figcaption>
+        <ProjectMedia media={item.media} mobileMedia={item.mobileMedia} />
+      </figure>
+    ))}
+  </div>
+</SectionShell>

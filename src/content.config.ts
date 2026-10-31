@@ -22,23 +22,58 @@ const projects = defineCollection({
       projectSlug.parse(entry.replace(/\.(?:yaml|yml)$/u, '')),
   }),
   schema: ({ image }) => {
-    const imageMedia = z.object({
+    const expectedFile = z
+      .string()
+      .regex(/^(?:src\/assets\/projects|public\/media)\/[a-z0-9-]+\/.+/);
+    const aspectRatio = z
+      .string()
+      .regex(/^\d+(?:\.\d+)?\s*\/\s*\d+(?:\.\d+)?$/);
+
+    const readyImageMedia = z.object({
       kind: z.literal('image'),
       src: image(),
       alt: z.string(),
       decorative: z.boolean().optional(),
+      aspectRatio: aspectRatio.optional(),
+      objectPosition: z.enum(['center', 'top']).optional(),
     });
 
-    const videoMedia = z.object({
+    const pendingImageMedia = z.object({
+      kind: z.literal('image'),
+      src: image(),
+      alt: z.string(),
+      decorative: z.boolean().optional(),
+      aspectRatio,
+      status: z.literal('pending'),
+      expectedFile,
+      objectPosition: z.enum(['center', 'top']).optional(),
+    });
+
+    const readyVideoMedia = z.object({
       kind: z.literal('video'),
       src: z.string().regex(/^\/media\/.+\.mp4$/),
       poster: image(),
       alt: z.string().min(1),
-      status: z.enum(['ready', 'pending']).optional(),
+      aspectRatio: aspectRatio.optional(),
+    });
+
+    const pendingVideoMedia = z.object({
+      kind: z.literal('video'),
+      src: z.string().regex(/^\/media\/.+\.mp4$/),
+      poster: image(),
+      alt: z.string().min(1),
+      aspectRatio,
+      status: z.literal('pending'),
+      expectedFile,
     });
 
     const media = z
-      .union([imageMedia, videoMedia])
+      .union([
+        pendingImageMedia,
+        pendingVideoMedia,
+        readyImageMedia,
+        readyVideoMedia,
+      ])
       .superRefine((value, context) => {
         if (
           value.kind === 'image' &&
@@ -57,6 +92,15 @@ const projects = defineCollection({
       title: z.string().min(1),
       caption: z.string().optional(),
       media,
+    });
+
+    const detailItem = z.object({
+      eyebrow: z.string().min(1).optional(),
+      title: z.string().min(1),
+      caption: z.string().optional(),
+      media,
+      mobileMedia: media.optional(),
+      size: z.enum(['third', 'half', 'half-tall', 'full']).optional(),
     });
 
     const stat = z.object({
@@ -142,11 +186,7 @@ const projects = defineCollection({
           eyebrow: z.string().min(1),
           heading: z.string().min(1),
           subtitle: z.string().min(1),
-          items: z
-            .array(captioned)
-            .refine((items) => items.length === 3 || items.length === 6, {
-              message: 'Details must contain exactly 3 or 6 items.',
-            }),
+          items: z.array(detailItem).min(1).max(8),
         })
         .optional(),
       visualExtension: z
@@ -163,6 +203,7 @@ const projects = defineCollection({
           .array(
             z.object({
               kind: z.enum(['prototype', 'live', 'demo']),
+              eyebrow: z.string().min(1),
               label: z.string().min(1),
               description: z.string().min(1),
               url: contentUrl,

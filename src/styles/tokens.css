@@ -70,6 +70,18 @@
   --font-size-home-eyebrow: clamp(1.625rem, 1.012rem + 2.436vw, 4rem);
   --font-size-home-display: clamp(1.875rem, 1.327rem + 2.179vw, 4rem);
   --font-size-about-display: clamp(1.875rem, 1.52rem + 1.41vw, 3.25rem);
+
+  /* Case-study type: desktop 360:251, mobile 475:953. */
+  --font-size-case-eyebrow: clamp(0.875rem, 0.843rem + 0.131vw, 1rem);
+  --font-size-case-title: clamp(4rem, 1.5rem + 10vw, 10rem);
+  --font-size-case-headline: clamp(2rem, 1.613rem + 1.588vw, 3.5rem);
+  --font-size-case-heading: clamp(2rem, 1.548rem + 1.853vw, 3.75rem);
+  --font-size-case-subheading: clamp(1.25rem, 1.056rem + 0.794vw, 2rem);
+  --font-size-case-subtitle: clamp(1rem, 0.935rem + 0.265vw, 1.25rem);
+  --font-size-case-stat: clamp(1.25rem, 1.121rem + 0.529vw, 1.75rem);
+  --font-size-link-title: clamp(1.75rem, 1.621rem + 0.529vw, 2.25rem);
+  --font-size-next-title: clamp(3.5rem, 1.758rem + 7.147vw, 10.25rem);
+  --size-next-arrow: clamp(5.5rem, 4.08rem + 5.823vw, 11rem);
   --line-height-label: 1.25;
   --line-height-body: clamp(1.65, 2.194 - 0.454vw, 1.75);
   --line-height-body-tight: 1.2778;
@@ -106,6 +118,11 @@
   --layout-page-gutter: clamp(var(--space-5), 5vw, var(--space-24));
   --layout-mobile-content: 21.875rem;
   --layout-card-gap: var(--space-10);
+  --layout-case-copy: 47.5rem;
+  --layout-case-narrow: 40rem;
+  --layout-case-stats: 75rem;
+  --size-case-swipe-closeup: 17.5rem;
+  --size-case-swipe-device: 15.625rem;
   --header-height: 5.75rem;
   --header-border-width: 0.0625rem;
   --radius-focus: 0.25rem;
@@ -116,6 +133,8 @@
   /* Tag chip radius 4 (465:1045). */
   --radius-tag: 0.25rem;
   --radius-pill: 999px;
+  --radius-media: var(--space-4);
+  --radius-control: var(--space-2);
 
   /* Minimum interactive target (ARCHITECTURE §10). */
   --tap-target-min: 2.75rem;
