@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets';
+import { getImage, Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -10,9 +10,18 @@ interface Props {
 const { project, featured = false } = Astro.props;
 const number = String(project.data.order).padStart(2, '0');
 const media = project.data.card.media;
-if (media.kind !== 'image') {
-  throw new Error(`Home card ${project.id} must use an image.`);
-}
+const poster =
+  media.kind === 'video'
+    ? await getImage({ src: media.poster, format: 'webp' })
+    : undefined;
+const desktopPoster =
+  media.kind === 'composite'
+    ? await getImage({ src: media.desktop.poster, format: 'webp' })
+    : undefined;
+const phonePoster =
+  media.kind === 'composite'
+    ? await getImage({ src: media.phone.poster, format: 'webp' })
+    : undefined;
 const widths = featured ? [350, 700, 1152, 1728] : [350, 700, 844];
 const sizes = featured
   ? '(min-width: 48rem) calc(100vw - 12rem), calc(100vw - 2.5rem)'
@@ -23,16 +32,75 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
 <article class:list={['project-card', { featured }]}>
   <a href={`/work/${project.id}/`}>
     <div class="media">
-      <Picture
-        src={media.src}
-        alt={media.alt}
-        formats={['avif', 'webp']}
-        widths={widths}
-        sizes={sizes}
-        loading={featured ? 'eager' : 'lazy'}
-        fetchpriority={featured ? 'high' : 'auto'}
-        decoding="async"
-      />
+      {media.kind === 'image' && (
+        <Picture
+          src={media.src}
+          alt={media.alt}
+          formats={['avif', 'webp']}
+          widths={widths}
+          sizes={sizes}
+          loading={featured ? 'eager' : 'lazy'}
+          fetchpriority={featured ? 'high' : 'auto'}
+          decoding="async"
+        />
+      )}
+      {media.kind === 'video' && (
+        <loop-video data-state="idle" role="img" aria-label={media.alt}>
+          <video
+            muted
+            playsinline
+            controls
+            preload="none"
+            data-poster={poster?.src}
+            aria-hidden="true"
+          >
+            <source data-src={media.src} type="video/mp4" />
+          </video>
+        </loop-video>
+      )}
+      {media.kind === 'composite' && (
+        <>
+          <Picture
+            class="composite-background"
+            src={media.background.src}
+            alt={media.alt}
+            formats={['avif', 'webp']}
+            widths={widths}
+            sizes={sizes}
+            width={1728}
+            height={500}
+            loading="eager"
+            fetchpriority="high"
+            decoding="sync"
+          />
+          <template data-deferred-loop-video>
+            <loop-video class="card-composite" data-state="idle">
+              <video
+                class="composite-pc"
+                muted
+                playsinline
+                controls
+                preload="none"
+                data-poster={desktopPoster?.src}
+                aria-hidden="true"
+              >
+                <source data-src={media.desktop.src} type="video/mp4" />
+              </video>
+              <video
+                class="composite-phone"
+                muted
+                playsinline
+                controls
+                preload="none"
+                data-poster={phonePoster?.src}
+                aria-hidden="true"
+              >
+                <source data-src={media.phone.src} type="video/mp4" />
+              </video>
+            </loop-video>
+          </template>
+        </>
+      )}
     </div>
     <div class="card-copy">
       <div class="card-heading">
@@ -66,6 +134,7 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
   }
 
   .media {
+    position: relative;
     overflow: hidden;
     aspect-ratio: 350 / 166;
     border-radius: var(--radius-card);
@@ -83,6 +152,59 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
     object-fit: cover;
     object-position: center;
   }
+
+  /* stylelint-disable selector-pseudo-class-no-unknown */
+  .media :global(loop-video),
+  .media :global(video) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .media :global(video) {
+    object-fit: cover;
+  }
+
+  .media :global(.card-composite) {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .media :global(.card-composite[data-state='idle']) {
+    visibility: hidden;
+  }
+
+  .composite-background {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 55% 48%;
+  }
+
+  .media :global(.card-composite .composite-pc),
+  .media :global(.card-composite .composite-phone) {
+    position: absolute;
+  }
+
+  .media :global(.card-composite .composite-pc) {
+    top: 0;
+    left: -0.5714%;
+    width: 100.8571%;
+    height: 100%;
+  }
+
+  .media :global(.card-composite .composite-phone) {
+    top: 50%;
+    left: 76%;
+    width: 16.5714%;
+    height: 60%;
+    overflow: hidden;
+    border-radius: 15% / 7.25%;
+  }
+  /* stylelint-enable selector-pseudo-class-no-unknown */
 
   /* Copy block: mobile 474:1129 (gap 10), desktop 465:1055 (gap 16), featured 465:943 (gap 18, inset 10). */
   .card-copy {
@@ -173,6 +295,26 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
       aspect-ratio: 1728 / 500;
     }
 
+    /* stylelint-disable selector-pseudo-class-no-unknown */
+    .composite-background {
+      object-position: 50% 48%;
+    }
+
+    .media :global(.card-composite .composite-pc) {
+      top: 16.2%;
+      left: 22.9745%;
+      width: 48.8426%;
+      height: 95.4%;
+    }
+
+    .media :global(.card-composite .composite-phone) {
+      top: 50%;
+      left: 68.5764%;
+      width: 8.4491%;
+      height: 60.2%;
+    }
+    /* stylelint-enable selector-pseudo-class-no-unknown */
+
     .card-copy,
     .card-heading {
       gap: var(--space-4);
@@ -196,3 +338,5 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
     }
   }
 </style>
+
+<script src="../../elements/loop-video.ts"></script>

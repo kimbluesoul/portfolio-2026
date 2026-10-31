@@ -4,10 +4,24 @@ nameZh: 線上娛樂城
 card:
   summary: &summary 整理 PC、H5 與 App 的介面規則，讓不同裝置上的操作與視覺維持一致
   tags: [已上線, UI設計, 互動設計, PC / H5 / App, 2025–2026]
-  media: &card
-    kind: image
-    src: ../../assets/projects/88win/card.jpg
+  media:
+    kind: composite
     alt: 88Win 網站作品預覽
+    background:
+      kind: image
+      src: ../../assets/projects/88win/card-bg.jpg
+      alt: ''
+      decorative: true
+    desktop:
+      kind: video
+      src: /media/88win/card-pc.mp4
+      poster: ../../assets/projects/88win/card-pc-poster.jpg
+      alt: 88Win PC 介面動態預覽
+    phone:
+      kind: video
+      src: /media/88win/card-mobile.mp4
+      poster: ../../assets/projects/88win/card-mobile-poster.jpg
+      alt: 88Win 手機介面動態預覽
   featured: true
 seo:
   title: 線上娛樂城 88Win｜周泫淇 Syuan Ci
@@ -15,7 +29,11 @@ seo:
 next:
   oneLiner: 整理 PC、H5 與 App 的介面規則，讓不同裝置上的操作與視覺維持一致。
   meta: 線上娛樂城　·　網站　·　UI 設計　·　互動設計　·　2025–2026
-  media: *card
+  media:
+    kind: video
+    src: /media/88win/card-pc.mp4
+    poster: ../../assets/projects/88win/card-pc-poster.jpg
+    alt: 88Win PC 介面動態預覽
 hero:
   eyebrow: CASE STUDY 01 · 線上娛樂平台
   title: 88WIN

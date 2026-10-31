@@ -22,26 +22,25 @@ const poster = await getImage({ src: media.poster, format: 'webp' });
 
 <loop-video
   class={className}
-  data-state={pending ? 'pending' : 'ready'}
+  data-state={pending ? 'pending' : 'idle'}
   aria-label={media.alt}
-  role={pending ? undefined : 'button'}
-  tabindex={pending ? undefined : '0'}
 >
   <MediaFrame aspectRatio={media.aspectRatio} pending={pending}>
     <video
       muted
       playsinline
-      loop
+      controls
       preload="none"
       poster={poster.src}
       aria-label={media.alt}
     >
-      {!pending && <source src={media.src} type="video/mp4" />}
+      {!pending && <source data-src={media.src} type="video/mp4" />}
     </video>
-    {!pending && (
-      <span class="play-indicator" aria-hidden="true">
-        <span></span>
-      </span>
-    )}
   </MediaFrame>
 </loop-video>
+
+<style>
+  loop-video {
+    display: block;
+  }
+</style>

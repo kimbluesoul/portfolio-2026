@@ -4,14 +4,15 @@ nameZh: 健身房
 card:
   summary: &summary 從介面設計到 Motion 都一起處理，最後也真的落地到正式網站，不是只停在 Figma 裡
   tags: [已上線, UI設計, Motion, 品牌網站, 2024–2025]
-  media: &card
-    kind: image
-    src: ../../assets/projects/fitzone/card.jpg
+  media: &cardVideo
+    kind: video
+    src: /media/fitzone/card.mp4
+    poster: ../../assets/projects/fitzone/card-poster.jpg
     alt: FITZONE 網站作品預覽
 seo:
   title: 健身房 FITZONE｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *card }
+next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
 hero:
   eyebrow: *todo
   title: *todo
@@ -22,7 +23,13 @@ hero:
     - { label: *todo, value: *todo }
     - { label: *todo, value: *todo }
     - { label: *todo, value: *todo }
-  showcase: { layout: single, items: [*card] }
+  showcase:
+    layout: single
+    items:
+      - &card
+        kind: image
+        src: ../../assets/projects/fitzone/card.jpg
+        alt: FITZONE 網站作品預覽
 overview:
   heading: *todo
   blocks:

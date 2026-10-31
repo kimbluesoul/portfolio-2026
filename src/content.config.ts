@@ -88,6 +88,14 @@ const projects = defineCollection({
         }
       });
 
+    const composite = z.object({
+      kind: z.literal('composite'),
+      alt: z.string().min(1),
+      background: readyImageMedia,
+      desktop: readyVideoMedia,
+      phone: readyVideoMedia,
+    });
+
     const captioned = z.object({
       title: z.string().min(1),
       caption: z.string().optional(),
@@ -115,7 +123,7 @@ const projects = defineCollection({
       card: z.object({
         summary: z.string().min(1),
         tags: z.array(z.string().min(1)).min(1),
-        media,
+        media: z.union([media, composite]),
         featured: z.boolean().optional(),
       }),
       seo: z.object({
