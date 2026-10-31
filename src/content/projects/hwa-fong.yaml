@@ -16,39 +16,133 @@ next:
   meta: 華豐輪胎　·　品牌網站　·　UI 設計　·　互動設計　·　2024–2025
   media: *card
 hero:
-  eyebrow: &todo TODO(CONTENT)
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 02 · 輪胎品牌
+  title: HWA FONG TIRE
+  headline: 華豐輪胎**品牌網站**設計
+  subtitle: 從「DURO for Durability」出發，把華豐輪胎可靠的品牌形象與二輪到四輪的完整產品線，整理成一個好找、好逛，也有品牌感的網站。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-  showcase: { layout: single, items: [*card] }
+    - { label: ROLE, value: UI / Interaction }
+    - { label: PLATFORM, value: 品牌網站 }
+    - { label: STATUS, value: 已上線 }
+    - { label: YEAR, value: 2024–2025 }
+  showcase:
+    layout: single
+    items:
+      - kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 華豐輪胎 PC 與手機首頁案例展示
+        aspectRatio: 1920 / 820
+        objectPosition: top
+        status: pending
+        expectedFile: src/assets/projects/hwa-fong/hero-showcase.jpg
 overview:
-  heading: *todo
+  heading: |-
+    可靠的品牌，
+    **完整的產品線**
   blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
+    - title: 背景
+      body: 客戶希望參考其他輪胎品牌的網站，要有方便的搜尋功能，盡可能呈現輪胎種類、清楚的胎紋與產品，同時傳達華豐輪胎可靠的品牌形象。
+    - title: 過程
+      body: 一開始做得有點卡，找到方向後就順利很多。過程中一邊更認識各種輪胎，一邊把能互動探索的 Motion 融入其中，做得很享受。
+    - title: 品牌與產品
+      body: 網站不斷強調「可靠」與豐富的產品線：用越野場景和標語建立品牌感，再用小 icon 區分胎種，讓五大類輪胎一目了然。
+  outputs: [品牌網站, 互動設計]
 keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
+  eyebrow: DESKTOP
+  heading: '**可靠**，從第一眼開始'
+  subtitle: 首頁以越野場景和「DURO for Durability」開場，傳達耐用可靠的品牌印象；右側直接帶出主打輪胎，讓品牌與產品同時被看見。
+  main:
+    kind: video
+    src: /media/hwa-fong/key-main.mp4
+    poster: ../../assets/placeholders/placeholder.png
+    alt: 華豐輪胎 PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/hwa-fong/key-main.mp4
   closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+    - title: 輪胎指南
+      caption: 大尺寸輪胎特寫，讓胎紋成為畫面的主角，並選用與輪胎搭配的照片加強選對輪胎的重要性。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 輪胎指南頁面特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/hwa-fong/key-tire-guide.jpg
+    - title: 五大胎種
+      caption: 從汽車到特殊用途，用小 icon 一眼分辨。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 五大胎種分類特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/hwa-fong/key-tire-types.jpg
+    - title: 胎種專區
+      caption: 分類頁延續越野氛圍，產品和品牌感並存。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 胎種專區頁面特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/hwa-fong/key-tire-category.jpg
+motion:
+  eyebrow: INTERACTION & MOTION
+  heading: 滾動，點亮 DURO
+  subtitle: 品牌識別是動態的重點。依照客戶提供的字母意義，用滾動一步步點亮品牌，讓「可靠」不只是一句標語。
+  steps:
+    - title: 01　逐字點亮
+      body: 隨著滾動，DURO 的字母依序亮起，並帶出各自代表的單字與意義。
+      media:
+        kind: video
+        src: /media/hwa-fong/motion-1.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: DURO 字母逐字點亮動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/hwa-fong/motion-1.mp4
+    - title: 02　完整品牌
+      body: 每個字母都點亮後，整個 LOGO 一起亮起，呈現完整的品牌形象。
+      media:
+        kind: video
+        src: /media/hwa-fong/motion-2.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: DURO 完整品牌點亮動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/hwa-fong/motion-2.mp4
+    - title: 03　探索式互動
+      body: 產品與分類加入 Hover 回饋，讓逛輪胎更像在探索，而不只是查資料。
+      media:
+        kind: video
+        src: /media/hwa-fong/motion-3.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 產品與分類 Hover 互動
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/hwa-fong/motion-3.mp4
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: 華豐輪胎網站頁面拼貼
+      aspectRatio: 1920 / 1280
+      status: pending
+      expectedFile: src/assets/projects/hwa-fong/visual-mosaic.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: FROM FIGMA TO LIVE
+  heading: 從設計稿到正式上線
+  subtitle: 想直接操作看看的話，這裡有 Figma 原型和正式網站。
   cards:
-    - {
-        kind: live,
-        eyebrow: *todo,
-        label: *todo,
-        description: *todo,
-        url: 'https://www.duro.com.tw/',
-      }
+    - kind: prototype
+      eyebrow: FIGMA PROTOTYPE
+      label: Figma 原型
+      description: 在 Figma 裡直接點擊操作，看網站的頁面與互動。
+      url: 'https://www.figma.com/proto/nnprFxDKbj3ETdK4LEVGnI/m000470-%E8%8F%AF%E8%B1%90%E6%A9%A1%E8%86%A0%E5%B7%A5%E6%A5%AD%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8?page-id=&node-id=5555-5702&viewport=3910%2C-748%2C0.2&t=CART4LgcirHvOKuU-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=5555%3A6371&hide-ui=1'
+    - kind: live
+      eyebrow: LIVE SITE
+      label: 正式網站
+      description: 目前上線中的版本。
+      url: 'https://www.duro.com.tw/'

@@ -3,7 +3,7 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-10-31)
-- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The fidelity follow-up merged (PR #17). **M3 starts with Hwa Fong Tire**: its spec sheet is [`docs/specs/hwa-fong.md`](specs/hwa-fong.md).
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is in review** on `feat/m3-hwa-fong`.
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
@@ -18,7 +18,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **ChatGPT**: implement Hwa Fong Tire (`feat/m3-hwa-fong`, branched from `origin/main`). Fill `src/content/projects/hwa-fong.yaml` from [`docs/specs/hwa-fong.md`](specs/hwa-fong.md) only, with every media slot `pending` per [`docs/ASSETS.md`](ASSETS.md). Expect content-only changes. If the template needs a code change for this page, raise it in the PR first.
+1. **Claude**: review the Hwa Fong Tire content PR (`feat/m3-hwa-fong`). Its media remains `pending`; the PR records the template-level visual differences without changing architecture.
 2. **ChatGPT** (after Hwa Fong, separate PR `feat/video-play-once`): implement ADR-0013 / ARCHITECTURE v1.7. Change `<loop-video>` and `<motion-steps>` to play once on view, Home cards to the delivered videos (already in `public/media/*/card*.mp4` with posters), and the 88Win featured composition (§9.5). Replace the old "never plays" E2E test (§16.2).
 3. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
@@ -93,7 +93,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 | M0 Bootstrap | Done (PR #2) |
 | M1 Home | **Done (PR #10)** |
 | M2 Case template + 88Win | **Done (PR #14); fidelity follow-up in review** |
-| M3 Remaining case studies | **In progress**: Hwa Fong spec ready |
+| M3 Remaining case studies | **In progress**: Hwa Fong implementation in review |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 
