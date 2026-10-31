@@ -25,6 +25,28 @@
 ## 交件方式
 把檔案依專案放進一個資料夾（例如 `桌面\portfolio-assets\88win\`），然後跟 Claude 說「素材放好了」和資料夾位置。Claude 會檢查尺寸與檔名，開一個 assets PR 放進網站。
 
+**交原檔就好**：影片可以直接交螢幕錄影原檔（有聲音、很長、很大都沒關係）。Claude 會用 ffmpeg 去聲音、剪長度、壓縮，並從第一格產生封面圖。所以你**不用自己做封面圖、不用自己壓縮**。如果只想用影片的某一段，在檔名或訊息裡寫「從第幾秒到第幾秒」即可。
+
+---
+
+## 首頁卡片（`home`）
+
+2026-10-31 已交件並放進網站（ADR-0013）。首頁每張卡片都是影片，**捲到時播一次，桌機滑鼠移過去會重播，手機捲回來會重播**。
+
+| 專案 | 交件原檔 | 網站檔案 | 處理 |
+|---|---|---|---|
+| 88Win（精選卡） | `88win_bg.jpg` | `src/assets/projects/88win/card-bg.jpg` | 原檔 3456 × 1000 |
+| 88Win（精選卡） | `88win.mp4` | `public/media/88win/card-pc.mp4` ＋ `card-pc-poster.jpg` | 前 10 秒、1280 寬 |
+| 88Win（精選卡） | `88win_moblie.mp4` | `public/media/88win/card-mobile.mp4` ＋ `card-mobile-poster.jpg` | 從黑底裁出手機（含外框）、320 × 660 |
+| 華豐輪胎 | `duro.mp4` | `public/media/hwa-fong/card.mp4` ＋ `card-poster.jpg` | 裁掉左右黑邊、前 10 秒 |
+| FITZONE | `fitzone.mp4` | `public/media/fitzone/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| SSS | `SSS.mp4` | `public/media/sss/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 展裕建設 | `jhanyu.mp4` | `public/media/jhanyu/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| AMD | `amd.mp4` | `public/media/amd/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 匯發營造 | `huifa.mp4` | `public/media/huifa/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+
+之後的建議命名（Claude 收到後也會自己改名，所以不照著命名也沒關係）：資料夾用專案代號（`88win`、`hwa-fong`…），首頁卡片影片叫 `card.mp4`；精選卡的三個圖層叫 `card-bg.jpg`、`card-pc.mp4`、`card-mobile.mp4`。
+
 ---
 
 ## 88Win（`88win`）

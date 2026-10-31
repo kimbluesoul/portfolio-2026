@@ -16,7 +16,7 @@ Each case page carries about 15–25 raster images and 2–5 videos (16:9 key sc
 
 **Video**
 - MP4 / H.264 / yuv420p / no audio / `+faststart`, with a required poster image. Files go in `public/media/<slug>/` with versioned filenames.
-- Rendered only via `<loop-video>`: `muted playsinline loop preload="none"`. **Never autoplays** (Product Owner decision, 2026-10-29). On hover-capable devices it plays on hover / keyboard focus and pauses on leave. On touch devices, a play indicator toggles playback on tap. It pauses when scrolled out of view.
+- Rendered only via `<loop-video>`: `muted playsinline loop preload="none"`. ~~**Never autoplays** (Product Owner decision, 2026-10-29).~~ **Superseded by ADR-0013 (2026-10-31): plays once when scrolled into view.** On hover-capable devices it plays on hover / keyboard focus and pauses on leave. On touch devices, a play indicator toggles playback on tap. It pauses when scrolled out of view.
 - Size caps (enforced in CI): key-screen 8 MB, motion step 4 MB, card / preview 3 MB.
 - `status: 'pending'` marks undelivered media. The build prints a pending-asset report, and the production build fails if anything is still pending.
 

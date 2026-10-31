@@ -12,7 +12,7 @@ The product emphasizes interaction and motion ("Show more, explain less"). The t
 - Reveals are triggered by `<reveal-on-view>` (IntersectionObserver → `data-inview`). Content stays visible if JS fails.
 - Animate `transform` / `opacity` only.
 - Page-to-page transitions use native cross-document View Transitions as progressive enhancement.
-- `prefers-reduced-motion: reduce` disables reveals, smooth scrolling, and view transitions. Videos never autoplay in any mode (ADR-0006).
+- `prefers-reduced-motion: reduce` disables reveals, smooth scrolling, and view transitions. Videos do not play on view in this mode (ADR-0013). They play only on hover / focus / tap.
 - **No GSAP / Motion One / Lottie / Three.js** in v1.
 
 ## Consequences
