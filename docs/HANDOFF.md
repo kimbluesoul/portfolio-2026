@@ -2,8 +2,9 @@
 
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
-## Status (2026-10-30)
-- **Phase**: **M1 Home is done and merged** (PR #10, approved by ChatGPT as independent reviewer). **Next: M2, the case-study template + 88Win.**
+## Status (2026-10-31)
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is in review on PR #14**: Claude's re-review of `b05ef30` is CHANGES REQUESTED (1 × P1, 3 × P2, 1 × P3).
+- **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 
@@ -17,16 +18,9 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Product Owner**: merge this handoff PR. Images (2× exports from Figma) and videos are delivered **after** M2 (Product Owner decision, 2026-10-30). The pending-asset report lists exactly which files are needed.
-2. **ChatGPT**: implement **M2 — case-study template + 88Win structure** on `feat/m2-case-template` from `main` (ARCHITECTURE §19):
-   - first, the **pending-media support** in ARCHITECTURE §9.3 (v1.3): image and video `status: 'pending'` with `expectedFile`, a shared placeholder, a "素材待補" label on previews, and an `expectedFile` list in the pending report;
-   - all 9 case section components;
-   - the `CaseSections` renderer (order, omission, tone);
-   - `<motion-steps>` and `<loop-video>` (hover / focus on desktop, tap on mobile, ARCHITECTURE §7);
-   - 88Win content. **Every 88Win media slot is `pending`** with its `expectedFile` (§9.1 naming). Copy is verbatim from Figma `360:251` (desktop) / `475:953` (mobile) per §5.1. Anything not in Figma is `TODO(CONTENT)`.
-
-   Run `pnpm verify` (use `CI=true` for E2E if a stale preview server holds port 4321), then open the PR with the template and the branch preview URL.
-3. **Claude**: review the M2 PR, including copy fidelity against Figma.
+1. **ChatGPT**: fix PR #14 per Claude's re-review, plus the v1.5 asset alignment: hero and mosaic become one composite image each, video posters follow `<video>-poster.jpg`, Details items get `mobileMedia`, and every `expectedFile` matches [`docs/ASSETS.md`](ASSETS.md) (ARCHITECTURE §9.1–9.3 v1.5). Fill the new "Figma vs page" table in the PR.
+2. **Claude**: re-review PR #14. Before M3 starts, write the spec sheet for the next project (`docs/specs/hwa-fong.md`) with Figma reference images, and add its rows to `docs/ASSETS.md`.
+3. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
@@ -43,6 +37,10 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - **Q5**: AMD 維護 video resolved by the Product Owner.
 - **Q6**: videos never autoplay. Desktop plays on hover / focus; mobile plays on tap with a play indicator.
 - **A1**: ChatGPT reads Figma directly. In practice, Figma image export was not available to ChatGPT, so Claude exported the M1 images (#12).
+
+## Decisions recorded on 2026-10-31
+- **Process options 2 and 3 adopted**: page spec sheets written by Claude before implementation, and a Figma vs page side-by-side table in every UI PR ([`docs/specs/README.md`](specs/README.md), PR template).
+- **ARCHITECTURE v1.5 (§9)**: export shapes (composite / crop / art-directed Details), poster naming, motion slot ratio 960 / 532, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md).
 
 ## Decisions recorded on 2026-10-30
 - **ADR-0011**: Cloudflare Workers static assets via Workers Builds supersedes Cloudflare Pages. Production uses `portfolio-2026.kimbluesoul.workers.dev`; previews are branch deployments.
@@ -85,10 +83,10 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
 | M1 Home | **Done (PR #10)** |
-| M2 Case template + 88Win | Not started |
+| M2 Case template + 88Win | **In review (PR #14)** |
 | M3 Remaining case studies | Not started |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 
 ## Workflow reminder
-ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 
+Claude writes the page spec sheet → ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template (with the Figma vs page table) → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 
