@@ -116,7 +116,7 @@
   --space-section: clamp(var(--space-18), 7.292vw, var(--space-35));
   --space-case-hero-copy-to-stats: 1.4375rem;
   --space-next-heading-to-meta: 1.4375rem;
-  --space-next-body-to-media: 2.625rem;
+  --space-next-body-to-media: 2.5313rem;
 
   --layout-home-max: 108rem;
   --layout-case-max: 90rem;
