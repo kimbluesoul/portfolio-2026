@@ -15,7 +15,7 @@ Content file: `src/content/projects/fitzone.yaml`. Replace every `TODO(CONTENT)`
 | 06 | Details | `360:1506` (hidden) | — | **no**: omit `details` |
 | 07 | Visual Extension (mosaic) | `360:1530` | `484:1485` | yes, `variant: mosaic` |
 | 08 | Links | `360:1576` | `484:1519` | yes |
-| 09 | Next Project → SSS 1.0 | `360:1801` | `484:1540` | yes (from `sss.yaml`, not this file) |
+| 09 | Next Project → SSS | `360:1801` | `484:1540` | yes (from `sss.yaml`, not this file) |
 
 The section list is the same as Hwa Fong. The tone sequence comes from `assignTones()` after omissions. Do not hard-code tones for this page.
 
@@ -89,14 +89,14 @@ The current `fitzone.yaml` has a single `live` card. Replace it with these two c
 | `next.oneLiner` | `從 Logo 與健身房的色調延伸，加入心跳識別和有活力的 Motion，最後順利上線。` | `360:1369` |
 | `next.media` | unchanged (`*cardVideo`) | — |
 
-This page's own Next section shows **SSS 1.0**. Its copy belongs in `src/content/projects/sss.yaml` `next`. Set it in the same PR, so SSS does not have to wait for its own spec:
+This page's own Next section shows **SSS** (Figma says `SSS 1.0`; Product Owner decision 2026-11-01: use the project name `SSS`, as on the Home card). Its copy belongs in `src/content/projects/sss.yaml` `next`. Set it in the same PR, so SSS does not have to wait for its own spec:
 
 | Field | Value | Node (this frame) |
 |---|---|---|
 | `sss.yaml` `next.meta` | `超透明提案　·　活動頁面　·　UI 設計　·　互動設計　·　2024–2025` | `360:1809` |
 | `sss.yaml` `next.oneLiner` | `把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。` | `360:1810` |
 
-The `NEXT PROJECT` label, the `04 / 07` counter, the `SSS 1.0` name, and the arrow come from the template and from `sss.yaml`.
+The `NEXT PROJECT` label, the `04 / 07` counter, the `SSS` name, and the arrow come from the template and from `sss.yaml`.
 
 ## Links (URLs)
 | Card | URL |
@@ -134,7 +134,7 @@ The page uses the template exactly as Hwa Fong does. No new component or variant
 - **Motion** (`484:1459`): the video is 350 × 194 above a vertical step rail.
 - **Visual Extension** (`484:1485`): 390 × 410, the same mosaic file scaled and clipped (`484:1486`).
 - **Links** (`484:1519`): the cards stack.
-- **Next** (`484:1540`): `SSS 1.0` stays on one line next to the arrow.
+- **Next** (`484:1540`): `SSS` stays on one line next to the arrow.
 
 ## Figma reference images
 1× exports by Claude, 2026-10-31. Use them for the "Figma vs page" table. Sections 04 and 06 are not rendered, so they have no images.
