@@ -24,7 +24,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
 - **Visual fidelity**: values are cited per Figma node in `docs/DESIGN_SYSTEM.md` → Typography.
-- **Fonts**: ADR-0012 + amendments. Per-weight subsets (700 = h1–h3, 500 = tag chips, 400 = all) with a fixed `CORE_BASELINE` and a per-weight coverage gate. No preloads. Home fonts 158 KB, home LCP ~2.3 s.
+- **Fonts**: ADR-0012 + amendments. Per-weight subsets (selector rule in `scripts/font-text.mjs`, widened 2026-11-01 beyond h1–h3 / tag chips; see DESIGN_SYSTEM) with a fixed `CORE_BASELINE` and a per-weight coverage gate. No preloads. Home fonts ~110 KB (Instrument Sans Latin 30 KB + Noto core subsets 81 KB), home LCP ~2.3 s.
 - **Accessibility**: header tap targets ≥ 44 px via an invisible hit layer (E2E-tested at 390 px). axe runs with reduced motion so contrast is judged after reveals settle.
 - **Known limits**: card images are 1× Figma exports. Same-name 2× files can replace them.
 
