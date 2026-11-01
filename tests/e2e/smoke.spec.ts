@@ -278,15 +278,15 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
-  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(19);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(18);
   await expect(page.locator('loop-video')).toHaveCount(5);
   await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
-  await expect(page.locator('.detail-card picture')).toHaveCount(7);
+  await expect(page.locator('.detail-card picture')).toHaveCount(6);
   await expect(
     page.locator('.detail-card source[media="(width < 48rem)"]'),
-  ).toHaveCount(14);
+  ).toHaveCount(12);
   await expect(page.locator('.case-hero .hero-showcase')).toHaveCount(1);
   await expect(
     page.locator('.visual-extension .visual-grid > .media-frame'),
@@ -313,6 +313,36 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   ).toBeVisible();
   await expect(page.locator('.overview-heading h2 br')).toHaveCount(1);
   await expect(page.getByText('NEXT PROJECT 02 / 07')).toBeVisible();
+});
+
+test('88Win color swatches reflow and keep every hex code as text', async ({
+  page,
+}) => {
+  const hexCodes = ['#0B2240', '#0A6ABF', '#6AAAE2', '#BBCDEB', '#EFF8FF'];
+
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('/work/88win/');
+  const swatches = page.locator('.swatches-item');
+  await swatches.first().scrollIntoViewIfNeeded();
+  await expect(swatches).toHaveCount(5);
+  for (const hex of hexCodes) {
+    await expect(page.getByText(hex, { exact: true })).toBeVisible();
+  }
+  const desktopBoxes = await swatches.evaluateAll((items) =>
+    items.map((item) => item.getBoundingClientRect()),
+  );
+  expect(new Set(desktopBoxes.map(({ y }) => Math.round(y))).size).toBe(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await swatches.first().scrollIntoViewIfNeeded();
+  const mobileBoxes = await swatches.evaluateAll((items) =>
+    items.map((item) => item.getBoundingClientRect()),
+  );
+  expect(new Set(mobileBoxes.map(({ x }) => Math.round(x))).size).toBe(1);
+  for (let index = 1; index < mobileBoxes.length; index += 1) {
+    expect(mobileBoxes[index]!.y).toBeGreaterThan(mobileBoxes[index - 1]!.y);
+  }
 });
 
 const stubMediaPlayback = async (page: import('@playwright/test').Page) => {

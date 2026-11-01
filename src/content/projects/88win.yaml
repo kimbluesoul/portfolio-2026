@@ -202,19 +202,13 @@ details:
       caption: 以主色為中心，往深、淺兩側延伸。名稱裡的 100、200、300 代表深淺階層，工程師對照色票時直接用名稱就能找到對應色碼，不用猜。
       size: half
       media:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win 色彩元件規格
-        aspectRatio: 647 / 140
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-color.png
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win 色彩元件規格手機版
-        aspectRatio: 310 / 280
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-color-mobile.png
+        kind: swatches
+        colors:
+          - { name: 深主色 100, hex: '#0B2240' }
+          - { name: 主色, hex: '#0A6ABF' }
+          - { name: 淺主色 300, hex: '#6AAAE2' }
+          - { name: 淺主色 200, hex: '#BBCDEB' }
+          - { name: 淺主色（背景）100, hex: '#EFF8FF' }
     - eyebrow: CATEGORY
       title: 分類側欄
       caption: 分類 icon 走活潑路線，圖案和配色都比較跳；選中時整顆換成主色藍，一眼就知道現在在哪個分類。

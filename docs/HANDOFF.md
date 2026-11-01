@@ -2,9 +2,10 @@
 
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
-## Status (2026-11-01)
+## Status (2026-11-02)
 - **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The first fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is done (PR #21)**, and play-once video behavior is done (PR #23). The 390 case-template fidelity follow-up is done (PR #26). **M3 FITZONE is in review** on `feat/m3-fitzone`, implemented by Claude while Codex is out of usage (until 2026-11-06).
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
+- **88Win COLOR follow-up**: `feat/color-swatches` replaces the two pending COLOR images with schema-validated HTML/SVG swatches. It is ready for PR and Claude review; the Product Owner still owns the merge decision.
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 
@@ -83,6 +84,7 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - Fidelity follow-up: Next Project uses Figma's `-0.04em` display tracking and `1440 / 741` preview; motion is `960 × 532` with its timeline at desktop x=1280. At 390 px, Hero is 784 px with a full-bleed `390 × 312` showcase clipped by the child frame at its lower edge, stats are a 110 px 2 × 2 grid, Next Project is 530 px with a 64 px arrow, Details media keeps 20 px side margins, and both swipe rows bleed to the viewport with their first item at x=20.
 - Case-template fidelity follow-up (PR #26): `hero.titleSizeMobile` is restricted to the sizes in `src/lib/case-title.ts` (56, 76), each mapped to one `.title-mobile-<size>` class (no inline style, no `attr()`), and case titles use `-0.04em` tracking. The 390 back link stays centred, and mobile Motion uses a vertical step rail. 390 section heights come from Figma spacing and typography (intro 12 / 12 / 28, captions 16 + 14 / 1.5, body 15 / 1.7, steps 28 apart), never from a fixed `min-height`. E2E gates each project against its own frame at ±8 px: 88Win `475:953` and Hwa Fong `483:1298`. The 88Win 遊戲圖面 Details caption and the Motion step titles (full-width space) now match Figma.
 - `check-media.mjs` now validates pending filenames for every project that has its own project section in [`docs/ASSETS.md`](ASSETS.md), rather than special-casing 88Win.
+- 88Win COLOR now uses `media.kind: swatches` with `#RRGGBB` validation. The five colors render as semantic `<ul>` / `<li>` text plus decorative SVG rectangles, retain the 140 px desktop / 280 px mobile media-slot height, and remove two pending asset files from [`docs/ASSETS.md`](ASSETS.md). Final `pnpm verify` passes: 85 unit tests, 56 E2E tests passed with 14 intentional project/device skips, and all 9 Lighthouse runs passed.
 - Validation: `CI=true pnpm verify` passes (51 unit tests; 30 E2E tests passed with 4 intentional project-specific skips; all 9 Lighthouse runs passed).
 
 ## Milestone tracker
