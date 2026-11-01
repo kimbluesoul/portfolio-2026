@@ -21,7 +21,7 @@ const { class: className, eager = false, media } = Astro.props;
 const pending = media.status === 'pending';
 const poster = await getImage({
   src: media.poster,
-  format: 'webp',
+  format: 'avif',
   widths: srcsetWidthsFor(media.poster.width),
   sizes: DEFAULT_MEDIA_SIZES,
 });
