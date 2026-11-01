@@ -30,11 +30,25 @@ const {
   </div>
   <div class="contact-links" aria-label="聯絡方式">
     <a href={`mailto:${email}`}>
-      <img src={emailIcon.src} width="21" height="17" alt="" />
+      <img
+        src={emailIcon.src}
+        width="21"
+        height="17"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
       Email
     </a>
     <a href={linkedin} target="_blank" rel="noopener noreferrer">
-      <img src={linkedinIcon.src} width="24" height="24" alt="" />
+      <img
+        src={linkedinIcon.src}
+        width="24"
+        height="24"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
       LinkedIn<span class="visually-hidden">（另開新視窗）</span>
     </a>
   </div>

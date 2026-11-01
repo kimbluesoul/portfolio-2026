@@ -534,6 +534,13 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   ).toBe(20);
 
   const next = page.locator('.next-project');
+  // `content-visibility: auto` keeps the placeholder size until the section
+  // nears the viewport, so measure it where a visitor would see it. The
+  // browser renders it in the frame after it scrolls into view.
+  await next.scrollIntoViewIfNeeded();
+  await expect
+    .poll(async () => (await next.boundingBox())?.height)
+    .toBeLessThan(800);
   const nextBox = await next.boundingBox();
   const nextHeadingBox = await next.locator('.next-heading').boundingBox();
   const nextArrowBox = await next.locator('.next-arrow').boundingBox();
@@ -697,11 +704,18 @@ for (const [route, expectedSections] of Object.entries(
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(route);
 
+    // Off-screen sections use `content-visibility: auto`, so until rendered
+    // they report their placeholder size. Render them all before measuring.
     const actualHeights = await page
       .locator('.case-study > .case-section')
-      .evaluateAll((sections) =>
-        sections.map((section) => section.getBoundingClientRect().height),
-      );
+      .evaluateAll((sections) => {
+        for (const section of sections) {
+          (section as HTMLElement).style.contentVisibility = 'visible';
+        }
+        return sections.map(
+          (section) => section.getBoundingClientRect().height,
+        );
+      });
 
     expect(actualHeights).toHaveLength(expectedSections.length);
     for (const [index, section] of expectedSections.entries()) {

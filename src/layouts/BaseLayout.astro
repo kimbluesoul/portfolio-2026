@@ -2,15 +2,22 @@
 import type { CollectionEntry } from 'astro:content';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
+import { bodyFontPreloadHref } from '../lib/font-preload';
+import generatedFontCss from '../styles/noto-sans-tc.generated.css?raw';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description: string;
   site: CollectionEntry<'site'>['data'];
+  /** Preload the 400 `core` font (case pages, where the LCP is text). */
+  preloadBodyFont?: boolean;
 }
 
-const { title, description, site } = Astro.props;
+const { title, description, site, preloadBodyFont = false } = Astro.props;
+const bodyFontHref = preloadBodyFont
+  ? bodyFontPreloadHref(generatedFontCss)
+  : undefined;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -22,6 +29,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
+    {bodyFontHref && (
+      <link
+        rel="preload"
+        href={bodyFontHref}
+        as="font"
+        type="font/woff2"
+        crossorigin
+      />
+    )}
   </head>
   <body id="top">
     <a class="skip-link" href="#main-content">

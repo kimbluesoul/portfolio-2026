@@ -7,6 +7,14 @@
   padding-block: var(--space-section);
 }
 
+/* ARCHITECTURE §13: lay out only the hero before the first paint. The first
+   layout of a whole case page cost about 280 ms of simulated mobile CPU on the
+   LCP path; the other sections render as they near the viewport. */
+.case-study > .case-section:not(.case-hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 60rem;
+}
+
 .case-container {
   width: min(
     calc(100% - (var(--layout-page-gutter) * 2)),
