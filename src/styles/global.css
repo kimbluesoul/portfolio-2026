@@ -134,7 +134,13 @@
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+
+    /* 0s, not 0.01ms: `transition-property` defaults to `all`, so any
+       non-zero duration here turns every property on every element into a
+       transition. WebKit then fades text colour in from the UA default on
+       load. A zero combined duration starts no transition at all. */
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }

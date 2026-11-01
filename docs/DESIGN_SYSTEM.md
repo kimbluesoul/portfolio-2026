@@ -37,7 +37,15 @@ Child-node citations are included beside each measured value. Values are direct 
 
 Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`).
 
-**Noto Sans TC weight usage (implementation constraint, ADR-0012):** 700 only in headings (`h1`–`h3`), 500 only in tag chips (`li`) and the case Next meta (`p.next-meta`, Figma `360:1368`), 400 everywhere else. Fonts are subset per weight to exactly those elements. A new Chinese use of 500 or 700 outside these elements must be added to `scripts/font-text.mjs`, or the glyphs fall back to the system font.
+**Noto Sans TC weight usage (implementation constraint, ADR-0012, amended 2026-11-01):** every Chinese glyph is drawn with Noto Sans TC, including text set in the display stack (`--font-family-display` is Instrument Sans for Latin, then Noto Sans TC). Weights follow Figma (`360:251`, `475:953`):
+
+| Weight | Where Chinese renders at it | Selectors (`WEIGHT_SELECTORS` in `scripts/font-text.mjs`) |
+|---|---|---|
+| 700 | Headings, hero headline, stats values, story titles, caption / step / link titles, pending-media label | `h1`–`h6`, `strong`, `b`, `th` (UA-default bold), `.hero-headline`, `.hero-stats dd`, `.story-title`, `.case-study strong`, `.pending-label` |
+| 500 | Tag chips, back link (`← 所有作品`), hero eyebrow (`CASE STUDY 01 · 線上娛樂平台`), next-project arrow and meta, footer contact links | `li`, `.back-link`, `.case-hero .case-eyebrow`, `.next-arrow`, `.next-meta`, `.contact-links a` |
+| 400 | Everything else | all rendered text |
+
+Fonts are subset per weight to the text inside those selectors. Any CSS rule that sets another weight must be either listed there or in `LATIN_ONLY_WEIGHT_SELECTORS` (Latin-only labels such as `OVERVIEW`); the build fails otherwise. A Chromium E2E test fails if any text node on the main routes is drawn with a system font.
 
 ## Spacing
 

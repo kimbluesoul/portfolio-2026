@@ -52,6 +52,11 @@
   color: var(--color-text-on-inverse-muted);
 }
 
+/* The hero eyebrow carries the Chinese category: Noto Sans TC Medium (360:251). */
+.case-hero .case-eyebrow {
+  font-weight: 500;
+}
+
 .section-intro {
   display: grid;
   gap: var(--space-5);
@@ -86,7 +91,7 @@
   color: currentcolor;
   font-family: var(--font-family-display);
   font-size: var(--font-size-label);
-  font-weight: 700;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -609,7 +614,7 @@ figcaption strong {
   color: var(--color-text-on-brand);
   font-family: var(--font-family-display);
   font-size: var(--font-size-case-heading);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .next-project h2 {

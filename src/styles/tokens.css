@@ -44,8 +44,10 @@
   --motion-distance-reveal: 24px;
   --motion-stagger: 80ms;
 
+  /* Noto Sans TC draws the CJK in display text (ADR-0012 amendment 2026-11-01). */
   --font-family-display:
-    'Instrument Sans Variable', 'Instrument Sans', sans-serif;
+    'Instrument Sans Variable', 'Instrument Sans', 'Noto Sans TC',
+    'PingFang TC', 'Microsoft JhengHei', sans-serif;
   --font-family-body:
     'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   --font-size-label: clamp(0.75rem, 0.734rem + 0.064vw, 0.8125rem);
