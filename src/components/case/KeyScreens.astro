@@ -1,6 +1,7 @@
 ---
 /* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- The mobile scroll-snap region must be keyboard-scrollable. */
 import type { CollectionEntry } from 'astro:content';
+import { CLOSEUP_MEDIA_SIZES } from '../../lib/media-srcset';
 import type { SectionTone } from '../../lib/sections';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionIntro from '../ui/SectionIntro.astro';
@@ -29,7 +30,7 @@ const { data, tone } = Astro.props;
   >
     {data.closeups.map((item) => (
       <figure>
-        <ProjectMedia media={item.media} />
+        <ProjectMedia media={item.media} sizes={CLOSEUP_MEDIA_SIZES} />
         <figcaption>
           <strong>{item.title}</strong>
           {item.caption}
