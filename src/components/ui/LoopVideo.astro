@@ -12,10 +12,11 @@ interface Props {
     src: string;
     status?: 'pending' | undefined;
   };
+  eager?: boolean;
   class?: string | undefined;
 }
 
-const { class: className, media } = Astro.props;
+const { class: className, eager = false, media } = Astro.props;
 const pending = media.status === 'pending';
 const poster = await getImage({ src: media.poster, format: 'webp' });
 ---
@@ -26,14 +27,23 @@ const poster = await getImage({ src: media.poster, format: 'webp' });
   aria-label={media.alt}
 >
   <MediaFrame aspectRatio={media.aspectRatio} pending={pending}>
-    <video
-      muted
-      playsinline
-      controls
-      preload="none"
-      poster={poster.src}
-      aria-label={media.alt}
-    >
+    {/*
+      The poster is an image layer, not the `poster` attribute: browsers fetch
+      a video poster eagerly, so a below-the-fold poster competed with the LCP
+      for bandwidth (ARCHITECTURE §7 v1.9, §13). The video paints over it.
+    */}
+    <img
+      class="video-poster"
+      src={poster.src}
+      width={poster.attributes.width}
+      height={poster.attributes.height}
+      alt=""
+      aria-hidden="true"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      decoding="async"
+    />
+    <video muted playsinline controls preload="none" aria-label={media.alt}>
       {!pending && <source data-src={media.src} type="video/mp4" />}
     </video>
   </MediaFrame>
@@ -42,5 +52,14 @@ const poster = await getImage({ src: media.poster, format: 'webp' });
 <style>
   loop-video {
     display: block;
+  }
+
+  .video-poster {
+    position: absolute;
+    inset: 0;
+  }
+
+  video {
+    position: relative;
   }
 </style>
