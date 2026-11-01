@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { COMPOSITE_MEDIA_SIZES } from '../../lib/media-srcset';
 import type { SectionTone } from '../../lib/sections';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionShell from '../ui/SectionShell.astro';
@@ -16,7 +17,10 @@ const { data, tone } = Astro.props;
   <h2 class="visually-hidden">Visual extension</h2>
   <div class:list={['visual-grid', `variant-${data.variant}`]}>
     {data.items.map((media) => (
-      <ProjectMedia media={media} />
+      <ProjectMedia
+        media={media}
+        sizes={data.variant === 'mosaic' ? COMPOSITE_MEDIA_SIZES : undefined}
+      />
     ))}
   </div>
 </SectionShell>

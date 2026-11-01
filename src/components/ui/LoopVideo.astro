@@ -1,6 +1,7 @@
 ---
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { DEFAULT_MEDIA_SIZES, srcsetWidthsFor } from '../../lib/media-srcset';
 import MediaFrame from './MediaFrame.astro';
 
 interface Props {
@@ -18,7 +19,12 @@ interface Props {
 
 const { class: className, eager = false, media } = Astro.props;
 const pending = media.status === 'pending';
-const poster = await getImage({ src: media.poster, format: 'webp' });
+const poster = await getImage({
+  src: media.poster,
+  format: 'webp',
+  widths: srcsetWidthsFor(media.poster.width),
+  sizes: DEFAULT_MEDIA_SIZES,
+});
 ---
 
 <loop-video
@@ -35,6 +41,8 @@ const poster = await getImage({ src: media.poster, format: 'webp' });
     <img
       class="video-poster"
       src={poster.src}
+      srcset={poster.srcSet.attribute}
+      sizes={DEFAULT_MEDIA_SIZES}
       width={poster.attributes.width}
       height={poster.attributes.height}
       alt=""
