@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 
 const headersFile = readFileSync(
   new URL('../../public/_headers', import.meta.url),
@@ -597,6 +597,63 @@ test('360 home and case pages have no horizontal overflow', async ({
     expect(failures).toBe(0);
   }
 });
+
+// Every route, including case pages that still hold placeholder content, at
+// the minimum width (§10) and at the undesigned tablet / small-desktop widths.
+const projectSlugs = readdirSync(
+  new URL('../../src/content/projects/', import.meta.url),
+)
+  .filter((file) => file.endsWith('.yaml'))
+  .map((file) => file.replace(/\.yaml$/u, ''));
+const overflowRoutes = [
+  '/',
+  ...projectSlugs.map((slug) => `/work/${slug}/`),
+  '/resume/',
+  '/404/',
+];
+
+for (const width of [360, 768, 1024]) {
+  test(`${width} every route has no horizontal overflow`, async ({ page }) => {
+    expect(projectSlugs).toHaveLength(7);
+    await page.setViewportSize({ width, height: 800 });
+    for (const route of overflowRoutes) {
+      await page.goto(route);
+      const overflow = await page.evaluate(() => {
+        const viewport = document.documentElement.clientWidth;
+        if (document.documentElement.scrollWidth <= viewport) return null;
+        // Name the widest offender so a failure points at the cause. Children
+        // of a clipping box (e.g. the cropped hero showcase) are not causes.
+        // `body`'s own overflow-x applies to the viewport, so stop below it.
+        const isClipped = (node: Element) => {
+          for (
+            let up = node.parentElement;
+            up && up !== document.body;
+            up = up.parentElement
+          ) {
+            if (getComputedStyle(up).overflowX !== 'visible') return true;
+          }
+          return false;
+        };
+        const culprit = Array.from(document.querySelectorAll('body *'))
+          .filter(
+            (node) =>
+              node.getBoundingClientRect().right > viewport + 1 &&
+              !isClipped(node),
+          )
+          .sort(
+            (a, b) =>
+              b.getBoundingClientRect().right - a.getBoundingClientRect().right,
+          )[0];
+        return `${document.documentElement.scrollWidth}px, widest: ${
+          culprit
+            ? `${culprit.tagName.toLowerCase()}.${culprit.className}`
+            : '?'
+        }`;
+      });
+      expect(overflow, `${route} at ${width}px`).toBeNull();
+    }
+  });
+}
 
 // 390 section heights from each project's own Figma frame. Heights come from
 // spacing and typography, never from a fixed min-height, so every project is
