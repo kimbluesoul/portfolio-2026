@@ -49,12 +49,10 @@ hero:
     layout: single
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/hero-showcase.jpg
         alt: 88Win PC 與手機首頁案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
-        status: pending
-        expectedFile: src/assets/projects/88win/hero-showcase.jpg
 overview:
   heading: |-
     一套介面規則，
@@ -74,39 +72,31 @@ keyScreens:
   main:
     kind: video
     src: /media/88win/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/88win/key-main-poster.jpg
     alt: 88Win PC 首頁捲動
     aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/88win/key-main.mp4
   closeups:
     - title: Navigation
       caption: 常用入口固定在同一個位置
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/key-navigation.jpg
         alt: 88Win 導覽列特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/88win/key-navigation.jpg
     - title: Promotion
       caption: 活動圖可以很吸睛，但不能蓋過操作
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/key-promotion.jpg
         alt: 88Win 活動區特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/88win/key-promotion.jpg
     - title: Game Content
       caption: 先選分類再看遊戲，找起來比較快
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/key-game-content.jpg
         alt: 88Win 遊戲內容特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/88win/key-game-content.jpg
 mobile:
   eyebrow: MOBILE
   heading: 畫面變小，**操作邏輯**不變
@@ -116,29 +106,25 @@ mobile:
       caption: 依手機重新設計，不是把 PC 直接縮小
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/mobile-h5-home.jpg
         alt: 88Win H5 首頁
         aspectRatio: 459 / 690
-        status: pending
-        expectedFile: src/assets/projects/88win/mobile-h5-home.jpg
     - title: App
       caption: iOS／Android App
       media:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
+        kind: video
+        src: /media/88win/mobile-app.mp4
+        poster: ../../assets/projects/88win/mobile-app-poster.jpg
         alt: 88Win App 實機畫面
-        aspectRatio: 458 / 690
-        status: pending
-        expectedFile: src/assets/projects/88win/mobile-app.jpg
+        aspectRatio: 459 / 690
     - title: 遊戲列表
       caption: 左邊選分類，右邊直接滑遊戲
       media:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
+        kind: video
+        src: /media/88win/mobile-game-list.mp4
+        poster: ../../assets/projects/88win/mobile-game-list-poster.jpg
         alt: 88Win 手機遊戲列表
         aspectRatio: 459 / 690
-        status: pending
-        expectedFile: src/assets/projects/88win/mobile-game-list.jpg
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 找遊戲的每一步，都有回應
@@ -185,11 +171,9 @@ details:
       size: half-tall
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/detail-icon.png
         alt: 88Win Icon 元件規格
         aspectRatio: 637 / 550
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-icon.png
       mobileMedia:
         kind: image
         src: ../../assets/placeholders/placeholder.png
@@ -221,11 +205,9 @@ details:
       size: half
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/detail-category.png
         alt: 88Win 遊戲分類元件規格
-        aspectRatio: 640 / 134
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-category.png
+        aspectRatio: 1320 / 300
       mobileMedia:
         kind: image
         src: ../../assets/placeholders/placeholder.png
@@ -275,11 +257,9 @@ details:
       size: third
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/detail-button.png
         alt: 88Win Button 元件規格
-        aspectRatio: 399 / 187
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-button.png
+        aspectRatio: 811 / 376
       mobileMedia:
         kind: image
         src: ../../assets/placeholders/placeholder.png
@@ -293,11 +273,9 @@ details:
       size: third
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/detail-navigation.png
         alt: 88Win 手機底部導覽元件規格
         aspectRatio: 393 / 105
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-navigation.png
       mobileMedia:
         kind: image
         src: ../../assets/placeholders/placeholder.png
@@ -309,11 +287,9 @@ visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/88win/visual-mosaic.jpg
       alt: 88Win 延伸視覺拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/88win/visual-mosaic.jpg
 links:
   eyebrow: PROTOTYPE
   heading: 直接操作原型
