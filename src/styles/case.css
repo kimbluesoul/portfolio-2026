@@ -487,12 +487,17 @@ figcaption strong {
   display: grid;
   overflow: hidden;
   align-content: start;
+  container-type: inline-size;
   border-radius: var(--radius-media);
   background: var(--color-bg-subtle);
 }
 
 .detail-card figcaption {
   padding: var(--space-8);
+}
+
+.detail-card.has-swatches figcaption {
+  padding-block-end: 0;
 }
 
 .detail-card figcaption > span:last-child {
@@ -503,6 +508,60 @@ figcaption strong {
   width: auto;
   margin: 0 var(--space-8) var(--space-2);
   border-radius: 0;
+}
+
+.color-swatches {
+  display: grid;
+  gap: var(--space-swatch-mobile-row);
+  margin: 0 var(--space-5) var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.swatch-caption {
+  margin: var(--space-1-5) var(--space-5) var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-case-caption-mobile);
+  line-height: var(--line-height-case-body-mobile);
+}
+
+.swatches-item {
+  display: grid;
+  grid-template-columns: var(--size-swatch-mobile) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-swatch-mobile-copy);
+  min-width: 0;
+  font-weight: 500;
+}
+
+.swatch-color {
+  display: block;
+  width: var(--size-swatch-mobile);
+  height: var(--size-swatch-mobile);
+  overflow: hidden;
+  border-radius: var(--radius-swatch-mobile);
+}
+
+.swatches-item:last-child .swatch-color {
+  outline: var(--header-border-width) solid var(--color-swatch-light-border);
+}
+
+.swatch-copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.swatch-name {
+  font-family: var(--font-family-body);
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.swatch-hex {
+  font-family: var(--font-family-display);
+  font-size: 0.75rem;
+  line-height: 1.2;
 }
 
 .detail-eyebrow {
@@ -811,6 +870,54 @@ figcaption strong {
   .link-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-8);
+  }
+}
+
+/* The row starts once the card can keep five proportional swatches legible. */
+@container (width >= 30rem) {
+  .detail-card.has-swatches figcaption {
+    grid-row: 1;
+  }
+
+  .color-swatches {
+    grid-row: 2;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-swatch-desktop-top) var(--space-8) 0;
+  }
+
+  .swatch-caption {
+    grid-row: 3;
+    margin: var(--space-4) var(--space-8) var(--space-8);
+    font-size: var(--font-size-body-compact);
+    line-height: var(--line-height-body);
+  }
+
+  .swatches-item {
+    display: block;
+  }
+
+  .swatch-color {
+    width: min(100%, var(--size-swatch-desktop-width));
+    height: auto;
+    aspect-ratio: 115 / 88;
+    border-radius: var(--radius-swatch-desktop);
+  }
+
+  .swatch-copy,
+  .swatch-name,
+  .swatch-hex {
+    display: block;
+  }
+
+  .swatch-name {
+    margin-block-start: var(--space-3);
+    font-size: 0.875rem;
+  }
+
+  .swatch-hex {
+    margin-block-start: var(--space-swatch-desktop-code);
+    font-size: 0.8125rem;
   }
 }
 

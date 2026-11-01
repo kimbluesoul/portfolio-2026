@@ -36,6 +36,7 @@
   /* Link card stroke: white 12 % (465:716, 476:1906). */
   --color-border-inverse: color-mix(in srgb, var(--white) 12%, transparent);
   --color-project-accent-soft: var(--blue-50);
+  --color-swatch-light-border: #e0e7f1;
 
   --motion-duration-fast: 160ms;
   --motion-duration-base: 280ms;
@@ -156,6 +157,15 @@
   --size-case-swipe-device: 15.625rem;
   --size-motion-marker: 0.75rem;
   --size-motion-marker-active: 1.5rem;
+  --size-swatch-mobile: 3rem;
+  --size-swatch-desktop-width: 7.1875rem;
+  --size-swatch-desktop-height: 5.5rem;
+  --radius-swatch-mobile: 0.5rem;
+  --radius-swatch-desktop: 0.75rem;
+  --space-swatch-mobile-copy: 0.875rem;
+  --space-swatch-mobile-row: 0.625rem;
+  --space-swatch-desktop-top: 0.125rem;
+  --space-swatch-desktop-code: 0.4375rem;
   --header-height: 5.75rem;
   --header-border-width: 0.0625rem;
   --radius-focus: 0.25rem;

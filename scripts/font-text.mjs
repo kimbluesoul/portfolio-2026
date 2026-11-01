@@ -18,6 +18,7 @@ export const WEIGHT_SELECTORS = {
     // Pre-listed for the FITZONE Next meta (PR #31); no rule sets it on main yet.
     '.next-meta',
     '.contact-links a',
+    '.swatches-item',
   ],
   700: [
     'h1',
