@@ -598,6 +598,76 @@ test('360 home and case pages have no horizontal overflow', async ({
   }
 });
 
+// iOS Safari fills the strip below the page from the root background and from
+// fixed elements at the viewport edge. The footer is the last thing on the
+// page, the root stays white at the top, and only once the footer covers the
+// bottom edge do the root and the thin `footer-tint` bar take its color.
+test('the footer color continues below the page only at the bottom', async ({
+  page,
+}) => {
+  const state = () =>
+    page.evaluate(() => {
+      const root = document.documentElement;
+      const footer = document.querySelector('.site-footer')!;
+      const bar = document.querySelector('footer-tint')!;
+      const footerBox = footer.getBoundingClientRect();
+      const barBox = bar.getBoundingClientRect();
+      return {
+        tint: root.hasAttribute('data-footer-tint'),
+        rootBg: getComputedStyle(root).backgroundColor,
+        bodyBg: getComputedStyle(document.body).backgroundColor,
+        footerBg: getComputedStyle(footer).backgroundColor,
+        barDisplay: getComputedStyle(bar).display,
+        barPosition: getComputedStyle(bar).position,
+        barBg: getComputedStyle(bar).backgroundColor,
+        barTop: barBox.top,
+        barBottom: barBox.bottom,
+        barWidth: barBox.width,
+        footerTop: footerBox.top,
+        footerBottom: footerBox.bottom + window.scrollY,
+        scrollHeight: root.scrollHeight,
+        scrollWidth: root.scrollWidth,
+        innerHeight: window.innerHeight,
+        innerWidth: window.innerWidth,
+      };
+    });
+
+  for (const route of ['/', '/work/88win/', '/resume/']) {
+    await page.goto(route);
+    const top = await state();
+    expect(top.tint, `${route} top`).toBe(false);
+    expect(top.rootBg, `${route} top root`).toBe(top.bodyBg);
+    expect(top.barDisplay, `${route} top bar`).toBe('none');
+
+    await page.evaluate(() =>
+      window.scrollTo(0, document.documentElement.scrollHeight),
+    );
+    await expect.poll(async () => (await state()).tint).toBe(true);
+    const bottom = await state();
+    expect(bottom.rootBg, `${route} bottom root`).toBe(bottom.footerBg);
+    expect(bottom.barPosition).toBe('fixed');
+    expect(bottom.barBg).toBe(bottom.footerBg);
+    expect(bottom.barBottom).toBeCloseTo(bottom.innerHeight, 0);
+    expect(bottom.barWidth).toBe(bottom.innerWidth);
+    // The bar sits over the footer, never over the white page above it.
+    expect(bottom.barTop).toBeGreaterThanOrEqual(bottom.footerTop);
+    // Measured at the bottom: `content-visibility` placeholders above settle
+    // while scrolling. The footer still ends the page, so the bar adds no
+    // scroll height, and nothing overflows sideways.
+    expect(bottom.footerBottom, `${route} footer ends the page`).toBeCloseTo(
+      bottom.scrollHeight,
+      0,
+    );
+    expect(bottom.scrollWidth, `${route} no horizontal overflow`).toBe(
+      bottom.innerWidth,
+    );
+
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect.poll(async () => (await state()).tint).toBe(false);
+    expect((await state()).barDisplay).toBe('none');
+  }
+});
+
 // Every route, including case pages that still hold placeholder content, at
 // the minimum width (§10) and at the undesigned tablet / small-desktop widths.
 const projectSlugs = readdirSync(

@@ -60,6 +60,7 @@ const {
     {backToTopLabel}
   </a>
 </footer>
+<footer-tint></footer-tint>
 
 <style>
   /* Mobile 473:921: intro → pills → VIEW RESUME → hairline → © | BACK TO TOP.
@@ -75,13 +76,6 @@ const {
     row-gap: var(--space-8);
     padding: var(--space-14) var(--layout-page-gutter) var(--space-8);
     background: var(--color-bg-inverse);
-
-    /* Every page ends here. Extend the footer color below the page (the strip
-       behind Safari's bottom toolbar, bottom overscroll) with a shadow that is
-       clipped on every other side. Ink overflow adds no scroll height, and the
-       top of the page keeps the white canvas. */
-    box-shadow: 0 0 0 100vh var(--color-bg-inverse);
-    clip-path: inset(0 0 -100vh);
     color: var(--color-text-on-brand);
     font-family: var(--font-family-display);
     content-visibility: auto;
@@ -200,3 +194,5 @@ const {
     }
   }
 </style>
+
+<script src="../../elements/footer-tint.ts"></script>
