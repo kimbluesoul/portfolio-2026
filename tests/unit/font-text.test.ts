@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   CORE_BASELINE,
+  LAYOUT_FEATURES,
   weightedText,
   withCoreBaseline,
 } from '../../scripts/font-text.mjs';
@@ -38,6 +39,20 @@ describe('ADR-0012 core baseline', () => {
     expect(core.has(codePoint('瞬'))).toBe(true);
     expect(core.has(codePoint('」'))).toBe(true);
     expect(core.has(codePoint('~'))).toBe(true);
+  });
+});
+
+describe('ADR-0012 layout features', () => {
+  it('keeps the features browsers apply to horizontal text by default', () => {
+    for (const feature of ['ccmp', 'locl', 'liga', 'kern', 'mark']) {
+      expect(LAYOUT_FEATURES).toContain(feature);
+    }
+  });
+
+  it('drops the vertical, width and alternate forms the site never enables', () => {
+    for (const feature of ['vert', 'vrt2', 'fwid', 'hwid', 'pwid', 'aalt']) {
+      expect(LAYOUT_FEATURES).not.toContain(feature);
+    }
   });
 });
 
