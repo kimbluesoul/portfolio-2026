@@ -46,7 +46,10 @@ for (let i = 0; i < 40; i++) {
         ],
       };
     });
-    const bad = snap.els.some((e) => e.fill.startsWith('rgb(0, 0, 0)') || e.anims.length > 0) || snap.all > 0;
+    const bad =
+      snap.els.some(
+        (e) => e.fill.startsWith('rgb(0, 0, 0)') || e.anims.length > 0,
+      ) || snap.all > 0;
     if (bad) throw new Error(`BAD ${JSON.stringify(snap)}`);
   });
 }
