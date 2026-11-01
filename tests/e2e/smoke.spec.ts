@@ -60,6 +60,21 @@ for (const route of routes) {
     expect(response?.headers()['content-security-policy']).toBe(productionCsp);
     await expect(page.locator('h1')).toHaveCount(1);
 
+    // Reduced motion must start no CSS transitions, or axe reads colours
+    // mid-fade (WebKit faded text in from the UA default black on load).
+    const runningTransitions = await page.evaluate(() =>
+      document
+        .getAnimations()
+        .filter((animation) => animation instanceof CSSTransition)
+        .map(
+          (transition) =>
+            `${(transition as CSSTransition).transitionProperty} on ${
+              (transition.effect as KeyframeEffect | null)?.target?.nodeName
+            }`,
+        ),
+    );
+    expect(runningTransitions).toEqual([]);
+
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
       .analyze();
