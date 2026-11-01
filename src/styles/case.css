@@ -114,6 +114,7 @@
 .hero-copy h1 {
   font-family: var(--font-family-display);
   font-size: var(--font-size-case-title);
+  letter-spacing: -0.04em;
   line-height: var(--line-height-body-tight);
 }
 
@@ -724,6 +725,10 @@ figcaption strong {
 }
 
 @media (width < 48rem) {
+  .case-section:where(:not(.tone-media, .case-hero, .next-project)) {
+    padding-block: var(--space-16);
+  }
+
   .case-hero {
     padding-block: var(--space-3) 0;
   }
@@ -747,9 +752,21 @@ figcaption strong {
     );
   }
 
+  /* 390 hero rhythm from `475:966`: eyebrow +10 title +8 headline +12
+     subtitle, then 32 to the stats and 32 to the showcase. */
   .case-hero .hero-copy {
-    gap: var(--space-3);
-    margin: 0 auto var(--space-case-hero-copy-to-stats);
+    gap: 0;
+    margin: 0 auto var(--space-8);
+  }
+
+  .case-hero h1 {
+    margin-block-start: var(--space-2-5);
+  }
+
+  .case-hero .hero-subtitle {
+    margin-block-start: var(--space-3);
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .case-hero .hero-stats {
@@ -769,8 +786,24 @@ figcaption strong {
     line-height: 1;
   }
 
+  /* One rule per size in `src/lib/case-title.ts` (unit-tested). */
+  .hero-copy h1.title-mobile-56 {
+    font-size: 3.5rem;
+  }
+
+  .hero-copy h1.title-mobile-76 {
+    font-size: 4.75rem;
+  }
+
   .hero-headline {
+    margin-block-start: var(--space-2);
     line-height: var(--line-height-case-headline-mobile);
+  }
+
+  .case-eyebrow {
+    font-size: var(--font-size-case-eyebrow-mobile);
+    letter-spacing: 0.16em;
+    line-height: 1.25;
   }
 
   .hero-stats div {
@@ -824,7 +857,7 @@ figcaption strong {
   }
 
   .detail-card .media-frame {
-    margin-inline: var(--space-5);
+    margin: 0 var(--space-5) var(--space-5);
   }
 
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
@@ -862,6 +895,7 @@ figcaption strong {
 
   .caption-grid {
     grid-auto-columns: var(--size-case-swipe-closeup);
+    margin-block-start: var(--space-5);
   }
 
   .mobile-panels {
@@ -870,6 +904,159 @@ figcaption strong {
 
   .swipe-row > figure {
     scroll-snap-align: start;
+  }
+
+  /* Every 390 section intro (`475:953`): eyebrow +12 h2 +12 subtitle, then
+     28 to the content. */
+  .section-intro {
+    gap: var(--space-3);
+    margin-block-end: var(--space-7);
+  }
+
+  .section-intro h2 {
+    font-size: var(--font-size-case-heading-mobile);
+    line-height: var(--line-height-case-heading-mobile);
+  }
+
+  .section-intro .section-subtitle {
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
+  }
+
+  /* 390 overview from `475:1003`: heading (eyebrow +12 h2), 24 to the
+     story, contiguous 22 / 22 padded blocks, 8 to the outputs. */
+  .overview .case-container {
+    gap: var(--space-6);
+  }
+
+  .overview-heading {
+    gap: var(--space-3);
+  }
+
+  .overview h2 {
+    font-size: var(--font-size-case-heading-mobile);
+    line-height: var(--line-height-case-heading-mobile);
+  }
+
+  .overview-story {
+    gap: 0;
+  }
+
+  .overview article {
+    gap: var(--space-2-5);
+    padding-block: var(--space-5-5);
+  }
+
+  .overview article > p:last-child {
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
+  }
+
+  .story-title {
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .overview .outputs {
+    margin-block-start: var(--space-2);
+  }
+
+  /* 390 captions (`Close-up item`, `Panel item`): 16 px title, 14 / 1.5
+     text, 4 apart; 10 below a close-up, 12 below a panel. */
+  figcaption {
+    gap: var(--space-1);
+    padding-block-start: var(--space-2-5);
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: 1.5;
+  }
+
+  figcaption strong {
+    font-size: var(--font-size-case-caption-title-mobile);
+    line-height: 1.2;
+  }
+
+  .mobile-panels figcaption {
+    padding-block-start: var(--space-3);
+  }
+
+  .interaction-motion motion-steps {
+    gap: var(--space-8);
+  }
+
+  .details-grid {
+    gap: var(--space-4);
+  }
+
+  .link-cards {
+    gap: var(--space-3);
+  }
+
+  .link-card {
+    gap: var(--space-3);
+  }
+
+  .motion-tabs {
+    position: relative;
+    margin-inline-start: var(--space-2);
+    border-inline-start: var(--header-border-width) solid
+      var(--color-text-on-inverse-muted);
+  }
+
+  /* 390 steps (`475:953` Steps): 18 px title +6 text, 28 between steps. */
+  .motion-tabs button {
+    position: relative;
+    gap: var(--space-1-5);
+    padding: 0 0 var(--space-7) var(--space-6);
+    border-block-start: 0;
+  }
+
+  .motion-tabs strong {
+    font-size: var(--font-size-case-step-title-mobile);
+    line-height: 1.2;
+  }
+
+  .motion-tabs button > span {
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: 1.65;
+  }
+
+  /* 390 spec card (`Spec / Icon`): 20 padding, eyebrow +6 title +6 text. */
+  .detail-card figcaption {
+    gap: var(--space-1-5);
+    padding: var(--space-5);
+  }
+
+  .detail-card figcaption strong {
+    line-height: 1.2;
+  }
+
+  .detail-card figcaption > span:last-child {
+    font-size: var(--font-size-case-caption-mobile);
+    line-height: var(--line-height-case-body-mobile);
+  }
+
+  .motion-tabs button:last-child {
+    padding-block-end: 0;
+  }
+
+  .motion-tabs button::before {
+    position: absolute;
+    inset-block-start: 0.375rem;
+    inset-inline-start: calc(var(--size-motion-marker) / -2);
+    width: var(--size-motion-marker);
+    height: var(--size-motion-marker);
+    border: var(--header-border-width) solid var(--color-text-on-inverse);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-inverse);
+    content: '';
+  }
+
+  .motion-tabs button[aria-selected='true']::before {
+    inset-block-start: 0.25rem;
+    inset-inline-start: -0.5rem;
+    width: var(--space-4);
+    height: var(--space-4);
+    background: var(--color-text-on-inverse);
   }
 
   .hero-showcase.layout-isometric,
@@ -883,7 +1070,6 @@ figcaption strong {
   }
 
   .next-project {
-    min-height: var(--size-case-next-mobile);
     padding-block: var(--space-10) 0;
   }
 
@@ -907,6 +1093,14 @@ figcaption strong {
 
   .next-body {
     margin-block-end: var(--space-next-body-to-media);
+  }
+
+  /* The 390 Links / Next spacing was fitted while --line-height-body computed
+     to `normal`. Keep that geometry until those sections take the Figma card,
+     meta, and spacer values (`475:953`) in one pass. */
+  .link-description,
+  .next-body {
+    line-height: normal;
   }
 
   .next-project h2 {

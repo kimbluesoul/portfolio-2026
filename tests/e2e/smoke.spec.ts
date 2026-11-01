@@ -148,40 +148,20 @@ test('home renders the complete ordered project index', async ({ page }) => {
 });
 
 test('home starts no media requests before load', async ({ page }) => {
-  await page.addInitScript(() => {
-    window.addEventListener(
-      'load',
-      () => {
-        const navigation = performance.getEntriesByType(
-          'navigation',
-        )[0] as PerformanceNavigationTiming;
-        (
-          window as typeof window & { __mediaRequestsBeforeLoad?: string[] }
-        ).__mediaRequestsBeforeLoad = performance
-          .getEntriesByType('resource')
-          .filter(
-            (entry) =>
-              new URL(entry.name).pathname.startsWith('/media/') &&
-              entry.startTime < navigation.loadEventStart,
-          )
-          .map((entry) => entry.name);
-      },
-      { once: true },
-    );
+  let didLoad = false;
+  const mediaRequestsBeforeLoad: string[] = [];
+  page.on('load', () => {
+    didLoad = true;
+  });
+  page.on('request', (request) => {
+    if (!didLoad && new URL(request.url()).pathname.startsWith('/media/')) {
+      mediaRequestsBeforeLoad.push(request.url());
+    }
   });
 
   await page.goto('/');
 
-  expect(
-    await page.evaluate(
-      () =>
-        (
-          window as typeof window & {
-            __mediaRequestsBeforeLoad?: string[];
-          }
-        ).__mediaRequestsBeforeLoad ?? [],
-    ),
-  ).toEqual([]);
+  expect(mediaRequestsBeforeLoad).toEqual([]);
 });
 
 test('home uses the approved copy, links, and card assets', async ({
@@ -509,15 +489,11 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   const statsBox = await stats.boundingBox();
   const showcaseBox = await showcase.boundingBox();
 
-  // Figma 475:953 hero 784 / next 530. These matched exactly only while
-  // --line-height-body computed to `normal`; the remaining 390 offsets
-  // (subtitle 16 vs 15 px, next body 15 vs 13 px) belong to
-  // fix/case-template-fidelity, which tightens this back to ±8 px.
-  const figmaTolerance = 16;
-  expect(Math.abs((heroBox?.height ?? 0) - 784)).toBeLessThanOrEqual(
-    figmaTolerance,
-  );
+  expect(heroBox?.height).toBeCloseTo(784, 0);
+  await expect(backLink).toHaveCSS('justify-self', 'center');
   expect((backBox?.x ?? 0) + (backBox?.width ?? 0) / 2).toBeCloseTo(195, 0);
+  await expect(hero.locator('h1')).toHaveCSS('font-size', '76px');
+  await expect(hero.locator('h1')).toHaveCSS('letter-spacing', '-3.04px');
   expect(
     await headline.evaluate((node) => node.scrollWidth <= node.clientWidth),
   ).toBe(true);
@@ -548,9 +524,8 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   const nextArrowBox = await next.locator('.next-arrow').boundingBox();
   const nextPreviewBox = await next.locator('.next-preview').boundingBox();
   const nextMeta = next.locator('.next-meta');
-  expect(Math.abs((nextBox?.height ?? 0) - 530)).toBeLessThanOrEqual(
-    figmaTolerance,
-  );
+  // Content-driven height (no fixed min-height), so allow rounding.
+  expect(Math.abs((nextBox?.height ?? 0) - 530)).toBeLessThanOrEqual(2);
   expect(nextArrowBox?.width).toBe(64);
   expect(nextArrowBox?.height).toBe(64);
   expect(nextArrowBox?.y).toBeGreaterThanOrEqual(nextHeadingBox?.y ?? 0);
@@ -566,18 +541,20 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   ).toBe(true);
 });
 
-test('360 case hero and next project stay within their containers', async ({
+test('360 home and case pages have no horizontal overflow', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
   await page.setViewportSize({ width: 360, height: 800 });
-  await page.goto('/work/88win/');
-
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth === window.innerWidth,
-    ),
-  ).toBe(true);
+  for (const route of ['/', '/work/88win/']) {
+    await page.goto(route);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth === window.innerWidth,
+      ),
+      `${route} should not overflow horizontally`,
+    ).toBe(true);
+  }
 
   for (const selector of [
     '.case-hero .case-container',
@@ -596,6 +573,77 @@ test('360 case hero and next project stay within their containers', async ({
     });
     expect(failures).toBe(0);
   }
+});
+
+// 390 section heights from each project's own Figma frame. Heights come from
+// spacing and typography, never from a fixed min-height, so every project is
+// gated against its own frame. ±8 px allows for text wrapping differences;
+// Details allows ±16 px because its seven cards each round by about 2 px.
+const figmaSectionHeights390 = {
+  // 88Win `475:953`. Details is 48 px below Figma because the 390 frame uses a
+  // longer "遊戲圖面" description than the desktop copy the page renders.
+  '/work/88win/': [
+    ['Hero', 784],
+    ['Overview', 791],
+    ['Key Screens', 740],
+    ['Mobile / RWD', 717],
+    ['Interaction & Motion', 792],
+    ['Details', 3461 - 48, 16],
+    ['Visual Extension', 410],
+    ['Links', 659],
+    ['Next Project', 530],
+  ],
+  // Hwa Fong `483:1298`.
+  '/work/hwa-fong/': [
+    ['Hero', 846],
+    ['Overview', 765],
+    ['Key Screens', 807],
+    ['Interaction & Motion', 815],
+    ['Visual Extension', 410],
+    ['Links', 627],
+    ['Next Project', 469],
+  ],
+} as const;
+
+for (const [route, expectedSections] of Object.entries(
+  figmaSectionHeights390,
+)) {
+  test(`390 ${route} sections match their Figma frame heights`, async ({
+    page,
+  }, testInfo) => {
+    test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(route);
+
+    const actualHeights = await page
+      .locator('.case-study > .case-section')
+      .evaluateAll((sections) =>
+        sections.map((section) => section.getBoundingClientRect().height),
+      );
+
+    expect(actualHeights).toHaveLength(expectedSections.length);
+    for (const [index, section] of expectedSections.entries()) {
+      const [name, expectedHeight, tolerance = 8] = section as readonly [
+        string,
+        number,
+        number?,
+      ];
+      const actualHeight = actualHeights[index] ?? Number.NaN;
+      expect(
+        Math.abs(actualHeight - expectedHeight),
+        `${name}: expected ${expectedHeight} ±${tolerance} px, received ${actualHeight}`,
+      ).toBeLessThanOrEqual(tolerance);
+    }
+  });
+}
+
+test('390 Hwa Fong uses its project title size', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/hwa-fong/');
+  const title = page.locator('.case-hero h1');
+  await expect(title).toHaveCSS('font-size', '56px');
+  await expect(title).toHaveCSS('letter-spacing', '-2.24px');
 });
 
 test('1920 case headings and stats stay on one line', async ({
