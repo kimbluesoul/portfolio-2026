@@ -134,6 +134,7 @@
   *::before,
   *::after {
     scroll-behavior: auto !important;
+
     /* 0s, not 0.01ms: `transition-property` defaults to `all`, so any
        non-zero duration here turns every property on every element into a
        transition. WebKit then fades text colour in from the UA default on
