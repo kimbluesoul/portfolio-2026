@@ -12,6 +12,10 @@ interface Props {
 
 const { next, projectCount, tone } = Astro.props;
 const [firstNameWord, ...remainingNameWords] = next.data.name.split(' ');
+// Figma spaces the `·` separators differently per width: full-width spaces at
+// 1920 (`360:1368`) and normal spaces at 390 (`483:1515`). Content keeps one
+// string, and the separator spacing is set in CSS.
+const metaParts = next.data.next.meta.split(/\s*·\s*/u);
 ---
 
 <SectionShell class="next-project" tone={tone}>
@@ -38,7 +42,19 @@ const [firstNameWord, ...remainingNameWords] = next.data.name.split(' ');
         →
       </span>
     </div>
-    <p class="next-meta">{next.data.next.meta}</p>
+    <p class="next-meta">
+      {metaParts.map((part, index) => (
+        <>
+          {index > 0 && (
+            <>
+              {' '}
+              <span class="next-meta-separator">·</span>{' '}
+            </>
+          )}
+          {part}
+        </>
+      ))}
+    </p>
     <p class="next-body">{next.data.next.oneLiner}</p>
     <ProjectMedia class="next-preview" media={next.data.next.media} />
   </a>

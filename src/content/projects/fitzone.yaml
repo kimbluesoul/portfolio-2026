@@ -12,47 +12,139 @@ card:
 seo:
   title: 健身房 FITZONE｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
+next:
+  oneLiner: 從 Logo 與健身房的色調延伸，加入心跳識別和有活力的 Motion，最後順利上線。
+  meta: 健身房品牌網站　·　UI 設計　·　Motion　·　2024–2025
+  media: *cardVideo
 hero:
-  eyebrow: *todo
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 03 · 健身房
+  title: FITZONE
+  titleSizeMobile: 76
+  headline: 健身房**品牌網站**設計
+  subtitle: 客戶給了很大的發揮空間。我從 Logo 和健身房現場的色調出發，把品牌特色、四大特點和課程整理成一個節奏明快的網站，最後也順利上線。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
+    - { label: ROLE, value: UI / Motion }
+    - { label: PLATFORM, value: 品牌網站 }
+    - { label: STATUS, value: 已上線 }
+    - { label: YEAR, value: 2024–2025 }
   showcase:
     layout: single
     items:
-      - &card
-        kind: image
-        src: ../../assets/projects/fitzone/card.jpg
-        alt: FITZONE 網站作品預覽
+      - kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: FITZONE PC 與手機首頁案例展示
+        aspectRatio: 1920 / 820
+        objectPosition: top
+        status: pending
+        expectedFile: src/assets/projects/fitzone/hero-showcase.jpg
 overview:
-  heading: *todo
+  heading: |-
+    黑、黃與一道心跳，
+    **撐起整個品牌**
   blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
+    - title: 背景
+      body: 客戶對網站沒有太多限制，主要希望把四大特點、品牌特色和課程內容清楚呈現，視覺和動態的方向幾乎都交給我決定。
+    - title: 視覺延伸
+      body: 色彩從 Logo 延伸，也大量參考健身房的黑黃色調與空間裝潢；品牌 O 裡的心跳圖示則被拆出來，貫穿整個網站的圖示與按鈕。
+    - title: 挑戰
+      body: 發揮空間大，反而要先替網站定下方向。內容量不少，所以重點放在建立清楚的資訊層級，讓人能很快找到特點與課程。
+  outputs: [品牌網站, Motion]
 keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
+  eyebrow: DESKTOP
+  heading: 一進站，就感覺到**心跳**
+  subtitle: 首頁用滿版影片和高對比的黑黃配色開場，下方直接帶出四大特點，第一眼就知道 FITZONE 在做什麼。
+  main:
+    kind: video
+    src: /media/fitzone/key-main.mp4
+    poster: ../../assets/placeholders/placeholder.png
+    alt: FITZONE PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/fitzone/key-main.mp4
   closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+    - title: 品牌 O 裡的心跳
+      caption: 把 Logo 的心跳線延伸成整站的識別符號。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 品牌 O 心跳識別特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/fitzone/key-heartbeat.jpg
+    - title: 品牌與特色
+      caption: 黑黃區塊交錯，讓品牌介紹有節奏地展開。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 品牌與特色區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/fitzone/key-brand.jpg
+    - title: 團體課程
+      caption: 用輪播呈現多種課程，一眼看懂每堂課的差別。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 團體課程輪播特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/fitzone/key-classes.jpg
+motion:
+  eyebrow: INTERACTION & MOTION
+  heading: 快、清楚，而且有活力
+  subtitle: Motion 的目標是活力、快速、清楚又鮮明。動作俐落不拖泥帶水，讓瀏覽的節奏就像一堂高強度訓練。
+  steps:
+    - title: 01　心跳識別
+      body: 心跳線出現在 Logo、圖示和按鈕中，把品牌識別直接放進互動裡。
+      media:
+        kind: video
+        src: /media/fitzone/motion-1.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 心跳識別動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/fitzone/motion-1.mp4
+    - title: 02　俐落進場
+      body: 區塊用短而快的位移進場，資訊一段段清楚出現，不拖慢瀏覽。
+      media:
+        kind: video
+        src: /media/fitzone/motion-2.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 區塊俐落進場動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/fitzone/motion-2.mp4
+    - title: 03　鮮明回饋
+      body: Hover 時用黃色色塊和斜切形狀即時回應，可點擊的地方一眼就看得出來。
+      media:
+        kind: video
+        src: /media/fitzone/motion-3.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 黃色色塊 Hover 回饋
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/fitzone/motion-3.mp4
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: FITZONE 網站頁面拼貼
+      aspectRatio: 1920 / 1280
+      status: pending
+      expectedFile: src/assets/projects/fitzone/visual-mosaic.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: FROM FIGMA TO LIVE
+  heading: 從設計稿到正式上線
+  subtitle: 想直接操作看看的話，這裡有 Figma 原型和正式網站。
   cards:
-    - {
-        kind: live,
-        eyebrow: *todo,
-        label: *todo,
-        description: *todo,
-        url: *todo,
-      }
+    - kind: prototype
+      eyebrow: FIGMA PROTOTYPE
+      label: Figma 原型
+      description: 在 Figma 裡直接點擊操作，看網站的頁面與互動。
+      url: 'https://www.figma.com/proto/DzYf6WOFxR4hwyAYzktBUH/m000421-%E4%B8%96%E7%95%8C%E5%81%A5%E8%BA%AB%E4%BA%8B%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-FITZONE%E7%B6%B2%E7%AB%99-?node-id=3028-11832&viewport=1659%2C470%2C0.16&t=1vOqvezv1vsOoD96-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=3028%3A11832&page-id=3028%3A11831&hide-ui=1'
+    - kind: live
+      eyebrow: LIVE SITE
+      label: 正式網站
+      description: 目前上線中的版本。
+      url: 'https://www.fitzone.com.tw/'

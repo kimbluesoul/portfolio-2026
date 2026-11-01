@@ -627,16 +627,27 @@ figcaption strong {
   display: none;
 }
 
+/* Figma Next text (`360:1368` / `360:1369`, 390 `484:1556` / `484:1558`):
+   the meta is Noto Sans TC Medium in the secondary grey, and the one-liner is
+   the primary colour, each a single auto-width line at 1920. */
 .next-meta {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-body-compact);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* With the normal spaces around it, this matches a full-width space at
+   1920. At 390 the margin is dropped (see the mobile block). */
+.next-meta-separator {
+  margin-inline: 0.75em;
 }
 
 .next-body {
-  max-width: var(--layout-case-copy);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-body);
-  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-next-body);
+  line-height: 1.2;
 }
 
 @media (width >= 48rem) {
@@ -1086,13 +1097,22 @@ figcaption strong {
     margin-block-end: var(--space-next-heading-to-meta);
   }
 
+  /* 390 Next from `475:953`: title row +16 meta (13 / 1.6) +8 body
+     (15 / 1.7) +28 preview. */
+  .next-meta-separator {
+    margin-inline: 0;
+  }
+
   .next-meta {
-    margin-block-end: var(--space-4);
-    font-size: var(--font-size-label);
+    margin-block-end: var(--space-2);
+    font-size: var(--font-size-case-next-meta-mobile);
+    line-height: 1.6;
   }
 
   .next-body {
     margin-block-end: var(--space-next-body-to-media);
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .next-project h2 {

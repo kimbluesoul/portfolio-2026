@@ -3,7 +3,7 @@
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
 ## Status (2026-11-01)
-- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The first fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is done (PR #21)**, and play-once video behavior is done (PR #23). The 390 case-template fidelity follow-up is in review on `fix/case-template-fidelity`.
+- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The first fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is done (PR #21)**, and play-once video behavior is done (PR #23). The 390 case-template fidelity follow-up is done (PR #26). **M3 FITZONE is in review** on `feat/m3-fitzone`, implemented by Claude while Codex is out of usage (until 2026-11-06).
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
@@ -18,8 +18,8 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Reviewer (new Claude chat, Codex is out until 2026-11-06)**: review the fix round on `fix/case-template-fidelity` (PR #26).
-2. **Product Owner**: export the 88Win media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
+1. **Reviewer (new Claude chat)**: review `feat/m3-fitzone` and `fix/88win-copy`, both implemented by Claude.
+2. **Product Owner**: export the 88Win, Hwa Fong, and FITZONE media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
