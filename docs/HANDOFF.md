@@ -5,7 +5,7 @@
 ## Status (2026-11-02)
 - **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The first fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is done (PR #21)**, and play-once video behavior is done (PR #23). The 390 case-template fidelity follow-up is done (PR #26). **M3 FITZONE is in review** on `feat/m3-fitzone`, implemented by Claude while Codex is out of usage (until 2026-11-06).
 - **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
-- **88Win COLOR follow-up**: `feat/color-swatches` replaces the two pending COLOR images with schema-validated HTML/SVG swatches. It is ready for PR and Claude review; the Product Owner still owns the merge decision.
+- **88Win COLOR follow-up**: `feat/color-swatches` replaces the two pending COLOR images with schema-validated HTML/SVG swatches. P1-1 and P2-1 from PR #39 are fixed (SVG fill, responsive five-column row, visual evidence, and cross-engine E2E); it awaits Architect re-review. The Product Owner still owns the merge decision.
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
 

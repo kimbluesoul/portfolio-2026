@@ -315,7 +315,7 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await expect(page.getByText('NEXT PROJECT 02 / 07')).toBeVisible();
 });
 
-test('88Win color swatches reflow and keep every hex code as text', async ({
+test('88Win color swatches reflow, fill their frames, and keep every hex code as text', async ({
   page,
 }) => {
   const hexCodes = ['#0B2240', '#0A6ABF', '#6AAAE2', '#BBCDEB', '#EFF8FF'];
@@ -332,6 +332,44 @@ test('88Win color swatches reflow and keep every hex code as text', async ({
     items.map((item) => item.getBoundingClientRect()),
   );
   expect(new Set(desktopBoxes.map(({ y }) => Math.round(y))).size).toBe(1);
+  const desktopSwatches = await page
+    .locator('.swatch-color')
+    .evaluateAll((colors) =>
+      colors.map((color) => {
+        const frame = color.getBoundingClientRect();
+        const rect = color.querySelector('rect')!.getBoundingClientRect();
+        return {
+          frame: { width: frame.width, height: frame.height },
+          rect: { width: rect.width, height: rect.height },
+          radius: getComputedStyle(color).borderTopLeftRadius,
+          outline: {
+            color: getComputedStyle(color).outlineColor,
+            width: getComputedStyle(color).outlineWidth,
+          },
+        };
+      }),
+    );
+  for (const { frame, rect, radius } of desktopSwatches) {
+    expect(frame.width).toBeCloseTo(115, 1);
+    expect(frame.height).toBeCloseTo(88, 1);
+    expect(rect.width).toBeCloseTo(frame.width, 1);
+    expect(rect.height).toBeCloseTo(frame.height, 1);
+    expect(radius).toBe('12px');
+  }
+  expect(desktopSwatches.at(-1)?.outline).toEqual({
+    color: 'rgb(224, 231, 241)',
+    width: '1px',
+  });
+
+  for (const width of [1440, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.reload();
+    await swatches.first().scrollIntoViewIfNeeded();
+    const rowPositions = await swatches.evaluateAll((items) =>
+      items.map((item) => Math.round(item.getBoundingClientRect().y)),
+    );
+    expect(new Set(rowPositions).size).toBe(1);
+  }
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
@@ -343,6 +381,22 @@ test('88Win color swatches reflow and keep every hex code as text', async ({
   for (let index = 1; index < mobileBoxes.length; index += 1) {
     expect(mobileBoxes[index]!.y).toBeGreaterThan(mobileBoxes[index - 1]!.y);
   }
+  const mobileSwatches = await page
+    .locator('.swatch-color')
+    .evaluateAll((colors) =>
+      colors.map((color) => ({
+        radius: getComputedStyle(color).borderTopLeftRadius,
+        outline: {
+          color: getComputedStyle(color).outlineColor,
+          width: getComputedStyle(color).outlineWidth,
+        },
+      })),
+    );
+  expect(mobileSwatches.every(({ radius }) => radius === '8px')).toBe(true);
+  expect(mobileSwatches.at(-1)?.outline).toEqual({
+    color: 'rgb(224, 231, 241)',
+    width: '1px',
+  });
 });
 
 const stubMediaPlayback = async (page: import('@playwright/test').Page) => {

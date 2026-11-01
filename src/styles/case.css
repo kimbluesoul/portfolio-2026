@@ -543,7 +543,7 @@ figcaption strong {
 }
 
 .swatches-item:last-child .swatch-color {
-  border: var(--header-border-width) solid var(--color-swatch-light-border);
+  outline: var(--header-border-width) solid var(--color-swatch-light-border);
 }
 
 .swatch-copy {
@@ -873,16 +873,15 @@ figcaption strong {
   }
 }
 
-/* 360:766 needs 639 px of swatches plus 64 px card inset. Keep the mobile
-   list until the card itself, rather than only the viewport, can hold it. */
-@container (width >= 43.9375rem) {
+/* The row starts once the card can keep five proportional swatches legible. */
+@container (width >= 30rem) {
   .detail-card.has-swatches figcaption {
     grid-row: 1;
   }
 
   .color-swatches {
     grid-row: 2;
-    grid-template-columns: repeat(5, var(--size-swatch-desktop-width));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--space-4);
     margin: var(--space-swatch-desktop-top) var(--space-8) 0;
   }
@@ -899,8 +898,9 @@ figcaption strong {
   }
 
   .swatch-color {
-    width: var(--size-swatch-desktop-width);
-    height: var(--size-swatch-desktop-height);
+    width: min(100%, var(--size-swatch-desktop-width));
+    height: auto;
+    aspect-ratio: 115 / 88;
     border-radius: var(--radius-swatch-desktop);
   }
 
@@ -913,7 +913,6 @@ figcaption strong {
   .swatch-name {
     margin-block-start: var(--space-3);
     font-size: 0.875rem;
-    white-space: nowrap;
   }
 
   .swatch-hex {
