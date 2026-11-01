@@ -1,27 +1,78 @@
 // Shared text extraction for ADR-0012 font subsetting and its coverage gate.
 //
-// Noto Sans TC weight usage is a design-system rule (docs/DESIGN_SYSTEM.md):
-//   700 — headings only (h1, h2, h3)
-//   500 — tag chips only (li)
-//   400 — everything else
-// Each weight is subset to the text rendered in those elements. 400 takes all
-// rendered text as a safe superset.
+// Noto Sans TC weight usage is a design-system rule (docs/DESIGN_SYSTEM.md).
+// Each weight is subset to the text rendered inside the elements that use it;
+// 400 takes all rendered text as a safe superset. The selectors mirror the CSS
+// rules (or UA defaults) that set 500 / 700, so text inherits the weight of
+// its nearest listed ancestor. A selector is a descendant chain of simple
+// compounds: `tag`, `.class` or `tag.class`.
 
 export const FONT_WEIGHTS = [400, 500, 700];
 
-const WEIGHT_ELEMENTS = {
-  500: ['li'],
-  700: ['h1', 'h2', 'h3'],
+export const WEIGHT_SELECTORS = {
+  500: [
+    'li',
+    '.back-link',
+    '.case-hero .case-eyebrow',
+    '.next-arrow',
+    // Pre-listed for the FITZONE Next meta (PR #31); no rule sets it on main yet.
+    '.next-meta',
+    '.contact-links a',
+  ],
+  700: [
+    'h1',
+    'h2',
+    'h3',
+    // UA-default bold: no CSS rule exists for the gate to find.
+    'h4',
+    'h5',
+    'h6',
+    'strong',
+    'b',
+    'th',
+    '.case-study strong',
+    '.hero-headline',
+    '.hero-stats dd',
+    '.story-title',
+    '.pending-label',
+  ],
 };
+
+// Rules that set a non-400 weight but only ever render Latin text (Instrument
+// Sans or the ASCII core baseline). scripts/check-font-coverage.mjs fails on
+// any other weight rule in the built CSS, so a new Chinese use of 500 / 700 has
+// to be added to WEIGHT_SELECTORS (or, if it is Latin-only, here). The E2E
+// platform-font check catches a wrong claim.
+export const LATIN_ONLY_WEIGHT_SELECTORS = [
+  'a',
+  '.card-heading',
+  '.case-eyebrow',
+  '.contact-title',
+  '.credentials span',
+  '.detail-eyebrow',
+  '.eyebrow',
+  '.hero-eyebrow',
+  '.outputs-label',
+  '.resume-link',
+  '.work-cue',
+];
 
 // ADR-0012 §5 (amended): every weight's `core` subset always contains printable
 // ASCII and the common Traditional Chinese punctuation, so copy edits do not
 // reshuffle these glyphs between core and ext.
 const ZH_HANT_PUNCTUATION = '　，。、；：？！「」『』（）《》〈〉【】…—～・';
 
+// Symbols the site draws that Instrument Sans lacks, so Noto Sans TC draws them
+// at every weight, including inside LATIN_ONLY_WEIGHT_SELECTORS (the back link,
+// Next arrow and "View Resume ↗"). They are not CJK, so the coverage gate does
+// not see them; the E2E platform-font check does.
+const NON_LATIN_SYMBOLS = '←→↗';
+
 export const CORE_BASELINE = new Set([
   ...Array.from({ length: 0x7e - 0x20 + 1 }, (_, index) => 0x20 + index),
-  ...[...ZH_HANT_PUNCTUATION].map((character) => character.codePointAt(0)),
+  ...[...ZH_HANT_PUNCTUATION, ...NON_LATIN_SYMBOLS].map((character) =>
+    character.codePointAt(0),
+  ),
 ]);
 
 // ADR-0012 amendment (2026-11-01): OpenType features kept in the subsets. These
@@ -77,8 +128,56 @@ function stripNonText(html) {
   );
 }
 
-function textOf(fragment) {
-  return decodeEntities(fragment.replace(/<[^>]+>/gu, ' '));
+const VOID_ELEMENTS = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'source',
+  'track',
+  'wbr',
+]);
+
+function parseCompound(compound) {
+  const match = /^([a-z][\w-]*)?((?:\.[\w-]+)*)$/iu.exec(compound);
+  if (!match) throw new Error(`Unsupported weight selector part: ${compound}`);
+  return {
+    tag: match[1]?.toLowerCase(),
+    classes: match[2].split('.').filter(Boolean),
+  };
+}
+
+const PARSED_WEIGHT_SELECTORS = Object.entries(WEIGHT_SELECTORS).map(
+  ([weight, selectors]) => ({
+    weight: Number(weight),
+    selectors: selectors.map((selector) =>
+      selector.trim().split(/\s+/u).map(parseCompound),
+    ),
+  }),
+);
+
+function compoundMatches(compound, element) {
+  return (
+    (!compound.tag || compound.tag === element.tag) &&
+    compound.classes.every((name) => element.classes.includes(name))
+  );
+}
+
+// `element` is the last entry of `stack`; the earlier parts of the chain must
+// match its ancestors in order.
+function selectorMatches(parts, stack) {
+  if (!compoundMatches(parts.at(-1), stack.at(-1))) return false;
+  let index = parts.length - 2;
+  for (let depth = stack.length - 2; depth >= 0 && index >= 0; depth -= 1) {
+    if (compoundMatches(parts[index], stack[depth])) index -= 1;
+  }
+  return index < 0;
 }
 
 /**
@@ -88,21 +187,47 @@ function textOf(fragment) {
  */
 export function weightedText(html) {
   const body = stripNonText(html);
-  const all = textOf(body);
-  /** @type {Record<number, string>} */
-  const byWeight = { 400: all };
-  for (const [weight, tags] of Object.entries(WEIGHT_ELEMENTS)) {
-    byWeight[weight] = tags
-      .flatMap((tag) =>
-        [
-          ...body.matchAll(
-            new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`, 'giu'),
-          ),
-        ].map((match) => textOf(match[1])),
-      )
-      .join(' ');
+  /** @type {Record<number, string[]>} */
+  const chunks = Object.fromEntries(FONT_WEIGHTS.map((weight) => [weight, []]));
+  const stack = [];
+  for (const token of body.matchAll(
+    /<(\/?)([a-z][\w-]*)\b([^>]*)>|<[^>]*>|([^<]+)/giu,
+  )) {
+    const [, closing, name, attributes, text] = token;
+    if (text !== undefined) {
+      const decoded = decodeEntities(text);
+      chunks[400].push(decoded);
+      for (const weight of stack.at(-1)?.weights ?? []) {
+        chunks[weight].push(decoded);
+      }
+      continue;
+    }
+    if (!name) continue;
+    const tag = name.toLowerCase();
+    if (closing) {
+      const index = stack.findLastIndex((element) => element.tag === tag);
+      if (index >= 0) stack.length = index;
+      continue;
+    }
+    if (VOID_ELEMENTS.has(tag) || attributes.trimEnd().endsWith('/')) continue;
+    const classes =
+      /\bclass\s*=\s*(?:"([^"]*)"|'([^']*)')/iu
+        .exec(attributes)
+        ?.slice(1)
+        .find((value) => value !== undefined)
+        ?.split(/\s+/u)
+        .filter(Boolean) ?? [];
+    const element = { tag, classes, weights: new Set(stack.at(-1)?.weights) };
+    stack.push(element);
+    for (const { weight, selectors } of PARSED_WEIGHT_SELECTORS) {
+      if (selectors.some((parts) => selectorMatches(parts, stack))) {
+        element.weights.add(weight);
+      }
+    }
   }
-  return byWeight;
+  return Object.fromEntries(
+    FONT_WEIGHTS.map((weight) => [weight, chunks[weight].join(' ')]),
+  );
 }
 
 export function isCjkOrFullWidth(codePoint) {

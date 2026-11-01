@@ -52,6 +52,11 @@
   color: var(--color-text-on-inverse-muted);
 }
 
+/* The hero eyebrow carries the Chinese category: Noto Sans TC Medium (360:251). */
+.case-hero .case-eyebrow {
+  font-weight: 500;
+}
+
 .section-intro {
   display: grid;
   gap: var(--space-5);
@@ -86,7 +91,7 @@
   color: currentcolor;
   font-family: var(--font-family-display);
   font-size: var(--font-size-label);
-  font-weight: 700;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -580,10 +585,12 @@ figcaption strong {
   gap: var(--space-5);
 }
 
+/* 1920 Next rhythm (`360:1801`): title +20 meta +12 body +64 preview. The
+   arrow is taller than the title, so the heading row gives back the overhang. */
 .next-project .case-container > a:not(.back-link) {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-5);
+  gap: 0;
   color: var(--color-text-primary);
   text-decoration: none;
 }
@@ -593,6 +600,9 @@ figcaption strong {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--space-4);
+  margin-block-end: calc(
+    var(--space-5) - (var(--size-next-arrow) - var(--font-size-next-title)) / 2
+  );
 }
 
 .next-arrow {
@@ -605,7 +615,7 @@ figcaption strong {
   color: var(--color-text-on-brand);
   font-family: var(--font-family-display);
   font-size: var(--font-size-case-heading);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .next-project h2 {
@@ -628,17 +638,29 @@ figcaption strong {
   display: none;
 }
 
+/* Figma Next text (`360:1368` / `360:1369`, 390 `484:1556` / `484:1558`):
+   the meta is Noto Sans TC Medium in the secondary grey, and the one-liner is
+   the primary colour, each a single auto-width line at 1920. */
 .next-meta {
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-body-compact);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  line-height: 1.2;
+  margin-block-end: var(--space-3);
 }
 
-/* Figma sets the Next body at Auto line-height (all widths). */
+/* With the normal spaces around it, this matches a full-width space at
+   1920. At 390 the margin is dropped (see the mobile block). */
+.next-meta-separator {
+  margin-inline: 0.75em;
+}
+
 .next-body {
-  max-width: var(--layout-case-copy);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-body);
-  line-height: normal;
+  margin-block-end: var(--space-16);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-next-body);
+  line-height: 1.2;
 }
 
 @media (width >= 48rem) {
@@ -1088,13 +1110,22 @@ figcaption strong {
     margin-block-end: var(--space-next-heading-to-meta);
   }
 
+  /* 390 Next from `475:953`: title row +16 meta (13 / 1.6) +8 body
+     (15 / 1.7) +28 preview. */
+  .next-meta-separator {
+    margin-inline: 0;
+  }
+
   .next-meta {
-    margin-block-end: var(--space-4);
-    font-size: var(--font-size-label);
+    margin-block-end: var(--space-2);
+    font-size: var(--font-size-case-next-meta-mobile);
+    line-height: 1.6;
   }
 
   .next-body {
     margin-block-end: var(--space-next-body-to-media);
+    font-size: var(--font-size-case-body-mobile);
+    line-height: var(--line-height-case-body-mobile);
   }
 
   .next-project h2 {

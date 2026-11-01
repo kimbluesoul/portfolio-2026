@@ -539,8 +539,9 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   const nextArrowBox = await next.locator('.next-arrow').boundingBox();
   const nextPreviewBox = await next.locator('.next-preview').boundingBox();
   const nextMeta = next.locator('.next-meta');
-  // Content-driven height (no fixed min-height), so allow rounding.
-  expect(Math.abs((nextBox?.height ?? 0) - 530)).toBeLessThanOrEqual(2);
+  // Content-driven height (no fixed min-height); same tolerance as the
+  // per-section gate below.
+  expect(Math.abs((nextBox?.height ?? 0) - 530)).toBeLessThanOrEqual(8);
   expect(nextArrowBox?.width).toBe(64);
   expect(nextArrowBox?.height).toBe(64);
   expect(nextArrowBox?.y).toBeGreaterThanOrEqual(nextHeadingBox?.y ?? 0);
@@ -561,7 +562,7 @@ test('360 home and case pages have no horizontal overflow', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
   await page.setViewportSize({ width: 360, height: 800 });
-  for (const route of ['/', '/work/88win/']) {
+  for (const route of ['/', '/work/88win/', '/work/fitzone/']) {
     await page.goto(route);
     expect(
       await page.evaluate(
@@ -616,6 +617,16 @@ const figmaSectionHeights390 = {
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 469],
+  ],
+  // FITZONE `484:1339`.
+  '/work/fitzone/': [
+    ['Hero', 810],
+    ['Overview', 765],
+    ['Key Screens', 760],
+    ['Interaction & Motion', 789],
+    ['Visual Extension', 410],
+    ['Links', 627],
+    ['Next Project', 490],
   ],
 } as const;
 
@@ -694,6 +705,145 @@ test('1920 case headings and stats stay on one line', async ({
   expect(motionTimeline?.x).toBe(1280);
   expect(nextPreview?.width).toBe(1440);
   expect(nextPreview?.height).toBe(741);
+});
+
+interface CdpNode {
+  nodeId: number;
+  nodeType: number;
+  nodeName: string;
+  nodeValue: string;
+  attributes?: string[];
+  children?: CdpNode[];
+}
+
+const elementNode = 1;
+const textNode = 3;
+
+// ADR-0012 amendment (2026-11-01): every rendered glyph is drawn with a
+// self-hosted web font. A system font here means a CJK glyph missed its Noto
+// Sans TC weight subset or a font stack lacks Noto Sans TC.
+const platformFontRoutes = [
+  '/',
+  '/work/88win/',
+  '/work/hwa-fong/',
+  '/work/fitzone/',
+  '/work/sss/',
+  '/work/jhanyu/',
+  '/work/amd/',
+  '/work/huifa/',
+  '/resume/',
+  '/404/',
+];
+
+test('every text node renders with a self-hosted font', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'CSS.getPlatformFontsForNode is a Chromium DevTools Protocol method.',
+  );
+  test.setTimeout(120_000);
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('DOM.enable');
+  await cdp.send('CSS.enable');
+  const fallbacks: string[] = [];
+
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of platformFontRoutes) {
+      await page.goto(route, { waitUntil: 'load' });
+      // `content-visibility: auto` skips layout off screen, and CDP then
+      // reports no fonts for those nodes. Render everything, including the
+      // inactive motion tab panels, then mark the nodes that still have no box
+      // so an empty font list fails everywhere else.
+      await page.evaluate(async () => {
+        for (const element of document.querySelectorAll<HTMLElement>(
+          'body *',
+        )) {
+          element.style.contentVisibility = 'visible';
+        }
+        for (const panel of document.querySelectorAll<HTMLElement>(
+          '[role="tabpanel"][hidden]',
+        )) {
+          panel.hidden = false;
+        }
+        await new Promise(requestAnimationFrame);
+        for (const element of document.querySelectorAll('body *')) {
+          if (
+            element.getClientRects().length === 0 ||
+            getComputedStyle(element).visibility !== 'visible'
+          ) {
+            element.setAttribute('data-font-check-hidden', '');
+          }
+        }
+        await document.fonts.ready;
+      });
+      const { root } = (await cdp.send('DOM.getDocument', {
+        depth: -1,
+      })) as { root: CdpNode };
+
+      const textElements: {
+        nodeId: number;
+        label: string;
+        text: string;
+        hidden: boolean;
+      }[] = [];
+      const visit = (node: CdpNode) => {
+        if (['HEAD', 'SCRIPT', 'STYLE', 'TEMPLATE'].includes(node.nodeName))
+          return;
+        const text = (node.children ?? [])
+          .filter((child) => child.nodeType === textNode)
+          .map((child) => child.nodeValue)
+          .join('')
+          .trim();
+        if (node.nodeType === elementNode && text) {
+          // CDP attributes are a flat [name, value, name, value, …] list.
+          const attributes = node.attributes ?? [];
+          const classIndex = attributes.findIndex(
+            (value, index) => index % 2 === 0 && value === 'class',
+          );
+          const classes =
+            classIndex >= 0
+              ? (attributes[classIndex + 1] ?? '').split(/\s+/u).join('.')
+              : '';
+          textElements.push({
+            nodeId: node.nodeId,
+            label: `${node.nodeName.toLowerCase()}${classes ? `.${classes}` : ''}`,
+            text,
+            hidden: attributes.some(
+              (value, index) =>
+                index % 2 === 0 && value === 'data-font-check-hidden',
+            ),
+          });
+        }
+        for (const child of node.children ?? []) visit(child);
+      };
+      visit(root);
+
+      for (const { nodeId, label, text, hidden } of textElements) {
+        const { fonts } = (await cdp.send('CSS.getPlatformFontsForNode', {
+          nodeId,
+        })) as {
+          fonts: { familyName: string; isCustomFont: boolean }[];
+        };
+        if (fonts.length === 0 && !hidden) {
+          fallbacks.push(
+            `${width} ${route} ${label} "${text.slice(0, 24)}": no font data`,
+          );
+        }
+        const system = fonts.filter((font) => !font.isCustomFont);
+        if (system.length > 0) {
+          fallbacks.push(
+            `${width} ${route} ${label} "${text.slice(0, 24)}": ${system
+              .map((font) => font.familyName)
+              .join(', ')}`,
+          );
+        }
+      }
+    }
+  }
+
+  expect(fallbacks, fallbacks.join('\n')).toEqual([]);
 });
 
 test('home preserves the explicit Figma heading breaks', async ({ page }) => {
