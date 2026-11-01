@@ -595,15 +595,14 @@ test('360 home and case pages have no horizontal overflow', async ({
 // gated against its own frame. ±8 px allows for text wrapping differences;
 // Details allows ±16 px because its seven cards each round by about 2 px.
 const figmaSectionHeights390 = {
-  // 88Win `475:953`. Details is 48 px below Figma because the 390 frame uses a
-  // longer "遊戲圖面" description than the desktop copy the page renders.
+  // 88Win `475:953`.
   '/work/88win/': [
     ['Hero', 784],
     ['Overview', 791],
     ['Key Screens', 740],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
-    ['Details', 3461 - 48, 16],
+    ['Details', 3461, 16],
     ['Visual Extension', 410],
     ['Links', 659],
     ['Next Project', 530],
@@ -712,7 +711,7 @@ test('motion steps support roving keyboard navigation', async ({ page }) => {
   await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
   await expect(tabs.nth(1)).toBeFocused();
   await expect(
-    page.getByRole('tabpanel', { name: /02 選擇廠商／遊戲/u }),
+    page.getByRole('tabpanel', { name: /02\s選擇廠商／遊戲/u }),
   ).toBeVisible();
 });
 
