@@ -521,52 +521,65 @@ figcaption strong {
   gap: var(--space-4);
 }
 
+/* Desktop link card (`465:716`): 48 padding (stroke inside), eyebrow 14 / 600,
+   title 36 / 700, description 18 / 400, 16 between them. Figma "auto" line
+   height for this text is about 1.2, not the browser's `normal`. */
 .link-card {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   min-height: var(--tap-target-min);
-  padding: var(--space-6);
-  border: var(--header-border-width) solid var(--color-bg-inverse-raised);
-  border-radius: var(--radius-media);
+  padding: calc(var(--space-12) - var(--header-border-width));
+  border: var(--header-border-width) solid var(--color-border-inverse);
+  border-radius: var(--radius-link-card);
+  background: var(--color-bg-inverse-raised);
   color: var(--color-text-on-inverse);
   text-decoration: none;
 }
 
 .link-eyebrow {
-  color: var(--color-text-on-inverse-muted);
   font-family: var(--font-family-display);
   font-size: 0.875rem;
-  letter-spacing: var(--letter-spacing-label);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
 }
 
 .link-card strong {
   font-size: var(--font-size-link-title);
+  line-height: 1.2;
 }
 
-/* Figma sets the Links description at Auto line-height (all widths). */
 .link-description {
   max-width: var(--layout-case-narrow);
   color: var(--color-text-on-inverse-muted);
-  line-height: normal;
+  font-size: 1.125rem;
+  line-height: 1.2;
 }
 
+/* The arrow sits outside the flow at 40 / 60 from the card edge. */
 .link-arrow {
   position: absolute;
-  inset-block-start: var(--space-6);
-  inset-inline-end: var(--space-6);
-  font-size: var(--font-size-link-title);
+  inset-block-start: calc(var(--space-10) - var(--header-border-width));
+  inset-inline-end: calc(var(--space-15) - var(--header-border-width));
+  font-family: var(--font-family-display);
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .link-card.is-disabled {
   opacity: 0.7;
 }
 
+/* Note (`360:1359`): 15, centered, 32 below the cards. */
 .link-note {
-  margin-block-start: var(--space-5);
+  margin-block-start: var(--space-8);
   color: var(--color-text-on-inverse-muted);
-  font-size: var(--font-size-label);
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .next-project .case-container {
@@ -577,12 +590,39 @@ figcaption strong {
     var(--color-border-default);
 }
 
+/* Next top row (`360:1590`): ← 所有作品 16 / 500, a 1 × 14 divider and the
+   eyebrow (14 / 600) + counter (14 / 500, 0.08em), all left-aligned, 24
+   apart and 22 between eyebrow and counter. */
 .next-topline {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
+  gap: var(--space-6);
+}
+
+.next-topline .back-link {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+.next-divider {
+  width: var(--header-border-width);
+  height: 0.875rem;
+  background: var(--color-border-default);
+}
+
+.next-topline .case-eyebrow {
+  display: flex;
+  gap: var(--space-next-counter);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.next-counter {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.08em;
 }
 
 /* 1920 Next rhythm (`360:1801`): title +20 meta +12 body +64 preview. The
@@ -745,6 +785,7 @@ figcaption strong {
 
   .link-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
   }
 }
 
@@ -1011,12 +1052,49 @@ figcaption strong {
     gap: var(--space-4);
   }
 
+  /* 390 link card (`476:1906`): 24 padding, a 34 px top row (eyebrow 12 and
+     arrow 28), then title 24 and description 15 / 1.6, 8 between rows. */
   .link-cards {
     gap: var(--space-3);
   }
 
   .link-card {
-    gap: var(--space-3);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-6);
+    border-radius: var(--radius-media);
+  }
+
+  .link-card > * {
+    grid-column: 1 / -1;
+  }
+
+  .link-eyebrow {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    font-size: 0.75rem;
+  }
+
+  .link-arrow {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 1.75rem;
+  }
+
+  .link-card strong {
+    font-size: 1.5rem;
+  }
+
+  .link-description {
+    font-size: var(--font-size-case-body-mobile);
+    line-height: 1.6;
+  }
+
+  .link-note {
+    margin-block-start: var(--space-4);
+    font-size: 0.8125rem;
   }
 
   .motion-tabs {
@@ -1088,9 +1166,14 @@ figcaption strong {
     grid-template-columns: 1fr;
   }
 
+  /* 390 top row (`476:1929`): 12 apart, eyebrow and counter 12. */
   .next-topline {
-    align-items: center;
-    flex-direction: row;
+    gap: var(--space-3);
+  }
+
+  .next-topline .case-eyebrow {
+    gap: var(--space-3);
+    font-size: var(--font-size-case-eyebrow-mobile);
   }
 
   .next-project {
