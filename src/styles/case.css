@@ -121,6 +121,11 @@
   font-size: var(--font-size-case-title);
   letter-spacing: -0.04em;
   line-height: var(--line-height-body-tight);
+
+  /* A single word wider than the column (the TODO(CONTENT) placeholder, or a
+     long future title) breaks instead of scrolling the page sideways. Titles
+     that fit, like every Figma title, render unchanged. */
+  overflow-wrap: anywhere;
 }
 
 .hero-headline {
