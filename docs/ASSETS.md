@@ -74,28 +74,29 @@ Desktop 的「範圍」是相對於該張卡片左上角的座標（x, y, 寬 ×
 | # | 卡片 | Desktop 檔名 | Desktop 來源 | 尺寸（2x） | 手機檔名 | 手機來源 | 尺寸（2x） |
 |---|---|---|---|---|---|---|---|
 | 9 | ICON | `detail-icon.png` | `360:403`（已是獨立 Frame） | 1274 × 1100 | `detail-icon-mobile.png` | `476:1002` | 620 × 468 |
-| 10 | COLOR | `detail-color.png` | `360:766` 範圍 (32, 104) 647 × 140 | 1294 × 280 | `detail-color-mobile.png` | `476:1250` Swatches | 620 × 560 |
-| 11 | CATEGORY | `detail-category.png` | `360:785` 範圍 (32, 160) 640 × 134 | 1280 × 268 | `detail-category-mobile.png` | `476:1281` Category grid | 620 × 536 |
-| 12 | CARD | `detail-card.png` | `360:991` 範圍 (32, 160) 1322 × 300 | 2644 × 600 | `detail-card-mobile.png` | `476:1489` Cards | 620 × 1414 |
-| 13 | HEADER | `detail-header.png` | `360:1051` 範圍 (32, 184) 373 × 148 | 746 × 296 | `detail-header-mobile.png` | `476:1634` Headers | 620 × 225 |
-| 14 | BUTTON | `detail-button.png` | `360:1057` 範圍 (32, 165) 399 × 187 | 798 × 374 | `detail-button-mobile.png` | `476:1794` Buttons | 613 × 274 |
-| 15 | NAVIGATION | `detail-navigation.png` | `360:1080` Tab Bar | 786 × 210 | `detail-navigation-mobile.png` | `476:1820` Tab Bar | 620 × 166 |
+| 10 | CATEGORY | `detail-category.png` | `360:785` 範圍 (32, 160) 640 × 134 | 1280 × 268 | `detail-category-mobile.png` | `476:1281` Category grid | 620 × 536 |
+| 11 | CARD | `detail-card.png` | `360:991` 範圍 (32, 160) 1322 × 300 | 2644 × 600 | `detail-card-mobile.png` | `476:1489` Cards | 620 × 1414 |
+| 12 | HEADER | `detail-header.png` | `360:1051` 範圍 (32, 184) 373 × 148 | 746 × 296 | `detail-header-mobile.png` | `476:1634` Headers | 620 × 225 |
+| 13 | BUTTON | `detail-button.png` | `360:1057` 範圍 (32, 165) 399 × 187 | 798 × 374 | `detail-button-mobile.png` | `476:1794` Buttons | 613 × 274 |
+| 14 | NAVIGATION | `detail-navigation.png` | `360:1080` Tab Bar | 786 × 210 | `detail-navigation-mobile.png` | `476:1820` Tab Bar | 620 × 166 |
 
 ### 影片
 
 | # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
 |---|---|---|---|---|---|---|
-| 16 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:316`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
-| 17 | Interaction & Motion | `motion-1.mp4` | 01 滑入遊戲類別 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
-| 18 | Interaction & Motion | `motion-2.mp4` | 02 選擇廠商／遊戲 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
-| 19 | Interaction & Motion | `motion-3.mp4` | 03 進入遊戲 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
+| 15 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:316`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 16 | Interaction & Motion | `motion-1.mp4` | 01 滑入遊戲類別 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 17 | Interaction & Motion | `motion-2.mp4` | 02 選擇廠商／遊戲 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 18 | Interaction & Motion | `motion-3.mp4` | 03 進入遊戲 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
 
 Interaction & Motion 在 Figma 只有一個影片框（`360:365`），網頁上點選 01／02／03 時會切換成對應的影片，所以需要三支。
 
 ### 首頁卡片（選做）
 `card.jpg` 已經有 1x 版本，網站可以正常顯示。若要更清晰，請匯出 2x 版本，**同名覆蓋** `card.jpg`（寬度上限 2880 px）。其他 6 個專案的 `card.jpg` 也一樣。
 
-**88Win 合計：圖片 26 張（8 張畫面＋14 張元件規格＋4 張影片封面）、影片 4 支。**
+COLOR 色票已改由 HTML／CSS 繪製，不需匯出圖片。
+
+**88Win 合計：圖片 24 張（8 張畫面＋12 張元件規格＋4 張影片封面）、影片 4 支。**
 
 ---
 

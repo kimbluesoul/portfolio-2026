@@ -68,12 +68,25 @@ const projects = defineCollection({
       expectedFile,
     });
 
+    const swatchesMedia = z.object({
+      kind: z.literal('swatches'),
+      colors: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            hex: z.string().regex(/^#[0-9A-F]{6}$/u),
+          }),
+        )
+        .min(1),
+    });
+
     const media = z
       .union([
         pendingImageMedia,
         pendingVideoMedia,
         readyImageMedia,
         readyVideoMedia,
+        swatchesMedia,
       ])
       .superRefine((value, context) => {
         if (

@@ -1,0 +1,29 @@
+---
+interface Props {
+  colors: { name: string; hex: string }[];
+}
+
+const { colors } = Astro.props;
+---
+
+<ul class="color-swatches">
+  {colors.map((color) => (
+    <li class="swatches-item">
+      <svg
+        class="swatch-color"
+        aria-hidden="true"
+        focusable="false"
+        viewBox="0 0 1 1"
+        preserveAspectRatio="none"
+      >
+        <rect width="1" height="1" fill={color.hex} />
+      </svg>
+      <span class="swatch-copy">
+        <span class="swatch-name">{color.name}</span>
+        <span class="swatch-hex" lang="en">
+          {color.hex}
+        </span>
+      </span>
+    </li>
+  ))}
+</ul>

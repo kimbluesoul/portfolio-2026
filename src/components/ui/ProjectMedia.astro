@@ -23,6 +23,6 @@ const { class: className, eager = false, media, mobileMedia } = Astro.props;
     eager={eager}
     class={className}
   />
-) : (
+) : media.kind === 'video' ? (
   <LoopVideo media={media} eager={eager} class={className} />
-)}
+) : null}
