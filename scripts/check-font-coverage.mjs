@@ -16,7 +16,8 @@ import {
 // Two CSS checks keep the per-weight text extraction honest (ADR-0012
 // amendment 2026-11-01): every font-family stack names Noto Sans TC, and every
 // rule that sets a weight other than 400 is listed in WEIGHT_SELECTORS for that
-// weight or in LATIN_ONLY_WEIGHT_SELECTORS.
+// weight or in LATIN_ONLY_WEIGHT_SELECTORS. Noto Sans TC and the body font must
+// never render at 500; only explicitly listed Latin-only selectors may use it.
 
 const distDirectory = join(process.cwd(), 'dist');
 
@@ -157,9 +158,24 @@ for (const [, selectorList, declarations] of css.matchAll(
     continue;
   }
   if (weight === 400) continue;
-  // With faces at 400 / 500 / 700 only, CSS font matching draws any weight
-  // above 500 (for example 600) with the 700 face.
-  const faceWeight = weight > 500 ? 700 : weight;
+  if (weight === 500) {
+    const bodyOrNotoFamily = /(?:Noto Sans TC|--font-family-body)/iu.test(
+      declarations,
+    );
+    for (const selector of splitSelectorList(selectorList).map(
+      normalizeSelector,
+    )) {
+      if (!bodyOrNotoFamily && LATIN_ONLY_WEIGHT_SELECTORS.includes(selector))
+        continue;
+      failures.push(
+        `font-weight 500 on "${selector}" can render Chinese or body-font text; use 400 or 700 instead`,
+      );
+    }
+    continue;
+  }
+  // With faces at 400 / 700 only, CSS font matching draws any weight above 400
+  // (for example 600) with the 700 face.
+  const faceWeight = 700;
   for (const selector of splitSelectorList(selectorList).map(
     normalizeSelector,
   )) {

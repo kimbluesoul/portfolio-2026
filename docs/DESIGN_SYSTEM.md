@@ -30,22 +30,21 @@ Child-node citations are included beside each measured value. Values are direct 
 | About body | 20 / 36 px | 15 / 26.25 px | Noto Sans TC 400 | `451:670`, `474:1261` |
 | Project card title | 30 / 39 px | 22 / 30 px | Instrument Sans 700 + Noto Sans TC 700 | `465:1040`, `474:1130` |
 | Project card summary | 20 / 26 px | 15 / 24.75 px | Noto Sans TC 400, text-primary | `465:1043`, `474:1133` |
-| Tag chip | 13 / 17 px | 12 / 17 px | Noto Sans TC 500 (years: Instrument Sans 500) | `465:1045`, `474:1135` |
-| About tool / skill chip | 14 / 20 px | 14 / 20 px | Noto Sans TC 500 | `451:675`, `474:1267` |
+| Tag chip | 13 / 17 px | 12 / 17 px | Noto Sans TC 400 (years: Instrument Sans 500) | `465:1045`, `474:1135` |
+| About tool / skill chip | 14 / 20 px | 14 / 20 px | Noto Sans TC 400 | `451:675`, `474:1267` |
 | Nav item | 16 / 18 px | 12.8 / 14.4 px | Instrument Sans 500 | `466:895`, `473:918` |
 | Footer title | 64 px | 38 / 1.1 | Instrument Sans 700 | `212:209`, `473:923` |
 
 Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`).
 
-**Noto Sans TC weight usage (implementation constraint, ADR-0012, amended 2026-11-01):** every Chinese glyph is drawn with Noto Sans TC, including text set in the display stack (`--font-family-display` is Instrument Sans for Latin, then Noto Sans TC). Weights follow Figma (`360:251`, `475:953`):
+**Noto Sans TC weight usage (implementation constraint, ADR-0012, amended 2026-11-02):** every Chinese glyph is drawn with Noto Sans TC, including text set in the display stack (`--font-family-display` is Instrument Sans for Latin, then Noto Sans TC). Chinese uses only 400 or 700:
 
 | Weight | Where Chinese renders at it | Selectors (`WEIGHT_SELECTORS` in `scripts/font-text.mjs`) |
 |---|---|---|
-| 700 (and 600) | Headings, hero headline, stats values, story titles, caption / step / link titles, pending-media label, link-card eyebrow (`H5／APP PROTOTYPE`) | `h1`–`h6`, `strong`, `b`, `th` (UA-default bold), `.hero-headline`, `.hero-stats dd`, `.story-title`, `.case-study strong`, `.pending-label`, `.link-eyebrow` (600) |
-| 500 | Tag chips, back link (`← 所有作品`), hero eyebrow (`CASE STUDY 01 · 線上娛樂平台`), next-project arrow and meta, footer contact links | `li`, `.back-link`, `.case-hero .case-eyebrow`, `.next-arrow`, `.next-meta`, `.contact-links a` |
+| 700 (and 600) | Headings, hero headline, stats values, story titles, caption / step / link titles, pending-media label, link-card eyebrow (`H5／APP PROTOTYPE`), case hero eyebrow and next-project arrow | `h1`–`h6`, `strong`, `b`, `th` (UA-default bold), `.hero-headline`, `.hero-stats dd`, `.story-title`, `.case-study strong`, `.pending-label`, `.link-eyebrow` (600), `.case-hero .case-eyebrow`, `.next-arrow` |
 | 400 | Everything else | all rendered text |
 
-Fonts are subset per weight to the text inside those selectors. Any CSS rule that sets another weight must be either listed there or in `LATIN_ONLY_WEIGHT_SELECTORS` (Latin-only labels such as `OVERVIEW`); the build fails otherwise. Only 400 / 500 / 700 faces exist, so a 600 rule (Figma SemiBold) is drawn with the 700 face and is checked against the 700 list. A Chromium E2E test fails if any text node on the main routes is drawn with a system font.
+Fonts are subset per weight to the text inside those selectors. Any CSS rule that sets another weight must be either listed there or in `LATIN_ONLY_WEIGHT_SELECTORS` (Latin-only labels such as `OVERVIEW`); the build fails otherwise. Only 400 / 700 Noto Sans TC faces exist, so a 600 rule (Figma SemiBold) is drawn with the 700 face and is checked against the 700 list. The coverage gate rejects 500 unless its selector is explicitly Latin-only. A Chromium E2E test fails if any text node on the main routes is drawn with a system font.
 
 ## Spacing
 
