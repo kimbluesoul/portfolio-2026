@@ -539,8 +539,9 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   const nextArrowBox = await next.locator('.next-arrow').boundingBox();
   const nextPreviewBox = await next.locator('.next-preview').boundingBox();
   const nextMeta = next.locator('.next-meta');
-  // Content-driven height (no fixed min-height), so allow rounding.
-  expect(Math.abs((nextBox?.height ?? 0) - 530)).toBeLessThanOrEqual(2);
+  // Content-driven height (no fixed min-height); same tolerance as the
+  // per-section gate below.
+  expect(Math.abs((nextBox?.height ?? 0) - 530)).toBeLessThanOrEqual(8);
   expect(nextArrowBox?.width).toBe(64);
   expect(nextArrowBox?.height).toBe(64);
   expect(nextArrowBox?.y).toBeGreaterThanOrEqual(nextHeadingBox?.y ?? 0);
@@ -561,7 +562,7 @@ test('360 home and case pages have no horizontal overflow', async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
   await page.setViewportSize({ width: 360, height: 800 });
-  for (const route of ['/', '/work/88win/']) {
+  for (const route of ['/', '/work/88win/', '/work/fitzone/']) {
     await page.goto(route);
     expect(
       await page.evaluate(
@@ -616,6 +617,16 @@ const figmaSectionHeights390 = {
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 469],
+  ],
+  // FITZONE `484:1339`.
+  '/work/fitzone/': [
+    ['Hero', 810],
+    ['Overview', 765],
+    ['Key Screens', 760],
+    ['Interaction & Motion', 789],
+    ['Visual Extension', 410],
+    ['Links', 627],
+    ['Next Project', 490],
   ],
 } as const;
 

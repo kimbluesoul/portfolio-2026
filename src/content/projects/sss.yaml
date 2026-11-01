@@ -12,9 +12,12 @@ card:
 seo:
   title: 超透明提案 SSS｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
+next:
+  oneLiner: 把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。
+  meta: 超透明提案　·　活動頁面　·　UI 設計　·　互動設計　·　2024–2025
+  media: *cardVideo
 hero:
-  eyebrow: *todo
+  eyebrow: &todo TODO(CONTENT)
   title: *todo
   headline: *todo
   subtitle: *todo

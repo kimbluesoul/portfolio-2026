@@ -61,6 +61,7 @@ describe('ADR-0012 layout features', () => {
 describe('weightedText', () => {
   const html = `<html><head><title>標題列</title></head><body>
     <h1>設計畫面</h1><p>內文</p><ul><li>已上線</li></ul>
+    <p class="next-meta" data-astro-cid-x>健身房 <span class="next-meta-separator">·</span> 品牌網站</p>
     <script>const ignored = '腳本';</script></body></html>`;
   const text = weightedText(html);
 
@@ -69,6 +70,13 @@ describe('weightedText', () => {
     expect(text[700]).not.toContain('內文');
     expect(text[500]).toContain('已上線');
     expect(text[500]).not.toContain('設計畫面');
+  });
+
+  it('assigns the case Next meta to 500, including its separators', () => {
+    expect(text[500]).toContain('健身房');
+    expect(text[500]).toContain('·');
+    expect(text[500]).toContain('品牌網站');
+    expect(text[500]).not.toContain('內文');
   });
 
   it('uses all rendered body text for 400 but skips head and scripts', () => {
