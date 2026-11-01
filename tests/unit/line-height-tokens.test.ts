@@ -8,7 +8,7 @@ const tokensCss = readFileSync(
 
 const lineHeightTokens = [
   ...tokensCss.matchAll(/(--line-height-[\w-]+)\s*:\s*([^;]+);/gu),
-].map(([, name, value]) => [name, value.trim()] as const);
+].map(([, name = '', value = '']) => [name, value.trim()] as const);
 
 // A unitless number next to a length (`2.194 - 0.454vw`) makes the whole
 // clamp() invalid, and the line height silently computes to `normal`.
