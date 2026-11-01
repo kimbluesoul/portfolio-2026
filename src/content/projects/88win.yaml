@@ -174,13 +174,6 @@ details:
         src: ../../assets/projects/88win/detail-icon.png
         alt: 88Win Icon 元件規格
         aspectRatio: 637 / 550
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win Icon 元件規格手機版
-        aspectRatio: 310 / 234
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-icon-mobile.png
     - eyebrow: COLOR
       title: 顏色
       caption: 以主色為中心，往深、淺兩側延伸。名稱裡的 100、200、300 代表深淺階層，工程師對照色票時直接用名稱就能找到對應色碼，不用猜。
@@ -208,31 +201,15 @@ details:
         src: ../../assets/projects/88win/detail-category.png
         alt: 88Win 遊戲分類元件規格
         aspectRatio: 1320 / 300
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win 遊戲分類元件規格手機版
-        aspectRatio: 310 / 268
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-category-mobile.png
     - eyebrow: CARD
       title: 遊戲圖面
       caption: 遊戲圖（方形）用同一張圖等比例縮放，各裝置共用；遊戲廠商圖（長方形）分成 PC 與 H5／App 兩種版本。另一種廠商圖只用在 PC 版，分成選中與未選中兩種狀態。
       size: full
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/detail-card.png
         alt: 88Win 卡片元件規格
         aspectRatio: 1322 / 300
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-card.png
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win 卡片元件規格手機版
-        aspectRatio: 310 / 707
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-card-mobile.png
     - eyebrow: HEADER
       title: 導覽列
       caption: 登入前引導登入，登入後直接顯示餘額和存、提、轉、VIP 入口。
@@ -260,13 +237,6 @@ details:
         src: ../../assets/projects/88win/detail-button.png
         alt: 88Win Button 元件規格
         aspectRatio: 811 / 376
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win Button 元件規格手機版
-        aspectRatio: 613 / 274
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-button-mobile.png
     - eyebrow: NAVIGATION
       title: 導覽
       caption: App／H5 的底部導覽列。常用入口固定在底部，中間的首頁用圓形按鈕突出。
@@ -276,13 +246,6 @@ details:
         src: ../../assets/projects/88win/detail-navigation.png
         alt: 88Win 手機底部導覽元件規格
         aspectRatio: 393 / 105
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win 手機底部導覽元件規格手機版
-        aspectRatio: 310 / 83
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-navigation-mobile.png
 visualExtension:
   variant: mosaic
   items:

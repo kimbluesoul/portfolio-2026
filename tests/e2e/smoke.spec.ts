@@ -278,15 +278,17 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
-  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(10);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(5);
   await expect(page.locator('loop-video')).toHaveCount(7);
   await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
-  await expect(page.locator('.detail-card picture')).toHaveCount(7);
+  // Only COLOR and HEADER still carry a separate mobile image; the other five
+  // show their desktop image on phones for now (docs/ASSETS.md).
+  await expect(page.locator('.detail-card picture')).toHaveCount(2);
   await expect(
     page.locator('.detail-card source[media="(width < 48rem)"]'),
-  ).toHaveCount(14);
+  ).toHaveCount(4);
   await expect(page.locator('.case-hero .hero-showcase')).toHaveCount(1);
   await expect(
     page.locator('.visual-extension .visual-grid > .media-frame'),
@@ -737,7 +739,10 @@ const figmaSectionHeights390 = {
     ['Key Screens', 740],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
-    ['Details', 3461, 16],
+    // Interim (PO, 2026-11-01): phones show the desktop Details images until
+    // the detail-*-mobile.png exports arrive (docs/ASSETS.md). Restore the
+    // 3461 check when they do.
+    ['Details', 3461, 16, 'desktop Details images on mobile'],
     ['Visual Extension', 410],
     ['Links', 659],
     ['Next Project', 530],
@@ -789,11 +794,15 @@ for (const [route, expectedSections] of Object.entries(
 
     expect(actualHeights).toHaveLength(expectedSections.length);
     for (const [index, section] of expectedSections.entries()) {
-      const [name, expectedHeight, tolerance = 8] = section as readonly [
-        string,
-        number,
-        number?,
-      ];
+      const [name, expectedHeight, tolerance = 8, interim] =
+        section as readonly [string, number, number?, string?];
+      if (interim) {
+        testInfo.annotations.push({
+          type: 'interim',
+          description: `${name} height not compared: ${interim}`,
+        });
+        continue;
+      }
       const actualHeight = actualHeights[index] ?? Number.NaN;
       expect(
         Math.abs(actualHeight - expectedHeight),
