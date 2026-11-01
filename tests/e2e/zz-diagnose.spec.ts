@@ -47,6 +47,6 @@ for (let i = 0; i < 40; i++) {
       };
     });
     const bad = snap.els.some((e) => e.fill.startsWith('rgb(0, 0, 0)') || e.anims.length > 0) || snap.all > 0;
-    console.log(`${bad ? 'BAD' : 'ok'} ${test.info().project.name} ${JSON.stringify(snap)}`);
+    if (bad) throw new Error(`BAD ${JSON.stringify(snap)}`);
   });
 }
