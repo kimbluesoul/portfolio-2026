@@ -47,6 +47,7 @@ if (!featuredProject) throw new Error('At least one project is required.');
 
   .project-grid {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-12);
     margin-block-start: var(--space-12);
   }

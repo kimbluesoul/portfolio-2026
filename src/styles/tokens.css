@@ -86,7 +86,17 @@
   --line-height-body: clamp(1.65, 2.194 - 0.454vw, 1.75);
   --line-height-body-tight: 1.2778;
   --line-height-display: clamp(1.2, 1.325 - 0.104vw, 1.32);
-  --line-height-case-headline-mobile: 1.0625;
+  --line-height-case-headline-mobile: 1.4;
+
+  /* 390 case typography from the mobile Figma frames (`475:953`). */
+  --font-size-case-eyebrow-mobile: 0.75rem;
+  --font-size-case-heading-mobile: 1.75rem;
+  --line-height-case-heading-mobile: 1.35;
+  --font-size-case-body-mobile: 0.9375rem;
+  --line-height-case-body-mobile: 1.7;
+  --font-size-case-caption-mobile: 0.875rem;
+  --font-size-case-caption-title-mobile: 1rem;
+  --font-size-case-step-title-mobile: 1.125rem;
   --line-height-next-title-mobile: 0.82;
   --letter-spacing-label: 0.12em;
   --letter-spacing-next-title: -0.04em;
