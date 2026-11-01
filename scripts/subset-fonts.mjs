@@ -6,6 +6,7 @@ import subsetFont from 'subset-font';
 import {
   codePointsFrom,
   FONT_WEIGHTS,
+  LAYOUT_FEATURES,
   weightedText,
   withCoreBaseline,
 } from './font-text.mjs';
@@ -128,7 +129,11 @@ for (const weight of FONT_WEIGHTS) {
     const subset = await subsetFont(
       sourceFont,
       textFromCodePoints(codePoints),
-      { targetFormat: 'woff2', variationAxes: { wght: weight } },
+      {
+        targetFormat: 'woff2',
+        variationAxes: { wght: weight },
+        keepFeatures: LAYOUT_FEATURES,
+      },
     );
     const hash = createHash('sha256').update(subset).digest('hex').slice(0, 12);
     const filename = `noto-sans-tc-${weight}-${name}.${hash}.woff2`;
