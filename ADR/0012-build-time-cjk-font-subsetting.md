@@ -64,7 +64,7 @@ LCP ≤ 2.5 s and Performance ≥ 0.90 are unchanged.
 - **Weight rule = selectors, not tags.** `WEIGHT_SELECTORS` in `scripts/font-text.mjs` lists per weight the descendant selectors (`tag`, `.class`, `tag.class` chains) whose CSS or UA default sets that weight. Text inherits the weight of its nearest listed ancestor, so a nested `.accent` inside `.hero-headline` counts at 700. The list follows Figma: the hero eyebrow, back link and next arrow are Medium (500) in `360:251` / `475:953`, so their CSS moved from 700 to 500 as part of this change. `DESIGN_SYSTEM.md` holds the table.
 - **Gate.** `scripts/check-font-coverage.mjs` now also reads the built CSS and fails when
   - a `font-family` or `--font-family-*` stack does not name Noto Sans TC, or
-  - a rule sets a weight other than 400 on a selector that is in neither `WEIGHT_SELECTORS[weight]` nor `LATIN_ONLY_WEIGHT_SELECTORS` (Latin-only labels such as `OVERVIEW`, `SELECTED WORK`), or
+  - a rule sets a weight other than 400 on a selector that is in neither `WEIGHT_SELECTORS[weight]` nor `LATIN_ONLY_WEIGHT_SELECTORS` (Latin-only labels such as `OVERVIEW`, `SELECTED WORK`). A weight above 500 (for example 600) is checked against the 700 list, because CSS font matching draws it with the 700 face (amended 2026-11-01). Or
   - a rule uses a `font:` shorthand (other than `inherit` / `initial` / `unset` / `revert`) or a non-literal `font-weight` such as `var()`, which the check cannot read.
 
   Both checks were confirmed to fail on the pre-fix state. The gate only sees weights that a CSS rule sets, so the UA-default bold elements (`h4`–`h6`, `strong`, `b`, `th`) are listed in `WEIGHT_SELECTORS[700]` directly.

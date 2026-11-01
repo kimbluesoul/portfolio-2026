@@ -35,6 +35,8 @@ export const WEIGHT_SELECTORS = {
     '.hero-stats dd',
     '.story-title',
     '.pending-label',
+    // 600, drawn with the 700 face; "H5／APP PROTOTYPE" has a full-width slash.
+    '.link-eyebrow',
   ],
 };
 
@@ -52,6 +54,9 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
   '.detail-eyebrow',
   '.eyebrow',
   '.hero-eyebrow',
+  '.link-arrow',
+  '.next-counter',
+  '.next-topline .case-eyebrow',
   '.outputs-label',
   '.resume-link',
   '.work-cue',

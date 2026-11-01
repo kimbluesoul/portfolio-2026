@@ -157,16 +157,19 @@ for (const [, selectorList, declarations] of css.matchAll(
     continue;
   }
   if (weight === 400) continue;
+  // With faces at 400 / 500 / 700 only, CSS font matching draws any weight
+  // above 500 (for example 600) with the 700 face.
+  const faceWeight = weight > 500 ? 700 : weight;
   for (const selector of splitSelectorList(selectorList).map(
     normalizeSelector,
   )) {
     if (
-      WEIGHT_SELECTORS[weight]?.includes(selector) ||
+      WEIGHT_SELECTORS[faceWeight]?.includes(selector) ||
       LATIN_ONLY_WEIGHT_SELECTORS.includes(selector)
     )
       continue;
     failures.push(
-      `font-weight ${value} on "${selector}" is not listed in WEIGHT_SELECTORS[${weight}] or LATIN_ONLY_WEIGHT_SELECTORS (scripts/font-text.mjs)`,
+      `font-weight ${value} on "${selector}" is not listed in WEIGHT_SELECTORS[${faceWeight}] or LATIN_ONLY_WEIGHT_SELECTORS (scripts/font-text.mjs)`,
     );
   }
 }

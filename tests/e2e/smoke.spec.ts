@@ -728,6 +728,77 @@ test('390 Hwa Fong uses its project title size', async ({ page }, testInfo) => {
   await expect(title).toHaveCSS('letter-spacing', '-2.24px');
 });
 
+// #33: Links cards (465:716 / 476:1906) and the Next row (360:1590 / 476:1929).
+test('link cards and the Next row keep the Figma geometry', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs every width in one project.',
+  );
+  // Text boxes, not element boxes: the eyebrow and title span the card width.
+  const textRect = (selector: string) =>
+    page.locator(selector).evaluateAll((elements) =>
+      elements.map((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const { left, right, top, bottom } = range.getBoundingClientRect();
+        return { left, right, top, bottom };
+      }),
+    );
+  type Rect = { left: number; right: number; top: number; bottom: number };
+  const intersects = (a: Rect, b: Rect) =>
+    a.left < b.right &&
+    b.left < a.right &&
+    a.top < b.bottom &&
+    b.top < a.bottom;
+
+  // 88Win has the longest eyebrow (`H5／APP PROTOTYPE`); 2-column cards are
+  // narrowest just above 768.
+  for (const width of [768, 800, 1024]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/work/88win/');
+    const arrows = await textRect('.link-arrow');
+    const eyebrows = await textRect('a.link-card .link-eyebrow');
+    const titles = await textRect('a.link-card strong');
+    expect(arrows.length).toBeGreaterThan(0);
+    arrows.forEach((arrow, index) => {
+      expect(intersects(arrow, eyebrows[index]!), `${width} eyebrow`).toBe(
+        false,
+      );
+      expect(intersects(arrow, titles[index]!), `${width} title`).toBe(false);
+    });
+  }
+
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('/work/88win/');
+  const x = async (selector: string) =>
+    (await page.locator(selector).first().boundingBox())?.x ?? 0;
+  expect(await x('.next-topline .back-link')).toBeCloseTo(240, 0);
+  expect(Math.abs((await x('.next-divider')) - 348)).toBeLessThanOrEqual(1.5);
+  expect(
+    Math.abs((await x('.next-topline .case-eyebrow')) - 373),
+  ).toBeLessThanOrEqual(1.5);
+  expect(Math.abs((await x('.next-counter')) - 523)).toBeLessThanOrEqual(1.5);
+  const card = await page.locator('a.link-card').first().boundingBox();
+  const arrow = await page.locator('.link-arrow').first().boundingBox();
+  expect(card?.width).toBeCloseTo(704, 0);
+  expect((arrow?.y ?? 0) - (card?.y ?? 0)).toBeCloseTo(40, 0);
+  expect(
+    (card?.x ?? 0) + (card?.width ?? 0) - (arrow?.x ?? 0) - (arrow?.width ?? 0),
+  ).toBeCloseTo(60, 0);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/88win/');
+  const heights = await page
+    .locator('.link-card')
+    .evaluateAll((cards) =>
+      cards.map((card) => card.getBoundingClientRect().height),
+    );
+  expect(Math.abs(heights[0]! - 177)).toBeLessThanOrEqual(2);
+  expect(Math.abs(heights[1]! - 153)).toBeLessThanOrEqual(2);
+});
+
 // #27: an invalid clamp() in --line-height-body silently computed to `normal`.
 test('case subtitles use the Figma line height, never normal', async ({
   page,

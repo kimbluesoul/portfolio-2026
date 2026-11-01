@@ -19,13 +19,18 @@ const metaParts = next.data.next.meta.split(/\s*·\s*/u);
 ---
 
 <SectionShell class="next-project" tone={tone}>
+  {/* 360:1590 / 476:1929: back link | divider | eyebrow + counter, left-aligned. */}
   <div class="next-topline">
     <a class="back-link" href="/#work">
       ← 所有作品
     </a>
+    <span class="next-divider" aria-hidden="true"></span>
     <p class="case-eyebrow">
-      NEXT PROJECT {String(next.data.order).padStart(2, '0')} /{' '}
-      {String(projectCount).padStart(2, '0')}
+      NEXT PROJECT{' '}
+      <span class="next-counter">
+        {String(next.data.order).padStart(2, '0')} /{' '}
+        {String(projectCount).padStart(2, '0')}
+      </span>
     </p>
   </div>
   <a href={`/work/${next.id}/`}>
