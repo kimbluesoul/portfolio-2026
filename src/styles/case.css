@@ -523,7 +523,9 @@ figcaption strong {
 
 /* Desktop link card (`465:716`): 48 padding (stroke inside), eyebrow 14 / 600,
    title 36 / 700, description 18 / 400, 16 between them. Figma "auto" line
-   height for this text is about 1.2, not the browser's `normal`. */
+   height for this text is about 1.2, not the browser's `normal`. Figma rounds
+   those boxes to 17 / 43 / 22 with 17 between them (212 tall); 1.2 and 16 gaps
+   give 209.6, an invisible 2.4 px. */
 .link-card {
   position: relative;
   display: grid;
@@ -564,9 +566,19 @@ figcaption strong {
   inset-block-start: calc(var(--space-10) - var(--header-border-width));
   inset-inline-end: calc(var(--space-15) - var(--header-border-width));
   font-family: var(--font-family-display);
-  font-size: 2.5rem;
+  font-size: var(--size-link-arrow);
   font-weight: 500;
   line-height: 1.2;
+}
+
+/* The eyebrow and title rows sit beside the arrow: keep them clear of it
+   (arrow inset + glyph width - card padding), or narrow 2-column cards at
+   768-850 px run the text under the glyph. */
+.link-eyebrow,
+.link-card strong {
+  padding-inline-end: calc(
+    var(--space-15) + var(--size-link-arrow) - var(--space-12)
+  );
 }
 
 .link-card.is-disabled {
@@ -1067,6 +1079,12 @@ figcaption strong {
 
   .link-card > * {
     grid-column: 1 / -1;
+  }
+
+  /* The arrow has its own column here. */
+  .link-eyebrow,
+  .link-card strong {
+    padding-inline-end: 0;
   }
 
   .link-eyebrow {

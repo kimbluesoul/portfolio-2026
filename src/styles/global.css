@@ -27,11 +27,8 @@
 }
 
 @layer base {
-  /* Every page ends in the dark footer. The root carries the footer color, so
-     the strip below the page (behind Safari's bottom toolbar, overscroll)
-     continues the footer instead of showing white. The body paints the page. */
   html {
-    background: var(--color-bg-inverse);
+    background: var(--color-bg-canvas);
     color: var(--color-text-primary);
   }
 
@@ -39,7 +36,6 @@
     min-width: 20rem;
     min-height: 100vh;
     overflow-x: hidden;
-    background: var(--color-bg-canvas);
   }
 
   button,

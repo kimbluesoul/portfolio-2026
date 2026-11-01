@@ -170,6 +170,9 @@
 
   /* Link card radius: mobile 16 (476:1906), desktop 20 (465:716). */
   --radius-link-card: var(--space-5);
+
+  /* Desktop link arrow glyph (`I465:716;465:707`): 40 / Medium. */
+  --size-link-arrow: 2.5rem;
   --radius-control: var(--space-2);
 
   /* Minimum interactive target (ARCHITECTURE §10). */
