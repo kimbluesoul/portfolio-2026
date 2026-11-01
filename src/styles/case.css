@@ -579,10 +579,12 @@ figcaption strong {
   gap: var(--space-5);
 }
 
+/* 1920 Next rhythm (`360:1801`): title +20 meta +12 body +64 preview. The
+   arrow is taller than the title, so the heading row gives back the overhang. */
 .next-project .case-container > a:not(.back-link) {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-5);
+  gap: 0;
   color: var(--color-text-primary);
   text-decoration: none;
 }
@@ -592,6 +594,9 @@ figcaption strong {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: var(--space-4);
+  margin-block-end: calc(
+    var(--space-5) - (var(--size-next-arrow) - var(--font-size-next-title)) / 2
+  );
 }
 
 .next-arrow {
@@ -636,6 +641,7 @@ figcaption strong {
   font-size: var(--font-size-body);
   font-weight: 500;
   line-height: 1.2;
+  margin-block-end: var(--space-3);
 }
 
 /* With the normal spaces around it, this matches a full-width space at
@@ -645,6 +651,7 @@ figcaption strong {
 }
 
 .next-body {
+  margin-block-end: var(--space-16);
   color: var(--color-text-primary);
   font-size: var(--font-size-next-body);
   line-height: 1.2;

@@ -37,7 +37,7 @@ Child-node citations are included beside each measured value. Values are direct 
 
 Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`).
 
-**Noto Sans TC weight usage (implementation constraint, ADR-0012):** 700 only in headings (`h1`–`h3`), 500 only in tag chips (`li`), 400 everywhere else. Fonts are subset per weight to exactly those elements. A new Chinese use of 500 or 700 outside these elements must be added to `scripts/font-text.mjs`, or the glyphs fall back to the system font.
+**Noto Sans TC weight usage (implementation constraint, ADR-0012):** 700 only in headings (`h1`–`h3`), 500 only in tag chips (`li`) and the case Next meta (`p.next-meta`, Figma `360:1368`), 400 everywhere else. Fonts are subset per weight to exactly those elements. A new Chinese use of 500 or 700 outside these elements must be added to `scripts/font-text.mjs`, or the glyphs fall back to the system font.
 
 ## Spacing
 

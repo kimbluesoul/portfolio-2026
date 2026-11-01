@@ -2,17 +2,29 @@
 //
 // Noto Sans TC weight usage is a design-system rule (docs/DESIGN_SYSTEM.md):
 //   700 — headings only (h1, h2, h3)
-//   500 — tag chips only (li)
+//   500 — tag chips (li) and the case Next meta (p.next-meta)
 //   400 — everything else
 // Each weight is subset to the text rendered in those elements. 400 takes all
 // rendered text as a safe superset.
 
 export const FONT_WEIGHTS = [400, 500, 700];
 
+// Entries are `tag` or `tag.class` (one class, matched as a whole word).
 const WEIGHT_ELEMENTS = {
-  500: ['li'],
+  500: ['li', 'p.next-meta'],
   700: ['h1', 'h2', 'h3'],
 };
+
+function elementPattern(selector) {
+  const [tag, className] = selector.split('.');
+  const classAttribute = className
+    ? String.raw`(?=[^>]*\bclass="(?:[^"]*\s)?${className}(?:\s[^"]*)?")`
+    : '';
+  return new RegExp(
+    String.raw`<${tag}\b${classAttribute}[^>]*>([\s\S]*?)</${tag}>`,
+    'giu',
+  );
+}
 
 // ADR-0012 §5 (amended): every weight's `core` subset always contains printable
 // ASCII and the common Traditional Chinese punctuation, so copy edits do not
@@ -91,14 +103,12 @@ export function weightedText(html) {
   const all = textOf(body);
   /** @type {Record<number, string>} */
   const byWeight = { 400: all };
-  for (const [weight, tags] of Object.entries(WEIGHT_ELEMENTS)) {
-    byWeight[weight] = tags
-      .flatMap((tag) =>
-        [
-          ...body.matchAll(
-            new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)</${tag}>`, 'giu'),
-          ),
-        ].map((match) => textOf(match[1])),
+  for (const [weight, selectors] of Object.entries(WEIGHT_ELEMENTS)) {
+    byWeight[weight] = selectors
+      .flatMap((selector) =>
+        [...body.matchAll(elementPattern(selector))].map((match) =>
+          textOf(match[1]),
+        ),
       )
       .join(' ');
   }

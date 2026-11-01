@@ -604,8 +604,7 @@ const figmaSectionHeights390 = {
     ['Links', 627],
     ['Next Project', 469],
   ],
-  // FITZONE `484:1339`. Figma wraps the SSS Next meta (`484:1556`) to two
-  // lines at 350 px; the browser renders it 327 px wide on one line (21 px).
+  // FITZONE `484:1339`.
   '/work/fitzone/': [
     ['Hero', 810],
     ['Overview', 765],
@@ -613,7 +612,7 @@ const figmaSectionHeights390 = {
     ['Interaction & Motion', 789],
     ['Visual Extension', 410],
     ['Links', 627],
-    ['Next Project', 490, 21],
+    ['Next Project', 490],
   ],
 } as const;
 
