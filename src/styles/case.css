@@ -60,9 +60,9 @@
   color: var(--color-text-on-inverse-muted);
 }
 
-/* The hero eyebrow carries the Chinese category: Noto Sans TC Medium (360:251). */
+/* The hero eyebrow carries the Chinese category in the bold display weight. */
 .case-hero .case-eyebrow {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .section-intro {
@@ -99,7 +99,7 @@
   color: currentcolor;
   font-family: var(--font-family-display);
   font-size: var(--font-size-label);
-  font-weight: 500;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -531,7 +531,7 @@ figcaption strong {
   align-items: center;
   gap: var(--space-swatch-mobile-copy);
   min-width: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .swatch-color {
@@ -555,12 +555,14 @@ figcaption strong {
 .swatch-name {
   font-family: var(--font-family-body);
   font-size: 0.875rem;
+  font-weight: 400;
   line-height: 1.2;
 }
 
 .swatch-hex {
   font-family: var(--font-family-display);
   font-size: 0.75rem;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -639,7 +641,7 @@ figcaption strong {
   inset-inline-end: calc(var(--space-15) - var(--header-border-width));
   font-family: var(--font-family-display);
   font-size: var(--size-link-arrow);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -674,7 +676,7 @@ figcaption strong {
     var(--color-border-default);
 }
 
-/* Next top row (`360:1590`): ← 所有作品 16 / 500, a 1 × 14 divider and the
+/* Next top row (`360:1590`): ← 所有作品 16 / 400, a 1 × 14 divider and the
    eyebrow (14 / 600) + counter (14 / 500, 0.08em), all left-aligned, 24
    apart and 22 between eyebrow and counter. */
 .next-topline {
@@ -739,7 +741,7 @@ figcaption strong {
   color: var(--color-text-on-brand);
   font-family: var(--font-family-display);
   font-size: var(--font-size-case-heading);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .next-project h2 {
@@ -763,13 +765,13 @@ figcaption strong {
 }
 
 /* Figma Next text (`360:1368` / `360:1369`, 390 `484:1556` / `484:1558`):
-   the meta is Noto Sans TC Medium in the secondary grey, and the one-liner is
+   the meta is Noto Sans TC Regular in the secondary grey, and the one-liner is
    the primary colour, each a single auto-width line at 1920. */
 .next-meta {
   color: var(--color-text-secondary);
   font-family: var(--font-family-body);
   font-size: var(--font-size-body);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
   margin-block-end: var(--space-3);
 }
@@ -918,6 +920,12 @@ figcaption strong {
   .swatch-hex {
     margin-block-start: var(--space-swatch-desktop-code);
     font-size: 0.8125rem;
+  }
+}
+
+@container (width >= 43.9375rem) {
+  .swatch-name {
+    white-space: nowrap;
   }
 }
 
