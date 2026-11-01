@@ -1,23 +1,36 @@
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
-import { extname, join } from 'node:path';
+import { dirname, extname, join, relative, sep } from 'node:path';
 import process from 'node:process';
 import subsetFont from 'subset-font';
 import {
   codePointsFrom,
   FONT_WEIGHTS,
   LAYOUT_FEATURES,
+  partitionExt,
   weightedText,
   withCoreBaseline,
 } from './font-text.mjs';
 
 // ADR-0012: subset Noto Sans TC per weight to the glyphs that weight renders.
-// Each weight gets a `core` subset (home page) and an `ext` subset (glyphs only
+// Each weight gets a `core` subset (home page) and `ext` subsets (glyphs only
 // used on other pages), so the home page never downloads case-study glyphs.
+// `ext` is split per page (`ext-shared` plus `ext-<page>`), so a case page
+// never downloads another case page's glyphs (amendment 2026-11-01).
 
 const root = process.cwd();
 const distDirectory = join(root, 'dist');
 const homeHtml = join(distDirectory, 'index.html');
+
+/** `dist/work/88win/index.html` → `work-88win`, `dist/404.html` → `404`. */
+function pageKey(file) {
+  const path = relative(distDirectory, file);
+  const base = path.endsWith(`${sep}index.html`) ? dirname(path) : path;
+  return base
+    .replace(/\.html$/u, '')
+    .split(sep)
+    .join('-');
+}
 const sourceFontPath = join(
   root,
   'fonts-src',
@@ -113,17 +126,25 @@ for (const weight of FONT_WEIGHTS) {
     .filter(({ file }) => file === homeHtml)
     .map(({ text }) => text[weight])
     .join('');
-  const allText = pages.map(({ text }) => text[weight]).join('');
   const extraText = weight === 400 ? cssText : '';
 
   const core = withCoreBaseline(codePointsFrom(homeText + extraText));
-  const ext = new Set(
-    [...codePointsFrom(allText)].filter((codePoint) => !core.has(codePoint)),
+  const ext = partitionExt(
+    new Map(
+      pages.map(({ file, text }) => [
+        pageKey(file),
+        codePointsFrom(text[weight]),
+      ]),
+    ),
+    core,
   );
 
   for (const [name, codePoints] of [
     ['core', core],
-    ['ext', ext],
+    ...[...ext].map(([group, groupCodePoints]) => [
+      `ext-${group}`,
+      groupCodePoints,
+    ]),
   ]) {
     if (codePoints.size === 0) continue;
     const subset = await subsetFont(
