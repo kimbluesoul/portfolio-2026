@@ -682,6 +682,107 @@ test('1920 case headings and stats stay on one line', async ({
   expect(nextPreview?.height).toBe(741);
 });
 
+interface CdpNode {
+  nodeId: number;
+  nodeType: number;
+  nodeName: string;
+  nodeValue: string;
+  attributes?: string[];
+  children?: CdpNode[];
+}
+
+const elementNode = 1;
+const textNode = 3;
+
+// ADR-0012 amendment (2026-11-01): every rendered glyph is drawn with a
+// self-hosted web font. A system font here means a CJK glyph missed its Noto
+// Sans TC weight subset or a font stack lacks Noto Sans TC.
+const platformFontRoutes = [
+  '/',
+  '/work/88win/',
+  '/work/hwa-fong/',
+  '/work/fitzone/',
+  '/work/sss/',
+  '/work/jhanyu/',
+  '/work/amd/',
+  '/work/huifa/',
+  '/resume/',
+  '/404/',
+];
+
+test('every text node renders with a self-hosted font', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'CSS.getPlatformFontsForNode is a Chromium DevTools Protocol method.',
+  );
+  test.setTimeout(120_000);
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('DOM.enable');
+  await cdp.send('CSS.enable');
+  const fallbacks: string[] = [];
+
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of platformFontRoutes) {
+      await page.goto(route, { waitUntil: 'load' });
+      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+      const { root } = (await cdp.send('DOM.getDocument', {
+        depth: -1,
+      })) as { root: CdpNode };
+
+      const textElements: { nodeId: number; label: string; text: string }[] =
+        [];
+      const visit = (node: CdpNode) => {
+        if (['HEAD', 'SCRIPT', 'STYLE', 'TEMPLATE'].includes(node.nodeName))
+          return;
+        const text = (node.children ?? [])
+          .filter((child) => child.nodeType === textNode)
+          .map((child) => child.nodeValue)
+          .join('')
+          .trim();
+        if (node.nodeType === elementNode && text) {
+          // CDP attributes are a flat [name, value, name, value, …] list.
+          const attributes = node.attributes ?? [];
+          const classIndex = attributes.findIndex(
+            (value, index) => index % 2 === 0 && value === 'class',
+          );
+          const classes =
+            classIndex >= 0
+              ? (attributes[classIndex + 1] ?? '').split(/\s+/u).join('.')
+              : '';
+          textElements.push({
+            nodeId: node.nodeId,
+            label: `${node.nodeName.toLowerCase()}${classes ? `.${classes}` : ''}`,
+            text,
+          });
+        }
+        for (const child of node.children ?? []) visit(child);
+      };
+      visit(root);
+
+      for (const { nodeId, label, text } of textElements) {
+        const { fonts } = (await cdp.send('CSS.getPlatformFontsForNode', {
+          nodeId,
+        })) as {
+          fonts: { familyName: string; isCustomFont: boolean }[];
+        };
+        const system = fonts.filter((font) => !font.isCustomFont);
+        if (system.length > 0) {
+          fallbacks.push(
+            `${width} ${route} ${label} "${text.slice(0, 24)}": ${system
+              .map((font) => font.familyName)
+              .join(', ')}`,
+          );
+        }
+      }
+    }
+  }
+
+  expect(fallbacks, fallbacks.join('\n')).toEqual([]);
+});
+
 test('home preserves the explicit Figma heading breaks', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#home-heading br')).toHaveCount(1);

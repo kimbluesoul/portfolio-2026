@@ -5,12 +5,18 @@ import {
   codePointsFrom,
   FONT_WEIGHTS,
   isCjkOrFullWidth,
+  LATIN_ONLY_WEIGHT_SELECTORS,
+  WEIGHT_SELECTORS,
   weightedText,
 } from './font-text.mjs';
 
 // ADR-0012 coverage gate: after the final build, every CJK / full-width code
 // point rendered at a given Noto Sans TC weight must fall inside a generated
 // unicode-range for that weight. Reads only dist/, independent of the subsetter.
+// Two CSS checks keep the per-weight text extraction honest (ADR-0012
+// amendment 2026-11-01): every font-family stack names Noto Sans TC, and every
+// rule that sets a weight other than 400 is listed in WEIGHT_SELECTORS for that
+// weight or in LATIN_ONLY_WEIGHT_SELECTORS.
 
 const distDirectory = join(process.cwd(), 'dist');
 
@@ -83,16 +89,72 @@ for (const [weight, rendered] of renderedByWeight) {
   );
   if (missing.length > 0) {
     failures.push(
-      `${weight}: ${missing.map((codePoint) => String.fromCodePoint(codePoint)).join('')}`,
+      `${weight}: rendered CJK glyphs missing from the subsets: ${missing.map((codePoint) => String.fromCodePoint(codePoint)).join('')}`,
     );
   }
   report.push(`${weight}: ${rendered.size}`);
 }
 
+// Splits a selector list at top-level commas (not inside :is() / :not()).
+function splitSelectorList(selectorList) {
+  const selectors = [''];
+  let depth = 0;
+  for (const character of selectorList) {
+    if (character === '(') depth += 1;
+    if (character === ')') depth -= 1;
+    if (character === ',' && depth === 0) selectors.push('');
+    else selectors[selectors.length - 1] += character;
+  }
+  return selectors;
+}
+
+// Drops Astro's scoping attributes so the selector reads as in the source.
+function normalizeSelector(selector) {
+  return selector
+    .replace(/\[data-astro-cid-[\w-]+\]/gu, '')
+    .replace(/:where\(\.astro-[\w-]+\)/gu, '')
+    .replace(/\s+/gu, ' ')
+    .trim();
+}
+
+const NAMED_WEIGHTS = new Map([
+  ['normal', 400],
+  ['bold', 700],
+]);
+
+// Innermost rules only: a rule nested in @media matches after the at-rule's `{`.
+for (const [, selectorList, declarations] of css.matchAll(
+  /([^{}]+)\{([^{}]*)\}/gu,
+)) {
+  if (selectorList.trim().startsWith('@')) continue;
+  for (const [, family] of declarations.matchAll(
+    /(?:^|;)\s*(?:font-family|--font-family-[\w-]+)\s*:\s*([^;]+)/gu,
+  )) {
+    if (/var\(|inherit|initial|unset/u.test(family)) continue;
+    if (!/Noto Sans TC/iu.test(family)) {
+      failures.push(`font stack without Noto Sans TC: ${family.trim()}`);
+    }
+  }
+  const value = declarations.match(/(?:^|;)\s*font-weight\s*:\s*(\w+)/u)?.[1];
+  if (!value) continue;
+  const weight = NAMED_WEIGHTS.get(value) ?? Number(value);
+  if (weight === 400) continue;
+  for (const selector of splitSelectorList(selectorList).map(
+    normalizeSelector,
+  )) {
+    if (
+      WEIGHT_SELECTORS[weight]?.includes(selector) ||
+      LATIN_ONLY_WEIGHT_SELECTORS.includes(selector)
+    )
+      continue;
+    failures.push(
+      `font-weight ${value} on "${selector}" is not listed in WEIGHT_SELECTORS[${weight}] or LATIN_ONLY_WEIGHT_SELECTORS (scripts/font-text.mjs)`,
+    );
+  }
+}
+
 if (failures.length > 0) {
-  process.stderr.write(
-    `Font coverage failed. Rendered CJK glyphs missing from subsets:\n${failures.join('\n')}\n`,
-  );
+  process.stderr.write(`Font coverage failed:\n${failures.join('\n')}\n`);
   process.exitCode = 1;
 } else {
   process.stdout.write(
