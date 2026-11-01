@@ -727,13 +727,42 @@ test('every text node renders with a self-hosted font', async ({
     await page.setViewportSize({ width, height: 900 });
     for (const route of platformFontRoutes) {
       await page.goto(route, { waitUntil: 'load' });
-      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+      // `content-visibility: auto` skips layout off screen, and CDP then
+      // reports no fonts for those nodes. Render everything, including the
+      // inactive motion tab panels, then mark the nodes that still have no box
+      // so an empty font list fails everywhere else.
+      await page.evaluate(async () => {
+        for (const element of document.querySelectorAll<HTMLElement>(
+          'body *',
+        )) {
+          element.style.contentVisibility = 'visible';
+        }
+        for (const panel of document.querySelectorAll<HTMLElement>(
+          '[role="tabpanel"][hidden]',
+        )) {
+          panel.hidden = false;
+        }
+        await new Promise(requestAnimationFrame);
+        for (const element of document.querySelectorAll('body *')) {
+          if (
+            element.getClientRects().length === 0 ||
+            getComputedStyle(element).visibility !== 'visible'
+          ) {
+            element.setAttribute('data-font-check-hidden', '');
+          }
+        }
+        await document.fonts.ready;
+      });
       const { root } = (await cdp.send('DOM.getDocument', {
         depth: -1,
       })) as { root: CdpNode };
 
-      const textElements: { nodeId: number; label: string; text: string }[] =
-        [];
+      const textElements: {
+        nodeId: number;
+        label: string;
+        text: string;
+        hidden: boolean;
+      }[] = [];
       const visit = (node: CdpNode) => {
         if (['HEAD', 'SCRIPT', 'STYLE', 'TEMPLATE'].includes(node.nodeName))
           return;
@@ -756,18 +785,27 @@ test('every text node renders with a self-hosted font', async ({
             nodeId: node.nodeId,
             label: `${node.nodeName.toLowerCase()}${classes ? `.${classes}` : ''}`,
             text,
+            hidden: attributes.some(
+              (value, index) =>
+                index % 2 === 0 && value === 'data-font-check-hidden',
+            ),
           });
         }
         for (const child of node.children ?? []) visit(child);
       };
       visit(root);
 
-      for (const { nodeId, label, text } of textElements) {
+      for (const { nodeId, label, text, hidden } of textElements) {
         const { fonts } = (await cdp.send('CSS.getPlatformFontsForNode', {
           nodeId,
         })) as {
           fonts: { familyName: string; isCustomFont: boolean }[];
         };
+        if (fonts.length === 0 && !hidden) {
+          fallbacks.push(
+            `${width} ${route} ${label} "${text.slice(0, 24)}": no font data`,
+          );
+        }
         const system = fonts.filter((font) => !font.isCustomFont);
         if (system.length > 0) {
           fallbacks.push(

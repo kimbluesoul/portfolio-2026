@@ -41,7 +41,7 @@ Format is `font-size / line-height`. The About and section labels use `0.12em` l
 
 | Weight | Where Chinese renders at it | Selectors (`WEIGHT_SELECTORS` in `scripts/font-text.mjs`) |
 |---|---|---|
-| 700 | Headings, hero headline, stats values, story titles, caption / step / link titles, pending-media label | `h1`–`h3`, `.hero-headline`, `.hero-stats dd`, `.story-title`, `.case-study strong`, `.pending-label` |
+| 700 | Headings, hero headline, stats values, story titles, caption / step / link titles, pending-media label | `h1`–`h6`, `strong`, `b`, `th` (UA-default bold), `.hero-headline`, `.hero-stats dd`, `.story-title`, `.case-study strong`, `.pending-label` |
 | 500 | Tag chips, back link (`← 所有作品`), hero eyebrow (`CASE STUDY 01 · 線上娛樂平台`), next-project arrow and meta, footer contact links | `li`, `.back-link`, `.case-hero .case-eyebrow`, `.next-arrow`, `.next-meta`, `.contact-links a` |
 | 400 | Everything else | all rendered text |
 

@@ -103,7 +103,8 @@ describe('weightedText', () => {
     expect(weighted[700]).not.toContain('說明');
     expect(weighted[700]).not.toContain('STATUS');
     expect(weighted[700]).not.toContain('清單');
-    expect(weighted[700]).not.toContain('頁尾');
+    // UA-default bold applies outside .case-study too.
+    expect(weighted[700]).toContain('頁尾');
     expect(weighted[400]).not.toContain('圖說');
   });
 });
@@ -130,6 +131,18 @@ describe('weight selectors', () => {
         '.pending-label',
       ]),
     );
+  });
+
+  it('lists the UA-default bold elements, which have no CSS rule to find', () => {
+    expect(WEIGHT_SELECTORS[700]).toEqual(
+      expect.arrayContaining(['h4', 'h5', 'h6', 'strong', 'b', 'th']),
+    );
+  });
+
+  it('keeps the arrows Instrument Sans lacks in every core subset', () => {
+    for (const arrow of ['←', '→', '↗']) {
+      expect(CORE_BASELINE.has(arrow.codePointAt(0)!)).toBe(true);
+    }
   });
 
   it('never marks a Noto weight selector as Latin-only', () => {

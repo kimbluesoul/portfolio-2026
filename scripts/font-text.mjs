@@ -15,6 +15,7 @@ export const WEIGHT_SELECTORS = {
     '.back-link',
     '.case-hero .case-eyebrow',
     '.next-arrow',
+    // Pre-listed for the FITZONE Next meta (PR #31); no rule sets it on main yet.
     '.next-meta',
     '.contact-links a',
   ],
@@ -22,6 +23,13 @@ export const WEIGHT_SELECTORS = {
     'h1',
     'h2',
     'h3',
+    // UA-default bold: no CSS rule exists for the gate to find.
+    'h4',
+    'h5',
+    'h6',
+    'strong',
+    'b',
+    'th',
     '.case-study strong',
     '.hero-headline',
     '.hero-stats dd',
@@ -54,9 +62,17 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
 // reshuffle these glyphs between core and ext.
 const ZH_HANT_PUNCTUATION = '　，。、；：？！「」『』（）《》〈〉【】…—～・';
 
+// Symbols the site draws that Instrument Sans lacks, so Noto Sans TC draws them
+// at every weight, including inside LATIN_ONLY_WEIGHT_SELECTORS (the back link,
+// Next arrow and "View Resume ↗"). They are not CJK, so the coverage gate does
+// not see them; the E2E platform-font check does.
+const NON_LATIN_SYMBOLS = '←→↗';
+
 export const CORE_BASELINE = new Set([
   ...Array.from({ length: 0x7e - 0x20 + 1 }, (_, index) => 0x20 + index),
-  ...[...ZH_HANT_PUNCTUATION].map((character) => character.codePointAt(0)),
+  ...[...ZH_HANT_PUNCTUATION, ...NON_LATIN_SYMBOLS].map((character) =>
+    character.codePointAt(0),
+  ),
 ]);
 
 // ADR-0012 amendment (2026-11-01): OpenType features kept in the subsets. These

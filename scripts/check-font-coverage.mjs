@@ -135,9 +135,27 @@ for (const [, selectorList, declarations] of css.matchAll(
       failures.push(`font stack without Noto Sans TC: ${family.trim()}`);
     }
   }
-  const value = declarations.match(/(?:^|;)\s*font-weight\s*:\s*(\w+)/u)?.[1];
+  // The weight check reads only literal font-weight values, so a `font:`
+  // shorthand or a computed weight would slip past it.
+  const shorthand = declarations
+    .match(/(?:^|;)\s*font\s*:\s*([^;]+)/u)?.[1]
+    ?.trim();
+  if (shorthand && !/^(?:inherit|initial|unset|revert)$/u.test(shorthand)) {
+    failures.push(
+      `font shorthand on "${normalizeSelector(selectorList)}": use font-family / font-weight so the gate can read them`,
+    );
+  }
+  const value = declarations
+    .match(/(?:^|;)\s*font-weight\s*:\s*([^;]+)/u)?.[1]
+    ?.trim();
   if (!value) continue;
   const weight = NAMED_WEIGHTS.get(value) ?? Number(value);
+  if (Number.isNaN(weight)) {
+    failures.push(
+      `font-weight ${value} on "${normalizeSelector(selectorList)}" is not a number, normal or bold`,
+    );
+    continue;
+  }
   if (weight === 400) continue;
   for (const selector of splitSelectorList(selectorList).map(
     normalizeSelector,
