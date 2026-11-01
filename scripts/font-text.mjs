@@ -24,6 +24,23 @@ export const CORE_BASELINE = new Set([
   ...[...ZH_HANT_PUNCTUATION].map((character) => character.codePointAt(0)),
 ]);
 
+// ADR-0012 amendment (2026-11-01): OpenType features kept in the subsets. These
+// are the Noto Sans TC features a browser applies to horizontal text by default,
+// plus the GPOS-only proportional / half-width alternates (no extra glyphs).
+// Vertical forms (vert, vrt2), width variants (fwid, hwid, pwid), aalt, dlig,
+// hist and ruby are dropped: the site never enables them, and their glyph
+// closure nearly doubled every subset. A new `font-feature-settings`,
+// `font-variant-*` or vertical `writing-mode` needs its feature added here.
+export const LAYOUT_FEATURES = [
+  'ccmp',
+  'locl',
+  'liga',
+  'kern',
+  'mark',
+  'palt',
+  'halt',
+];
+
 /** Returns `codePoints` plus the fixed core baseline. */
 export function withCoreBaseline(codePoints) {
   return new Set([...CORE_BASELINE, ...codePoints]);
