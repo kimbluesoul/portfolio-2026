@@ -545,10 +545,11 @@ figcaption strong {
   font-size: var(--font-size-link-title);
 }
 
+/* Figma sets the Links description at Auto line-height (all widths). */
 .link-description {
   max-width: var(--layout-case-narrow);
   color: var(--color-text-on-inverse-muted);
-  line-height: var(--line-height-body);
+  line-height: normal;
 }
 
 .link-arrow {

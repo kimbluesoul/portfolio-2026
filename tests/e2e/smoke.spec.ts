@@ -671,6 +671,30 @@ test('390 Hwa Fong uses its project title size', async ({ page }, testInfo) => {
   await expect(title).toHaveCSS('letter-spacing', '-2.24px');
 });
 
+// #27: an invalid clamp() in --line-height-body silently computed to `normal`.
+test('case subtitles use the Figma line height, never normal', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs both widths in one project.',
+  );
+  // 1920: 20 / 160 % (360:251). 390: 15 / 170 % (475:953).
+  for (const [width, expected] of [
+    [1920, 32],
+    [390, 25.5],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/work/88win/');
+    const lineHeight = await page
+      .locator('.section-subtitle')
+      .first()
+      .evaluate((element) => getComputedStyle(element).lineHeight);
+    expect(lineHeight, `${width}`).not.toBe('normal');
+    expect(Number.parseFloat(lineHeight), `${width}`).toBeCloseTo(expected, 0);
+  }
+});
+
 test('1920 case headings and stats stay on one line', async ({
   page,
 }, testInfo) => {

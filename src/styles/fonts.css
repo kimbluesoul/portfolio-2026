@@ -5,7 +5,9 @@
   body {
     font-family: var(--font-family-body);
     font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
+
+    /* Figma "auto" line height; long-form copy opts in to --line-height-body. */
+    line-height: normal;
   }
 
   h1,

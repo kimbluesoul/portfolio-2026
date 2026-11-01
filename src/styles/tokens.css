@@ -86,9 +86,11 @@
   --font-size-next-title: clamp(3.25rem, 1.466rem + 7.32vw, 10.25rem);
   --size-next-arrow: clamp(4rem, 2.216rem + 7.32vw, 11rem);
   --line-height-label: 1.25;
-  --line-height-body: clamp(1.65, 2.194 - 0.454vw, 1.75);
+
+  /* Unitless line heights cannot be fluid: clamp() mixing numbers with vw is invalid and computes to `normal`. Mobile 475:953 / 474:1057, desktop override below. */
+  --line-height-body: 1.7;
   --line-height-body-tight: 1.2778;
-  --line-height-display: clamp(1.2, 1.325 - 0.104vw, 1.32);
+  --line-height-display: 1.32;
   --line-height-case-headline-mobile: 1.4;
 
   /* 390 case typography from the mobile Figma frames (`475:953`). */
@@ -167,4 +169,12 @@
   --bp-md: 768px;
   --bp-lg: 1024px;
   --bp-xl: 1440px;
+}
+
+/* Desktop line heights: case body 20 / 160 % (360:251), home display 64 / 83 and 52 / 68 (360:3). */
+@media (width >= 48rem) {
+  :root {
+    --line-height-body: 1.6;
+    --line-height-display: 1.3;
+  }
 }
