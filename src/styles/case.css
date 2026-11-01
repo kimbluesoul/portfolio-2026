@@ -540,10 +540,11 @@ figcaption strong {
   font-size: var(--font-size-link-title);
 }
 
+/* Figma sets the Links description at Auto line-height (all widths). */
 .link-description {
   max-width: var(--layout-case-narrow);
   color: var(--color-text-on-inverse-muted);
-  line-height: var(--line-height-body);
+  line-height: normal;
 }
 
 .link-arrow {
@@ -632,11 +633,12 @@ figcaption strong {
   font-size: var(--font-size-body-compact);
 }
 
+/* Figma sets the Next body at Auto line-height (all widths). */
 .next-body {
   max-width: var(--layout-case-copy);
   color: var(--color-text-secondary);
   font-size: var(--font-size-body);
-  line-height: var(--line-height-body);
+  line-height: normal;
 }
 
 @media (width >= 48rem) {
@@ -1093,14 +1095,6 @@ figcaption strong {
 
   .next-body {
     margin-block-end: var(--space-next-body-to-media);
-  }
-
-  /* The 390 Links / Next spacing was fitted while --line-height-body computed
-     to `normal`. Keep that geometry until those sections take the Figma card,
-     meta, and spacer values (`475:953`) in one pass. */
-  .link-description,
-  .next-body {
-    line-height: normal;
   }
 
   .next-project h2 {
