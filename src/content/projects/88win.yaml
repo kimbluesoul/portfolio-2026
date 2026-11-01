@@ -144,7 +144,7 @@ motion:
   heading: 找遊戲的每一步，都有回應
   subtitle: 玩家在 88Win 最常做的事就是找遊戲。從滑入類別、挑選廠商或遊戲，到進入遊戲，每一步的回饋我都先用 Prototype 試過節奏。
   steps:
-    - title: 01 滑入遊戲類別
+    - title: 01　滑入遊戲類別
       body: 滑過選單時列表跟著展開，選中的分類一眼就看得出來。
       media:
         kind: video
@@ -154,7 +154,7 @@ motion:
         aspectRatio: 960 / 532
         status: pending
         expectedFile: public/media/88win/motion-1.mp4
-    - title: 02 選擇廠商／遊戲
+    - title: 02　選擇廠商／遊戲
       body: 滑過遊戲卡片時給出回饋，知道這張點得到。
       media:
         kind: video
@@ -164,7 +164,7 @@ motion:
         aspectRatio: 960 / 532
         status: pending
         expectedFile: public/media/88win/motion-2.mp4
-    - title: 03 進入遊戲
+    - title: 03　進入遊戲
       body: 從列表進到遊戲的轉場，讓畫面接得起來，不會突然跳走。
       media:
         kind: video
@@ -235,7 +235,7 @@ details:
         expectedFile: src/assets/projects/88win/detail-category-mobile.png
     - eyebrow: CARD
       title: 遊戲圖面
-      caption: 等比例的遊戲圖面適應各裝置，不用額外重新作圖。
+      caption: 遊戲圖（方形）用同一張圖等比例縮放，各裝置共用；遊戲廠商圖（長方形）分成 PC 與 H5／App 兩種版本。另一種廠商圖只用在 PC 版，分成選中與未選中兩種狀態。
       size: full
       media:
         kind: image
