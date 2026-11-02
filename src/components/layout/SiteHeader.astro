@@ -90,11 +90,11 @@ const currentPath = Astro.url.pathname;
     border-radius: var(--radius-pill);
     font-size: 0.8rem;
     line-height: 0.9rem;
-    transition: background-color var(--motion-duration-fast)
-      var(--motion-ease-standard);
+    transition: background-color var(--motion-duration-hover)
+      var(--motion-ease-hover);
   }
 
-  nav a:hover {
+  nav a:is(:hover, :focus-visible) {
     background: var(--color-bg-subtle);
   }
 

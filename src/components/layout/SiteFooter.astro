@@ -120,12 +120,24 @@ const {
     color: var(--color-border-default);
     font-size: var(--font-size-footer-action);
     font-weight: 500;
-    transition: border-color var(--motion-duration-fast)
-      var(--motion-ease-standard);
+    transition:
+      background-color var(--motion-duration-hover) var(--motion-ease-hover),
+      border-color var(--motion-duration-hover) var(--motion-ease-hover),
+      color var(--motion-duration-hover) var(--motion-ease-hover);
   }
 
-  .contact-links a:hover {
+  .contact-links a:is(:hover, :focus-visible) {
     border-color: var(--color-text-on-brand);
+    background: var(--color-text-on-brand);
+    color: var(--color-text-primary);
+  }
+
+  .contact-links img {
+    transition: filter var(--motion-duration-hover) var(--motion-ease-hover);
+  }
+
+  .contact-links a:is(:hover, :focus-visible) img {
+    filter: brightness(0) saturate(100%) opacity(93.33%);
   }
 
   .resume,
@@ -137,6 +149,11 @@ const {
   .resume {
     grid-area: resume;
     text-transform: uppercase;
+  }
+
+  .resume,
+  .back-to-top {
+    transition: color var(--motion-duration-hover) var(--motion-ease-hover);
   }
 
   .copyright,
@@ -196,6 +213,12 @@ const {
     .resume {
       margin-block-start: var(--space-15);
     }
+  }
+
+  .resume:is(:hover, :focus-visible),
+  .back-to-top:is(:hover, :focus-visible) {
+    color: var(--color-text-brand-on-inverse-hover);
+    text-decoration: underline;
   }
 </style>
 
