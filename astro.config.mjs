@@ -17,8 +17,8 @@ export default defineConfig({
     // Case media are UI screenshots: 4:2:0 chroma (the AVIF default) blurs
     // coloured text and edges at 1×, so keep full chroma resolution.
     service: sharpImageService({
-      avif: { quality: 50, chromaSubsampling: '4:4:4' },
-      webp: { quality: 85, smartSubsample: true },
+      avif: { quality: 75, chromaSubsampling: '4:4:4' },
+      webp: { quality: 90, smartSubsample: true },
     }),
   },
   markdown: {
