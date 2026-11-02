@@ -210,18 +210,9 @@ details:
       size: third
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/88win/detail-header.png
         alt: 88Win Header 元件規格
         aspectRatio: 373 / 148
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-header.png
-      mobileMedia:
-        kind: image
-        src: ../../assets/placeholders/placeholder.png
-        alt: 88Win Header 元件規格手機版
-        aspectRatio: 620 / 225
-        status: pending
-        expectedFile: src/assets/projects/88win/detail-header-mobile.png
     - eyebrow: BUTTON
       title: 按鈕
       caption: 依照擺放的區域和狀態設計不同按鈕，像一般、選中、停用，每個位置都有對應的樣式。

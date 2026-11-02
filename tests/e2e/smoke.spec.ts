@@ -278,18 +278,17 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
-  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(4);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(3);
   await expect(page.locator('loop-video')).toHaveCount(7);
   await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
   // Every image card renders <picture> (AVIF + webp); COLOR is HTML swatches.
-  // Only HEADER still carries a separate mobile image; the other five show
-  // their desktop image on phones for now (docs/ASSETS.md).
+  // All six show their desktop image on phones for now (docs/ASSETS.md).
   await expect(page.locator('.detail-card picture')).toHaveCount(6);
   await expect(
     page.locator('.detail-card source[media="(width < 48rem)"]'),
-  ).toHaveCount(2);
+  ).toHaveCount(0);
   await expect(page.locator('.case-hero .hero-showcase')).toHaveCount(1);
   await expect(
     page.locator('.visual-extension .visual-grid > .media-frame'),
