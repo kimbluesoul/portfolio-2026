@@ -800,6 +800,10 @@ figcaption strong {
 }
 
 @media (width >= 48rem) {
+  .case-hero {
+    padding-block-end: 0;
+  }
+
   .case-hero .hero-showcase.layout-single {
     width: 100vw;
     margin-inline: calc(50% - 50vw);

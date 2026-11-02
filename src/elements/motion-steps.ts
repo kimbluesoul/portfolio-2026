@@ -75,6 +75,8 @@ class MotionStepsElement extends HTMLElement {
   }
 
   private selectByUser(index: number) {
+    this.hasStarted = true;
+    this.observer?.disconnect();
     this.autoAdvance = false;
     this.select(index, true);
   }
