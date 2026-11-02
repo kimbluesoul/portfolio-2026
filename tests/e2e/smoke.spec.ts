@@ -1347,6 +1347,34 @@ test('motion steps stop auto-advance after user selection', async ({
   );
 });
 
+test('motion steps preserve a user selection made before entering view', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the intersection sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const initiallyVisible = await motion.evaluate((element) => {
+    const { bottom, height, top } = element.getBoundingClientRect();
+    return (
+      Math.max(0, Math.min(bottom, window.innerHeight) - Math.max(top, 0)) /
+      height
+    );
+  });
+  expect(initiallyVisible).toBeLessThan(0.5);
+
+  await tabs.nth(1).dispatchEvent('click');
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await motion.scrollIntoViewIfNeeded();
+
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+});
+
 test('reduced motion disables motion steps auto-play', async ({
   page,
 }, testInfo) => {
