@@ -224,7 +224,7 @@ Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 
 `CaseSections.astro` owns the V9 template rules so no individual page can drift:
 1. **Fixed order**: Hero → Overview → Key Screens → Mobile/RWD? → Interaction & Motion? → Details? → Visual Extension? → Links → Next Project.
 2. **Omission**: an optional section without content is not rendered (no empty shells).
-3. **Tone**: `lib/sections.ts#assignTones(sections)` returns a tone per section. `inverse` (`--color-bg-inverse`) is used for Interaction & Motion and Links. The light sections alternate between the two light backgrounds **after omissions are applied**. Visual Extension is full-bleed media with no tone. The exact light alternation sequence must be read from 88Win (the complete V9 page) and confirmed by the Product Owner. It is implemented once and unit-tested for every omission combination.
+3. **Tone**: `lib/sections.ts#assignTones(sections)` returns a fixed tone per section, independent of optional-section omissions: Hero, Overview, Mobile/RWD, Visual Extension, and Next Project use `canvas` (`--color-bg-canvas`); Key Screens and Details use `surface` (`--color-bg-surface`); Interaction & Motion and Links use `inverse` (`--color-bg-inverse`). Product Owner confirmed this mapping against all 14 case-page Figma frames on 2026-11-02. It is implemented once and unit-tested for every omission combination.
 4. Exactly two "signature" visuals per page (Hero showcase, Visual Extension banner) get the richer entrance motion. All other sections use the quiet default reveal (§8).
 
 ### 5.3 Component layers
