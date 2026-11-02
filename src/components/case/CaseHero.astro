@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { caseTitleMobileClass } from '../../lib/case-title';
+import { COMPOSITE_MEDIA_SIZES } from '../../lib/media-srcset';
 import type { SectionTone } from '../../lib/sections';
 import AccentText from '../ui/AccentText.astro';
 import ProjectMedia from '../ui/ProjectMedia.astro';
@@ -13,6 +14,8 @@ interface Props {
 
 const { project, tone } = Astro.props;
 const { hero } = project.data;
+const showcaseSizes =
+  hero.showcase.layout === 'single' ? COMPOSITE_MEDIA_SIZES : undefined;
 ---
 
 <SectionShell class="case-hero" tone={tone}>
@@ -43,7 +46,7 @@ const { hero } = project.data;
   </dl>
   <div class:list={['hero-showcase', `layout-${hero.showcase.layout}`]}>
     {hero.showcase.items.map((media, index) => (
-      <ProjectMedia media={media} eager={index === 0} />
+      <ProjectMedia media={media} eager={index === 0} sizes={showcaseSizes} />
     ))}
   </div>
 </SectionShell>

@@ -1,6 +1,7 @@
 ---
-import { getImage, Image } from 'astro:assets';
+import { getImage, Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { DEFAULT_MEDIA_SIZES, srcsetWidthsFor } from '../../lib/media-srcset';
 import MediaFrame from './MediaFrame.astro';
 
 interface ImageMedia {
@@ -18,9 +19,18 @@ interface Props {
   mobileMedia?: ImageMedia | undefined;
   eager?: boolean;
   class?: string | undefined;
+  /** Rendered width for the srcset; defaults to the case column. */
+  sizes?: string | undefined;
 }
 
-const { class: className, eager = false, media, mobileMedia } = Astro.props;
+const {
+  class: className,
+  eager = false,
+  media,
+  mobileMedia,
+  sizes = DEFAULT_MEDIA_SIZES,
+} = Astro.props;
+const srcsetWidths = srcsetWidthsFor(media.src.width);
 const frameClass = [
   className,
   media.objectPosition === 'top' ? 'object-position-top' : undefined,
@@ -68,8 +78,12 @@ const artDirected = mobileMedia
       />
     </picture>
   ) : (
-    <Image
+    <Picture
       src={media.src}
+      formats={['avif']}
+      fallbackFormat="webp"
+      widths={srcsetWidths}
+      sizes={sizes}
       alt={media.decorative ? '' : media.alt}
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : 'auto'}

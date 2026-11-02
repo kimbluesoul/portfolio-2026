@@ -54,6 +54,12 @@
 Figma：Desktop `360:251`／Mobile `475:953`。
 圖片放 `src/assets/projects/88win/`，影片放 `public/media/88win/`（交件時都放同一個資料夾即可，Claude 會分好）。
 
+**進度（2026-11-01 收到第一批）：**
+- 已上線：#1 Hero（Claude 依 `360:270` 合成背景）、#2–4 主要畫面特寫、#5 H5 首頁（合成到面板底色）、#8 拼貼、#9 ICON、#11 CATEGORY、#12 CARD（Claude 依 `360:991` 用 6 張零件合成，透明底）、#14 BUTTON、#15 NAVIGATION、#16 PC 首頁捲動影片。
+- 元件規格的手機版：產品負責人決定先沿用桌機圖（ICON、CATEGORY、CARD、BUTTON、NAVIGATION），手機版圖片到了再換回。期間 88Win 390 的 Details 高度閘門暫停比對（`tests/e2e/smoke.spec.ts` 標為 interim）。
+- App 與遊戲列表兩格改用影片（`panel_app.mp4`、`panel_game.mp4`，裁掉黑底、套手機外框遮罩），取代 #6、#7 的靜態圖。
+- 還缺：#9、#11–14 的手機版（目前用桌機圖代替）。
+
 ### 圖片
 
 | # | 區塊 | 檔名 | Figma 節點（Desktop） | 匯出方式 | 匯出尺寸（2x） | 備註 |
