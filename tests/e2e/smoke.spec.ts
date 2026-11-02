@@ -529,6 +529,50 @@ test('fine-pointer hover replays from the beginning', async ({
   ).toBe(0);
 });
 
+test('hover scales each composite card layer together', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Fine-pointer behavior.',
+  );
+  await page.goto('/');
+
+  const card = page
+    .locator('#work article')
+    .filter({ has: page.locator('.card-composite') });
+  await card.scrollIntoViewIfNeeded();
+  await card.locator('a').hover();
+
+  const layerRects = await card
+    .locator('.card-composite')
+    .evaluateAll((composites) =>
+      composites.map((composite) => {
+        const rect = (selector: string) => {
+          const { x, y, width, height } = composite
+            .querySelector(selector)!
+            .getBoundingClientRect();
+          return { x, y, width, height };
+        };
+        return {
+          desktop: {
+            poster: rect('img.composite-poster.composite-pc'),
+            video: rect('video.composite-pc'),
+          },
+          phone: {
+            poster: rect('img.composite-poster.composite-phone'),
+            video: rect('video.composite-phone'),
+          },
+        };
+      }),
+    );
+
+  for (const { desktop, phone } of layerRects) {
+    expect(desktop.video).toEqual(desktop.poster);
+    expect(phone.video).toEqual(phone.poster);
+  }
+});
+
 test('tapping a card video follows its link instead of replaying', async ({
   page,
 }, testInfo) => {

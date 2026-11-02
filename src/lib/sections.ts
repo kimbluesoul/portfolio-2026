@@ -9,7 +9,7 @@ export type CaseSection =
   | 'links'
   | 'nextProject';
 
-export type SectionTone = 'canvas' | 'surface' | 'inverse' | 'media';
+export type SectionTone = 'canvas' | 'surface' | 'inverse';
 
 export interface OptionalSections {
   details: boolean;
@@ -38,19 +38,15 @@ export function getCaseSections(optional: OptionalSections): CaseSection[] {
 }
 
 export function assignTones(sections: readonly CaseSection[]): TonedSection[] {
-  let nextLightTone: Extract<SectionTone, 'canvas' | 'surface'> = 'canvas';
-
   return sections.map((key) => {
     if (key === 'motion' || key === 'links') {
       return { key, tone: 'inverse' };
     }
 
-    if (key === 'visualExtension') {
-      return { key, tone: 'media' };
+    if (key === 'keyScreens' || key === 'details') {
+      return { key, tone: 'surface' };
     }
 
-    const tone = nextLightTone;
-    nextLightTone = tone === 'canvas' ? 'surface' : 'canvas';
-    return { key, tone };
+    return { key, tone: 'canvas' };
   });
 }
