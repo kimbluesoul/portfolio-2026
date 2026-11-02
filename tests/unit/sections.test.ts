@@ -56,30 +56,30 @@ describe('getCaseSections', () => {
 
 describe('assignTones', () => {
   it.each(Array.from({ length: 16 }, (_, mask) => mask))(
-    'recomputes tone after omissions for combination %i',
+    'keeps each section tone fixed for combination %i',
     (mask) => {
       const toned = assignTones(getCaseSections(combination(mask)));
-      const light = toned.filter(
-        ({ tone }) => tone === 'canvas' || tone === 'surface',
+      const tones = Object.fromEntries(
+        toned.map(({ key, tone }) => [key, tone]),
       );
 
-      light.forEach(({ tone }, index) => {
-        expect(tone).toBe(index % 2 === 0 ? 'canvas' : 'surface');
+      expect(tones).toMatchObject({
+        hero: 'canvas',
+        overview: 'canvas',
+        keyScreens: 'surface',
+        links: 'inverse',
+        nextProject: 'canvas',
       });
-
-      expect(toned.find(({ key }) => key === 'links')?.tone).toBe('inverse');
-      if (combination(mask).motion) {
-        expect(toned.find(({ key }) => key === 'motion')?.tone).toBe('inverse');
-      }
+      if (combination(mask).mobile) expect(tones.mobile).toBe('canvas');
+      if (combination(mask).motion) expect(tones.motion).toBe('inverse');
+      if (combination(mask).details) expect(tones.details).toBe('surface');
       if (combination(mask).visualExtension) {
-        expect(toned.find(({ key }) => key === 'visualExtension')?.tone).toBe(
-          'media',
-        );
+        expect(tones.visualExtension).toBe('canvas');
       }
     },
   );
 
-  it('does not let media or inverse sections advance the light alternation', () => {
+  it('maps an arbitrary valid section order to its fixed tones', () => {
     const sections: CaseSection[] = [
       'hero',
       'motion',
@@ -91,8 +91,8 @@ describe('assignTones', () => {
     expect(assignTones(sections).map(({ tone }) => tone)).toEqual([
       'canvas',
       'inverse',
-      'media',
-      'surface',
+      'canvas',
+      'canvas',
       'inverse',
       'canvas',
     ]);

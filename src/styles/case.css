@@ -7,6 +7,12 @@
   padding-block: var(--space-section);
 }
 
+/* Visual Extension keeps its full-bleed composition while its canvas tone now
+   matches the other light case sections. */
+.case-section:has(.visual-grid) {
+  padding-block: 0;
+}
+
 /* ARCHITECTURE §13: lay out only the hero before the first paint. The first
    layout of a whole case page cost about 280 ms of simulated mobile CPU on the
    LCP path; the other sections render as they near the viewport. */
@@ -34,16 +40,6 @@
 .tone-inverse {
   background: var(--color-bg-inverse);
   color: var(--color-text-on-inverse);
-}
-
-.tone-media {
-  padding-block: 0;
-  background: var(--color-bg-inverse);
-}
-
-.tone-media .case-container {
-  width: 100%;
-  max-width: none;
 }
 
 .case-eyebrow {
@@ -684,6 +680,11 @@ figcaption strong {
     var(--color-border-default);
 }
 
+.case-section:has(.visual-grid) .case-container {
+  width: 100%;
+  max-width: none;
+}
+
 /* Next top row (`360:1590`): ← 所有作品 16 / 400, a 1 × 14 divider and the
    eyebrow (14 / 600) + counter (14 / 500, 0.08em), all left-aligned, 24
    apart and 22 between eyebrow and counter. */
@@ -952,7 +953,7 @@ figcaption strong {
 }
 
 @media (width < 48rem) {
-  .case-section:where(:not(.tone-media, .case-hero, .next-project)) {
+  .case-section:where(:not(.case-hero, .next-project)) {
     padding-block: var(--space-16);
   }
 
@@ -997,7 +998,7 @@ figcaption strong {
   }
 
   .case-hero .hero-stats {
-    min-height: var(--size-case-mobile-stats);
+    row-gap: var(--space-6);
     margin-block-end: var(--space-8);
   }
 
@@ -1034,10 +1035,22 @@ figcaption strong {
   }
 
   .hero-stats div {
-    justify-content: center;
-    gap: var(--space-1);
-    padding: 0 var(--space-2);
+    gap: 0;
+    padding: 0;
     border-block-start: 0;
+  }
+
+  .hero-stats dd {
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .hero-stats dt {
+    margin-block-start: 0.375rem;
+    color: var(--color-text-secondary);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    line-height: 13px;
   }
 
   .hero-stats div:nth-child(even) {
