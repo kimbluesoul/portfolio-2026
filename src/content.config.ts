@@ -165,6 +165,8 @@ const projects = defineCollection({
         showcase: z.object({
           layout: z.enum(['isometric', 'single']),
           items: z.array(media).min(1).max(2),
+          // Art-directed 390 crop for the first item (single layout).
+          mobileMedia: media.optional(),
         }),
       }),
       overview: z.object({

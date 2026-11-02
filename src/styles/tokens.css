@@ -90,6 +90,13 @@
   --font-size-case-headline: clamp(1.5rem, 0.99rem + 2.092vw, 3.5rem);
   --font-size-case-heading: clamp(2rem, 1.548rem + 1.853vw, 3.75rem);
   --font-size-case-subheading: clamp(1.25rem, 1.056rem + 0.794vw, 2rem);
+  --font-size-case-caption-title: 1.25rem;
+  --font-size-case-caption-body: 1rem;
+  --font-size-case-motion-title: 1.75rem;
+  --font-size-case-motion-body: 1.0625rem;
+  --font-size-case-detail-eyebrow: 0.8125rem;
+  --font-size-case-detail-title: 1.5rem;
+  --font-size-case-detail-body: 0.9375rem;
   --font-size-case-subtitle: clamp(1rem, 0.935rem + 0.265vw, 1.25rem);
   --font-size-case-stat: clamp(1.25rem, 1.121rem + 0.529vw, 1.75rem);
   --font-size-link-title: clamp(1.75rem, 1.621rem + 0.529vw, 2.25rem);
@@ -112,6 +119,9 @@
   --font-size-case-caption-mobile: 0.875rem;
   --font-size-case-caption-title-mobile: 1rem;
   --font-size-case-step-title-mobile: 1.125rem;
+  --font-size-case-detail-eyebrow-mobile: 0.75rem;
+  --font-size-case-detail-title-mobile: 1rem;
+  --font-size-case-detail-body-mobile: 0.875rem;
   --font-size-case-next-meta-mobile: 0.8125rem;
   --line-height-next-title-mobile: 0.95;
   --letter-spacing-label: 0.12em;
@@ -188,6 +198,7 @@
 
   /* Desktop link arrow glyph (`I465:716;465:707`): 40 / Medium. */
   --size-link-arrow: 2.5rem;
+  --font-size-next-arrow-glyph: clamp(2rem, 1.363rem + 2.614vw, 4.5rem);
   --radius-control: var(--space-2);
 
   /* Minimum interactive target (ARCHITECTURE §10). */

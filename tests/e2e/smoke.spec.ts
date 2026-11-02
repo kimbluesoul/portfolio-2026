@@ -741,6 +741,37 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   ).toBe(true);
 });
 
+test('desktop Details cards never clip their content', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Desktop-only layout.',
+  );
+
+  for (const width of [1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/work/88win/');
+    const sizes = await page.locator('.detail-card').evaluateAll((cards) => {
+      for (const card of cards) {
+        const section = card.closest<HTMLElement>('.case-section');
+        if (section) section.style.contentVisibility = 'visible';
+      }
+      return cards.map((card) => ({
+        clientHeight: card.clientHeight,
+        scrollHeight: card.scrollHeight,
+      }));
+    });
+
+    expect(sizes.length, `${width} detail cards`).toBeGreaterThan(0);
+    for (const [index, { clientHeight, scrollHeight }] of sizes.entries()) {
+      expect(scrollHeight, `${width} detail card ${index}`).toBeLessThanOrEqual(
+        clientHeight,
+      );
+    }
+  }
+});
+
 test('360 home and case pages have no horizontal overflow', async ({
   page,
 }, testInfo) => {

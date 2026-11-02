@@ -53,6 +53,11 @@ hero:
         alt: 88Win PC 與手機首頁案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
+    mobileMedia:
+      kind: image
+      src: ../../assets/projects/88win/hero-showcase-mobile.jpg
+      alt: 88Win PC 與手機首頁案例展示
+      aspectRatio: 390 / 312
 overview:
   heading: |-
     一套介面規則，

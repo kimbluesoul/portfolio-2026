@@ -37,6 +37,26 @@ Child-node citations are included beside each measured value. Values are direct 
 
 Format is `font-size / line-height`. The About and section labels use `0.12em` letter spacing (`451:666`, `474:1258`).
 
+### Case-study component type
+
+The component roles below use dedicated tokens instead of the general case subheading scale.
+
+| Use | Desktop | Mobile | Family / weight | Source |
+|---|---:|---:|---|---|
+| Close-up and mobile-panel caption title | 20 px | 16 px | Noto Sans TC 700 | `360:312`, `360:329`, `475:953` |
+| Close-up and mobile-panel caption body | 16 px | 14 px | Noto Sans TC 400 | `360:312`, `360:329`, `475:953` |
+| Motion step title | 28 px | 18 px | Noto Sans TC 700 | `360:361`, `475:953` |
+| Motion step body | 17 px | 14 px | Noto Sans TC 400 | `360:361`, `475:953` |
+| Details eyebrow | 13 px | 12 px | Instrument Sans 700 | `360:376`, `475:953` |
+| Details title | 24 px | 16 px | Noto Sans TC 700 | `360:376`, `475:953` |
+| Details body | 15 px | 14 px | Noto Sans TC 400 | `360:376`, `475:953` |
+
+Desktop close-up and mobile-panel captions begin 20 px after their media. Desktop Details cards use 32 px padding, a 12 px minimum text-to-media gap, and vertically center media in the remaining card space; equal cards in a row stretch to the same height (`360:312`, `360:329`, `360:376`).
+
+### Instrument Sans arrows
+
+Instrument Sans arrows are self-hosted as an OFL-licensed two-glyph WOFF2 subset from the `google/fonts` Instrument Sans original. The face is limited to `U+2192` and `U+2197`: external-link `↗` uses 40 px / 500 and the desktop Next `→` uses 72 px / 700. The 390 px Next arrow keeps its responsive size (`360:251`, `475:953`).
+
 **Noto Sans TC weight usage (implementation constraint, ADR-0012, amended 2026-11-02):** every Chinese glyph is drawn with Noto Sans TC, including text set in the display stack (`--font-family-display` is Instrument Sans for Latin, then Noto Sans TC). Chinese uses only 400 or 700:
 
 | Weight | Where Chinese renders at it | Selectors (`WEIGHT_SELECTORS` in `scripts/font-text.mjs`) |

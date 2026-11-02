@@ -446,14 +446,19 @@ figure {
 figcaption {
   display: grid;
   gap: var(--space-2);
-  padding-block-start: var(--space-4);
+  padding-block-start: var(--space-5);
   color: var(--color-text-secondary);
-  font-size: var(--font-size-body-compact);
+  font-size: var(--font-size-case-caption-body);
+  font-weight: 400;
 }
 
 figcaption strong {
   color: var(--color-text-primary);
-  font-size: var(--font-size-case-subheading);
+  font-size: var(--font-size-case-caption-title);
+}
+
+:where(.detail-card) figcaption strong {
+  font-size: var(--font-size-case-detail-title);
 }
 
 .interaction-motion motion-steps {
@@ -483,7 +488,12 @@ figcaption strong {
 }
 
 .motion-tabs strong {
-  font-size: var(--font-size-case-subheading);
+  font-size: var(--font-size-case-motion-title);
+}
+
+.motion-tabs button > span {
+  font-size: var(--font-size-case-motion-body);
+  font-weight: 400;
 }
 
 .details-grid figure,
@@ -509,6 +519,8 @@ figcaption strong {
 }
 
 .detail-card figcaption > span:last-child {
+  font-size: var(--font-size-case-detail-body);
+  font-weight: 400;
   line-height: var(--line-height-body);
 }
 
@@ -576,7 +588,7 @@ figcaption strong {
 
 .detail-eyebrow {
   font-family: var(--font-family-display);
-  font-size: var(--font-size-label);
+  font-size: var(--font-size-case-detail-eyebrow);
   font-weight: 700;
   letter-spacing: var(--letter-spacing-label);
 }
@@ -662,7 +674,7 @@ a.link-card:focus-visible .link-description {
   inset-inline-end: calc(var(--space-15) - var(--header-border-width));
   font-family: var(--font-family-display);
   font-size: var(--size-link-arrow);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.2;
   transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
 }
@@ -783,7 +795,7 @@ a.link-card:focus-visible .link-arrow {
   background: var(--color-bg-brand);
   color: var(--color-text-on-brand);
   font-family: var(--font-family-display);
-  font-size: var(--font-size-case-heading);
+  font-size: var(--font-size-next-arrow-glyph);
   font-weight: 700;
   transition: background-color var(--motion-duration-hover)
     var(--motion-ease-hover);
@@ -851,6 +863,22 @@ a.link-card:focus-visible .link-arrow {
 }
 
 @media (width >= 48rem) {
+  .detail-card:not(.has-swatches) {
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: stretch;
+    padding: var(--space-8);
+  }
+
+  .detail-card:not(.has-swatches) figcaption {
+    padding: 0;
+  }
+
+  .detail-card:not(.has-swatches) .media-frame {
+    align-self: center;
+    width: 100%;
+    margin: var(--space-3) 0 0;
+  }
+
   .case-hero {
     padding-block-end: 0;
   }
@@ -1129,6 +1157,10 @@ a.link-card:focus-visible .link-arrow {
     aspect-ratio: 310 / 707;
   }
 
+  .mobile-ratio-390x312 {
+    aspect-ratio: 390 / 312;
+  }
+
   .mobile-ratio-620x225 {
     aspect-ratio: 620 / 225;
   }
@@ -1165,10 +1197,10 @@ a.link-card:focus-visible .link-arrow {
   }
 
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
-    .media-frame
+    .media-frame:not(.has-mobile-art)
     > img,
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
-    .media-frame
+    .media-frame:not(.has-mobile-art)
     > picture
     > img {
     position: absolute;
@@ -1369,11 +1401,16 @@ a.link-card:focus-visible .link-arrow {
   }
 
   .detail-card figcaption strong {
+    font-size: var(--font-size-case-detail-title-mobile);
     line-height: 1.2;
   }
 
+  .detail-eyebrow {
+    font-size: var(--font-size-case-detail-eyebrow-mobile);
+  }
+
   .detail-card figcaption > span:last-child {
-    font-size: var(--font-size-case-caption-mobile);
+    font-size: var(--font-size-case-detail-body-mobile);
     line-height: var(--line-height-case-body-mobile);
   }
 

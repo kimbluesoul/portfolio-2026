@@ -14,6 +14,9 @@ interface Props {
 
 const { project, tone } = Astro.props;
 const { hero } = project.data;
+// The first showcase image is the LCP element on phones (Lighthouse gate);
+// AVIF q45 with full chroma stays under the old q50 4:2:0 byte size.
+const HERO_LCP_QUALITY = 45;
 const showcaseSizes =
   hero.showcase.layout === 'single' ? COMPOSITE_MEDIA_SIZES : undefined;
 ---
@@ -46,7 +49,13 @@ const showcaseSizes =
   </dl>
   <div class:list={['hero-showcase', `layout-${hero.showcase.layout}`]}>
     {hero.showcase.items.map((media, index) => (
-      <ProjectMedia media={media} eager={index === 0} sizes={showcaseSizes} />
+      <ProjectMedia
+        media={media}
+        mobileMedia={index === 0 ? hero.showcase.mobileMedia : undefined}
+        eager={index === 0}
+        sizes={showcaseSizes}
+        quality={index === 0 ? HERO_LCP_QUALITY : undefined}
+      />
     ))}
   </div>
 </SectionShell>

@@ -2,6 +2,7 @@
 /* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- The mobile scroll-snap region must be keyboard-scrollable. */
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
+import { PANEL_SLOT } from '../../lib/media-srcset';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionIntro from '../ui/SectionIntro.astro';
 import SectionShell from '../ui/SectionShell.astro';
@@ -28,7 +29,7 @@ const { data, tone } = Astro.props;
   >
     {data.panels.map((panel) => (
       <figure>
-        <ProjectMedia media={panel.media} />
+        <ProjectMedia media={panel.media} mediaSlot={PANEL_SLOT} />
         <figcaption>
           <strong>{panel.title}</strong>
           {panel.caption}
