@@ -1,11 +1,15 @@
 ---
 /* eslint-disable astro/jsx-a11y/no-noninteractive-tabindex -- The mobile scroll-snap region must be keyboard-scrollable. */
 import type { CollectionEntry } from 'astro:content';
-import { CLOSEUP_MEDIA_SIZES } from '../../lib/media-srcset';
+import { CLOSEUP_SLOT } from '../../lib/media-srcset';
 import type { SectionTone } from '../../lib/sections';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionIntro from '../ui/SectionIntro.astro';
 import SectionShell from '../ui/SectionShell.astro';
+
+// Phone close-ups start loading inside the hero LCP window, so they sit
+// between the q50 that blurred detail and the global q75.
+const CLOSEUP_QUALITY = 60;
 
 interface Props {
   data: CollectionEntry<'projects'>['data']['keyScreens'];
@@ -30,7 +34,11 @@ const { data, tone } = Astro.props;
   >
     {data.closeups.map((item) => (
       <figure>
-        <ProjectMedia media={item.media} sizes={CLOSEUP_MEDIA_SIZES} />
+        <ProjectMedia
+          media={item.media}
+          mediaSlot={CLOSEUP_SLOT}
+          quality={CLOSEUP_QUALITY}
+        />
         <figcaption>
           <strong>{item.title}</strong>
           {item.caption}
