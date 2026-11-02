@@ -104,6 +104,10 @@
   padding: var(--space-3) var(--space-5);
   border: var(--header-border-width) solid var(--color-border-default);
   border-radius: var(--radius-pill);
+  transition:
+    background-color var(--motion-duration-hover) var(--motion-ease-hover),
+    border-color var(--motion-duration-hover) var(--motion-ease-hover),
+    color var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
 .case-hero .case-container {
@@ -628,6 +632,14 @@ figcaption strong {
   background: var(--color-bg-inverse-raised);
   color: var(--color-text-on-inverse);
   text-decoration: none;
+  transition:
+    background-color var(--motion-duration-hover) var(--motion-ease-hover),
+    border-color var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+a.link-card:focus-visible {
+  border-color: var(--color-bg-brand);
+  background: var(--color-bg-brand);
 }
 
 .link-eyebrow {
@@ -648,6 +660,11 @@ figcaption strong {
   color: var(--color-text-on-inverse-muted);
   font-size: 1.125rem;
   line-height: 1.2;
+  transition: color var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+a.link-card:focus-visible .link-description {
+  color: var(--color-text-brand-soft);
 }
 
 /* The arrow sits outside the flow at 40 / 60 from the card edge. */
@@ -659,6 +676,11 @@ figcaption strong {
   font-size: var(--size-link-arrow);
   font-weight: 500;
   line-height: 1.2;
+  transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+a.link-card:focus-visible .link-arrow {
+  transform: translate(8px, -8px);
 }
 
 /* The eyebrow and title rows sit beside the arrow: keep them clear of it
@@ -710,6 +732,18 @@ figcaption strong {
 .next-topline .back-link {
   color: var(--color-text-secondary);
   font-size: 1rem;
+  transition: color var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+.next-topline .back-link:focus-visible {
+  color: var(--color-text-brand);
+  text-decoration: underline;
+}
+
+.case-hero .back-link:focus-visible {
+  border-color: var(--color-text-primary);
+  background: var(--color-text-primary);
+  color: var(--color-text-on-inverse);
 }
 
 .next-divider {
@@ -763,6 +797,23 @@ figcaption strong {
   font-family: var(--font-family-display);
   font-size: var(--font-size-next-arrow-glyph);
   font-weight: 700;
+  transition: background-color var(--motion-duration-hover)
+    var(--motion-ease-hover);
+}
+
+.next-arrow-glyph {
+  transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+.next-project .case-container > a:not(.back-link):focus-visible .next-arrow {
+  background: var(--color-text-primary);
+}
+
+.next-project
+  .case-container
+  > a:not(.back-link):focus-visible
+  .next-arrow-glyph {
+  transform: translateX(14px);
 }
 
 .next-project h2 {
@@ -1451,5 +1502,56 @@ figcaption strong {
   .hero-stats dd,
   .next-project h2 {
     white-space: nowrap;
+  }
+}
+
+@media (hover: hover) {
+  a.link-card:hover {
+    border-color: var(--color-bg-brand);
+    background: var(--color-bg-brand);
+  }
+
+  a.link-card:hover .link-description {
+    color: var(--color-text-brand-soft);
+  }
+
+  a.link-card:hover .link-arrow {
+    transform: translate(8px, -8px);
+  }
+
+  .next-topline .back-link:hover {
+    color: var(--color-text-brand);
+    text-decoration: underline;
+  }
+
+  .case-hero .back-link:hover {
+    border-color: var(--color-text-primary);
+    background: var(--color-text-primary);
+    color: var(--color-text-on-inverse);
+  }
+
+  .next-project .case-container > a:not(.back-link):hover .next-arrow {
+    background: var(--color-text-primary);
+  }
+
+  .next-project .case-container > a:not(.back-link):hover .next-arrow-glyph {
+    transform: translateX(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.link-card:focus-visible .link-arrow,
+  .next-project
+    .case-container
+    > a:not(.back-link):focus-visible
+    .next-arrow-glyph {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (hover: hover) {
+  a.link-card:hover .link-arrow,
+  .next-project .case-container > a:not(.back-link):hover .next-arrow-glyph {
+    transform: none;
   }
 }
