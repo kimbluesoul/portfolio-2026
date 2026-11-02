@@ -13,6 +13,7 @@ Before ChatGPT starts a page, Claude writes `docs/specs/<slug>.md` (home and res
 3. **Media slots**: export shape, `expectedFile`, slot aspect ratio, desktop and 390 node IDs, and alt text. These rows are also added to [`docs/ASSETS.md`](../ASSETS.md).
 4. **Layout notes**: anything the 390 frame does differently (swipe rows, reflowed visuals, omitted items).
 5. **Figma reference images**: `docs/specs/<slug>/figma-<section>-desktop.jpg` and `-mobile.jpg`, exported by Claude at 1× (JPG, so the repo stays small).
+   From 2026-11-02 (SSS, JHANYU, AMD, HUIFA) a sheet may instead ship one 1× full-frame image per width, `figma-desktop.jpg` and `figma-mobile.jpg`, to save export rounds; crop the section from it for the side-by-side table.
 
 Rules:
 - Figma stays the source of truth. If the sheet and Figma disagree, Figma wins: raise it in the PR, and Claude fixes the sheet.
