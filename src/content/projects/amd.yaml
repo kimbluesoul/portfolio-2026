@@ -12,9 +12,12 @@ card:
 seo:
   title: 康健生醫 AMD｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
+next:
+  oneLiner: 客群在海外，以英文開版避免換語系跑版；依客戶指定的內容與動態，重新設計產品區與描線產品圖。
+  meta: 康健生醫　·　企業網站　·　UI 設計　·　互動設計　·　2024–2025
+  media: *cardVideo
 hero:
-  eyebrow: *todo
+  eyebrow: &todo TODO(CONTENT)
   title: *todo
   headline: *todo
   subtitle: *todo

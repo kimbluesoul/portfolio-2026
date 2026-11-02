@@ -17,45 +17,134 @@ next:
   meta: 展裕建設　·　企業網站　·　UI 設計　·　品牌延伸　·　2024–2025
   media: *cardVideo
 hero:
-  eyebrow: &todo TODO(CONTENT)
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 05 · 企業網站
+  title: JHANYU
+  titleSizeMobile: 76
+  headline: 展裕建設**企業網站**設計
+  subtitle: 溝通順利，設計上大量延伸 Logo 的造型語言，加入大面積的亮橘色塊，讓整個網站一看就是展裕建設；也把圖量很多的服務流程，整理得清楚又不單調。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
+    - { label: ROLE, value: UI / 品牌延伸 }
+    - { label: PLATFORM, value: 企業網站 }
+    - { label: STATUS, value: 已上線 }
+    - { label: YEAR, value: 2024–2025 }
   showcase:
     layout: single
     items:
-      - &card
-        kind: image
-        src: ../../assets/projects/jhanyu/card.jpg
-        alt: 展裕建設網站作品預覽
+      - kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 展裕建設網站 PC 與手機案例展示
+        aspectRatio: 1920 / 820
+        objectPosition: top
+        status: pending
+        expectedFile: src/assets/projects/jhanyu/hero-showcase.jpg
 overview:
-  heading: *todo
+  heading: |-
+    從 Logo 延伸，
+    **讓亮橘撐起品牌**
   blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
+    - title: 背景
+      body: 和客戶確認需求的過程很順利，沒有太多狀況，重點放在如何讓網站更有展裕建設自己的樣子。
+    - title: 品牌延伸
+      body: 大量延伸 Logo 的造型語言，把屋頂般的斜角變成版面裡的色塊與分割，再加入大面積的亮橘色，讓品牌感更鮮明。
+    - title: 挑戰
+      body: 服務流程的圖比較多，如何清楚呈現、又不讓內容顯得單調無聊，是這個案子印象最深的挑戰。
+  outputs: [企業網站, 品牌延伸]
 keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
+  eyebrow: DESKTOP
+  heading: 聚建築，也聚**品牌**
+  subtitle: 首頁用建案實景大圖開場，往下以 Logo 延伸的斜角橘色塊串起關於展裕與品牌理念，讓建築和品牌一起被看見。
+  main:
+    kind: video
+    src: /media/jhanyu/key-main.mp4
+    poster: ../../assets/placeholders/placeholder.png
+    alt: 展裕建設網站 PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/jhanyu/key-main.mp4
   closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+    - title: 關於展裕
+      caption: 斜角橘色塊延伸自 Logo，讓版面有品牌的節奏。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 關於展裕區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/jhanyu/key-about.jpg
+    - title: 熱銷建案
+      caption: 實景照片搭配清楚的規格表，資訊一目了然。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 熱銷建案區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/jhanyu/key-projects.jpg
+    - title: 購屋簽約流程
+      caption: 用圖示和步驟編號，把繁瑣的流程講清楚。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 購屋簽約流程特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/jhanyu/key-process.jpg
+motion:
+  eyebrow: SERVICE FLOW
+  heading: 服務流程，清楚也不無聊
+  subtitle: 這個案子動態不多，重點放在服務流程的設計。流程的圖量多，所以用一致的圖示、步驟標籤和連接線，讓每個流程清楚好讀，又延續品牌的視覺語言。
+  steps:
+    - title: 01　圖示化步驟
+      body: 每個步驟都搭配一致的線條圖示，讓繁瑣的流程不必細讀文字也能看懂。
+      media:
+        kind: video
+        src: /media/jhanyu/motion-1.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 圖示化步驟
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/jhanyu/motion-1.mp4
+    - title: 02　編號與連接線
+      body: 橘色編號標籤加上連接線，清楚帶出先後順序，一眼看出走到哪一步。
+      media:
+        kind: video
+        src: /media/jhanyu/motion-2.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 編號與連接線
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/jhanyu/motion-2.mp4
+    - title: 03　版面節奏
+      body: 流程、色塊與留白交錯安排，讓圖量多的頁面讀起來不單調。
+      media:
+        kind: video
+        src: /media/jhanyu/motion-3.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 版面節奏
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/jhanyu/motion-3.mp4
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: 展裕建設網站頁面拼貼
+      aspectRatio: 1920 / 1280
+      status: pending
+      expectedFile: src/assets/projects/jhanyu/visual-mosaic.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: FROM DESIGN TO LIVE
+  heading: 從設計稿到正式上線
+  subtitle: 想直接看看的話，這裡有原本的設計稿和正式網站。
   cards:
-    - {
-        kind: live,
-        eyebrow: *todo,
-        label: *todo,
-        description: *todo,
-        url: *todo,
-      }
+    - kind: demo
+      eyebrow: DESIGN DEMO
+      label: 設計稿 Demo
+      description: 原本交付的設計稿頁面，可以直接瀏覽。
+      url: 'http://demo.m000409.24241872.tw/demo/index.html'
+    - kind: live
+      eyebrow: LIVE SITE
+      label: 正式網站
+      description: 目前上線中的版本。
+      url: 'https://www.jhanyu.com/'
