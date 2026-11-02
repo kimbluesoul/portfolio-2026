@@ -49,6 +49,7 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
   '.detail-eyebrow',
   '.eyebrow',
   '.hero-eyebrow',
+  '.link-arrow',
   '.next-counter',
   '.next-topline .case-eyebrow',
   '.outputs-label',
@@ -63,9 +64,9 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
 // reshuffle these glyphs between core and ext.
 const ZH_HANT_PUNCTUATION = '　，。、；：？！「」『』（）《》〈〉【】…—～・';
 
-// Symbols the site draws that Instrument Sans lacks, so Noto Sans TC draws them
-// at every weight, including inside LATIN_ONLY_WEIGHT_SELECTORS (the back link,
-// Next arrow and "View Resume ↗"). They are not CJK, so the coverage gate does
+// The → and ↗ glyphs use instrument-sans-arrows.woff2 (unicode-range: U+2192,
+// U+2197); Noto Sans TC is their fallback only while that face loads. ← remains
+// drawn by Noto Sans TC. These symbols are not CJK, so the coverage gate does
 // not see them; the E2E platform-font check does.
 const NON_LATIN_SYMBOLS = '←→↗';
 
