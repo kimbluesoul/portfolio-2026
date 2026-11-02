@@ -33,7 +33,12 @@ const baseId = 'case-motion';
         </div>
       ))}
     </div>
-    <div class="motion-tabs" role="tablist" aria-label="互動步驟">
+    <div
+      class="motion-tabs"
+      role="tablist"
+      aria-label="互動步驟"
+      style={`--motion-step-count: ${data.steps.length};`}
+    >
       {data.steps.map((step, index) => (
         <button
           id={`${baseId}-tab-${index}`}
@@ -50,3 +55,12 @@ const baseId = 'case-motion';
     </div>
   </motion-steps>
 </SectionShell>
+
+<style>
+  .motion-tabs {
+    grid-template-columns: repeat(
+      var(--motion-step-count),
+      minmax(0, 1fr)
+    );
+  }
+</style>

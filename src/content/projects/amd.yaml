@@ -17,45 +17,125 @@ next:
   meta: 康健生醫　·　企業網站　·　UI 設計　·　互動設計　·　2024–2025
   media: *cardVideo
 hero:
-  eyebrow: &todo TODO(CONTENT)
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 06 · 企業網站
+  title: AMD
+  titleSizeMobile: 76
+  headline: 康健生醫**企業網站**設計
+  subtitle: 醫療器材、客群在海外，所以建議以英文開版。經過幾版修改，客戶對內容與動態有了明確要求，我把這些需求一起放進設計，尤其是首頁的產品區域。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
+    - { label: ROLE, value: UI / Interaction }
+    - { label: PLATFORM, value: 企業網站 }
+    - { label: STATUS, value: 已上線 }
+    - { label: YEAR, value: 2024–2025 }
   showcase:
     layout: single
     items:
-      - &card
-        kind: image
-        src: ../../assets/projects/amd/card.jpg
-        alt: AMD 網站作品預覽
+      - kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 康健生醫網站 PC 與手機案例展示
+        aspectRatio: 1920 / 820
+        objectPosition: top
+        status: pending
+        expectedFile: src/assets/projects/amd/hero-showcase.jpg
 overview:
-  heading: *todo
+  heading: |-
+    先定英文版型，
+    **再把需求一一接住**
   blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
+    - title: 背景
+      body: 康健生醫是醫療器材公司，主要客群在國外。我建議客戶開版時就使用英文，之後切換語言時，版型比較不會跑掉。
+    - title: 過程
+      body: 客戶一開始沒有太多想法，改了幾版之後，開始明確要求每個區塊要放哪些內容、期望有哪些動態，我在設計時也一併考慮進去。
+    - title: 挑戰
+      body: 客戶要求較多，互動內容也多。首頁產品區要使用描線的產品圖，需要額外處理，還要和整體視覺、動態保持一致。
+  outputs: [企業網站, 互動設計]
 keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
+  eyebrow: DESKTOP
+  heading: 專業醫療，也要**好讀**
+  subtitle: 首頁用手術場景與「Accelerating Excellence」開場，往下依客戶指定的內容依序展開，讓專業的醫療資訊在英文版面裡也清楚好讀。
+  main:
+    kind: video
+    src: /media/amd/key-main.mp4
+    poster: ../../assets/placeholders/placeholder.png
+    alt: 康健生醫網站 PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/amd/key-main.mp4
   closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+    - title: 產品區域
+      caption: 依手術階段分類，搭配額外處理的描線產品圖。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 依手術階段分類的產品區特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/amd/key-products.jpg
+    - title: 產品頁
+      caption: 產品圖、規格與分類標籤集中呈現，資訊清楚。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 產品頁特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/amd/key-product-page.jpg
+    - title: 系統頁面
+      caption: 維護與 404 頁也延續品牌色和插圖風格。
+      media:
+        kind: video
+        src: /media/amd/key-system-pages.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 維護與 404 頁面動態
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: public/media/amd/key-system-pages.mp4
+motion:
+  eyebrow: INTERACTION & MOTION
+  heading: 連出錯的頁面，也有細節
+  subtitle: 除了客戶指定的互動，我也特別替 404 與維護頁面加上動態，讓使用者在找不到頁面或網站維護時，依然感受得到品牌的用心。
+  steps:
+    - title: 01　404 頁面
+      body: 找不到頁面時，手術燈與「Oops」插圖帶著動態出現，讓出錯的時刻輕鬆一點。
+      media:
+        kind: video
+        src: /media/amd/motion-1.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 404 頁面動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/amd/motion-1.mp4
+    - title: 02　維護頁面
+      body: 網站維護時，螢幕與齒輪插圖也有動態，清楚告知狀態，同時延續品牌視覺。
+      media:
+        kind: video
+        src: /media/amd/motion-2.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 維護頁面動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/amd/motion-2.mp4
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: 康健生醫網站頁面拼貼
+      aspectRatio: 1920 / 1280
+      status: pending
+      expectedFile: src/assets/projects/amd/visual-mosaic.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: FROM FIGMA TO LIVE
+  heading: 從設計稿到正式上線
+  subtitle: 想直接操作看看的話，這裡有 Figma 原型和正式網站。
   cards:
-    - {
-        kind: live,
-        eyebrow: *todo,
-        label: *todo,
-        description: *todo,
-        url: *todo,
-      }
+    - kind: prototype
+      eyebrow: FIGMA PROTOTYPE
+      label: Figma 原型
+      description: 在 Figma 裡直接點擊操作，看網站的頁面與互動。
+      url: 'https://www.figma.com/proto/RWD8hcBr3J1fOz4aM4MV4G/m000434-%E5%BA%B7%E5%81%A5%E7%94%9F%E9%86%AB%E7%A7%91%E6%8A%80%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8?node-id=1909-17526&viewport=475%2C-5181%2C0.31&t=9txsqnNdVeEngBGC-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1925%3A16595&page-id=&hide-ui=1'
+    - kind: live
+      eyebrow: LIVE SITE
+      label: 正式網站
+      description: 目前上線中的版本。
+      url: 'https://www.amdintl.com.tw/'

@@ -12,9 +12,12 @@ card:
 seo:
   title: 匯發營造 HUIFA｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
+next:
+  oneLiner: 客戶不想要一般網站的瀏覽方式，於是像排投影片一樣，設計每段內容怎麼進場、怎麼轉到下一段。
+  meta: 匯發營造　·　企業網站　·　UI 設計　·　Motion　·　2024–2025
+  media: *cardVideo
 hero:
-  eyebrow: *todo
+  eyebrow: &todo TODO(CONTENT)
   title: *todo
   headline: *todo
   subtitle: *todo
