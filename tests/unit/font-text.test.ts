@@ -152,6 +152,10 @@ describe('weight selectors', () => {
       }
     }
   });
+
+  it('allows the Instrument Sans link arrow at weight 500', () => {
+    expect(LATIN_ONLY_WEIGHT_SELECTORS).toContain('.link-arrow');
+  });
 });
 
 describe('ADR-0012 per-page ext subsets', () => {
