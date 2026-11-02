@@ -15,7 +15,7 @@ export const MOSAIC_MEDIA_SIZES = '(width < 48rem) 187.2vw, 100vw';
 
 /** Hero and mosaic composites render at 187.2% of the viewport below 48rem. */
 export const COMPOSITE_MEDIA_SIZES =
-  '(width < 48rem) 187.2vw, min(100vw, 90rem)';
+  '(width < 48rem) 187.2vw, 100vw';
 
 export function srcsetWidthsFor(sourceWidth: number): number[] {
   return [...SRCSET_WIDTHS.filter((width) => width < sourceWidth), sourceWidth];

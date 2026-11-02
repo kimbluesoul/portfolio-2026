@@ -766,6 +766,7 @@ figcaption strong {
 
 .next-preview .media-frame {
   aspect-ratio: inherit;
+  border-radius: var(--radius-media) var(--radius-media) 0 0;
 }
 
 .next-name-break {
@@ -798,6 +799,19 @@ figcaption strong {
 }
 
 @media (width >= 48rem) {
+  .case-hero .hero-showcase.layout-single {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .case-hero .hero-showcase.layout-single .media-frame {
+    border-radius: 0;
+  }
+
+  .next-project {
+    padding-block-end: 0;
+  }
+
   .hero-stats {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -1067,6 +1081,10 @@ figcaption strong {
   .case-hero .layout-single {
     --composite-mobile-aspect: 390 / 312;
     --composite-mobile-width: 187.2%;
+  }
+
+  .next-preview .media-frame {
+    border-radius: 0.75rem 0.75rem 0 0;
   }
 
   .detail-card .media-frame {
