@@ -1194,6 +1194,91 @@ test('motion steps support roving keyboard navigation', async ({ page }) => {
   ).toBeVisible();
 });
 
+test('motion steps auto-advance 01 to 03 once in view', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const videos = motion.locator('video');
+  await motion.scrollIntoViewIfNeeded();
+  await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
+
+  await videos
+    .nth(0)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(videos.nth(1)).toHaveAttribute('data-test-play-count', /.+/u);
+
+  await videos
+    .nth(1)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+  await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+  await expect(videos.nth(2)).toHaveAttribute('data-test-play-count', /.+/u);
+
+  await videos
+    .nth(2)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+  await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+});
+
+test('motion steps stop auto-advance after user selection', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const videos = motion.locator('video');
+  await motion.scrollIntoViewIfNeeded();
+  await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
+  await tabs.nth(1).click();
+  await videos
+    .nth(1)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'false');
+  await expect(videos.nth(2)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
+});
+
+test('reduced motion disables motion steps auto-play', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the reduced-motion behavior in one browser.',
+  );
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  await motion.scrollIntoViewIfNeeded();
+  await expect(motion.getByRole('tab').first()).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(motion.locator('video').first()).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
+});
+
 test('resume links to the supplied PDF', async ({ page, request }) => {
   await page.goto('/resume/');
   await expect(
