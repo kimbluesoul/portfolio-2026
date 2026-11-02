@@ -30,8 +30,7 @@ hero:
   showcase:
     layout: single
     items:
-      -
-        kind: image
+      - kind: image
         src: ../../assets/placeholders/placeholder.png
         alt: SSS 活動頁 PC 與手機案例展示
         aspectRatio: 1920 / 820
