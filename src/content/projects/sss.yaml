@@ -17,45 +17,135 @@ next:
   meta: 超透明提案　·　活動頁面　·　UI 設計　·　互動設計　·　2024–2025
   media: *cardVideo
 hero:
-  eyebrow: &todo TODO(CONTENT)
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 04 · 展覽活動頁
+  title: SSS
+  titleSizeMobile: 76
+  headline: 超透明提案**展覽活動頁**設計
+  subtitle: 素材不多，主視覺只有一張 SSS 的圖。我把主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容進場，把一場建築展變得想看、也想互動。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
+    - { label: ROLE, value: UI / Interaction }
+    - { label: PLATFORM, value: 展覽活動頁 }
+    - { label: STATUS, value: 已上線 }
+    - { label: YEAR, value: 2024–2025 }
   showcase:
     layout: single
     items:
-      - &card
+      -
         kind: image
-        src: ../../assets/projects/sss/card.jpg
-        alt: SSS 網站作品預覽
+        src: ../../assets/placeholders/placeholder.png
+        alt: SSS 活動頁 PC 與手機案例展示
+        aspectRatio: 1920 / 820
+        objectPosition: top
+        status: pending
+        expectedFile: src/assets/projects/sss/hero-showcase.jpg
 overview:
-  heading: *todo
+  heading: |-
+    一張主視覺，
+    **動成一場展覽**
   blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
+    - title: 背景
+      body: 這是寶舖建設「SSS 超透明提案」展覽的活動頁。剛拿到需求和素材時覺得有些普通，主要就是一張 SSS 的圖，照片也不多。
+    - title: 讓主視覺動起來
+      body: 看到 SSS 主視覺時，就覺得它動起來一定更豐富有趣。於是拆解裡面的元素讓它們各自動起來，讓人一進站就被吸引停留。
+    - title: 挑戰
+      body: 素材有限，怎麼讓人願意看、願意互動是最大的難題。我和前端大量溝通視差滾動的效果，讓每一次滾動都有新元素進入。
+  outputs: [活動頁面, 互動設計]
 keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
+  eyebrow: DESKTOP
+  heading: 一進站，SSS 就**動起來**
+  subtitle: 首頁把主視覺拆成一個個元素，讓它們各自動起來，搭配「世界唯一專為健康・安全建築解析的展覽」標語，第一眼就抓住目光。
+  main:
+    kind: video
+    src: /media/sss/key-main.mp4
+    poster: ../../assets/placeholders/placeholder.png
+    alt: SSS 活動頁 PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/sss/key-main.mp4
   closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+    - title: 展覽介紹
+      caption: 從 SSS 三個核心，帶出超透明的理念。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 展覽介紹區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/sss/key-intro.jpg
+    - title: 展覽旅程
+      caption: 把展區動線畫成立體地圖，從黑暗走向透明。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 展覽旅程立體地圖特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/sss/key-journey.jpg
+    - title: 建物知情權
+      caption: 用簡單的圖示與時間軸，把專業內容講清楚。
+      media:
+        kind: image
+        src: ../../assets/placeholders/placeholder.png
+        alt: 建物知情權區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/sss/key-transparency.jpg
+motion:
+  eyebrow: INTERACTION & MOTION
+  heading: 每一次滾動，都有新東西
+  subtitle: 整個網站大量運用視差滾動，和前端反覆溝通細節，讓超透明理念、旅程導覽與建物知情權，都能在互動中被看見、被吸收。
+  steps:
+    - title: 01　主視覺拆解
+      body: 把 SSS 主視覺裡的元素拆開、單獨動起來，一進站就被吸引停留。
+      media:
+        kind: video
+        src: /media/sss/motion-1.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 主視覺拆解動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/sss/motion-1.mp4
+    - title: 02　視差滾動
+      body: 不同圖層以不同速度移動，每一次滾動都有新的元素進入畫面。
+      media:
+        kind: video
+        src: /media/sss/motion-2.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 視差滾動動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/sss/motion-2.mp4
+    - title: 03　逐段揭露
+      body: 從展覽介紹、旅程導覽到建物知情權，內容隨滾動分段出現，更好吸收。
+      media:
+        kind: video
+        src: /media/sss/motion-3.mp4
+        poster: ../../assets/placeholders/placeholder.png
+        alt: 內容逐段揭露動態
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/sss/motion-3.mp4
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/placeholders/placeholder.png
+      alt: SSS 活動頁頁面拼貼
+      aspectRatio: 1920 / 1280
+      status: pending
+      expectedFile: src/assets/projects/sss/visual-mosaic.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: FROM FIGMA TO LIVE
+  heading: 從設計稿到正式上線
+  subtitle: 想直接操作看看的話，這裡有 Figma 原型和正式網站。
   cards:
-    - {
-        kind: live,
-        eyebrow: *todo,
-        label: *todo,
-        description: *todo,
-        url: *todo,
-      }
+    - kind: prototype
+      eyebrow: FIGMA PROTOTYPE
+      label: Figma 原型
+      description: 在 Figma 裡直接點擊操作，看網站的頁面與互動。
+      url: 'https://www.figma.com/proto/kqbgqrMy4O5dpz0xgOchhY/m000381-%E5%AF%B6%E8%88%96%E5%BB%BA%E8%A8%AD%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8-%E5%8A%A0%E7%B0%BD-?page-id=928%3A3387&node-id=956-645&p=f&viewport=754%2C34%2C0.02&t=6SS5FcX8jjnDkeGi-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=956%3A645&hide-ui=1'
+    - kind: live
+      eyebrow: LIVE SITE
+      label: 正式網站
+      description: 展覽已結束，頁面仍可瀏覽。
+      url: 'https://www.baopu.com.tw/exhibition/SSS1.0#kv'

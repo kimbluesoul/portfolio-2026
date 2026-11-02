@@ -12,9 +12,12 @@ card:
 seo:
   title: 展裕建設 JHANYU｜周泫淇 Syuan Ci
   description: *summary
-next: { oneLiner: &todo TODO(CONTENT), meta: *todo, media: *cardVideo }
+next:
+  oneLiner: 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
+  meta: 展裕建設　·　企業網站　·　UI 設計　·　品牌延伸　·　2024–2025
+  media: *cardVideo
 hero:
-  eyebrow: *todo
+  eyebrow: &todo TODO(CONTENT)
   title: *todo
   headline: *todo
   subtitle: *todo
