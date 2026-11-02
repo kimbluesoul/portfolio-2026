@@ -22,6 +22,9 @@ const pending = media.status === 'pending';
 const poster = await getImage({
   src: media.poster,
   format: 'avif',
+  // The video paints over the poster, so it can trade quality for bytes
+  // (posters start loading inside the phone LCP window).
+  quality: 45,
   widths: srcsetWidthsFor(media.poster.width),
   sizes: DEFAULT_MEDIA_SIZES,
 });

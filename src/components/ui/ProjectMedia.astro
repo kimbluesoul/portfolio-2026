@@ -12,6 +12,7 @@ interface Props {
   eager?: boolean;
   class?: string | undefined;
   sizes?: string | undefined;
+  quality?: number | undefined;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   media,
   mobileMedia,
   sizes,
+  quality,
 } = Astro.props;
 ---
 
@@ -30,6 +32,7 @@ const {
     eager={eager}
     class={className}
     sizes={sizes}
+    quality={quality}
   />
 ) : media.kind === 'video' ? (
   <LoopVideo media={media} eager={eager} class={className} />

@@ -21,6 +21,8 @@ interface Props {
   class?: string | undefined;
   /** Rendered width for the srcset; defaults to the case column. */
   sizes?: string | undefined;
+  /** Encoder quality override (1–100); the LCP hero trades a little quality for bytes. */
+  quality?: number | undefined;
 }
 
 const {
@@ -29,18 +31,31 @@ const {
   media,
   mobileMedia,
   sizes = DEFAULT_MEDIA_SIZES,
+  quality,
 } = Astro.props;
 const srcsetWidths = srcsetWidthsFor(media.src.width);
+// Art-directed phone crops fill the column (the 390 frames are full-bleed).
+const MOBILE_ART_SIZES = '100vw';
 const frameClass = [
   className,
   media.objectPosition === 'top' ? 'object-position-top' : undefined,
+  mobileMedia ? 'has-mobile-art' : undefined,
 ]
   .filter(Boolean)
   .join(' ');
 const artDirected = mobileMedia
   ? await Promise.all([
-      getImage({ src: mobileMedia.src, format: 'avif' }),
-      getImage({ src: mobileMedia.src, format: 'webp' }),
+      getImage({
+        src: mobileMedia.src,
+        format: 'avif',
+        widths: srcsetWidthsFor(mobileMedia.src.width),
+        ...(quality === undefined ? {} : { quality }),
+      }),
+      getImage({
+        src: mobileMedia.src,
+        format: 'webp',
+        widths: srcsetWidthsFor(mobileMedia.src.width),
+      }),
       getImage({ src: media.src, format: 'avif' }),
       getImage({ src: media.src, format: 'webp' }),
       getImage({ src: media.src }),
@@ -58,12 +73,14 @@ const artDirected = mobileMedia
     <picture>
       <source
         media="(width < 48rem)"
-        srcset={artDirected[0].src}
+        srcset={artDirected[0].srcSet.attribute}
+        sizes={MOBILE_ART_SIZES}
         type="image/avif"
       />
       <source
         media="(width < 48rem)"
-        srcset={artDirected[1].src}
+        srcset={artDirected[1].srcSet.attribute}
+        sizes={MOBILE_ART_SIZES}
         type="image/webp"
       />
       <source srcset={artDirected[2].src} type="image/avif" />
@@ -84,6 +101,7 @@ const artDirected = mobileMedia
       fallbackFormat="webp"
       widths={srcsetWidths}
       sizes={sizes}
+      {...(quality === undefined ? {} : { quality })}
       alt={media.decorative ? '' : media.alt}
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : 'auto'}

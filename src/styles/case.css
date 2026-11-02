@@ -1061,6 +1061,10 @@ figcaption strong {
     aspect-ratio: 310 / 707;
   }
 
+  .mobile-ratio-390x312 {
+    aspect-ratio: 390 / 312;
+  }
+
   .mobile-ratio-620x225 {
     aspect-ratio: 620 / 225;
   }
@@ -1097,10 +1101,10 @@ figcaption strong {
   }
 
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
-    .media-frame
+    .media-frame:not(.has-mobile-art)
     > img,
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
-    .media-frame
+    .media-frame:not(.has-mobile-art)
     > picture
     > img {
     position: absolute;
