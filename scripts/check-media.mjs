@@ -153,3 +153,38 @@ if (contentTodos.length > 0 && process.env.WORKERS_CI_BRANCH === 'main') {
   );
   process.exitCode = 1;
 }
+
+// MediaFrame turns `aspectRatio` into a class (CSP forbids inline style). A
+// ratio without a matching rule silently falls back to 16 / 9 and
+// `object-fit: cover` crops the image, so every ratio class used in the
+// built pages must exist in the built CSS.
+const distDirectory = join(root, 'dist');
+const distFiles = await filesBelow(distDirectory);
+const builtCss = (
+  await Promise.all(
+    distFiles
+      .filter((file) => extname(file) === '.css')
+      .map((file) => readFile(file, 'utf8')),
+  )
+).join('\n');
+const missingRatios = new Set();
+for (const file of distFiles.filter((path) => extname(path) === '.html')) {
+  const html = await readFile(file, 'utf8');
+  for (const [, ratioClass] of html.matchAll(
+    /class="[^"]*?\b((?:mobile-)?ratio-[0-9_x]+)\b/gu,
+  )) {
+    // 16 / 9 is the .media-frame default and needs no class rule.
+    if (ratioClass === 'ratio-16x9') continue;
+    if (
+      !builtCss.includes(`.${ratioClass}{`) &&
+      !builtCss.includes(`.${ratioClass} {`)
+    )
+      missingRatios.add(ratioClass);
+  }
+}
+if (missingRatios.size > 0) {
+  process.stderr.write(
+    `Aspect-ratio classes without a CSS rule (add them to src/styles/case.css): ${[...missingRatios].join(', ')}\n`,
+  );
+  process.exitCode = 1;
+}

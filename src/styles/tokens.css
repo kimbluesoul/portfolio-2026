@@ -9,6 +9,8 @@
   --black: #111;
   --black-soft: #141414;
   --blue-50: #eceefb;
+  --blue-100: #dbe3ff;
+  --blue-300: #9aa8ff;
   --blue-600: #1f3bd6;
   --blue-700: #182fad;
 
@@ -22,6 +24,8 @@
   --color-text-primary: var(--black);
   --color-text-secondary: var(--gray-700);
   --color-text-brand: var(--blue-600);
+  --color-text-brand-soft: var(--blue-100);
+  --color-text-brand-on-inverse-hover: var(--blue-300);
   --color-text-on-brand: var(--white);
   --color-text-on-inverse: var(--white);
   --color-text-on-inverse-muted: var(--gray-500);
@@ -36,12 +40,15 @@
   /* Link card stroke: white 12 % (465:716, 476:1906). */
   --color-border-inverse: color-mix(in srgb, var(--white) 12%, transparent);
   --color-project-accent-soft: var(--blue-50);
+  --color-swatch-light-border: #e0e7f1;
 
   --motion-duration-fast: 160ms;
+  --motion-duration-hover: 250ms;
   --motion-duration-base: 280ms;
   --motion-duration-slow: 640ms;
   --motion-duration-signature: 900ms;
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-hover: ease-out;
   --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --motion-distance-reveal: 24px;
@@ -83,6 +90,13 @@
   --font-size-case-headline: clamp(1.5rem, 0.99rem + 2.092vw, 3.5rem);
   --font-size-case-heading: clamp(2rem, 1.548rem + 1.853vw, 3.75rem);
   --font-size-case-subheading: clamp(1.25rem, 1.056rem + 0.794vw, 2rem);
+  --font-size-case-caption-title: 1.25rem;
+  --font-size-case-caption-body: 1rem;
+  --font-size-case-motion-title: 1.75rem;
+  --font-size-case-motion-body: 1.0625rem;
+  --font-size-case-detail-eyebrow: 0.8125rem;
+  --font-size-case-detail-title: 1.5rem;
+  --font-size-case-detail-body: 0.9375rem;
   --font-size-case-subtitle: clamp(1rem, 0.935rem + 0.265vw, 1.25rem);
   --font-size-case-stat: clamp(1.25rem, 1.121rem + 0.529vw, 1.75rem);
   --font-size-link-title: clamp(1.75rem, 1.621rem + 0.529vw, 2.25rem);
@@ -105,6 +119,9 @@
   --font-size-case-caption-mobile: 0.875rem;
   --font-size-case-caption-title-mobile: 1rem;
   --font-size-case-step-title-mobile: 1.125rem;
+  --font-size-case-detail-eyebrow-mobile: 0.75rem;
+  --font-size-case-detail-title-mobile: 1rem;
+  --font-size-case-detail-body-mobile: 0.875rem;
   --font-size-case-next-meta-mobile: 0.8125rem;
   --line-height-next-title-mobile: 0.95;
   --letter-spacing-label: 0.12em;
@@ -150,12 +167,20 @@
   --layout-case-narrow: 40rem;
   --layout-case-stats: 75rem;
   --layout-motion-gap: 5rem;
-  --size-case-mobile-stats: 6.875rem;
   --size-case-next-mobile: 33.125rem;
   --size-case-swipe-closeup: 17.5rem;
   --size-case-swipe-device: 15.625rem;
   --size-motion-marker: 0.75rem;
   --size-motion-marker-active: 1.5rem;
+  --size-swatch-mobile: 3rem;
+  --size-swatch-desktop-width: 7.1875rem;
+  --size-swatch-desktop-height: 5.5rem;
+  --radius-swatch-mobile: 0.5rem;
+  --radius-swatch-desktop: 0.75rem;
+  --space-swatch-mobile-copy: 0.875rem;
+  --space-swatch-mobile-row: 0.625rem;
+  --space-swatch-desktop-top: 0.125rem;
+  --space-swatch-desktop-code: 0.4375rem;
   --header-height: 5.75rem;
   --header-border-width: 0.0625rem;
   --radius-focus: 0.25rem;
@@ -173,6 +198,7 @@
 
   /* Desktop link arrow glyph (`I465:716;465:707`): 40 / Medium. */
   --size-link-arrow: 2.5rem;
+  --font-size-next-arrow-glyph: clamp(2rem, 1.363rem + 2.614vw, 4.5rem);
   --radius-control: var(--space-2);
 
   /* Minimum interactive target (ARCHITECTURE §10). */

@@ -39,7 +39,7 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
         />
       )}
       {media.kind === 'video' && (
-        <>
+        <div class="media-video">
           <Picture
             class="video-poster"
             src={media.poster}
@@ -61,10 +61,10 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
               <source data-src={media.src} type="video/mp4" />
             </video>
           </loop-video>
-        </>
+        </div>
       )}
       {media.kind === 'composite' && (
-        <>
+        <div class="media-composite">
           <Picture
             class="composite-background"
             src={media.background.src}
@@ -122,7 +122,7 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
               <source data-src={media.phone.src} type="video/mp4" />
             </video>
           </loop-video>
-        </>
+        </div>
       )}
     </div>
     <div class="card-copy">
@@ -166,6 +166,13 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
 
   .featured .media {
     aspect-ratio: 7 / 4;
+  }
+
+  .media-composite,
+  .media-video {
+    position: absolute;
+    inset: 0;
+    transform-origin: center;
   }
 
   /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
@@ -277,12 +284,13 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
     border-radius: var(--radius-tag);
     font-family: var(--font-family-body);
     font-size: var(--font-size-label);
-    font-weight: 500;
+    font-weight: 400;
     line-height: var(--line-height-tag);
   }
 
   .tag-latin {
     font-family: var(--font-family-display);
+    font-weight: 500;
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
@@ -296,17 +304,16 @@ const isLatinTag = (tag: string) => /^[\x20-\x7e–]+$/u.test(tag);
       transform: translateY(calc(-1 * var(--space-1)));
     }
 
-    /* stylelint-disable selector-pseudo-class-no-unknown */
-    .media :global(img) {
+    .media-composite,
+    .media-video {
       transition: transform var(--motion-duration-base)
         var(--motion-ease-standard);
     }
 
-    .project-card a:hover .media :global(img),
-    .project-card a:focus-visible .media :global(img) {
+    .project-card a:hover :is(.media-composite, .media-video),
+    .project-card a:focus-visible :is(.media-composite, .media-video) {
       transform: scale(1.02);
     }
-    /* stylelint-enable selector-pseudo-class-no-unknown */
   }
 
   @media (width >= 48rem) {

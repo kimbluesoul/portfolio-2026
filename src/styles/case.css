@@ -7,6 +7,12 @@
   padding-block: var(--space-section);
 }
 
+/* Visual Extension keeps its full-bleed composition while its canvas tone now
+   matches the other light case sections. */
+.case-section:has(.visual-grid) {
+  padding-block: 0;
+}
+
 /* ARCHITECTURE §13: lay out only the hero before the first paint. The first
    layout of a whole case page cost about 280 ms of simulated mobile CPU on the
    LCP path; the other sections render as they near the viewport. */
@@ -36,16 +42,6 @@
   color: var(--color-text-on-inverse);
 }
 
-.tone-media {
-  padding-block: 0;
-  background: var(--color-bg-inverse);
-}
-
-.tone-media .case-container {
-  width: 100%;
-  max-width: none;
-}
-
 .case-eyebrow {
   color: var(--color-text-brand);
   font-family: var(--font-family-display);
@@ -60,9 +56,9 @@
   color: var(--color-text-on-inverse-muted);
 }
 
-/* The hero eyebrow carries the Chinese category: Noto Sans TC Medium (360:251). */
+/* The hero eyebrow carries the Chinese category in the bold display weight. */
 .case-hero .case-eyebrow {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .section-intro {
@@ -99,7 +95,7 @@
   color: currentcolor;
   font-family: var(--font-family-display);
   font-size: var(--font-size-label);
-  font-weight: 500;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -108,6 +104,10 @@
   padding: var(--space-3) var(--space-5);
   border: var(--header-border-width) solid var(--color-border-default);
   border-radius: var(--radius-pill);
+  transition:
+    background-color var(--motion-duration-hover) var(--motion-ease-hover),
+    border-color var(--motion-duration-hover) var(--motion-ease-hover),
+    color var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
 .case-hero .case-container {
@@ -274,6 +274,14 @@
   aspect-ratio: 399 / 187;
 }
 
+.ratio-811x376 {
+  aspect-ratio: 811 / 376;
+}
+
+.ratio-1320x300 {
+  aspect-ratio: 1320 / 300;
+}
+
 .ratio-393x105 {
   aspect-ratio: 393 / 105;
 }
@@ -438,14 +446,19 @@ figure {
 figcaption {
   display: grid;
   gap: var(--space-2);
-  padding-block-start: var(--space-4);
+  padding-block-start: var(--space-5);
   color: var(--color-text-secondary);
-  font-size: var(--font-size-body-compact);
+  font-size: var(--font-size-case-caption-body);
+  font-weight: 400;
 }
 
 figcaption strong {
   color: var(--color-text-primary);
-  font-size: var(--font-size-case-subheading);
+  font-size: var(--font-size-case-caption-title);
+}
+
+:where(.detail-card) figcaption strong {
+  font-size: var(--font-size-case-detail-title);
 }
 
 .interaction-motion motion-steps {
@@ -475,7 +488,12 @@ figcaption strong {
 }
 
 .motion-tabs strong {
-  font-size: var(--font-size-case-subheading);
+  font-size: var(--font-size-case-motion-title);
+}
+
+.motion-tabs button > span {
+  font-size: var(--font-size-case-motion-body);
+  font-weight: 400;
 }
 
 .details-grid figure,
@@ -487,6 +505,7 @@ figcaption strong {
   display: grid;
   overflow: hidden;
   align-content: start;
+  container-type: inline-size;
   border-radius: var(--radius-media);
   background: var(--color-bg-subtle);
 }
@@ -495,7 +514,13 @@ figcaption strong {
   padding: var(--space-8);
 }
 
+.detail-card.has-swatches figcaption {
+  padding-block-end: 0;
+}
+
 .detail-card figcaption > span:last-child {
+  font-size: var(--font-size-case-detail-body);
+  font-weight: 400;
   line-height: var(--line-height-body);
 }
 
@@ -505,9 +530,65 @@ figcaption strong {
   border-radius: 0;
 }
 
+.color-swatches {
+  display: grid;
+  gap: var(--space-swatch-mobile-row);
+  margin: 0 var(--space-5) var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.swatch-caption {
+  margin: var(--space-1-5) var(--space-5) var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-case-caption-mobile);
+  line-height: var(--line-height-case-body-mobile);
+}
+
+.swatches-item {
+  display: grid;
+  grid-template-columns: var(--size-swatch-mobile) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-swatch-mobile-copy);
+  min-width: 0;
+  font-weight: 400;
+}
+
+.swatch-color {
+  display: block;
+  width: var(--size-swatch-mobile);
+  height: var(--size-swatch-mobile);
+  overflow: hidden;
+  border-radius: var(--radius-swatch-mobile);
+}
+
+.swatches-item:last-child .swatch-color {
+  outline: var(--header-border-width) solid var(--color-swatch-light-border);
+}
+
+.swatch-copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.swatch-name {
+  font-family: var(--font-family-body);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.swatch-hex {
+  font-family: var(--font-family-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
 .detail-eyebrow {
   font-family: var(--font-family-display);
-  font-size: var(--font-size-label);
+  font-size: var(--font-size-case-detail-eyebrow);
   font-weight: 700;
   letter-spacing: var(--letter-spacing-label);
 }
@@ -551,6 +632,14 @@ figcaption strong {
   background: var(--color-bg-inverse-raised);
   color: var(--color-text-on-inverse);
   text-decoration: none;
+  transition:
+    background-color var(--motion-duration-hover) var(--motion-ease-hover),
+    border-color var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+a.link-card:focus-visible {
+  border-color: var(--color-bg-brand);
+  background: var(--color-bg-brand);
 }
 
 .link-eyebrow {
@@ -571,6 +660,11 @@ figcaption strong {
   color: var(--color-text-on-inverse-muted);
   font-size: 1.125rem;
   line-height: 1.2;
+  transition: color var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+a.link-card:focus-visible .link-description {
+  color: var(--color-text-brand-soft);
 }
 
 /* The arrow sits outside the flow at 40 / 60 from the card edge. */
@@ -582,6 +676,11 @@ figcaption strong {
   font-size: var(--size-link-arrow);
   font-weight: 500;
   line-height: 1.2;
+  transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+a.link-card:focus-visible .link-arrow {
+  transform: translate(8px, -8px);
 }
 
 /* The eyebrow and title rows sit beside the arrow: keep them clear of it
@@ -615,7 +714,12 @@ figcaption strong {
     var(--color-border-default);
 }
 
-/* Next top row (`360:1590`): ← 所有作品 16 / 500, a 1 × 14 divider and the
+.case-section:has(.visual-grid) .case-container {
+  width: 100%;
+  max-width: none;
+}
+
+/* Next top row (`360:1590`): ← 所有作品 16 / 400, a 1 × 14 divider and the
    eyebrow (14 / 600) + counter (14 / 500, 0.08em), all left-aligned, 24
    apart and 22 between eyebrow and counter. */
 .next-topline {
@@ -628,6 +732,18 @@ figcaption strong {
 .next-topline .back-link {
   color: var(--color-text-secondary);
   font-size: 1rem;
+  transition: color var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+.next-topline .back-link:focus-visible {
+  color: var(--color-text-brand);
+  text-decoration: underline;
+}
+
+.case-hero .back-link:focus-visible {
+  border-color: var(--color-text-primary);
+  background: var(--color-text-primary);
+  color: var(--color-text-on-inverse);
 }
 
 .next-divider {
@@ -679,8 +795,25 @@ figcaption strong {
   background: var(--color-bg-brand);
   color: var(--color-text-on-brand);
   font-family: var(--font-family-display);
-  font-size: var(--font-size-case-heading);
-  font-weight: 500;
+  font-size: var(--font-size-next-arrow-glyph);
+  font-weight: 700;
+  transition: background-color var(--motion-duration-hover)
+    var(--motion-ease-hover);
+}
+
+.next-arrow-glyph {
+  transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
+}
+
+.next-project .case-container > a:not(.back-link):focus-visible .next-arrow {
+  background: var(--color-text-primary);
+}
+
+.next-project
+  .case-container
+  > a:not(.back-link):focus-visible
+  .next-arrow-glyph {
+  transform: translateX(14px);
 }
 
 .next-project h2 {
@@ -697,6 +830,7 @@ figcaption strong {
 
 .next-preview .media-frame {
   aspect-ratio: inherit;
+  border-radius: var(--radius-media) var(--radius-media) 0 0;
 }
 
 .next-name-break {
@@ -704,13 +838,13 @@ figcaption strong {
 }
 
 /* Figma Next text (`360:1368` / `360:1369`, 390 `484:1556` / `484:1558`):
-   the meta is Noto Sans TC Medium in the secondary grey, and the one-liner is
+   the meta is Noto Sans TC Regular in the secondary grey, and the one-liner is
    the primary colour, each a single auto-width line at 1920. */
 .next-meta {
   color: var(--color-text-secondary);
   font-family: var(--font-family-body);
   font-size: var(--font-size-body);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
   margin-block-end: var(--space-3);
 }
@@ -729,6 +863,39 @@ figcaption strong {
 }
 
 @media (width >= 48rem) {
+  .detail-card:not(.has-swatches) {
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: stretch;
+    padding: var(--space-8);
+  }
+
+  .detail-card:not(.has-swatches) figcaption {
+    padding: 0;
+  }
+
+  .detail-card:not(.has-swatches) .media-frame {
+    align-self: center;
+    width: 100%;
+    margin: var(--space-3) 0 0;
+  }
+
+  .case-hero {
+    padding-block-end: 0;
+  }
+
+  .case-hero .hero-showcase.layout-single {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .case-hero .hero-showcase.layout-single .media-frame {
+    border-radius: 0;
+  }
+
+  .next-project {
+    padding-block-end: 0;
+  }
+
   .hero-stats {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -814,8 +981,62 @@ figcaption strong {
   }
 }
 
+/* The row starts once the card can keep five proportional swatches legible. */
+@container (width >= 30rem) {
+  .detail-card.has-swatches figcaption {
+    grid-row: 1;
+  }
+
+  .color-swatches {
+    grid-row: 2;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-swatch-desktop-top) var(--space-8) 0;
+  }
+
+  .swatch-caption {
+    grid-row: 3;
+    margin: var(--space-4) var(--space-8) var(--space-8);
+    font-size: var(--font-size-body-compact);
+    line-height: var(--line-height-body);
+  }
+
+  .swatches-item {
+    display: block;
+  }
+
+  .swatch-color {
+    width: min(100%, var(--size-swatch-desktop-width));
+    height: auto;
+    aspect-ratio: 115 / 88;
+    border-radius: var(--radius-swatch-desktop);
+  }
+
+  .swatch-copy,
+  .swatch-name,
+  .swatch-hex {
+    display: block;
+  }
+
+  .swatch-name {
+    margin-block-start: var(--space-3);
+    font-size: 0.875rem;
+  }
+
+  .swatch-hex {
+    margin-block-start: var(--space-swatch-desktop-code);
+    font-size: 0.8125rem;
+  }
+}
+
+@container (width >= 43.9375rem) {
+  .swatch-name {
+    white-space: nowrap;
+  }
+}
+
 @media (width < 48rem) {
-  .case-section:where(:not(.tone-media, .case-hero, .next-project)) {
+  .case-section:where(:not(.case-hero, .next-project)) {
     padding-block: var(--space-16);
   }
 
@@ -860,7 +1081,7 @@ figcaption strong {
   }
 
   .case-hero .hero-stats {
-    min-height: var(--size-case-mobile-stats);
+    row-gap: var(--space-6);
     margin-block-end: var(--space-8);
   }
 
@@ -897,10 +1118,22 @@ figcaption strong {
   }
 
   .hero-stats div {
-    justify-content: center;
-    gap: var(--space-1);
-    padding: 0 var(--space-2);
+    gap: 0;
+    padding: 0;
     border-block-start: 0;
+  }
+
+  .hero-stats dd {
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .hero-stats dt {
+    margin-block-start: 0.375rem;
+    color: var(--color-text-secondary);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    line-height: 13px;
   }
 
   .hero-stats div:nth-child(even) {
@@ -922,6 +1155,10 @@ figcaption strong {
 
   .mobile-ratio-310x707 {
     aspect-ratio: 310 / 707;
+  }
+
+  .mobile-ratio-390x312 {
+    aspect-ratio: 390 / 312;
   }
 
   .mobile-ratio-620x225 {
@@ -946,6 +1183,10 @@ figcaption strong {
     --composite-mobile-width: 187.2%;
   }
 
+  .next-preview .media-frame {
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+
   .detail-card .media-frame {
     margin: 0 var(--space-5) var(--space-5);
   }
@@ -956,10 +1197,10 @@ figcaption strong {
   }
 
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
-    .media-frame
+    .media-frame:not(.has-mobile-art)
     > img,
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
-    .media-frame
+    .media-frame:not(.has-mobile-art)
     > picture
     > img {
     position: absolute;
@@ -1160,11 +1401,16 @@ figcaption strong {
   }
 
   .detail-card figcaption strong {
+    font-size: var(--font-size-case-detail-title-mobile);
     line-height: 1.2;
   }
 
+  .detail-eyebrow {
+    font-size: var(--font-size-case-detail-eyebrow-mobile);
+  }
+
   .detail-card figcaption > span:last-child {
-    font-size: var(--font-size-case-caption-mobile);
+    font-size: var(--font-size-case-detail-body-mobile);
     line-height: var(--line-height-case-body-mobile);
   }
 
@@ -1256,5 +1502,56 @@ figcaption strong {
   .hero-stats dd,
   .next-project h2 {
     white-space: nowrap;
+  }
+}
+
+@media (hover: hover) {
+  a.link-card:hover {
+    border-color: var(--color-bg-brand);
+    background: var(--color-bg-brand);
+  }
+
+  a.link-card:hover .link-description {
+    color: var(--color-text-brand-soft);
+  }
+
+  a.link-card:hover .link-arrow {
+    transform: translate(8px, -8px);
+  }
+
+  .next-topline .back-link:hover {
+    color: var(--color-text-brand);
+    text-decoration: underline;
+  }
+
+  .case-hero .back-link:hover {
+    border-color: var(--color-text-primary);
+    background: var(--color-text-primary);
+    color: var(--color-text-on-inverse);
+  }
+
+  .next-project .case-container > a:not(.back-link):hover .next-arrow {
+    background: var(--color-text-primary);
+  }
+
+  .next-project .case-container > a:not(.back-link):hover .next-arrow-glyph {
+    transform: translateX(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.link-card:focus-visible .link-arrow,
+  .next-project
+    .case-container
+    > a:not(.back-link):focus-visible
+    .next-arrow-glyph {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (hover: hover) {
+  a.link-card:hover .link-arrow,
+  .next-project .case-container > a:not(.back-link):hover .next-arrow-glyph {
+    transform: none;
   }
 }

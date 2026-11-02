@@ -278,15 +278,17 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
-  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(19);
-  await expect(page.locator('loop-video')).toHaveCount(5);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(0);
+  await expect(page.locator('loop-video')).toHaveCount(7);
   await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
-  await expect(page.locator('.detail-card picture')).toHaveCount(7);
+  // Every image card renders <picture> (AVIF + webp); COLOR is HTML swatches.
+  // All six show their desktop image on phones for now (docs/ASSETS.md).
+  await expect(page.locator('.detail-card picture')).toHaveCount(6);
   await expect(
     page.locator('.detail-card source[media="(width < 48rem)"]'),
-  ).toHaveCount(14);
+  ).toHaveCount(0);
   await expect(page.locator('.case-hero .hero-showcase')).toHaveCount(1);
   await expect(
     page.locator('.visual-extension .visual-grid > .media-frame'),
@@ -313,6 +315,90 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   ).toBeVisible();
   await expect(page.locator('.overview-heading h2 br')).toHaveCount(1);
   await expect(page.getByText('NEXT PROJECT 02 / 07')).toBeVisible();
+});
+
+test('88Win color swatches reflow, fill their frames, and keep every hex code as text', async ({
+  page,
+}) => {
+  const hexCodes = ['#0B2240', '#0A6ABF', '#6AAAE2', '#BBCDEB', '#EFF8FF'];
+
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('/work/88win/');
+  const swatches = page.locator('.swatches-item');
+  await swatches.first().scrollIntoViewIfNeeded();
+  await expect(swatches).toHaveCount(5);
+  for (const hex of hexCodes) {
+    await expect(page.getByText(hex, { exact: true })).toBeVisible();
+  }
+  const desktopBoxes = await swatches.evaluateAll((items) =>
+    items.map((item) => item.getBoundingClientRect()),
+  );
+  expect(new Set(desktopBoxes.map(({ y }) => Math.round(y))).size).toBe(1);
+  const desktopSwatches = await page
+    .locator('.swatch-color')
+    .evaluateAll((colors) =>
+      colors.map((color) => {
+        const frame = color.getBoundingClientRect();
+        const rect = color.querySelector('rect')!.getBoundingClientRect();
+        return {
+          frame: { width: frame.width, height: frame.height },
+          rect: { width: rect.width, height: rect.height },
+          radius: getComputedStyle(color).borderTopLeftRadius,
+          outline: {
+            color: getComputedStyle(color).outlineColor,
+            width: getComputedStyle(color).outlineWidth,
+          },
+        };
+      }),
+    );
+  for (const { frame, rect, radius } of desktopSwatches) {
+    expect(frame.width).toBeCloseTo(115, 1);
+    expect(frame.height).toBeCloseTo(88, 1);
+    expect(rect.width).toBeCloseTo(frame.width, 1);
+    expect(rect.height).toBeCloseTo(frame.height, 1);
+    expect(radius).toBe('12px');
+  }
+  expect(desktopSwatches.at(-1)?.outline).toEqual({
+    color: 'rgb(224, 231, 241)',
+    width: '1px',
+  });
+
+  for (const width of [1440, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.reload();
+    await swatches.first().scrollIntoViewIfNeeded();
+    const rowPositions = await swatches.evaluateAll((items) =>
+      items.map((item) => Math.round(item.getBoundingClientRect().y)),
+    );
+    expect(new Set(rowPositions).size).toBe(1);
+  }
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await swatches.first().scrollIntoViewIfNeeded();
+  const mobileBoxes = await swatches.evaluateAll((items) =>
+    items.map((item) => item.getBoundingClientRect()),
+  );
+  expect(new Set(mobileBoxes.map(({ x }) => Math.round(x))).size).toBe(1);
+  for (let index = 1; index < mobileBoxes.length; index += 1) {
+    expect(mobileBoxes[index]!.y).toBeGreaterThan(mobileBoxes[index - 1]!.y);
+  }
+  const mobileSwatches = await page
+    .locator('.swatch-color')
+    .evaluateAll((colors) =>
+      colors.map((color) => ({
+        radius: getComputedStyle(color).borderTopLeftRadius,
+        outline: {
+          color: getComputedStyle(color).outlineColor,
+          width: getComputedStyle(color).outlineWidth,
+        },
+      })),
+    );
+  expect(mobileSwatches.every(({ radius }) => radius === '8px')).toBe(true);
+  expect(mobileSwatches.at(-1)?.outline).toEqual({
+    color: 'rgb(224, 231, 241)',
+    width: '1px',
+  });
 });
 
 const stubMediaPlayback = async (page: import('@playwright/test').Page) => {
@@ -443,6 +529,97 @@ test('fine-pointer hover replays from the beginning', async ({
   ).toBe(0);
 });
 
+test('hover scales each composite card layer together', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Fine-pointer behavior.',
+  );
+  await page.goto('/');
+
+  const card = page
+    .locator('#work article')
+    .filter({ has: page.locator('.card-composite') });
+  await card.scrollIntoViewIfNeeded();
+  await card.locator('a').hover();
+
+  const layerRects = await card
+    .locator('.card-composite')
+    .evaluateAll((composites) =>
+      composites.map((composite) => {
+        const rect = (selector: string) => {
+          const { x, y, width, height } = composite
+            .querySelector(selector)!
+            .getBoundingClientRect();
+          return { x, y, width, height };
+        };
+        return {
+          desktop: {
+            poster: rect('img.composite-poster.composite-pc'),
+            video: rect('video.composite-pc'),
+          },
+          phone: {
+            poster: rect('img.composite-poster.composite-phone'),
+            video: rect('video.composite-phone'),
+          },
+        };
+      }),
+    );
+
+  for (const { desktop, phone } of layerRects) {
+    expect(desktop.video).toEqual(desktop.poster);
+    expect(phone.video).toEqual(phone.poster);
+  }
+});
+
+test('hover scales each single-video card poster and video together', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Fine-pointer behavior.',
+  );
+  await page.goto('/');
+
+  const card = page
+    .locator('#work article')
+    .filter({ has: page.locator('.media-video') })
+    .first();
+  const media = card.locator('.media').first();
+  await card.scrollIntoViewIfNeeded();
+  await card.locator('a').hover();
+  await expect
+    .poll(async () => {
+      const [mediaBox, wrapperBox] = await Promise.all([
+        media.boundingBox(),
+        card.locator('.media-video').first().boundingBox(),
+      ]);
+      return (wrapperBox?.width ?? 0) > (mediaBox?.width ?? 0);
+    })
+    .toBe(true);
+
+  const { mediaRect, posterRect, videoRect } = await card
+    .locator('.media-video')
+    .first()
+    .evaluate((wrapper) => {
+      const rect = (element: Element) => {
+        const { x, y, width, height } = element.getBoundingClientRect();
+        return { x, y, width, height };
+      };
+      return {
+        mediaRect: rect(wrapper.parentElement!),
+        posterRect: rect(wrapper.querySelector('img')!),
+        videoRect: rect(wrapper.querySelector('video')!),
+      };
+    });
+
+  expect(posterRect).toEqual(videoRect);
+  expect(posterRect.width).toBeGreaterThan(mediaRect.width);
+  expect(posterRect.height).toBeGreaterThan(mediaRect.height);
+  await expect(media).toBeVisible();
+});
+
 test('tapping a card video follows its link instead of replaying', async ({
   page,
 }, testInfo) => {
@@ -562,6 +739,37 @@ test('390 case hero and next project match the mobile Figma geometry', async ({
   expect(
     await nextMeta.evaluate((node) => node.scrollWidth <= node.clientWidth),
   ).toBe(true);
+});
+
+test('desktop Details cards never clip their content', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Desktop-only layout.',
+  );
+
+  for (const width of [1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/work/88win/');
+    const sizes = await page.locator('.detail-card').evaluateAll((cards) => {
+      for (const card of cards) {
+        const section = card.closest<HTMLElement>('.case-section');
+        if (section) section.style.contentVisibility = 'visible';
+      }
+      return cards.map((card) => ({
+        clientHeight: card.clientHeight,
+        scrollHeight: card.scrollHeight,
+      }));
+    });
+
+    expect(sizes.length, `${width} detail cards`).toBeGreaterThan(0);
+    for (const [index, { clientHeight, scrollHeight }] of sizes.entries()) {
+      expect(scrollHeight, `${width} detail card ${index}`).toBeLessThanOrEqual(
+        clientHeight,
+      );
+    }
+  }
 });
 
 test('360 home and case pages have no horizontal overflow', async ({
@@ -737,7 +945,10 @@ const figmaSectionHeights390 = {
     ['Key Screens', 740],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
-    ['Details', 3461, 16],
+    // Interim (PO, 2026-11-01): phones show the desktop Details images until
+    // the detail-*-mobile.png exports arrive (docs/ASSETS.md). Restore the
+    // 3461 check when they do.
+    ['Details', 3461, 16, 'desktop Details images on mobile'],
     ['Visual Extension', 410],
     ['Links', 659],
     ['Next Project', 530],
@@ -789,11 +1000,15 @@ for (const [route, expectedSections] of Object.entries(
 
     expect(actualHeights).toHaveLength(expectedSections.length);
     for (const [index, section] of expectedSections.entries()) {
-      const [name, expectedHeight, tolerance = 8] = section as readonly [
-        string,
-        number,
-        number?,
-      ];
+      const [name, expectedHeight, tolerance = 8, interim] =
+        section as readonly [string, number, number?, string?];
+      if (interim) {
+        testInfo.annotations.push({
+          type: 'interim',
+          description: `${name} height not compared: ${interim}`,
+        });
+        continue;
+      }
       const actualHeight = actualHeights[index] ?? Number.NaN;
       expect(
         Math.abs(actualHeight - expectedHeight),
@@ -1099,6 +1314,119 @@ test('motion steps support roving keyboard navigation', async ({ page }) => {
   await expect(
     page.getByRole('tabpanel', { name: /02\s選擇廠商／遊戲/u }),
   ).toBeVisible();
+});
+
+test('motion steps auto-advance 01 to 03 once in view', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const videos = motion.locator('video');
+  await motion.scrollIntoViewIfNeeded();
+  await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
+
+  await videos
+    .nth(0)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(videos.nth(1)).toHaveAttribute('data-test-play-count', /.+/u);
+
+  await videos
+    .nth(1)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+  await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+  await expect(videos.nth(2)).toHaveAttribute('data-test-play-count', /.+/u);
+
+  await videos
+    .nth(2)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+  await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
+});
+
+test('motion steps stop auto-advance after user selection', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const videos = motion.locator('video');
+  await motion.scrollIntoViewIfNeeded();
+  await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
+  await tabs.nth(1).click();
+  await videos
+    .nth(1)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
+
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'false');
+  await expect(videos.nth(2)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
+});
+
+test('motion steps preserve a user selection made before entering view', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the intersection sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const initiallyVisible = await motion.evaluate((element) => {
+    const { bottom, height, top } = element.getBoundingClientRect();
+    return (
+      Math.max(0, Math.min(bottom, window.innerHeight) - Math.max(top, 0)) /
+      height
+    );
+  });
+  expect(initiallyVisible).toBeLessThan(0.5);
+
+  await tabs.nth(1).dispatchEvent('click');
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await motion.scrollIntoViewIfNeeded();
+
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+});
+
+test('reduced motion disables motion steps auto-play', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the reduced-motion behavior in one browser.',
+  );
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  await motion.scrollIntoViewIfNeeded();
+  await expect(motion.getByRole('tab').first()).toHaveAttribute(
+    'aria-selected',
+    'true',
+  );
+  await expect(motion.locator('video').first()).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
 });
 
 test('resume links to the supplied PDF', async ({ page, request }) => {

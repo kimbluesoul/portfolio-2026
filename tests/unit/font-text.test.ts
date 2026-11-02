@@ -66,18 +66,16 @@ describe('weightedText', () => {
     <script>const ignored = '腳本';</script></body></html>`;
   const text = weightedText(html);
 
-  it('assigns headings to 700 and tag chips to 500', () => {
+  it('assigns headings to 700 and tag chips to 400', () => {
     expect(text[700]).toContain('設計畫面');
     expect(text[700]).not.toContain('內文');
-    expect(text[500]).toContain('已上線');
-    expect(text[500]).not.toContain('設計畫面');
+    expect(text[400]).toContain('已上線');
   });
 
-  it('assigns the case Next meta to 500, including its separators', () => {
-    expect(text[500]).toContain('健身房');
-    expect(text[500]).toContain('·');
-    expect(text[500]).toContain('品牌網站');
-    expect(text[500]).not.toContain('內文');
+  it('assigns the case Next meta to 400, including its separators', () => {
+    expect(text[400]).toContain('健身房');
+    expect(text[400]).toContain('·');
+    expect(text[400]).toContain('品牌網站');
   });
 
   it('uses all rendered body text for 400 but skips head and scripts', () => {
@@ -103,9 +101,8 @@ describe('weightedText', () => {
       <footer><strong>頁尾</strong></footer></body>`;
     const weighted = weightedText(caseHtml);
 
-    expect(weighted[500]).toContain('所有作品');
-    expect(weighted[500]).toContain('線上娛樂平台');
-    expect(weighted[500]).not.toContain('OVERVIEW');
+    expect(weighted[400]).toContain('所有作品');
+    expect(weighted[700]).toContain('線上娛樂平台');
     expect(weighted[700]).toContain('跨裝置');
     expect(weighted[700]).toContain('已上線');
     expect(weighted[700]).toContain('遊戲列表');
@@ -119,15 +116,7 @@ describe('weightedText', () => {
 });
 
 describe('weight selectors', () => {
-  it('lists every Chinese 500 / 700 use found in the 2026-11-01 audit', () => {
-    expect(WEIGHT_SELECTORS[500]).toEqual(
-      expect.arrayContaining([
-        'li',
-        '.back-link',
-        '.case-hero .case-eyebrow',
-        '.next-meta',
-      ]),
-    );
+  it('lists every Chinese 700 use found in the 2026-11-02 audit', () => {
     expect(WEIGHT_SELECTORS[700]).toEqual(
       expect.arrayContaining([
         'h1',
@@ -138,6 +127,8 @@ describe('weight selectors', () => {
         '.hero-stats dd',
         '.story-title',
         '.pending-label',
+        '.case-hero .case-eyebrow',
+        '.next-arrow',
       ]),
     );
   });
@@ -160,6 +151,10 @@ describe('weight selectors', () => {
         expect(LATIN_ONLY_WEIGHT_SELECTORS).not.toContain(selector);
       }
     }
+  });
+
+  it('allows the Instrument Sans link arrow at weight 500', () => {
+    expect(LATIN_ONLY_WEIGHT_SELECTORS).toContain('.link-arrow');
   });
 });
 

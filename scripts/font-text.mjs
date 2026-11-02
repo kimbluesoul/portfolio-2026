@@ -3,22 +3,13 @@
 // Noto Sans TC weight usage is a design-system rule (docs/DESIGN_SYSTEM.md).
 // Each weight is subset to the text rendered inside the elements that use it;
 // 400 takes all rendered text as a safe superset. The selectors mirror the CSS
-// rules (or UA defaults) that set 500 / 700, so text inherits the weight of
+// rules (or UA defaults) that set 700, so text inherits the weight of
 // its nearest listed ancestor. A selector is a descendant chain of simple
 // compounds: `tag`, `.class` or `tag.class`.
 
-export const FONT_WEIGHTS = [400, 500, 700];
+export const FONT_WEIGHTS = [400, 700];
 
 export const WEIGHT_SELECTORS = {
-  500: [
-    'li',
-    '.back-link',
-    '.case-hero .case-eyebrow',
-    '.next-arrow',
-    // Pre-listed for the FITZONE Next meta (PR #31); no rule sets it on main yet.
-    '.next-meta',
-    '.contact-links a',
-  ],
   700: [
     'h1',
     'h2',
@@ -35,6 +26,8 @@ export const WEIGHT_SELECTORS = {
     '.hero-stats dd',
     '.story-title',
     '.pending-label',
+    '.case-hero .case-eyebrow',
+    '.next-arrow',
     // 600, drawn with the 700 face; "H5／APP PROTOTYPE" has a full-width slash.
     '.link-eyebrow',
   ],
@@ -42,13 +35,15 @@ export const WEIGHT_SELECTORS = {
 
 // Rules that set a non-400 weight but only ever render Latin text (Instrument
 // Sans or the ASCII core baseline). scripts/check-font-coverage.mjs fails on
-// any other weight rule in the built CSS, so a new Chinese use of 500 / 700 has
-// to be added to WEIGHT_SELECTORS (or, if it is Latin-only, here). The E2E
+// any other weight rule in the built CSS. A new Chinese use of 700 must be
+// added to WEIGHT_SELECTORS; 500 is allowed only for selectors listed here.
+// The E2E
 // platform-font check catches a wrong claim.
 export const LATIN_ONLY_WEIGHT_SELECTORS = [
   'a',
   '.card-heading',
   '.case-eyebrow',
+  '.contact-links a',
   '.contact-title',
   '.credentials span',
   '.detail-eyebrow',
@@ -59,6 +54,8 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
   '.next-topline .case-eyebrow',
   '.outputs-label',
   '.resume-link',
+  '.swatch-hex',
+  '.tag-latin',
   '.work-cue',
 ];
 
@@ -67,9 +64,9 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
 // reshuffle these glyphs between core and ext.
 const ZH_HANT_PUNCTUATION = '　，。、；：？！「」『』（）《》〈〉【】…—～・';
 
-// Symbols the site draws that Instrument Sans lacks, so Noto Sans TC draws them
-// at every weight, including inside LATIN_ONLY_WEIGHT_SELECTORS (the back link,
-// Next arrow and "View Resume ↗"). They are not CJK, so the coverage gate does
+// The → and ↗ glyphs use instrument-sans-arrows.woff2 (unicode-range: U+2192,
+// U+2197); Noto Sans TC is their fallback only while that face loads. ← remains
+// drawn by Noto Sans TC. These symbols are not CJK, so the coverage gate does
 // not see them; the E2E platform-font check does.
 const NON_LATIN_SYMBOLS = '←→↗';
 

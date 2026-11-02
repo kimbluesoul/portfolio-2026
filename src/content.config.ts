@@ -68,12 +68,25 @@ const projects = defineCollection({
       expectedFile,
     });
 
+    const swatchesMedia = z.object({
+      kind: z.literal('swatches'),
+      colors: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            hex: z.string().regex(/^#[0-9A-F]{6}$/u),
+          }),
+        )
+        .min(1),
+    });
+
     const media = z
       .union([
         pendingImageMedia,
         pendingVideoMedia,
         readyImageMedia,
         readyVideoMedia,
+        swatchesMedia,
       ])
       .superRefine((value, context) => {
         if (
@@ -152,6 +165,8 @@ const projects = defineCollection({
         showcase: z.object({
           layout: z.enum(['isometric', 'single']),
           items: z.array(media).min(1).max(2),
+          // Art-directed 390 crop for the first item (single layout).
+          mobileMedia: media.optional(),
         }),
       }),
       overview: z.object({
