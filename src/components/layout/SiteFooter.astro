@@ -126,7 +126,7 @@ const {
       color var(--motion-duration-hover) var(--motion-ease-hover);
   }
 
-  .contact-links a:is(:hover, :focus-visible) {
+  .contact-links a:focus-visible {
     border-color: var(--color-text-on-brand);
     background: var(--color-text-on-brand);
     color: var(--color-text-primary);
@@ -136,7 +136,7 @@ const {
     transition: filter var(--motion-duration-hover) var(--motion-ease-hover);
   }
 
-  .contact-links a:is(:hover, :focus-visible) img {
+  .contact-links a:focus-visible img {
     filter: brightness(0) saturate(100%) opacity(93.33%);
   }
 
@@ -215,10 +215,28 @@ const {
     }
   }
 
-  .resume:is(:hover, :focus-visible),
-  .back-to-top:is(:hover, :focus-visible) {
+  .resume:focus-visible,
+  .back-to-top:focus-visible {
     color: var(--color-text-brand-on-inverse-hover);
     text-decoration: underline;
+  }
+
+  @media (hover: hover) {
+    .contact-links a:hover {
+      border-color: var(--color-text-on-brand);
+      background: var(--color-text-on-brand);
+      color: var(--color-text-primary);
+    }
+
+    .contact-links a:hover img {
+      filter: brightness(0) saturate(100%) opacity(93.33%);
+    }
+
+    .resume:hover,
+    .back-to-top:hover {
+      color: var(--color-text-brand-on-inverse-hover);
+      text-decoration: underline;
+    }
   }
 </style>
 

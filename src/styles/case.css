@@ -615,7 +615,7 @@ figcaption strong {
   gap: var(--space-4);
   min-height: var(--tap-target-min);
   padding: calc(var(--space-12) - var(--header-border-width));
-  border: var(--header-border-width) solid var(--color-bg-inverse-raised);
+  border: var(--header-border-width) solid var(--color-border-inverse);
   border-radius: var(--radius-link-card);
   background: var(--color-bg-inverse-raised);
   color: var(--color-text-on-inverse);
@@ -625,7 +625,7 @@ figcaption strong {
     border-color var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
-a.link-card:is(:hover, :focus-visible) {
+a.link-card:focus-visible {
   border-color: var(--color-bg-brand);
   background: var(--color-bg-brand);
 }
@@ -651,7 +651,7 @@ a.link-card:is(:hover, :focus-visible) {
   transition: color var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
-a.link-card:is(:hover, :focus-visible) .link-description {
+a.link-card:focus-visible .link-description {
   color: var(--color-text-brand-soft);
 }
 
@@ -667,7 +667,7 @@ a.link-card:is(:hover, :focus-visible) .link-description {
   transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
-a.link-card:is(:hover, :focus-visible) .link-arrow {
+a.link-card:focus-visible .link-arrow {
   transform: translate(8px, -8px);
 }
 
@@ -723,12 +723,12 @@ a.link-card:is(:hover, :focus-visible) .link-arrow {
   transition: color var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
-.next-topline .back-link:is(:hover, :focus-visible) {
+.next-topline .back-link:focus-visible {
   color: var(--color-text-brand);
   text-decoration: underline;
 }
 
-.case-hero .back-link:is(:hover, :focus-visible) {
+.case-hero .back-link:focus-visible {
   border-color: var(--color-text-primary);
   background: var(--color-text-primary);
   color: var(--color-text-on-inverse);
@@ -793,16 +793,13 @@ a.link-card:is(:hover, :focus-visible) .link-arrow {
   transition: transform var(--motion-duration-hover) var(--motion-ease-hover);
 }
 
-.next-project
-  .case-container
-  > a:not(.back-link):is(:hover, :focus-visible)
-  .next-arrow {
+.next-project .case-container > a:not(.back-link):focus-visible .next-arrow {
   background: var(--color-text-primary);
 }
 
 .next-project
   .case-container
-  > a:not(.back-link):is(:hover, :focus-visible)
+  > a:not(.back-link):focus-visible
   .next-arrow-glyph {
   transform: translateX(14px);
 }
@@ -1471,12 +1468,53 @@ a.link-card:is(:hover, :focus-visible) .link-arrow {
   }
 }
 
+@media (hover: hover) {
+  a.link-card:hover {
+    border-color: var(--color-bg-brand);
+    background: var(--color-bg-brand);
+  }
+
+  a.link-card:hover .link-description {
+    color: var(--color-text-brand-soft);
+  }
+
+  a.link-card:hover .link-arrow {
+    transform: translate(8px, -8px);
+  }
+
+  .next-topline .back-link:hover {
+    color: var(--color-text-brand);
+    text-decoration: underline;
+  }
+
+  .case-hero .back-link:hover {
+    border-color: var(--color-text-primary);
+    background: var(--color-text-primary);
+    color: var(--color-text-on-inverse);
+  }
+
+  .next-project .case-container > a:not(.back-link):hover .next-arrow {
+    background: var(--color-text-primary);
+  }
+
+  .next-project .case-container > a:not(.back-link):hover .next-arrow-glyph {
+    transform: translateX(14px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  a.link-card:is(:hover, :focus-visible) .link-arrow,
+  a.link-card:focus-visible .link-arrow,
   .next-project
     .case-container
-    > a:not(.back-link):is(:hover, :focus-visible)
+    > a:not(.back-link):focus-visible
     .next-arrow-glyph {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (hover: hover) {
+  a.link-card:hover .link-arrow,
+  .next-project .case-container > a:not(.back-link):hover .next-arrow-glyph {
     transform: none;
   }
 }
