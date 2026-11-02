@@ -278,7 +278,7 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
-  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(3);
+  await expect(page.getByText('素材待補', { exact: true })).toHaveCount(0);
   await expect(page.locator('loop-video')).toHaveCount(7);
   await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);

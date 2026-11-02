@@ -135,31 +135,25 @@ motion:
       media:
         kind: video
         src: /media/88win/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/88win/motion-1-poster.jpg
         alt: 滑入遊戲類別互動
         aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/88win/motion-1.mp4
     - title: 02　選擇廠商／遊戲
       body: 滑過遊戲卡片時給出回饋，知道這張點得到。
       media:
         kind: video
         src: /media/88win/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/88win/motion-2-poster.jpg
         alt: 選擇廠商與遊戲互動
         aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/88win/motion-2.mp4
     - title: 03　進入遊戲
       body: 從列表進到遊戲的轉場，讓畫面接得起來，不會突然跳走。
       media:
         kind: video
         src: /media/88win/motion-3.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/88win/motion-3-poster.jpg
         alt: 進入遊戲轉場
         aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/88win/motion-3.mp4
 details:
   eyebrow: COMPONENTS
   heading: '**一套元件**，撐起所有頁面'
