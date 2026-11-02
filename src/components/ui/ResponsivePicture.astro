@@ -1,7 +1,11 @@
 ---
 import { getImage, Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { DEFAULT_MEDIA_SIZES, srcsetWidthsFor } from '../../lib/media-srcset';
+import {
+  DEFAULT_MEDIA_SIZES,
+  srcsetWidthsFor,
+  type MediaSlot,
+} from '../../lib/media-srcset';
 import MediaFrame from './MediaFrame.astro';
 
 interface ImageMedia {
@@ -21,6 +25,8 @@ interface Props {
   class?: string | undefined;
   /** Rendered width for the srcset; defaults to the case column. */
   sizes?: string | undefined;
+  /** Fixed desktop slot: its sizes win and its 1x / 2x widths join the srcset. */
+  mediaSlot?: MediaSlot | undefined;
   /** Encoder quality override (1–100); the LCP hero trades a little quality for bytes. */
   quality?: number | undefined;
 }
@@ -30,10 +36,12 @@ const {
   eager = false,
   media,
   mobileMedia,
-  sizes = DEFAULT_MEDIA_SIZES,
+  sizes: sizesProp,
+  mediaSlot,
   quality,
 } = Astro.props;
-const srcsetWidths = srcsetWidthsFor(media.src.width);
+const sizes = mediaSlot?.sizes ?? sizesProp ?? DEFAULT_MEDIA_SIZES;
+const srcsetWidths = srcsetWidthsFor(media.src.width, mediaSlot?.width);
 // Art-directed phone crops fill the column (the 390 frames are full-bleed).
 const MOBILE_ART_SIZES = '100vw';
 const frameClass = [
@@ -56,8 +64,8 @@ const artDirected = mobileMedia
         format: 'webp',
         widths: srcsetWidthsFor(mobileMedia.src.width),
       }),
-      getImage({ src: media.src, format: 'avif' }),
-      getImage({ src: media.src, format: 'webp' }),
+      getImage({ src: media.src, format: 'avif', widths: srcsetWidths }),
+      getImage({ src: media.src, format: 'webp', widths: srcsetWidths }),
       getImage({ src: media.src }),
     ])
   : undefined;
@@ -83,8 +91,16 @@ const artDirected = mobileMedia
         sizes={MOBILE_ART_SIZES}
         type="image/webp"
       />
-      <source srcset={artDirected[2].src} type="image/avif" />
-      <source srcset={artDirected[3].src} type="image/webp" />
+      <source
+        srcset={artDirected[2].srcSet.attribute}
+        sizes={sizes}
+        type="image/avif"
+      />
+      <source
+        srcset={artDirected[3].srcSet.attribute}
+        sizes={sizes}
+        type="image/webp"
+      />
       <img
         src={artDirected[4].src}
         {...artDirected[4].attributes}

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import type { MediaSlot } from '../../lib/media-srcset';
 import LoopVideo from './LoopVideo.astro';
 import ResponsivePicture from './ResponsivePicture.astro';
 
@@ -12,6 +13,7 @@ interface Props {
   eager?: boolean;
   class?: string | undefined;
   sizes?: string | undefined;
+  mediaSlot?: MediaSlot | undefined;
   quality?: number | undefined;
 }
 
@@ -21,6 +23,7 @@ const {
   media,
   mobileMedia,
   sizes,
+  mediaSlot,
   quality,
 } = Astro.props;
 ---
@@ -32,8 +35,14 @@ const {
     eager={eager}
     class={className}
     sizes={sizes}
+    mediaSlot={mediaSlot}
     quality={quality}
   />
 ) : media.kind === 'video' ? (
-  <LoopVideo media={media} eager={eager} class={className} />
+  <LoopVideo
+    media={media}
+    eager={eager}
+    class={className}
+    mediaSlot={mediaSlot}
+  />
 ) : null}

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
+import { DETAIL_SLOTS } from '../../lib/media-srcset';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionIntro from '../ui/SectionIntro.astro';
 import SectionShell from '../ui/SectionShell.astro';
@@ -45,7 +46,11 @@ const { data, tone } = Astro.props;
               <strong>{item.title}</strong>
               {item.caption && <span>{item.caption}</span>}
             </figcaption>
-            <ProjectMedia media={item.media} mobileMedia={item.mobileMedia} />
+            <ProjectMedia
+              media={item.media}
+              mobileMedia={item.mobileMedia}
+              mediaSlot={DETAIL_SLOTS[item.size ?? 'half']}
+            />
           </>
         )}
       </figure>
