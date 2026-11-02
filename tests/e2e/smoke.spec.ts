@@ -573,6 +573,53 @@ test('hover scales each composite card layer together', async ({
   }
 });
 
+test('hover scales each single-video card poster and video together', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Fine-pointer behavior.',
+  );
+  await page.goto('/');
+
+  const card = page
+    .locator('#work article')
+    .filter({ has: page.locator('.media-video') })
+    .first();
+  const media = card.locator('.media').first();
+  await card.scrollIntoViewIfNeeded();
+  await card.locator('a').hover();
+  await expect
+    .poll(async () => {
+      const [mediaBox, wrapperBox] = await Promise.all([
+        media.boundingBox(),
+        card.locator('.media-video').first().boundingBox(),
+      ]);
+      return (wrapperBox?.width ?? 0) > (mediaBox?.width ?? 0);
+    })
+    .toBe(true);
+
+  const { mediaRect, posterRect, videoRect } = await card
+    .locator('.media-video')
+    .first()
+    .evaluate((wrapper) => {
+      const rect = (element: Element) => {
+        const { x, y, width, height } = element.getBoundingClientRect();
+        return { x, y, width, height };
+      };
+      return {
+        mediaRect: rect(wrapper.parentElement!),
+        posterRect: rect(wrapper.querySelector('img')!),
+        videoRect: rect(wrapper.querySelector('video')!),
+      };
+    });
+
+  expect(posterRect).toEqual(videoRect);
+  expect(posterRect.width).toBeGreaterThan(mediaRect.width);
+  expect(posterRect.height).toBeGreaterThan(mediaRect.height);
+  await expect(media).toBeVisible();
+});
+
 test('tapping a card video follows its link instead of replaying', async ({
   page,
 }, testInfo) => {
@@ -1298,6 +1345,34 @@ test('motion steps stop auto-advance after user selection', async ({
     'data-test-play-count',
     /.+/u,
   );
+});
+
+test('motion steps preserve a user selection made before entering view', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs the intersection sequence in one browser.',
+  );
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+
+  const motion = page.locator('motion-steps');
+  const tabs = motion.getByRole('tab');
+  const initiallyVisible = await motion.evaluate((element) => {
+    const { bottom, height, top } = element.getBoundingClientRect();
+    return (
+      Math.max(0, Math.min(bottom, window.innerHeight) - Math.max(top, 0)) /
+      height
+    );
+  });
+  expect(initiallyVisible).toBeLessThan(0.5);
+
+  await tabs.nth(1).dispatchEvent('click');
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await motion.scrollIntoViewIfNeeded();
+
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
 });
 
 test('reduced motion disables motion steps auto-play', async ({
