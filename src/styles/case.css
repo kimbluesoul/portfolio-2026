@@ -657,8 +657,7 @@ figcaption strong {
   inset-inline-end: calc(var(--space-15) - var(--header-border-width));
   font-family: var(--font-family-display);
   font-size: var(--size-link-arrow);
-  font-variation-settings: 'wght' 500;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -884,7 +883,6 @@ figcaption strong {
 
   .detail-card.size-third {
     grid-column: span 2;
-    aspect-ratio: 458.67 / 384;
   }
 
   .interaction-motion motion-steps {
