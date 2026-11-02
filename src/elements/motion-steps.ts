@@ -17,8 +17,9 @@ class MotionStepsElement extends HTMLElement {
       tab.addEventListener('click', () => this.selectByUser(index), {
         signal: events.signal,
       });
-      tab.addEventListener('keydown', (event) =>
-        this.handleKeydown(event, index),
+      tab.addEventListener(
+        'keydown',
+        (event) => this.handleKeydown(event, index),
         { signal: events.signal },
       );
     });

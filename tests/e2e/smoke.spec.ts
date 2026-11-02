@@ -1210,21 +1210,21 @@ test('motion steps auto-advance 01 to 03 once in view', async ({
   await motion.scrollIntoViewIfNeeded();
   await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
 
-  await videos.nth(0).evaluate((video) =>
-    video.dispatchEvent(new Event('ended')),
-  );
+  await videos
+    .nth(0)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
   await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
   await expect(videos.nth(1)).toHaveAttribute('data-test-play-count', /.+/u);
 
-  await videos.nth(1).evaluate((video) =>
-    video.dispatchEvent(new Event('ended')),
-  );
+  await videos
+    .nth(1)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
   await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
   await expect(videos.nth(2)).toHaveAttribute('data-test-play-count', /.+/u);
 
-  await videos.nth(2).evaluate((video) =>
-    video.dispatchEvent(new Event('ended')),
-  );
+  await videos
+    .nth(2)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
   await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true');
 });
 
@@ -1244,13 +1244,16 @@ test('motion steps stop auto-advance after user selection', async ({
   await motion.scrollIntoViewIfNeeded();
   await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
   await tabs.nth(1).click();
-  await videos.nth(1).evaluate((video) =>
-    video.dispatchEvent(new Event('ended')),
-  );
+  await videos
+    .nth(1)
+    .evaluate((video) => video.dispatchEvent(new Event('ended')));
 
   await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
   await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'false');
-  await expect(videos.nth(2)).not.toHaveAttribute('data-test-play-count', /.+/u);
+  await expect(videos.nth(2)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
 });
 
 test('reduced motion disables motion steps auto-play', async ({
