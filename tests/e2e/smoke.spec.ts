@@ -973,6 +973,26 @@ const figmaSectionHeights390 = {
     ['Links', 627],
     ['Next Project', 490],
   ],
+  // SSS `484:1580`.
+  '/work/sss/': [
+    ['Hero', 811],
+    ['Overview', 765],
+    ['Key Screens', 765],
+    ['Interaction & Motion', 815],
+    ['Visual Extension', 410],
+    ['Links', 627],
+    ['Next Project', 469],
+  ],
+  // JHANYU `484:1821`.
+  '/work/jhanyu/': [
+    ['Hero', 811],
+    ['Overview', 713],
+    ['Key Screens', 786],
+    ['Interaction & Motion', 815],
+    ['Visual Extension', 410],
+    ['Links', 577],
+    ['Next Project', 469],
+  ],
 } as const;
 
 for (const [route, expectedSections] of Object.entries(
