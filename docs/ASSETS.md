@@ -168,8 +168,125 @@ Interaction & Motion 在 Figma 只有一個影片框（`360:1495`），和 88Win
 
 ---
 
-## 其他專案（M3）
-SSS、展裕建設、AMD、匯發營造 的清單，會在各專案開工前由 Claude 寫進該頁的規格表（`docs/specs/<slug>.md`），再整理到這份文件。命名規則同上，資料夾名稱用專案代號：
+## SSS 超透明提案（`sss`）
+
+Figma：Desktop `360:1814`／Mobile `484:1580`。規格表：[`docs/specs/sss.md`](specs/sss.md)。
+圖片放 `src/assets/projects/sss/`，影片放 `public/media/sss/`（交件時都放同一個資料夾即可）。
+沒有 Mobile／RWD 和 Details 區塊（Figma 裡是隱藏的）。
+
+### 圖片
+
+| # | 區塊 | 檔名 | Figma 節點（Desktop） | 匯出方式 | 匯出尺寸（2x） | 備註 |
+|---|---|---|---|---|---|---|
+| 1 | Hero | `hero-showcase.jpg` | `360:1833` Hero showcase | 整張合成圖 | 3840 × 1840 | PC 畫面＋手機一起匯出，網頁只顯示上方 820 px。手機版用同一張縮小。 |
+| 2 | 主要畫面 | `key-intro.jpg` | `360:1885`（展覽介紹） | 裁切框 | 918 × 600 |  |
+| 3 | 主要畫面 | `key-journey.jpg` | `360:1889`（展覽旅程） | 裁切框 | 918 × 600 |  |
+| 4 | 主要畫面 | `key-transparency.jpg` | `360:1893`（建物知情權） | 裁切框 | 918 × 600 |  |
+| 5 | Visual Extension | `visual-mosaic.jpg` | `360:1969` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
+
+### 影片
+
+| # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
+|---|---|---|---|---|---|---|
+| 6 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:1884`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 7 | Interaction & Motion | `motion-1.mp4` | 01 主視覺拆解 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 8 | Interaction & Motion | `motion-2.mp4` | 02 視差滾動 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 9 | Interaction & Motion | `motion-3.mp4` | 03 逐段揭露 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
+
+**SSS 合計：圖片 9 張（5 張畫面＋4 張影片封面，封面由 Claude 產生）、影片 4 支。**
+
+---
+
+## JHANYU 展裕建設（`jhanyu`）
+
+Figma：Desktop `360:2029`／Mobile `484:1821`。規格表：[`docs/specs/jhanyu.md`](specs/jhanyu.md)。
+圖片放 `src/assets/projects/jhanyu/`，影片放 `public/media/jhanyu/`（交件時都放同一個資料夾即可）。
+沒有 Mobile／RWD 和 Details 區塊。
+
+### 圖片
+
+| # | 區塊 | 檔名 | Figma 節點（Desktop） | 匯出方式 | 匯出尺寸（2x） | 備註 |
+|---|---|---|---|---|---|---|
+| 1 | Hero | `hero-showcase.jpg` | `360:2048` Hero showcase | 整張合成圖 | 3840 × 1840 | PC 畫面＋手機一起匯出，網頁只顯示上方 820 px。手機版用同一張縮小。 |
+| 2 | 主要畫面 | `key-about.jpg` | `360:2100`（關於展裕） | 裁切框 | 918 × 600 |  |
+| 3 | 主要畫面 | `key-projects.jpg` | `360:2104`（熱銷建案） | 裁切框 | 918 × 600 |  |
+| 4 | 主要畫面 | `key-process.jpg` | `360:2108`（購屋簽約流程） | 裁切框 | 918 × 600 |  |
+| 5 | Visual Extension | `visual-mosaic.jpg` | `360:2184` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
+
+### 影片
+
+| # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
+|---|---|---|---|---|---|---|
+| 6 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2099`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 7 | Interaction & Motion | `motion-1.mp4` | 01 圖示化步驟 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 8 | Interaction & Motion | `motion-2.mp4` | 02 編號與連接線 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 9 | Interaction & Motion | `motion-3.mp4` | 03 版面節奏 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
+
+**展裕建設合計：圖片 9 張（含 4 張封面）、影片 4 支。**
+
+---
+
+## AMD 康健生醫（`amd`）
+
+Figma：Desktop `360:2240`／Mobile `485:1462`。規格表：[`docs/specs/amd.md`](specs/amd.md)。
+圖片放 `src/assets/projects/amd/`，影片放 `public/media/amd/`（交件時都放同一個資料夾即可）。
+沒有 Mobile／RWD 和 Details 區塊。**主要畫面第 3 張（系統頁面）是影片**；Interaction & Motion 只有 **2** 個步驟。
+
+### 圖片
+
+| # | 區塊 | 檔名 | Figma 節點（Desktop） | 匯出方式 | 匯出尺寸（2x） | 備註 |
+|---|---|---|---|---|---|---|
+| 1 | Hero | `hero-showcase.jpg` | `360:2259` Hero showcase | 整張合成圖 | 3840 × 1840 | PC 畫面＋手機一起匯出，網頁只顯示上方 820 px。手機版用同一張縮小。 |
+| 2 | 主要畫面 | `key-products.jpg` | `360:2311`（產品區域） | 裁切框 | 918 × 600 |  |
+| 3 | 主要畫面 | `key-product-page.jpg` | `360:2315`（產品頁） | 裁切框 | 918 × 600 |  |
+| 4 | Visual Extension | `visual-mosaic.jpg` | `360:2395` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
+
+### 影片
+
+| # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
+|---|---|---|---|---|---|---|
+| 5 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2310`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 6 | 主要畫面 | `key-system-pages.mp4` | 03 系統頁面：維護與 404 頁（Figma `360:2319`） | 459 × 300（交 918 × 600 或更大） | 2 MB／3 MB | `key-system-pages-poster.jpg` 918 × 600 |
+| 7 | Interaction & Motion | `motion-1.mp4` | 01 404 頁面 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 8 | Interaction & Motion | `motion-2.mp4` | 02 維護頁面 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+
+**康健生醫合計：圖片 8 張（含 4 張封面）、影片 4 支。**
+
+---
+
+## HUIFA 匯發營造（`huifa`）
+
+Figma：Desktop `360:2449`／Mobile `485:1693`。規格表：[`docs/specs/huifa.md`](specs/huifa.md)。
+圖片放 `src/assets/projects/huifa/`，影片放 `public/media/huifa/`（交件時都放同一個資料夾即可）。
+沒有 Mobile／RWD 區塊。**有 Details**，但是新的「設計稿 vs 完成」版型：一張分鏡長圖＋一支完成畫面影片。手機版的分鏡圖用同一張橫向滑動，不用另外匯出。
+
+### 圖片
+
+| # | 區塊 | 檔名 | Figma 節點（Desktop） | 匯出方式 | 匯出尺寸（2x） | 備註 |
+|---|---|---|---|---|---|---|
+| 1 | Hero | `hero-showcase.jpg` | `360:2468` Hero showcase | 整張合成圖 | 3840 × 1840 | PC 畫面＋手機一起匯出，網頁只顯示上方 820 px。手機版用同一張縮小。 |
+| 2 | 主要畫面 | `key-guidelines.jpg` | `360:2520`（執行準則） | 裁切框 | 918 × 600 |  |
+| 3 | 主要畫面 | `key-projects.jpg` | `360:2524`（工程實績） | 裁切框 | 918 × 600 |  |
+| 4 | 主要畫面 | `key-services.jpg` | `360:2528`（服務項目） | 裁切框 | 918 × 600 |  |
+| 5 | Details | `detail-draft.jpg` | `385:672`（設計分鏡） | 直接匯出圖層 | 2872 × 468 | 手機版用同一張橫向滑動 |
+| 6 | Visual Extension | `visual-mosaic.jpg` | `360:2604` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
+
+### 影片
+
+| # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
+|---|---|---|---|---|---|---|
+| 7 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2519`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 8 | Interaction & Motion | `motion-1.mp4` | 01 一頁一畫面 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 9 | Interaction & Motion | `motion-2.mp4` | 02 內容進場 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 10 | Interaction & Motion | `motion-3.mp4` | 03 區塊轉場 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
+| 11 | Details | `detail-live.mp4` | LIVE SITE 完成畫面捲動（Figma `385:667`） | 1440 × 702 | 5 MB／8 MB | `detail-live-poster.jpg` 2880 × 1404 |
+
+**匯發營造合計：圖片 11 張（含 5 張封面）、影片 5 支。**
+
+---
+
+## 專案代號一覽
+資料夾名稱用專案代號：
 
 | 順序 | 專案 | 代號（資料夾名稱） |
 |---|---|---|
