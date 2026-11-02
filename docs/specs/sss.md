@@ -26,7 +26,7 @@ Copy strings exactly, including full-width characters (`，` `「」` `・` `　
 | Field | Value | Node |
 |---|---|---|
 | `hero.eyebrow` | `CASE STUDY 04 · 展覽活動頁` | `360:1816` |
-| `hero.title` | `SSS 1.0` (see PO note) | `360:1817` |
+| `hero.title` | `SSS` (PO decision 2026-11-03; Figma reads `SSS 1.0`) | `360:1817` |
 | `hero.titleSizeMobile` | `76` | `484:1600` |
 | `hero.headline` | `超透明提案**展覽活動頁**設計` | `360:1818` |
 | `hero.subtitle` | `素材不多，主視覺只有一張 SSS 的圖。我把主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容進場，把一場建築展變得想看、也想互動。` | `360:1819` |
@@ -110,6 +110,3 @@ Identical to Hwa Fong / FITZONE; no new component or variant.
 
 ## Figma reference images
 1× full-frame exports: [desktop](sss/figma-desktop.jpg), [mobile](sss/figma-mobile.jpg).
-
-## Notes for the Product Owner
-- **Hero title**: Figma shows `SSS 1.0` in the hero (desktop and 390). In session 3 you chose `SSS` for the **Next** title on the FITZONE page. This sheet keeps `SSS 1.0` in the hero; say if the hero should also read `SSS`.
