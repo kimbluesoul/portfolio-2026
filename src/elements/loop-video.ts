@@ -147,7 +147,7 @@ class LoopVideoElement extends HTMLElement {
     if (isInView === this.inView) return;
     this.inView = isInView;
     if (isInView) {
-      if (this.canPlayOnView()) void this.play();
+      if (!this.isManaged() && this.canPlayOnView()) void this.play();
     } else {
       this.pause();
     }
@@ -161,17 +161,27 @@ class LoopVideoElement extends HTMLElement {
   };
 
   private handlePointerEnter = () => {
-    if (this.hoverCapable) void this.play();
+    if (!this.isManaged() && this.hoverCapable) void this.play();
   };
 
   private handleFocusIn = () => {
-    if (this.hoverCapable) void this.play();
+    if (!this.isManaged() && this.hoverCapable) void this.play();
   };
 
   private handleClick = (event: MouseEvent) => {
-    if (this.closest('a') || this.hoverCapable || event.detail === 0) return;
+    if (
+      this.isManaged() ||
+      this.closest('a') ||
+      this.hoverCapable ||
+      event.detail === 0
+    )
+      return;
     void this.play();
   };
+
+  private isManaged() {
+    return this.dataset.playback === 'managed';
+  }
 
   private canPlayOnView() {
     const connection = (

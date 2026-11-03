@@ -1397,6 +1397,33 @@ test('motion steps support roving keyboard navigation', async ({ page }) => {
   ).toBeVisible();
 });
 
+test('motion step switches keep media visible and inactive panels inert', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop', 'Chromium-only.');
+  await stubMediaPlayback(page);
+  await page.goto('/work/88win/');
+  const motion = page.locator('motion-steps');
+  await motion.scrollIntoViewIfNeeded();
+  await motion.getByRole('tab').nth(1).click();
+  const active = motion.locator('[role="tabpanel"].is-active');
+  await expect(active).toHaveCount(1);
+  expect(
+    await active.evaluate((panel) => {
+      const poster = panel.querySelector<HTMLImageElement>('.video-poster');
+      const video = panel.querySelector<HTMLVideoElement>('video');
+      return (
+        Boolean(poster && getComputedStyle(poster).visibility !== 'hidden') ||
+        !video?.paused
+      );
+    }),
+  ).toBe(true);
+  await expect(motion.locator('[role="tabpanel"]').nth(0)).toHaveAttribute(
+    'inert',
+    '',
+  );
+});
+
 test('motion steps auto-advance 01 to 03 once in view', async ({
   page,
 }, testInfo) => {
@@ -1412,6 +1439,14 @@ test('motion steps auto-advance 01 to 03 once in view', async ({
   const videos = motion.locator('video');
   await motion.scrollIntoViewIfNeeded();
   await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
+  await expect(videos.nth(1)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
+  await expect(videos.nth(2)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
 
   await videos
     .nth(0)
