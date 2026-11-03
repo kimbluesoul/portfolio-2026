@@ -214,6 +214,14 @@
   aspect-ratio: 1440 / 720;
 }
 
+.ratio-1436x234 {
+  aspect-ratio: 1436 / 234;
+}
+
+.ratio-1440x702 {
+  aspect-ratio: 1440 / 702;
+}
+
 .ratio-458_67x300 {
   aspect-ratio: 458.67 / 300;
 }
