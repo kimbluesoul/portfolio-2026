@@ -1014,8 +1014,10 @@ const figmaSectionHeights390 = {
   '/work/huifa/': [
     ['Hero', 704],
     ['Overview', 739],
-    ['Key Screens', 786],
-    ['Interaction & Motion', 792],
+    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 786.
+    ['Key Screens', 756],
+    // Two steps and flatter 2528 / 1216 videos (PO 2026-11-03); Figma 792.
+    ['Interaction & Motion', 662],
     ['Details', 714],
     ['Visual Extension', 410],
     ['Links', 627],

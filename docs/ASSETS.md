@@ -274,13 +274,12 @@ Figma：Desktop `360:2449`／Mobile `485:1693`。規格表：[`docs/specs/huifa.
 
 | # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
 |---|---|---|---|---|---|---|
-| 7 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2519`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
-| 8 | Interaction & Motion | `motion-1.mp4` | 01 一頁一畫面 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
-| 9 | Interaction & Motion | `motion-2.mp4` | 02 內容進場 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
-| 10 | Interaction & Motion | `motion-3.mp4` | 03 區塊轉場 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
-| 11 | Details | `detail-live.mp4` | LIVE SITE 完成畫面捲動（Figma `385:667`） | 1440 × 702 | 5 MB／8 MB | `detail-live-poster.jpg` 2880 × 1404 |
+| 7 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2519`） | 1440 × 693（2528 / 1216 寬框） | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 8 | Interaction & Motion | `motion-1.mp4` | 01 一頁一畫面 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 9 | Interaction & Motion | `motion-2.mp4` | 02 內容進場 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 10 | Details | `detail-live.mp4` | LIVE SITE 完成畫面捲動（Figma `385:667`） | 1440 × 702 | 5 MB／8 MB | `detail-live-poster.jpg` 2880 × 1404 |
 
-**匯發營造合計：圖片 11 張（含 5 張封面）、影片 5 支。**
+**匯發營造合計：圖片 10 張（含 4 張封面）、影片 4 支。**（PO 2026-11-03：Motion 改為 2 步，拿掉 03 區塊轉場）
 
 ---
 

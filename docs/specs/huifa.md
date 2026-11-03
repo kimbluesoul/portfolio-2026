@@ -13,7 +13,7 @@ Content file: `src/content/projects/huifa.yaml`. Replace every `TODO(CONTENT)` w
 | 02 | Overview | `360:2486` | `485:1767` | yes |
 | 03 | Key Screens | `360:2515` | `485:1797` | yes |
 | 04 | Mobile / RWD | `360:2532` (hidden) | — | **no**: omit `mobile` |
-| 05 | Interaction & Motion | `360:2564` | `485:1825` | yes |
+| 05 | Interaction & Motion | `360:2564` | `485:1825` | yes, **two** steps (PO 2026-11-03) |
 | 06 | Details | `360:2579` | `485:1851` | **yes, new `compare` variant** |
 | 07 | Visual Extension (mosaic) | `360:2603` | `485:1868` | yes, `variant: mosaic` |
 | 08 | Links | `360:2642` | `485:1895` | yes |
@@ -60,7 +60,8 @@ Content file: `src/content/projects/huifa.yaml`. Replace every `TODO(CONTENT)` w
 | `motion.subtitle` | `整個網站的動態就像投影片的轉場：每段內容怎麼進場、怎麼轉到下一個區塊，都經過安排，讓瀏覽的節奏自然流暢。` | `360:2567` |
 | `motion.steps[0]` | title `01　一頁一畫面`, body `每個區塊都是一個完整畫面，像簡報一樣一頁講一件事。` | `360:2571` / `360:2572` |
 | `motion.steps[1]` | title `02　內容進場`, body `標題、圖片和文字依序出現，讓視線跟著內容走。` | `360:2574` / `360:2575` |
-| `motion.steps[2]` | title `03　區塊轉場`, body `滾動時帶入下一個區塊，轉換自然，不會突然跳開。` | `360:2577` / `360:2578` |
+
+PO decision 2026-11-03: Motion has **two** steps. Figma's step `03　區塊轉場` (`360:2577` / `360:2578`) is dropped; no `motion-3.mp4` ships.
 
 ### 06 Details (compare variant)
 | Field | Value | Node |
@@ -100,11 +101,11 @@ Other projects show the composite at ×0.38 (730 × 350) in a 390 × 312 window.
 | Slot | Content field | Shape | Aspect ratio | `expectedFile` | Alt |
 |---|---|---|---|---|---|
 | Hero showcase | `hero.showcase` (`layout: single`, `objectPosition: top`) | composite | 1920 / 820 | `src/assets/projects/huifa/hero-showcase.jpg` | 匯發營造網站 PC 與手機案例展示 |
-| Key main (video) | `keyScreens.main` | video | 16 / 9 | `public/media/huifa/key-main.mp4` | 匯發營造網站 PC 首頁捲動 |
+| Key main (video) | `keyScreens.main` | video | 2528 / 1216 (recording 2544 × 1220, PO wide-frame rule) | `public/media/huifa/key-main.mp4` | 匯發營造網站 PC 首頁捲動 |
 | Close-up 1 | `keyScreens.closeups[0].media` | crop | 458.67 / 300 | `src/assets/projects/huifa/key-guidelines.jpg` | 執行準則區塊特寫 |
 | Close-up 2 | `keyScreens.closeups[1].media` | crop | 458.67 / 300 | `src/assets/projects/huifa/key-projects.jpg` | 工程實績區塊特寫 |
 | Close-up 3 | `keyScreens.closeups[2].media` | crop | 458.67 / 300 | `src/assets/projects/huifa/key-services.jpg` | 服務項目區塊特寫 |
-| Motion 1–3 (video) | `motion.steps[0–2].media` | video | 960 / 532 | `public/media/huifa/motion-1.mp4` … `motion-3.mp4` | 一頁一畫面／內容進場／區塊轉場 |
+| Motion 1–2 (video) | `motion.steps[0–1].media` | video | 2528 / 1216 (recordings ≈ 2.1:1, PO wide-frame rule) | `public/media/huifa/motion-1.mp4`, `motion-2.mp4` | 一頁一畫面／內容進場 |
 | Details draft | `details.items[0].media` | image | 1436 / 234 | `src/assets/projects/huifa/detail-draft.jpg` | 匯發營造網站設計分鏡 |
 | Details live (video) | `details.items[1].media` | video | 1440 / 702 | `public/media/huifa/detail-live.mp4` | 匯發營造網站完成畫面捲動 |
 | Visual Extension | `visualExtension` (`variant: mosaic`) | composite | 1920 / 1280 | `src/assets/projects/huifa/visual-mosaic.jpg` | 匯發營造網站頁面拼貼 |
