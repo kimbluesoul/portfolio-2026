@@ -595,7 +595,6 @@ figcaption strong {
 }
 
 .detail-eyebrow {
-  color: var(--color-text-brand);
   font-family: var(--font-family-display);
   font-size: var(--font-size-case-detail-eyebrow);
   font-weight: 700;
@@ -624,9 +623,11 @@ figcaption strong {
 
 /* stylelint-disable-next-line no-descending-specificity -- Compare items and cards are mutually exclusive variants. */
 :where(.detail-compare-item) figcaption {
+  color: var(--color-text-brand);
   margin-block-end: var(--detail-compare-label-gap);
   padding: 0;
   font-size: 0.875rem;
+  line-height: 1.0714;
 }
 
 /* stylelint-disable-next-line no-descending-specificity -- Compare items and cards are mutually exclusive variants. */
@@ -1388,8 +1389,6 @@ a.link-card:focus-visible .link-arrow {
   .details-compare {
     --detail-compare-label-gap: var(--space-2-5);
     --detail-compare-item-gap: var(--space-7);
-
-    padding-block: var(--space-12);
   }
 
   .details-compare .section-intro {
@@ -1398,6 +1397,7 @@ a.link-card:focus-visible .link-arrow {
 
   .details-compare .detail-compare-item figcaption {
     font-size: 0.75rem;
+    line-height: 1.25;
   }
 
   .details-compare .detail-compare-item .media-frame {

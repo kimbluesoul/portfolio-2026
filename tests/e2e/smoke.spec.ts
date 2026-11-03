@@ -1083,6 +1083,18 @@ test('390 HUIFA Details draft is a focusable horizontal scroller', async ({
   expect(
     await scroller.evaluate((element) => element.scrollLeft),
   ).toBeGreaterThan(0);
+
+  const draftLabel = scroller
+    .locator('xpath=ancestor::figure')
+    .locator('figcaption');
+  const liveMedia = page
+    .locator('.details-compare .detail-compare-item')
+    .nth(1)
+    .locator('.media-frame');
+  const draftLabelBox = await draftLabel.boundingBox();
+  const liveMediaBox = await liveMedia.boundingBox();
+  expect(draftLabelBox?.height).toBeCloseTo(15, 0);
+  expect(liveMediaBox).toMatchObject({ x: 20, width: 350 });
 });
 
 test('390 Hwa Fong uses its project title size', async ({ page }, testInfo) => {

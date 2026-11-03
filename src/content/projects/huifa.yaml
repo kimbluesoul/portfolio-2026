@@ -32,7 +32,7 @@ hero:
     mobileScale: 0.25
     items:
       - kind: image
-        src: ../../assets/projects/huifa/card.jpg
+        src: ../../assets/placeholders/placeholder.png
         alt: 匯發營造網站 PC 與手機案例展示
         aspectRatio: 1920 / 820
         status: pending
@@ -57,7 +57,7 @@ keyScreens:
   main:
     kind: video
     src: /media/huifa/key-main.mp4
-    poster: ../../assets/projects/huifa/card-poster.jpg
+    poster: ../../assets/placeholders/placeholder.png
     alt: 匯發營造網站 PC 首頁捲動
     aspectRatio: 16 / 9
     status: pending
@@ -67,7 +67,7 @@ keyScreens:
       caption: PLAN 到 ACTION 五個步驟，一字排開說清楚。
       media:
         kind: image
-        src: ../../assets/projects/huifa/card.jpg
+        src: ../../assets/placeholders/placeholder.png
         alt: 執行準則區塊特寫
         aspectRatio: 458.67 / 300
         status: pending
@@ -76,7 +76,7 @@ keyScreens:
       caption: 建案實景搭配工程數據，成果一目了然。
       media:
         kind: image
-        src: ../../assets/projects/huifa/card.jpg
+        src: ../../assets/placeholders/placeholder.png
         alt: 工程實績區塊特寫
         aspectRatio: 458.67 / 300
         status: pending
@@ -85,7 +85,7 @@ keyScreens:
       caption: 側邊圖示導覽，逐項切換各類工程內容。
       media:
         kind: image
-        src: ../../assets/projects/huifa/card.jpg
+        src: ../../assets/placeholders/placeholder.png
         alt: 服務項目區塊特寫
         aspectRatio: 458.67 / 300
         status: pending
@@ -100,7 +100,7 @@ motion:
       media:
         kind: video
         src: /media/huifa/motion-1.mp4
-        poster: ../../assets/projects/huifa/card-poster.jpg
+        poster: ../../assets/placeholders/placeholder.png
         alt: 一頁一畫面
         aspectRatio: 960 / 532
         status: pending
@@ -110,7 +110,7 @@ motion:
       media:
         kind: video
         src: /media/huifa/motion-2.mp4
-        poster: ../../assets/projects/huifa/card-poster.jpg
+        poster: ../../assets/placeholders/placeholder.png
         alt: 內容進場
         aspectRatio: 960 / 532
         status: pending
@@ -120,7 +120,7 @@ motion:
       media:
         kind: video
         src: /media/huifa/motion-3.mp4
-        poster: ../../assets/projects/huifa/card-poster.jpg
+        poster: ../../assets/placeholders/placeholder.png
         alt: 區塊轉場
         aspectRatio: 960 / 532
         status: pending
@@ -134,7 +134,7 @@ details:
     - label: DESIGN DRAFT
       media:
         kind: image
-        src: ../../assets/projects/huifa/card.jpg
+        src: ../../assets/placeholders/placeholder.png
         alt: 匯發營造網站設計分鏡
         aspectRatio: 1436 / 234
         status: pending
@@ -143,7 +143,7 @@ details:
       media:
         kind: video
         src: /media/huifa/detail-live.mp4
-        poster: ../../assets/projects/huifa/card-poster.jpg
+        poster: ../../assets/placeholders/placeholder.png
         alt: 匯發營造網站完成畫面捲動
         aspectRatio: 1440 / 702
         status: pending
@@ -152,7 +152,7 @@ visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/projects/huifa/card.jpg
+      src: ../../assets/placeholders/placeholder.png
       alt: 匯發營造網站頁面拼貼
       aspectRatio: 1920 / 1280
       status: pending
