@@ -31,12 +31,15 @@ hero:
     layout: single
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/amd/hero-showcase.jpg
         alt: 康健生醫網站 PC 與手機案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
-        status: pending
-        expectedFile: src/assets/projects/amd/hero-showcase.jpg
+    mobileMedia:
+      kind: image
+      src: ../../assets/projects/amd/hero-showcase-mobile.jpg
+      alt: 康健生醫網站 PC 與手機案例展示
+      aspectRatio: 390 / 312
 overview:
   heading: |-
     先定英文版型，
@@ -56,40 +59,31 @@ keyScreens:
   main:
     kind: video
     src: /media/amd/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/amd/key-main-poster.jpg
     alt: 康健生醫網站 PC 首頁捲動
     aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/amd/key-main.mp4
   closeups:
     - title: 產品區域
       caption: 依手術階段分類，搭配額外處理的描線產品圖。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/amd/key-products.jpg
         alt: 依手術階段分類的產品區特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/amd/key-products.jpg
     - title: 產品頁
       caption: 產品圖、規格與分類標籤集中呈現，資訊清楚。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/amd/key-product-page.jpg
         alt: 產品頁特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/amd/key-product-page.jpg
-    - title: 系統頁面
-      caption: 維護與 404 頁也延續品牌色和插圖風格。
+    - title: 產品內容頁
+      caption: 用標註線拆解產品結構，四項特色一次看清楚。
       media:
-        kind: video
-        src: /media/amd/key-system-pages.mp4
-        poster: ../../assets/placeholders/placeholder.png
-        alt: 維護與 404 頁面動態
+        kind: image
+        src: ../../assets/projects/amd/key-product-content.jpg
+        alt: 產品內容頁特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: public/media/amd/key-system-pages.mp4
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 連出錯的頁面，也有細節
@@ -100,30 +94,24 @@ motion:
       media:
         kind: video
         src: /media/amd/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/amd/motion-1-poster.jpg
         alt: 404 頁面動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/amd/motion-1.mp4
+        aspectRatio: 2528 / 1216
     - title: 02　維護頁面
       body: 網站維護時，螢幕與齒輪插圖也有動態，清楚告知狀態，同時延續品牌視覺。
       media:
         kind: video
         src: /media/amd/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/amd/motion-2-poster.jpg
         alt: 維護頁面動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/amd/motion-2.mp4
+        aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/amd/visual-mosaic.jpg
       alt: 康健生醫網站頁面拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/amd/visual-mosaic.jpg
 links:
   eyebrow: FROM FIGMA TO LIVE
   heading: 從設計稿到正式上線

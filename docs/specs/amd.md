@@ -9,7 +9,7 @@ Content file: `src/content/projects/amd.yaml`. Replace every `TODO(CONTENT)` wit
 |---|---|---|---|---|
 | 01 | Hero | `360:2241` | `485:1474` | yes |
 | 02 | Overview | `360:2277` | `485:1536` | yes |
-| 03 | Key Screens | `360:2306` | `485:1566` | yes (close-up 3 is a **video**) |
+| 03 | Key Screens | `360:2306` | `485:1566` | yes |
 | 04 | Mobile / RWD | `360:2323` (hidden) | — | **no**: omit `mobile` |
 | 05 | Interaction & Motion | `360:2355` | `485:1595` | yes, **two** steps |
 | 06 | Details | `360:2370` (hidden) | — | **no**: omit `details` |
@@ -48,7 +48,7 @@ Content file: `src/content/projects/amd.yaml`. Replace every `TODO(CONTENT)` wit
 | `keyScreens.subtitle` | `首頁用手術場景與「Accelerating Excellence」開場，往下依客戶指定的內容依序展開，讓專業的醫療資訊在英文版面裡也清楚好讀。` | `360:2309` |
 | `keyScreens.closeups[0]` | title `產品區域`, caption `依手術階段分類，搭配額外處理的描線產品圖。` | `360:2313` / `360:2314` |
 | `keyScreens.closeups[1]` | title `產品頁`, caption `產品圖、規格與分類標籤集中呈現，資訊清楚。` | `360:2317` / `360:2318` |
-| `keyScreens.closeups[2]` | title `系統頁面`, caption `維護與 404 頁也延續品牌色和插圖風格。` | `360:2321` / `360:2322` |
+| `keyScreens.closeups[2]` | title `產品內容頁`, caption `用標註線拆解產品結構，四項特色一次看清楚。` | PO 2026-11-03 (Figma `360:2321` / `360:2322` still reads 系統頁面) |
 
 ### 05 Interaction & Motion (two steps)
 | Field | Value | Node |
@@ -88,11 +88,11 @@ The steps live inside the instance `AMD / Motion switcher` (`440:671`). The sche
 | Key main (video) | `keyScreens.main` | video | 16 / 9 | `public/media/amd/key-main.mp4` | 康健生醫網站 PC 首頁捲動 |
 | Close-up 1 | `keyScreens.closeups[0].media` | crop | 458.67 / 300 | `src/assets/projects/amd/key-products.jpg` | 依手術階段分類的產品區特寫 |
 | Close-up 2 | `keyScreens.closeups[1].media` | crop | 458.67 / 300 | `src/assets/projects/amd/key-product-page.jpg` | 產品頁特寫 |
-| Close-up 3 (video) | `keyScreens.closeups[2].media` (`kind: video`) | video crop | 458.67 / 300 | `public/media/amd/key-system-pages.mp4` + `src/assets/projects/amd/key-system-pages-poster.jpg` | 維護與 404 頁面動態 |
-| Motion 1–2 (video) | `motion.steps[0–1].media` | video | 960 / 532 | `public/media/amd/motion-1.mp4`, `motion-2.mp4` | 404 頁面動態／維護頁面動態 |
+| Close-up 3 | `keyScreens.closeups[2].media` | crop | 458.67 / 300 | `src/assets/projects/amd/key-product-content.jpg` | 產品內容頁特寫 |
+| Motion 1–2 (video) | `motion.steps[0–1].media` | video | 2528 / 1216 (recordings 2392 × 1208, PO wide-frame rule) | `public/media/amd/motion-1.mp4`, `motion-2.mp4` | 404 頁面動態／維護頁面動態 |
 | Visual Extension | `visualExtension` (`variant: mosaic`) | composite | 1920 / 1280 | `src/assets/projects/amd/visual-mosaic.jpg` | 康健生醫網站頁面拼貼 |
 
-A video close-up has not shipped before. It must follow the close-up slot (`CLOSEUP_SLOT` for its poster srcset, the same ratio class, the play-once rules of ADR-0013). `inferMediaSlot` (`src/lib/media.ts`) must map `key-system-pages.mp4` to a size limit; add a close-up video slot (target 2 MB, cap 3 MB) if none fits.
+PO decision 2026-11-03: close-up 3 is the product-content image (ACS-A1180 callout diagram), not the system-pages video. The 404 and maintenance pages are already covered by Motion 01 / 02.
 
 ## Layout notes (390)
 Same as SSS: Hero `485:1502` (×0.38), Key swipe row `485:1575`, Motion `485:1595` (two-step rail), mosaic `485:1617` (×0.32).
