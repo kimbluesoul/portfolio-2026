@@ -35,6 +35,11 @@ hero:
         alt: 華豐輪胎 PC 與手機首頁案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
+    mobileMedia:
+      kind: image
+      src: ../../assets/projects/hwa-fong/hero-showcase-mobile.jpg
+      alt: 華豐輪胎 PC 與手機首頁案例展示
+      aspectRatio: 390 / 312
 overview:
   heading: |-
     可靠的品牌，
