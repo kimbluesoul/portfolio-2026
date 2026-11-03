@@ -97,21 +97,13 @@ motion:
         poster: ../../assets/projects/jhanyu/motion-1-poster.jpg
         alt: 圖示化步驟
         aspectRatio: 2528 / 1216
-    - title: 02　編號與連接線
-      body: 橘色編號標籤加上連接線，清楚帶出先後順序，一眼看出走到哪一步。
+    - title: 02　編號與版面節奏
+      body: 橘色編號標籤與連接線帶出先後順序，流程、色塊與留白交錯安排，讓圖量多的頁面清楚又不單調。
       media:
         kind: video
         src: /media/jhanyu/motion-2.mp4
         poster: ../../assets/projects/jhanyu/motion-2-poster.jpg
-        alt: 編號與連接線
-        aspectRatio: 2528 / 1216
-    - title: 03　版面節奏
-      body: 流程、色塊與留白交錯安排，讓圖量多的頁面讀起來不單調。
-      media:
-        kind: video
-        src: /media/jhanyu/motion-3.mp4
-        poster: ../../assets/projects/jhanyu/motion-3-poster.jpg
-        alt: 版面節奏
+        alt: 編號與版面節奏
         aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic

@@ -11,7 +11,7 @@ Content file: `src/content/projects/jhanyu.yaml`. Replace every `TODO(CONTENT)` 
 | 02 | Overview | `360:2066` | `484:1895` | yes |
 | 03 | Key Screens | `360:2095` | `484:1925` | yes |
 | 04 | Mobile / RWD | `360:2112` (hidden) | — | **no**: omit `mobile` |
-| 05 | Interaction & Motion | `360:2144` | `484:1953` | yes (eyebrow is `SERVICE FLOW`) |
+| 05 | Interaction & Motion | `360:2144` | `484:1953` | yes (eyebrow is `SERVICE FLOW`), **two** steps (PO 2026-11-03) |
 | 06 | Details | `360:2159` (hidden) | — | **no**: omit `details` |
 | 07 | Visual Extension (mosaic) | `360:2183` | `484:1979` | yes, `variant: mosaic` |
 | 08 | Links | `360:2213` | `484:1997` | yes |
@@ -59,8 +59,7 @@ Content file: `src/content/projects/jhanyu.yaml`. Replace every `TODO(CONTENT)` 
 | `motion.heading` | `服務流程，清楚也不無聊` (no accent) | `360:2146` |
 | `motion.subtitle` | `這個案子動態不多，重點放在服務流程的設計。流程的圖量多，所以用一致的圖示、步驟標籤和連接線，讓每個流程清楚好讀，又延續品牌的視覺語言。` | `360:2147` |
 | `motion.steps[0]` | title `01　圖示化步驟`, body `每個步驟都搭配一致的線條圖示，讓繁瑣的流程不必細讀文字也能看懂。` | `360:2151` / `360:2152` |
-| `motion.steps[1]` | title `02　編號與連接線`, body `橘色編號標籤加上連接線，清楚帶出先後順序，一眼看出走到哪一步。` | `360:2154` / `360:2155` |
-| `motion.steps[2]` | title `03　版面節奏`, body `流程、色塊與留白交錯安排，讓圖量多的頁面讀起來不單調。` | `360:2157` / `360:2158` |
+| `motion.steps[1]` | title `02　編號與版面節奏`, body `橘色編號標籤與連接線帶出先後順序，流程、色塊與留白交錯安排，讓圖量多的頁面清楚又不單調。` | PO 2026-11-03 (merges Figma 02 `360:2154` and 03 `360:2157`; Figma still shows three steps) |
 
 ### 08 Links
 | Field | Value | Node |
@@ -90,7 +89,7 @@ Content file: `src/content/projects/jhanyu.yaml`. Replace every `TODO(CONTENT)` 
 | Close-up 1 | `keyScreens.closeups[0].media` | crop | 458.67 / 300 | `src/assets/projects/jhanyu/key-about.jpg` | 關於展裕區塊特寫 |
 | Close-up 2 | `keyScreens.closeups[1].media` | crop | 458.67 / 300 | `src/assets/projects/jhanyu/key-projects.jpg` | 熱銷建案區塊特寫 |
 | Close-up 3 | `keyScreens.closeups[2].media` | crop | 458.67 / 300 | `src/assets/projects/jhanyu/key-process.jpg` | 購屋簽約流程特寫 |
-| Motion 1–3 (video) | `motion.steps[0–2].media` | video | 960 / 532 | `public/media/jhanyu/motion-1.mp4` … `motion-3.mp4` | 圖示化步驟／編號與連接線／版面節奏 |
+| Motion 1–2 (video) | `motion.steps[0–1].media` | video | 2528 / 1216 | `public/media/jhanyu/motion-1.mp4`, `motion-2.mp4` | 圖示化步驟／編號與版面節奏 |
 | Visual Extension | `visualExtension` (`variant: mosaic`) | composite | 1920 / 1280 | `src/assets/projects/jhanyu/visual-mosaic.jpg` | 展裕建設網站頁面拼貼 |
 
 ## Layout notes (390)

@@ -219,10 +219,9 @@ Figma：Desktop `360:2029`／Mobile `484:1821`。規格表：[`docs/specs/jhanyu
 |---|---|---|---|---|---|---|
 | 6 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2099`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
 | 7 | Interaction & Motion | `motion-1.mp4` | 01 圖示化步驟 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
-| 8 | Interaction & Motion | `motion-2.mp4` | 02 編號與連接線 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
-| 9 | Interaction & Motion | `motion-3.mp4` | 03 版面節奏 | 960 × 532 | 2.5 MB／4 MB | `motion-3-poster.jpg` 1920 × 1064 |
+| 8 | Interaction & Motion | `motion-2.mp4` | 02 編號與版面節奏（PO 2026-11-03 合併 02 / 03） | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
 
-**展裕建設合計：圖片 9 張（含 4 張封面）、影片 4 支。**
+**展裕建設合計：圖片 8 張（含 3 張封面）、影片 3 支。**
 
 ---
 
