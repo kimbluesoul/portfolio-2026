@@ -1388,6 +1388,14 @@ test('motion steps auto-advance 01 to 03 once in view', async ({
   const videos = motion.locator('video');
   await motion.scrollIntoViewIfNeeded();
   await expect(videos.nth(0)).toHaveAttribute('data-test-play-count', /.+/u);
+  await expect(videos.nth(1)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
+  await expect(videos.nth(2)).not.toHaveAttribute(
+    'data-test-play-count',
+    /.+/u,
+  );
 
   await videos
     .nth(0)

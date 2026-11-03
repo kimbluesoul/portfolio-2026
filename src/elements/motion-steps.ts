@@ -16,6 +16,11 @@ class MotionStepsElement extends HTMLElement {
     this.events = events;
     this.tabs = [...this.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     this.panels = [...this.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    this.panels.forEach((panel) => {
+      panel
+        .querySelector<HTMLElement>('loop-video')
+        ?.setAttribute('data-playback', 'managed');
+    });
     this.tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => this.selectByUser(index), {
         signal: events.signal,

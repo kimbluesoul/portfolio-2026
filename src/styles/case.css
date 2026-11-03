@@ -472,21 +472,22 @@ figcaption strong {
 
 .motion-stage [role='tabpanel'] {
   grid-area: 1 / 1;
+  opacity: 0;
+  transition:
+    opacity 0s 150ms,
+    visibility 0s 150ms;
   visibility: hidden;
 }
 
 .motion-stage [role='tabpanel'].is-active {
+  opacity: 1;
+  transition: opacity 150ms ease;
   visibility: visible;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .motion-stage [role='tabpanel'] {
-    opacity: 0;
-    transition: opacity 150ms ease;
-  }
-
   .motion-stage [role='tabpanel'].is-active {
-    opacity: 1;
+    transition: opacity 150ms ease;
   }
 }
 
@@ -1564,6 +1565,11 @@ a.link-card:focus-visible .link-arrow {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .motion-stage [role='tabpanel'],
+  .motion-stage [role='tabpanel'].is-active {
+    transition: none;
+  }
+
   a.link-card:focus-visible .link-arrow,
   .next-project
     .case-container
