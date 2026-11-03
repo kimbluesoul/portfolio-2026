@@ -884,66 +884,65 @@ const projectSlugs = readdirSync(
   .filter((file) => file.endsWith('.yaml'))
   .map((file) => file.replace(/\.yaml$/u, ''));
 
-test(
-  'Visual Extension mosaics fill their frames without the placeholder tone',
-  async ({ page }, testInfo) => {
-    const isDesktop = testInfo.project.name === 'chromium-desktop';
-    const isMobile = testInfo.project.name === 'webkit-iphone';
-    test.skip(!isDesktop && !isMobile, 'Desktop and iPhone layout coverage.');
+test('Visual Extension mosaics fill their frames without the placeholder tone', async ({
+  page,
+}, testInfo) => {
+  const isDesktop = testInfo.project.name === 'chromium-desktop';
+  const isMobile = testInfo.project.name === 'webkit-iphone';
+  test.skip(!isDesktop && !isMobile, 'Desktop and iPhone layout coverage.');
 
-    await page.setViewportSize({
-      width: isDesktop ? 1536 : 390,
-      height: isDesktop ? 730 : 844,
-    });
-    if (isDesktop) {
-      expect(await page.evaluate(() => window.devicePixelRatio)).toBe(1.25);
-    }
+  await page.setViewportSize({
+    width: isDesktop ? 1536 : 390,
+    height: isDesktop ? 730 : 844,
+  });
+  if (isDesktop) {
+    expect(await page.evaluate(() => window.devicePixelRatio)).toBe(1.25);
+  }
 
-    for (const slug of projectSlugs) {
-      await page.goto(`/work/${slug}/`);
-      const mosaics = page.locator(
-        '.visual-extension .variant-mosaic .media-frame',
+  for (const slug of projectSlugs) {
+    await page.goto(`/work/${slug}/`);
+    const mosaics = page.locator(
+      '.visual-extension .variant-mosaic .media-frame',
+    );
+    expect(await mosaics.count(), `${slug} mosaic`).toBeGreaterThan(0);
+
+    const geometry = await mosaics.evaluateAll((frames) =>
+      frames.map((frame) => {
+        const image = frame.querySelector<HTMLImageElement>('img');
+        const frameRect = frame.getBoundingClientRect();
+        const imageRect = image?.getBoundingClientRect();
+        return {
+          background: getComputedStyle(frame).backgroundColor,
+          frame: {
+            x: frameRect.x,
+            y: frameRect.y,
+            width: frameRect.width,
+            height: frameRect.height,
+          },
+          image: imageRect && {
+            x: imageRect.x,
+            y: imageRect.y,
+            width: imageRect.width,
+            height: imageRect.height,
+          },
+        };
+      }),
+    );
+
+    for (const { background, frame, image } of geometry) {
+      expect(background, `${slug} mosaic frame background`).not.toBe(
+        'rgb(230, 230, 230)',
       );
-      expect(await mosaics.count(), `${slug} mosaic`).toBeGreaterThan(0);
-
-      const geometry = await mosaics.evaluateAll((frames) =>
-        frames.map((frame) => {
-          const image = frame.querySelector<HTMLImageElement>('img');
-          const frameRect = frame.getBoundingClientRect();
-          const imageRect = image?.getBoundingClientRect();
-          return {
-            background: getComputedStyle(frame).backgroundColor,
-            frame: {
-              x: frameRect.x,
-              y: frameRect.y,
-              width: frameRect.width,
-              height: frameRect.height,
-            },
-            image: imageRect && {
-              x: imageRect.x,
-              y: imageRect.y,
-              width: imageRect.width,
-              height: imageRect.height,
-            },
-          };
-        }),
-      );
-
-      for (const { background, frame, image } of geometry) {
-        expect(background, `${slug} mosaic frame background`).not.toBe(
-          'rgb(230, 230, 230)',
-        );
-        expect(image, `${slug} mosaic image`).toBeTruthy();
-        for (const edge of ['x', 'y', 'width', 'height'] as const) {
-          expect(
-            Math.abs((image?.[edge] ?? Number.NaN) - frame[edge]),
-            `${slug} mosaic ${edge}`,
-          ).toBeLessThanOrEqual(0.01);
-        }
+      expect(image, `${slug} mosaic image`).toBeTruthy();
+      for (const edge of ['x', 'y', 'width', 'height'] as const) {
+        expect(
+          Math.abs((image?.[edge] ?? Number.NaN) - frame[edge]),
+          `${slug} mosaic ${edge}`,
+        ).toBeLessThanOrEqual(0.01);
       }
     }
-  },
-);
+  }
+});
 
 const overflowRoutes = [
   '/',
