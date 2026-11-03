@@ -101,11 +101,16 @@ for (const file of files.filter((path) => extname(path) === '.html')) {
   }
 }
 
-if (/ext-shared/iu.test(`${css}\n${await Promise.all(
-  files
-    .filter((path) => extname(path) === '.html')
-    .map((file) => readFile(file, 'utf8')),
-)}`)) failures.push('ext-shared must not be emitted');
+if (
+  /ext-shared/iu.test(
+    `${css}\n${await Promise.all(
+      files
+        .filter((path) => extname(path) === '.html')
+        .map((file) => readFile(file, 'utf8')),
+    )}`,
+  )
+)
+  failures.push('ext-shared must not be emitted');
 
 // Splits a selector list at top-level commas (not inside :is() / :not()).
 function splitSelectorList(selectorList) {

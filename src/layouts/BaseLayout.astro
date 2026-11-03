@@ -46,9 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
-    {pageFontCss && (
-      <Fragment set:html={`<style>${pageFontCss}</style>`} />
-    )}
+    {pageFontCss && <Fragment set:html={`<style>${pageFontCss}</style>`} />}
     {bodyFontHref && (
       <link
         rel="preload"
