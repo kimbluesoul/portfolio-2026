@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   NODE_VERSION: 24
   PNPM_VERSION: 11.25.0
@@ -27,11 +31,21 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - uses: actions/cache@v6
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ runner.os }}-${{ hashFiles('src/assets/**', 'astro.config.*', 'pnpm-lock.yaml') }}
+          restore-keys: astro-assets-${{ runner.os }}-
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm check
       - run: pnpm test
       - run: pnpm build
+      - uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
 
   e2e:
     name: E2E and axe
@@ -52,12 +66,15 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium webkit
-      - run: pnpm build
+      - uses: actions/download-artifact@v6
+        with:
+          name: dist
+          path: dist/
       - run: pnpm test:e2e
 
   lighthouse:
     name: Lighthouse
-    needs: e2e
+    needs: verify
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -69,7 +86,10 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - uses: actions/download-artifact@v6
+        with:
+          name: dist
+          path: dist/
       # Real visitors always have a system CJK font (PingFang, JhengHei, Noto CJK)
       # as the swap fallback; the bare runner has none, which inflates CLS when
       # Noto Sans TC loads. Install a small CJK font so the fallback is realistic.
