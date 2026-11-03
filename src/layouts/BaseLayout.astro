@@ -1,4 +1,6 @@
 ---
+/* eslint-disable astro/no-set-html-directive -- generated font CSS is trusted build output */
+import { createHash } from 'node:crypto';
 import type { CollectionEntry } from 'astro:content';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
@@ -18,6 +20,21 @@ const { title, description, site, preloadBodyFont = false } = Astro.props;
 const bodyFontHref = preloadBodyFont
   ? bodyFontPreloadHref(generatedFontCss)
   : undefined;
+const pageKey =
+  Astro.url.pathname === '/'
+    ? 'index'
+    : Astro.url.pathname.replace(/^\/+|\/+$/gu, '').replaceAll('/', '-');
+const encodedPageFontCss =
+  /\/\* page-font-faces-base64:([A-Za-z\d+/=]+) \*\//u.exec(
+    generatedFontCss,
+  )?.[1];
+const pageFontCss = encodedPageFontCss
+  ? (JSON.parse(atob(encodedPageFontCss)) as Record<string, string>)[pageKey]
+  : undefined;
+const pageFontHash = pageFontCss
+  ? (`sha256-${createHash('sha256').update(pageFontCss).digest('base64')}` as const)
+  : undefined;
+if (pageFontHash) Astro.csp?.insertStyleHash(pageFontHash);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -29,6 +46,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
+    {pageFontCss && <Fragment set:html={`<style>${pageFontCss}</style>`} />}
     {bodyFontHref && (
       <link
         rel="preload"

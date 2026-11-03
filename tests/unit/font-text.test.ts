@@ -161,44 +161,41 @@ describe('weight selectors', () => {
 describe('ADR-0012 per-page ext subsets', () => {
   const points = (text: string) => new Set([...text].map(codePoint));
 
-  it('gives each page its own glyphs and shares the rest', () => {
+  it('gives each page all of its own non-core glyphs', () => {
     const groups = partitionExt(
       new Map([
         ['work-a', points('核心甲甲乙丙')],
         ['work-b', points('核心乙丁戊')],
       ]),
       points('核心'),
-      1,
     );
-    expect([...groups.keys()]).toEqual(['shared', 'work-a', 'work-b']);
-    expect(groups.get('shared')).toEqual(points('乙'));
-    expect(groups.get('work-a')).toEqual(points('甲丙'));
-    expect(groups.get('work-b')).toEqual(points('丁戊'));
+    expect([...groups.keys()]).toEqual(['work-a', 'work-b']);
+    expect(groups.get('work-a')).toEqual(points('甲乙丙'));
+    expect(groups.get('work-b')).toEqual(points('乙丁戊'));
   });
 
-  it('folds a page with too few unique glyphs into shared', () => {
+  it('keeps even a small page in its own extension subset', () => {
     const groups = partitionExt(
       new Map([
         ['work-a', points('甲乙丙')],
         ['work-b', points('丁')],
       ]),
       new Set(),
-      2,
     );
-    expect([...groups.keys()]).toEqual(['shared', 'work-a']);
-    expect(groups.get('shared')).toEqual(points('丁'));
+    expect([...groups.keys()]).toEqual(['work-a', 'work-b']);
+    expect(groups.get('work-b')).toEqual(points('丁'));
   });
 
-  it('covers every non-core glyph exactly once', () => {
+  it('allows glyphs shared by pages to be duplicated', () => {
     const pages = new Map([
       ['work-a', points('甲乙丙丁戊己庚辛')],
       ['work-b', points('乙丁壬癸子丑')],
       ['resume', points('寅')],
     ]);
-    const groups = [...partitionExt(pages, points('甲')).values()];
-    const all = groups.flatMap((group) => [...group]);
-    expect(new Set(all).size).toBe(all.length);
-    expect(new Set(all)).toEqual(points('乙丙丁戊己庚辛壬癸子丑寅'));
+    const groups = partitionExt(pages, points('甲'));
+    expect(groups.get('work-a')).toEqual(points('乙丙丁戊己庚辛'));
+    expect(groups.get('work-b')).toEqual(points('乙丁壬癸子丑'));
+    expect(groups.get('resume')).toEqual(points('寅'));
   });
 
   it('returns no groups when every glyph is in core', () => {

@@ -1,5 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { extname, join } from 'node:path';
+import { extname, join, relative } from 'node:path';
 import process from 'node:process';
 import {
   codePointsFrom,
@@ -53,48 +53,64 @@ const css = (
   )
 ).join('\n');
 
-const rangesByWeight = new Map();
-for (const block of css.matchAll(/@font-face\s*\{([^}]*)\}/gu)) {
-  const body = block[1];
-  if (!/font-family:\s*['"]?Noto Sans TC/iu.test(body)) continue;
-  const weight = Number(body.match(/font-weight:\s*(\d+)/u)?.[1]);
-  // Minified CSS drops the final semicolon, so stop at `;` or end of block.
-  const range = body.match(/unicode-range:\s*([^;]+)/u)?.[1];
-  if (!weight || !range) continue;
-  const list = rangesByWeight.get(weight) ?? [];
-  list.push(...parseRanges(range));
-  rangesByWeight.set(weight, list);
+function rangesFromCss(cssText) {
+  const rangesByWeight = new Map();
+  for (const block of cssText.matchAll(/@font-face\s*\{([^}]*)\}/gu)) {
+    const body = block[1];
+    if (!/font-family:\s*['"]?Noto Sans TC/iu.test(body)) continue;
+    const weight = Number(body.match(/font-weight:\s*(\d+)/u)?.[1]);
+    // Minified CSS drops the final semicolon, so stop at `;` or end of block.
+    const range = body.match(/unicode-range:\s*([^;]+)/u)?.[1];
+    if (!weight || !range) continue;
+    const list = rangesByWeight.get(weight) ?? [];
+    list.push(...parseRanges(range));
+    rangesByWeight.set(weight, list);
+  }
+  return rangesByWeight;
 }
 
-const renderedByWeight = new Map(
-  FONT_WEIGHTS.map((weight) => [weight, new Set()]),
-);
+const coreRangesByWeight = rangesFromCss(css);
+const failures = [];
+const report = new Map(FONT_WEIGHTS.map((weight) => [weight, new Set()]));
 for (const file of files.filter((path) => extname(path) === '.html')) {
-  const text = weightedText(await readFile(file, 'utf8'));
+  const html = await readFile(file, 'utf8');
+  const inlineCss = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/giu)]
+    .map((match) => match[1])
+    .join('\n');
+  const pageRangesByWeight = rangesFromCss(inlineCss);
+  const text = weightedText(html);
   for (const weight of FONT_WEIGHTS) {
+    const rendered = new Set();
     for (const codePoint of codePointsFrom(text[weight])) {
-      if (isCjkOrFullWidth(codePoint))
-        renderedByWeight.get(weight).add(codePoint);
+      if (isCjkOrFullWidth(codePoint)) rendered.add(codePoint);
+    }
+    for (const codePoint of rendered) report.get(weight).add(codePoint);
+    const ranges = [
+      ...(coreRangesByWeight.get(weight) ?? []),
+      ...(pageRangesByWeight.get(weight) ?? []),
+    ];
+    const missing = [...rendered].filter(
+      (codePoint) =>
+        !ranges.some(([start, end]) => codePoint >= start && codePoint <= end),
+    );
+    if (missing.length > 0) {
+      failures.push(
+        `${relative(distDirectory, file)} ${weight}: rendered CJK glyphs missing from core + its page ext: ${missing.map((codePoint) => String.fromCodePoint(codePoint)).join('')}`,
+      );
     }
   }
 }
 
-const failures = [];
-const report = [];
-for (const [weight, rendered] of renderedByWeight) {
-  if (rendered.size === 0) continue;
-  const ranges = rangesByWeight.get(weight) ?? [];
-  const missing = [...rendered].filter(
-    (codePoint) =>
-      !ranges.some(([start, end]) => codePoint >= start && codePoint <= end),
-  );
-  if (missing.length > 0) {
-    failures.push(
-      `${weight}: rendered CJK glyphs missing from the subsets: ${missing.map((codePoint) => String.fromCodePoint(codePoint)).join('')}`,
-    );
-  }
-  report.push(`${weight}: ${rendered.size}`);
-}
+if (
+  /ext-shared/iu.test(
+    `${css}\n${await Promise.all(
+      files
+        .filter((path) => extname(path) === '.html')
+        .map((file) => readFile(file, 'utf8')),
+    )}`,
+  )
+)
+  failures.push('ext-shared must not be emitted');
 
 // Splits a selector list at top-level commas (not inside :is() / :not()).
 function splitSelectorList(selectorList) {
@@ -195,6 +211,8 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   process.stdout.write(
-    `Font coverage OK (rendered CJK code points per weight — ${report.join(', ')}).\n`,
+    `Font coverage OK (rendered CJK code points per weight — ${[...report]
+      .map(([weight, codePoints]) => `${weight}: ${codePoints.size}`)
+      .join(', ')}).\n`,
   );
 }
