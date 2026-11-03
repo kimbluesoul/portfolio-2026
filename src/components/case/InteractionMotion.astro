@@ -33,11 +33,7 @@ const baseId = 'case-motion';
         </div>
       ))}
     </div>
-    <div
-      class="motion-tabs"
-      role="tablist"
-      aria-label="互動步驟"
-    >
+    <div class="motion-tabs" role="tablist" aria-label="互動步驟">
       {data.steps.map((step, index) => (
         <button
           id={`${baseId}-tab-${index}`}
