@@ -945,10 +945,9 @@ const figmaSectionHeights390 = {
     ['Key Screens', 740],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
-    // Interim (PO, 2026-11-01): phones show the desktop Details images until
-    // the detail-*-mobile.png exports arrive (docs/ASSETS.md). Restore the
-    // 3461 check when they do.
-    ['Details', 3461, 16, 'desktop Details images on mobile'],
+    // PO 2026-11-03: phones keep the desktop Details images (no mobile
+    // exports), so this is the site's own height, not Figma's 3461.
+    ['Details', 2664, 16],
     ['Visual Extension', 410],
     ['Links', 659],
     ['Next Project', 530],
@@ -958,7 +957,8 @@ const figmaSectionHeights390 = {
     ['Hero', 846],
     ['Overview', 765],
     ['Key Screens', 807],
-    ['Interaction & Motion', 815],
+    // Flatter 2528 / 1216 motion videos (PO 2026-11-03), not Figma's 815.
+    ['Interaction & Motion', 787],
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 469],

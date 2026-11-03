@@ -31,12 +31,10 @@ hero:
     layout: single
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/hwa-fong/hero-showcase.jpg
         alt: 華豐輪胎 PC 與手機首頁案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
-        status: pending
-        expectedFile: src/assets/projects/hwa-fong/hero-showcase.jpg
 overview:
   heading: |-
     可靠的品牌，
@@ -56,39 +54,31 @@ keyScreens:
   main:
     kind: video
     src: /media/hwa-fong/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/hwa-fong/key-main-poster.jpg
     alt: 華豐輪胎 PC 首頁捲動
     aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/hwa-fong/key-main.mp4
   closeups:
     - title: 輪胎指南
       caption: 大尺寸輪胎特寫，讓胎紋成為畫面的主角，並選用與輪胎搭配的照片加強選對輪胎的重要性。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/hwa-fong/key-tire-guide.jpg
         alt: 輪胎指南頁面特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/hwa-fong/key-tire-guide.jpg
     - title: 五大胎種
       caption: 從汽車到特殊用途，用小 icon 一眼分辨。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/hwa-fong/key-tire-types.jpg
         alt: 五大胎種分類特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/hwa-fong/key-tire-types.jpg
     - title: 胎種專區
       caption: 分類頁延續越野氛圍，產品和品牌感並存。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/hwa-fong/key-tire-category.jpg
         alt: 胎種專區頁面特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/hwa-fong/key-tire-category.jpg
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 滾動，點亮 DURO
@@ -99,40 +89,32 @@ motion:
       media:
         kind: video
         src: /media/hwa-fong/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/hwa-fong/motion-1-poster.jpg
         alt: DURO 字母逐字點亮動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/hwa-fong/motion-1.mp4
+        aspectRatio: 2528 / 1216
     - title: 02　完整品牌
       body: 每個字母都點亮後，整個 LOGO 一起亮起，呈現完整的品牌形象。
       media:
         kind: video
         src: /media/hwa-fong/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/hwa-fong/motion-2-poster.jpg
         alt: DURO 完整品牌點亮動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/hwa-fong/motion-2.mp4
+        aspectRatio: 2528 / 1216
     - title: 03　探索式互動
       body: 產品與分類加入 Hover 回饋，讓逛輪胎更像在探索，而不只是查資料。
       media:
         kind: video
         src: /media/hwa-fong/motion-3.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/hwa-fong/motion-3-poster.jpg
         alt: 產品與分類 Hover 互動
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/hwa-fong/motion-3.mp4
+        aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/hwa-fong/visual-mosaic.jpg
       alt: 華豐輪胎網站頁面拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/hwa-fong/visual-mosaic.jpg
 links:
   eyebrow: FROM FIGMA TO LIVE
   heading: 從設計稿到正式上線
