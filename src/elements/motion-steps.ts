@@ -72,6 +72,12 @@ class MotionStepsElement extends HTMLElement {
       tab.setAttribute('aria-selected', String(selected));
       tab.tabIndex = selected ? 0 : -1;
     });
+    this.panels.forEach((panel, panelIndex) => {
+      if (panelIndex === index) return;
+      panel
+        .querySelector<HTMLElement & { pause?: () => void }>('loop-video')
+        ?.pause?.();
+    });
     const panel = this.panels[index];
     if (!panel || !play) {
       this.show(index);
