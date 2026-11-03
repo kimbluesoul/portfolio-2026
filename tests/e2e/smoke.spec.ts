@@ -1004,7 +1004,8 @@ const figmaSectionHeights390 = {
     ['Hero', 811],
     ['Overview', 765],
     ['Key Screens', 786],
-    ['Interaction & Motion', 705],
+    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 705.
+    ['Interaction & Motion', 685],
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 469],

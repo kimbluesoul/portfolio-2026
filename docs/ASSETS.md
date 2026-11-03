@@ -229,7 +229,7 @@ Figma：Desktop `360:2029`／Mobile `484:1821`。規格表：[`docs/specs/jhanyu
 
 Figma：Desktop `360:2240`／Mobile `485:1462`。規格表：[`docs/specs/amd.md`](specs/amd.md)。
 圖片放 `src/assets/projects/amd/`，影片放 `public/media/amd/`（交件時都放同一個資料夾即可）。
-沒有 Mobile／RWD 和 Details 區塊。**主要畫面第 3 張（系統頁面）是影片**；Interaction & Motion 只有 **2** 個步驟。
+沒有 Mobile／RWD 和 Details 區塊。主要畫面第 3 張改為**產品內容頁**圖片（PO 2026-11-03）；Interaction & Motion 只有 **2** 個步驟。
 
 ### 圖片
 
@@ -238,18 +238,18 @@ Figma：Desktop `360:2240`／Mobile `485:1462`。規格表：[`docs/specs/amd.md
 | 1 | Hero | `hero-showcase.jpg` | `360:2259` Hero showcase | 整張合成圖 | 3840 × 1840 | PC 畫面＋手機一起匯出，網頁只顯示上方 820 px。手機版用同一張縮小。 |
 | 2 | 主要畫面 | `key-products.jpg` | `360:2311`（產品區域） | 裁切框 | 918 × 600 |  |
 | 3 | 主要畫面 | `key-product-page.jpg` | `360:2315`（產品頁） | 裁切框 | 918 × 600 |  |
-| 4 | Visual Extension | `visual-mosaic.jpg` | `360:2395` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
+| 4 | 主要畫面 | `key-product-content.jpg` | `360:2319`（改為產品內容頁） | 裁切框 | 918 × 600 | PO 2026-11-03：原為系統頁面影片 |
+| 5 | Visual Extension | `visual-mosaic.jpg` | `360:2395` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
 
 ### 影片
 
 | # | 區塊 | 影片檔名 | 內容 | 尺寸 | 大小（目標／上限） | 封面檔名（2x） |
 |---|---|---|---|---|---|---|
-| 5 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2310`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
-| 6 | 主要畫面 | `key-system-pages.mp4` | 03 系統頁面：維護與 404 頁（Figma `360:2319`） | 459 × 300（交 918 × 600 或更大） | 2 MB／3 MB | `key-system-pages-poster.jpg` 918 × 600 |
-| 7 | Interaction & Motion | `motion-1.mp4` | 01 404 頁面 | 960 × 532 | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
-| 8 | Interaction & Motion | `motion-2.mp4` | 02 維護頁面 | 960 × 532 | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
+| 6 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2310`） | 1440 × 810 | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
+| 7 | Interaction & Motion | `motion-1.mp4` | 01 404 頁面 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
+| 8 | Interaction & Motion | `motion-2.mp4` | 02 維護頁面 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
 
-**康健生醫合計：圖片 8 張（含 4 張封面）、影片 4 支。**
+**康健生醫合計：圖片 8 張（含 3 張封面）、影片 3 支。**
 
 ---
 
