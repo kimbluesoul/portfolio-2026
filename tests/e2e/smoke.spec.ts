@@ -1076,9 +1076,7 @@ test('390 HUIFA Details draft is a focusable horizontal scroller', async ({
   await expect(scroller).toBeFocused();
   expect(
     await scroller.evaluate((element) => element.scrollWidth),
-  ).toBeGreaterThan(
-    await scroller.evaluate((element) => element.clientWidth),
-  );
+  ).toBeGreaterThan(await scroller.evaluate((element) => element.clientWidth));
   await scroller.evaluate((element) => {
     element.scrollLeft = 200;
   });

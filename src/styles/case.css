@@ -1254,10 +1254,12 @@ a.link-card:focus-visible .link-arrow {
     transform: translateX(-50%);
   }
 
-  .case-hero .layout-single.mobile-scale-25
+  .case-hero
+    .layout-single.mobile-scale-25
     .media-frame:not(.has-mobile-art)
     > img,
-  .case-hero .layout-single.mobile-scale-25
+  .case-hero
+    .layout-single.mobile-scale-25
     .media-frame:not(.has-mobile-art)
     > picture
     > img {

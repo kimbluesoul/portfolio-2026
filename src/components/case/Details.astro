@@ -50,37 +50,37 @@ const COMPARE_DRAFT_SLOT = {
   ) : (
     <div class="details-grid">
       {data.items.map((item) => (
-      <figure
-        class={`detail-card size-${item.size ?? 'half'} ${item.media.kind === 'swatches' ? 'has-swatches' : ''}`}
-      >
-        {item.media.kind === 'swatches' ? (
-          <>
-            <figcaption>
-              {item.eyebrow && (
-                <span class="detail-eyebrow">{item.eyebrow}</span>
-              )}
-              <strong>{item.title}</strong>
-            </figcaption>
-            {item.caption && <p class="swatch-caption">{item.caption}</p>}
-            <ColorSwatches colors={item.media.colors} />
-          </>
-        ) : (
-          <>
-            <figcaption>
-              {item.eyebrow && (
-                <span class="detail-eyebrow">{item.eyebrow}</span>
-              )}
-              <strong>{item.title}</strong>
-              {item.caption && <span>{item.caption}</span>}
-            </figcaption>
-            <ProjectMedia
-              media={item.media}
-              mobileMedia={item.mobileMedia}
-              mediaSlot={DETAIL_SLOTS[item.size ?? 'half']}
-            />
-          </>
-        )}
-      </figure>
+        <figure
+          class={`detail-card size-${item.size ?? 'half'} ${item.media.kind === 'swatches' ? 'has-swatches' : ''}`}
+        >
+          {item.media.kind === 'swatches' ? (
+            <>
+              <figcaption>
+                {item.eyebrow && (
+                  <span class="detail-eyebrow">{item.eyebrow}</span>
+                )}
+                <strong>{item.title}</strong>
+              </figcaption>
+              {item.caption && <p class="swatch-caption">{item.caption}</p>}
+              <ColorSwatches colors={item.media.colors} />
+            </>
+          ) : (
+            <>
+              <figcaption>
+                {item.eyebrow && (
+                  <span class="detail-eyebrow">{item.eyebrow}</span>
+                )}
+                <strong>{item.title}</strong>
+                {item.caption && <span>{item.caption}</span>}
+              </figcaption>
+              <ProjectMedia
+                media={item.media}
+                mobileMedia={item.mobileMedia}
+                mediaSlot={DETAIL_SLOTS[item.size ?? 'half']}
+              />
+            </>
+          )}
+        </figure>
       ))}
     </div>
   )}
