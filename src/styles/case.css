@@ -1388,6 +1388,8 @@ a.link-card:focus-visible .link-arrow {
   .details-compare {
     --detail-compare-label-gap: var(--space-2-5);
     --detail-compare-item-gap: var(--space-7);
+
+    padding-block: var(--space-12);
   }
 
   .details-compare .section-intro {
