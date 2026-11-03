@@ -31,12 +31,15 @@ hero:
     layout: single
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/jhanyu/hero-showcase.jpg
         alt: 展裕建設網站 PC 與手機案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
-        status: pending
-        expectedFile: src/assets/projects/jhanyu/hero-showcase.jpg
+    mobileMedia:
+      kind: image
+      src: ../../assets/projects/jhanyu/hero-showcase-mobile.jpg
+      alt: 展裕建設網站 PC 與手機案例展示
+      aspectRatio: 390 / 312
 overview:
   heading: |-
     從 Logo 延伸，
@@ -56,39 +59,31 @@ keyScreens:
   main:
     kind: video
     src: /media/jhanyu/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/jhanyu/key-main-poster.jpg
     alt: 展裕建設網站 PC 首頁捲動
-    aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/jhanyu/key-main.mp4
+    aspectRatio: 2528 / 1216
   closeups:
     - title: 關於展裕
       caption: 斜角橘色塊延伸自 Logo，讓版面有品牌的節奏。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/jhanyu/key-about.jpg
         alt: 關於展裕區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/jhanyu/key-about.jpg
     - title: 熱銷建案
       caption: 實景照片搭配清楚的規格表，資訊一目了然。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/jhanyu/key-projects.jpg
         alt: 熱銷建案區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/jhanyu/key-projects.jpg
     - title: 購屋簽約流程
       caption: 用圖示和步驟編號，把繁瑣的流程講清楚。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/jhanyu/key-process.jpg
         alt: 購屋簽約流程特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/jhanyu/key-process.jpg
 motion:
   eyebrow: SERVICE FLOW
   heading: 服務流程，清楚也不無聊
@@ -99,40 +94,32 @@ motion:
       media:
         kind: video
         src: /media/jhanyu/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/jhanyu/motion-1-poster.jpg
         alt: 圖示化步驟
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/jhanyu/motion-1.mp4
+        aspectRatio: 2528 / 1216
     - title: 02　編號與連接線
       body: 橘色編號標籤加上連接線，清楚帶出先後順序，一眼看出走到哪一步。
       media:
         kind: video
         src: /media/jhanyu/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/jhanyu/motion-2-poster.jpg
         alt: 編號與連接線
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/jhanyu/motion-2.mp4
+        aspectRatio: 2528 / 1216
     - title: 03　版面節奏
       body: 流程、色塊與留白交錯安排，讓圖量多的頁面讀起來不單調。
       media:
         kind: video
         src: /media/jhanyu/motion-3.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/jhanyu/motion-3-poster.jpg
         alt: 版面節奏
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/jhanyu/motion-3.mp4
+        aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/jhanyu/visual-mosaic.jpg
       alt: 展裕建設網站頁面拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/jhanyu/visual-mosaic.jpg
 links:
   eyebrow: FROM DESIGN TO LIVE
   heading: 從設計稿到正式上線
