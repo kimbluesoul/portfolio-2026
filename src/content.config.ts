@@ -125,6 +125,11 @@ const projects = defineCollection({
       size: z.enum(['third', 'half', 'half-tall', 'full']).optional(),
     });
 
+    const compareDetailItem = z.object({
+      label: z.string().min(1),
+      media,
+    });
+
     const stat = z.object({
       label: z.string().min(1),
       value: z.string().min(1),
@@ -167,6 +172,7 @@ const projects = defineCollection({
           items: z.array(media).min(1).max(2),
           // Art-directed 390 crop for the first item (single layout).
           mobileMedia: media.optional(),
+          mobileScale: z.literal(0.25).optional(),
         }),
       }),
       overview: z.object({
@@ -212,12 +218,22 @@ const projects = defineCollection({
         })
         .optional(),
       details: z
-        .object({
-          eyebrow: z.string().min(1),
-          heading: z.string().min(1),
-          subtitle: z.string().min(1),
-          items: z.array(detailItem).min(1).max(8),
-        })
+        .union([
+          z.object({
+            variant: z.literal('compare'),
+            eyebrow: z.string().min(1),
+            heading: z.string().min(1),
+            subtitle: z.string().min(1),
+            items: z.array(compareDetailItem).length(2),
+          }),
+          z.object({
+            variant: z.literal('cards').default('cards'),
+            eyebrow: z.string().min(1),
+            heading: z.string().min(1),
+            subtitle: z.string().min(1),
+            items: z.array(detailItem).min(1).max(8),
+          }),
+        ])
         .optional(),
       visualExtension: z
         .object({

@@ -214,6 +214,14 @@
   aspect-ratio: 1440 / 720;
 }
 
+.ratio-1436x234 {
+  aspect-ratio: 1436 / 234;
+}
+
+.ratio-1440x702 {
+  aspect-ratio: 1440 / 702;
+}
+
 .ratio-458_67x300 {
   aspect-ratio: 458.67 / 300;
 }
@@ -591,6 +599,46 @@ figcaption strong {
   font-size: var(--font-size-case-detail-eyebrow);
   font-weight: 700;
   letter-spacing: var(--letter-spacing-label);
+}
+
+.details-compare {
+  --detail-compare-label-gap: 0.9375rem;
+  --detail-compare-item-gap: var(--space-16);
+
+  overflow: hidden;
+}
+
+.details-compare .case-container {
+  overflow: visible;
+}
+
+.details-compare .section-intro {
+  margin-block-end: var(--space-16);
+}
+
+.details-compare-items {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--detail-compare-item-gap);
+}
+
+/* stylelint-disable-next-line no-descending-specificity -- Compare items and cards are mutually exclusive variants. */
+:where(.detail-compare-item) figcaption {
+  color: var(--color-text-brand);
+  margin-block-end: var(--detail-compare-label-gap);
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.0714;
+}
+
+/* stylelint-disable-next-line no-descending-specificity -- Compare items and cards are mutually exclusive variants. */
+:where(.detail-compare-item) .media-frame {
+  border-radius: var(--radius-media);
+}
+
+/* stylelint-disable-next-line no-descending-specificity -- The draft radius differs by design. */
+:where(.detail-compare-item:first-child) .media-frame {
+  border-radius: 0;
 }
 
 .visual-grid {
@@ -1183,6 +1231,10 @@ a.link-card:focus-visible .link-arrow {
     --composite-mobile-width: 187.2%;
   }
 
+  .case-hero .layout-single.mobile-scale-25 {
+    --composite-mobile-aspect: 390 / 205;
+  }
+
   .next-preview .media-frame {
     border-radius: 0.75rem 0.75rem 0 0;
   }
@@ -1210,6 +1262,23 @@ a.link-card:focus-visible .link-arrow {
     max-width: none;
     height: auto;
     transform: translateX(-50%);
+  }
+
+  .case-hero
+    .layout-single.mobile-scale-25
+    .media-frame:not(.has-mobile-art)
+    > img,
+  .case-hero
+    .layout-single.mobile-scale-25
+    .media-frame:not(.has-mobile-art)
+    > picture
+    > img {
+    inset-block-start: 50%;
+    width: 480px;
+    max-width: none;
+    height: 230px;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
   }
 
   .swipe-row {
@@ -1318,6 +1387,41 @@ a.link-card:focus-visible .link-arrow {
     gap: var(--space-4);
   }
 
+  .details-compare {
+    --detail-compare-label-gap: var(--space-2-5);
+    --detail-compare-item-gap: var(--space-7);
+  }
+
+  .details-compare .section-intro {
+    margin-block-end: var(--space-7);
+  }
+
+  .details-compare .detail-compare-item figcaption {
+    font-size: 0.75rem;
+    line-height: 1.25;
+    padding: 0;
+  }
+
+  .details-compare .detail-compare-item .media-frame {
+    border-radius: 0.75rem;
+  }
+
+  .detail-compare-swipe {
+    height: 180px;
+    margin-inline: calc(var(--layout-page-gutter) * -1);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-inline-start: var(--layout-page-gutter);
+    scroll-padding-inline: var(--layout-page-gutter);
+  }
+
+  .details-compare .detail-compare-swipe .media-frame {
+    width: 1107px;
+    height: 180px;
+    aspect-ratio: auto;
+    border-radius: 0.5rem;
+  }
+
   /* 390 link card (`476:1906`): 24 padding, a 34 px top row (eyebrow 12 and
      arrow 28), then title 24 and description 15 / 1.6, 8 between rows. */
   .link-cards {
@@ -1395,6 +1499,7 @@ a.link-card:focus-visible .link-arrow {
   }
 
   /* 390 spec card (`Spec / Icon`): 20 padding, eyebrow +6 title +6 text. */
+  /* stylelint-disable-next-line no-descending-specificity -- Compare items and cards are mutually exclusive variants. */
   .detail-card figcaption {
     gap: var(--space-1-5);
     padding: var(--space-5);
