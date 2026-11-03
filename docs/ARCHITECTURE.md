@@ -29,7 +29,7 @@ This project is a UI / interaction-heavy portfolio website. Architecture should 
 | Fonts | Self-hosted Instrument Sans (Fontsource) + Noto Sans TC **subset at build time** to the rendered glyphs (core + per-page ext), no third-party font CDN | [ADR-0012](../ADR/0012-build-time-cjk-font-subsetting.md) |
 | State | No global state, no client store, no browser storage | §6 |
 | Hosting | **Cloudflare Workers static assets** (Workers Builds from GitHub), preview URL per branch, `main` = production | [ADR-0011](../ADR/0011-hosting-cloudflare-workers-static-assets.md) |
-| Quality gates | `pnpm verify` locally + GitHub Actions: lint, format, typecheck, unit, build, e2e + axe, Lighthouse CI budgets | [ADR-0010](../ADR/0010-quality-gates-and-ci.md) |
+| Quality gates | `pnpm verify` locally + GitHub Actions: lint, format, typecheck, unit, build, e2e + axe, Lighthouse CI budgets; CI builds once and tests in parallel | [ADR-0010](../ADR/0010-quality-gates-and-ci.md), [ADR-0014](../ADR/0014-ci-build-once.md) |
 | Runtime / tooling | Node.js **24 LTS**, **pnpm** (pinned via `packageManager`) | §14 |
 
 ---
