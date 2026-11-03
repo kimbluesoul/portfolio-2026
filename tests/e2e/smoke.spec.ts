@@ -1361,8 +1361,10 @@ test('motion step switches keep media visible and inactive panels inert', async 
     await active.evaluate((panel) => {
       const poster = panel.querySelector<HTMLImageElement>('.video-poster');
       const video = panel.querySelector<HTMLVideoElement>('video');
-      return Boolean(poster && getComputedStyle(poster).visibility !== 'hidden') ||
-        !video?.paused;
+      return (
+        Boolean(poster && getComputedStyle(poster).visibility !== 'hidden') ||
+        !video?.paused
+      );
     }),
   ).toBe(true);
   await expect(motion.locator('[role="tabpanel"]').nth(0)).toHaveAttribute(

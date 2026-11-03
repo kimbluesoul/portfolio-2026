@@ -68,7 +68,9 @@ class MotionStepsElement extends HTMLElement {
     });
     this.panels.forEach((panel, panelIndex) => {
       if (panelIndex !== index) return;
-      const player = panel.querySelector<HTMLElement & { play?: () => void }>('loop-video');
+      const player = panel.querySelector<HTMLElement & { play?: () => void }>(
+        'loop-video',
+      );
       const video = panel.querySelector<HTMLVideoElement>('video');
       if (!play || !video) {
         this.show(index);
