@@ -1457,3 +1457,53 @@ test('resume links to the supplied PDF', async ({ page, request }) => {
   const response = await request.get('/files/Syuan-Ci-Resume.pdf');
   expect(response.ok()).toBe(true);
 });
+
+test('88Win hero image is requested eagerly at high priority', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Chromium-only LCP gate.',
+  );
+  await page.goto('/work/88win/');
+  const hero = page.locator('.case-hero picture img').first();
+  await expect(hero).toHaveAttribute('loading', 'eager');
+  expect(
+    await hero.evaluate((image) => (image as HTMLImageElement).fetchPriority),
+  ).toBe('high');
+});
+
+test('88Win requests only its own page extension fonts', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Chromium-only font request gate.',
+  );
+  const fontRequests: string[] = [];
+  page.on('request', (request) => {
+    const pathname = new URL(request.url()).pathname;
+    if (/noto-sans-tc/iu.test(pathname)) fontRequests.push(pathname);
+  });
+  await page.goto('/work/88win/', { waitUntil: 'networkidle' });
+
+  expect(
+    fontRequests.some((pathname) => /ext-work-88win/iu.test(pathname)),
+  ).toBe(true);
+  expect(fontRequests.some((pathname) => /ext-shared/iu.test(pathname))).toBe(
+    false,
+  );
+  const otherPageKeys = [
+    ...projectSlugs
+      .filter((slug) => slug !== '88win')
+      .map((slug) => `work-${slug}`),
+    'resume',
+    '404',
+  ];
+  for (const pageKey of otherPageKeys) {
+    expect(
+      fontRequests.some((pathname) => pathname.includes(`ext-${pageKey}`)),
+      `unexpected ${pageKey} font request:\n${fontRequests.join('\n')}`,
+    ).toBe(false);
+  }
+});
