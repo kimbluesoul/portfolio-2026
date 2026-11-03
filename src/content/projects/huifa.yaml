@@ -32,11 +32,9 @@ hero:
     mobileScale: 0.25
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/huifa/hero-showcase.jpg
         alt: 匯發營造網站 PC 與手機案例展示
         aspectRatio: 1920 / 820
-        status: pending
-        expectedFile: src/assets/projects/huifa/hero-showcase.jpg
         objectPosition: top
 overview:
   heading: |-
@@ -57,39 +55,31 @@ keyScreens:
   main:
     kind: video
     src: /media/huifa/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/huifa/key-main-poster.jpg
     alt: 匯發營造網站 PC 首頁捲動
-    aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/huifa/key-main.mp4
+    aspectRatio: 2528 / 1216
   closeups:
     - title: 執行準則
       caption: PLAN 到 ACTION 五個步驟，一字排開說清楚。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/huifa/key-guidelines.jpg
         alt: 執行準則區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/huifa/key-guidelines.jpg
     - title: 工程實績
       caption: 建案實景搭配工程數據，成果一目了然。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/huifa/key-projects.jpg
         alt: 工程實績區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/huifa/key-projects.jpg
     - title: 服務項目
       caption: 側邊圖示導覽，逐項切換各類工程內容。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/huifa/key-services.jpg
         alt: 服務項目區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/huifa/key-services.jpg
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 每一次滾動，都是一次換頁
@@ -100,31 +90,17 @@ motion:
       media:
         kind: video
         src: /media/huifa/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/huifa/motion-1-poster.jpg
         alt: 一頁一畫面
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/huifa/motion-1.mp4
+        aspectRatio: 2528 / 1216
     - title: 02　內容進場
       body: 標題、圖片和文字依序出現，讓視線跟著內容走。
       media:
         kind: video
         src: /media/huifa/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/huifa/motion-2-poster.jpg
         alt: 內容進場
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/huifa/motion-2.mp4
-    - title: 03　區塊轉場
-      body: 滾動時帶入下一個區塊，轉換自然，不會突然跳開。
-      media:
-        kind: video
-        src: /media/huifa/motion-3.mp4
-        poster: ../../assets/placeholders/placeholder.png
-        alt: 區塊轉場
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/huifa/motion-3.mp4
+        aspectRatio: 2528 / 1216
 details:
   variant: compare
   eyebrow: DETAILS
@@ -134,29 +110,23 @@ details:
     - label: DESIGN DRAFT
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/huifa/detail-draft.jpg
         alt: 匯發營造網站設計分鏡
         aspectRatio: 1436 / 234
-        status: pending
-        expectedFile: src/assets/projects/huifa/detail-draft.jpg
     - label: LIVE SITE
       media:
         kind: video
         src: /media/huifa/detail-live.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/huifa/detail-live-poster.jpg
         alt: 匯發營造網站完成畫面捲動
         aspectRatio: 1440 / 702
-        status: pending
-        expectedFile: public/media/huifa/detail-live.mp4
 visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/huifa/visual-mosaic.jpg
       alt: 匯發營造網站頁面拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/huifa/visual-mosaic.jpg
 links:
   eyebrow: FROM FIGMA TO LIVE
   heading: 從設計稿到正式上線
