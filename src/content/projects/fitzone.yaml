@@ -31,12 +31,15 @@ hero:
     layout: single
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/fitzone/hero-showcase.jpg
         alt: FITZONE PC 與手機首頁案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
-        status: pending
-        expectedFile: src/assets/projects/fitzone/hero-showcase.jpg
+    mobileMedia:
+      kind: image
+      src: ../../assets/projects/fitzone/hero-showcase-mobile.jpg
+      alt: FITZONE PC 與手機首頁案例展示
+      aspectRatio: 390 / 312
 overview:
   heading: |-
     黑、黃與一道心跳，
@@ -56,39 +59,31 @@ keyScreens:
   main:
     kind: video
     src: /media/fitzone/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/fitzone/key-main-poster.jpg
     alt: FITZONE PC 首頁捲動
-    aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/fitzone/key-main.mp4
+    aspectRatio: 2528 / 1216
   closeups:
     - title: 品牌 O 裡的心跳
       caption: 把 Logo 的心跳線延伸成整站的識別符號。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/fitzone/key-heartbeat.jpg
         alt: 品牌 O 心跳識別特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/fitzone/key-heartbeat.jpg
     - title: 品牌與特色
       caption: 黑黃區塊交錯，讓品牌介紹有節奏地展開。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/fitzone/key-brand.jpg
         alt: 品牌與特色區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/fitzone/key-brand.jpg
     - title: 團體課程
       caption: 用輪播呈現多種課程，一眼看懂每堂課的差別。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/fitzone/key-classes.jpg
         alt: 團體課程輪播特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/fitzone/key-classes.jpg
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 快、清楚，而且有活力
@@ -99,40 +94,32 @@ motion:
       media:
         kind: video
         src: /media/fitzone/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/fitzone/motion-1-poster.jpg
         alt: 心跳識別動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/fitzone/motion-1.mp4
+        aspectRatio: 2528 / 1216
     - title: 02　俐落進場
       body: 區塊用短而快的位移進場，資訊一段段清楚出現，不拖慢瀏覽。
       media:
         kind: video
         src: /media/fitzone/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/fitzone/motion-2-poster.jpg
         alt: 區塊俐落進場動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/fitzone/motion-2.mp4
+        aspectRatio: 2528 / 1216
     - title: 03　鮮明回饋
       body: Hover 時用黃色色塊和斜切形狀即時回應，可點擊的地方一眼就看得出來。
       media:
         kind: video
         src: /media/fitzone/motion-3.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/fitzone/motion-3-poster.jpg
         alt: 黃色色塊 Hover 回饋
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/fitzone/motion-3.mp4
+        aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/fitzone/visual-mosaic.jpg
       alt: FITZONE 網站頁面拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/fitzone/visual-mosaic.jpg
 links:
   eyebrow: FROM FIGMA TO LIVE
   heading: 從設計稿到正式上線
