@@ -17,45 +17,158 @@ next:
   meta: 匯發營造　·　企業網站　·　UI 設計　·　Motion　·　2024–2025
   media: *cardVideo
 hero:
-  eyebrow: &todo TODO(CONTENT)
-  title: *todo
-  headline: *todo
-  subtitle: *todo
+  eyebrow: CASE STUDY 07 · 企業網站
+  title: HUIFA
+  titleSizeMobile: 76
+  headline: 匯發營造**企業網站**設計
+  subtitle: 客戶完全不想要一般網站的瀏覽方式，希望特別一點。我一邊和客戶確認需求，一邊照著期望設計，讓整個網站像一份會動的簡報。
   stats:
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
-    - { label: *todo, value: *todo }
+    - { label: ROLE, value: UI / Motion }
+    - { label: PLATFORM, value: 企業網站 }
+    - { label: STATUS, value: 已上線 }
+    - { label: YEAR, value: 2024–2025 }
   showcase:
     layout: single
+    mobileScale: 0.25
     items:
-      - &card
+      - kind: image
+        src: ../../assets/projects/huifa/card.jpg
+        alt: 匯發營造網站 PC 與手機案例展示
+        aspectRatio: 1920 / 820
+        status: pending
+        expectedFile: src/assets/projects/huifa/hero-showcase.jpg
+        objectPosition: top
+overview:
+  heading: |-
+    不像網站，
+    **更像一份會動的簡報**
+  blocks:
+    - title: 背景
+      body: 客戶完全不想要一般網站的瀏覽方式，希望整個網站特別一點，不以操作效率為優先，而是重視瀏覽時的體驗。
+    - title: 過程
+      body: 一邊和客戶確認需求，一邊依照期望調整設計，把想像中的瀏覽方式一步步具體化，最後真的做成網站。
+    - title: 挑戰
+      body: 回頭看，有些部分真的很像在做投影片：每段內容要怎麼進場、怎麼轉到下一個區塊才自然，都需要一格一格安排。
+  outputs: [企業網站, Motion]
+keyScreens:
+  eyebrow: DESKTOP
+  heading: 一進站，先看見**品牌**
+  subtitle: 首頁以 Logo 搭配線稿建築開場，乾淨、有份量；往下滾動後，一個區塊一個區塊地展開，像翻開一份簡報。
+  main:
+    kind: video
+    src: /media/huifa/key-main.mp4
+    poster: ../../assets/projects/huifa/card-poster.jpg
+    alt: 匯發營造網站 PC 首頁捲動
+    aspectRatio: 16 / 9
+    status: pending
+    expectedFile: public/media/huifa/key-main.mp4
+  closeups:
+    - title: 執行準則
+      caption: PLAN 到 ACTION 五個步驟，一字排開說清楚。
+      media:
         kind: image
         src: ../../assets/projects/huifa/card.jpg
-        alt: 匯發營造網站作品預覽
-overview:
-  heading: *todo
-  blocks:
-    - { title: *todo, body: *todo }
-    - { title: *todo, body: *todo }
-  outputs: [*todo]
-keyScreens:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
-  main: *card
-  closeups:
-    - { title: *todo, caption: *todo, media: *card }
-    - { title: *todo, caption: *todo, media: *card }
+        alt: 執行準則區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/huifa/key-guidelines.jpg
+    - title: 工程實績
+      caption: 建案實景搭配工程數據，成果一目了然。
+      media:
+        kind: image
+        src: ../../assets/projects/huifa/card.jpg
+        alt: 工程實績區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/huifa/key-projects.jpg
+    - title: 服務項目
+      caption: 側邊圖示導覽，逐項切換各類工程內容。
+      media:
+        kind: image
+        src: ../../assets/projects/huifa/card.jpg
+        alt: 服務項目區塊特寫
+        aspectRatio: 458.67 / 300
+        status: pending
+        expectedFile: src/assets/projects/huifa/key-services.jpg
+motion:
+  eyebrow: INTERACTION & MOTION
+  heading: 每一次滾動，都是一次換頁
+  subtitle: 整個網站的動態就像投影片的轉場：每段內容怎麼進場、怎麼轉到下一個區塊，都經過安排，讓瀏覽的節奏自然流暢。
+  steps:
+    - title: 01　一頁一畫面
+      body: 每個區塊都是一個完整畫面，像簡報一樣一頁講一件事。
+      media:
+        kind: video
+        src: /media/huifa/motion-1.mp4
+        poster: ../../assets/projects/huifa/card-poster.jpg
+        alt: 一頁一畫面
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/huifa/motion-1.mp4
+    - title: 02　內容進場
+      body: 標題、圖片和文字依序出現，讓視線跟著內容走。
+      media:
+        kind: video
+        src: /media/huifa/motion-2.mp4
+        poster: ../../assets/projects/huifa/card-poster.jpg
+        alt: 內容進場
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/huifa/motion-2.mp4
+    - title: 03　區塊轉場
+      body: 滾動時帶入下一個區塊，轉換自然，不會突然跳開。
+      media:
+        kind: video
+        src: /media/huifa/motion-3.mp4
+        poster: ../../assets/projects/huifa/card-poster.jpg
+        alt: 區塊轉場
+        aspectRatio: 960 / 532
+        status: pending
+        expectedFile: public/media/huifa/motion-3.mp4
+details:
+  variant: compare
+  eyebrow: DETAILS
+  heading: 從設計稿，到真的**動起來**
+  subtitle: 上方是設計時排的分鏡，下方是實際完成的樣貌，可以對照看看構想怎麼一步步落地。
+  items:
+    - label: DESIGN DRAFT
+      media:
+        kind: image
+        src: ../../assets/projects/huifa/card.jpg
+        alt: 匯發營造網站設計分鏡
+        aspectRatio: 1436 / 234
+        status: pending
+        expectedFile: src/assets/projects/huifa/detail-draft.jpg
+    - label: LIVE SITE
+      media:
+        kind: video
+        src: /media/huifa/detail-live.mp4
+        poster: ../../assets/projects/huifa/card-poster.jpg
+        alt: 匯發營造網站完成畫面捲動
+        aspectRatio: 1440 / 702
+        status: pending
+        expectedFile: public/media/huifa/detail-live.mp4
+visualExtension:
+  variant: mosaic
+  items:
+    - kind: image
+      src: ../../assets/projects/huifa/card.jpg
+      alt: 匯發營造網站頁面拼貼
+      aspectRatio: 1920 / 1280
+      status: pending
+      expectedFile: src/assets/projects/huifa/visual-mosaic.jpg
 links:
-  eyebrow: *todo
-  heading: *todo
-  subtitle: *todo
+  eyebrow: FROM FIGMA TO LIVE
+  heading: 從設計稿到正式上線
+  subtitle: 想直接操作看看的話，這裡有 Figma 原型和正式網站。
   cards:
-    - {
-        kind: live,
-        eyebrow: *todo,
-        label: *todo,
-        description: *todo,
-        url: *todo,
-      }
+    - kind: prototype
+      eyebrow: FIGMA PROTOTYPE
+      label: Figma 原型
+      description: 在 Figma 裡直接點擊操作，看網站的頁面與互動。
+      url: https://www.figma.com/proto/R8ikmMzwONpWdm8pmxfdS6/m000424-%E5%8C%AF%E7%99%BC%E7%87%9F%E9%80%A0%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8?node-id=893-5500&p=f&viewport=255%2C529%2C0.08&t=9PoucpoevO8aNQ96-8&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=893%3A5520&page-id=393%3A274&hide-ui=1
+    - kind: live
+      eyebrow: LIVE SITE
+      label: 正式網站
+      description: 目前上線中的版本。
+      url: https://www.huifa.com.tw/

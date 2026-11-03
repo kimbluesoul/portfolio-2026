@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
-import { DETAIL_SLOTS } from '../../lib/media-srcset';
+import { DETAIL_SLOTS, type MediaSlot } from '../../lib/media-srcset';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionIntro from '../ui/SectionIntro.astro';
 import SectionShell from '../ui/SectionShell.astro';
@@ -13,16 +13,43 @@ interface Props {
 }
 
 const { data, tone } = Astro.props;
+const COMPARE_DRAFT_SLOT = {
+  width: 1436,
+  sizes: '(width < 48rem) 1107px, 1436px',
+} satisfies MediaSlot;
 ---
 
-<SectionShell class="details" tone={tone}>
+<SectionShell class={`details details-${data.variant}`} tone={tone}>
   <SectionIntro
     eyebrow={data.eyebrow}
     heading={data.heading}
     subtitle={data.subtitle}
   />
-  <div class="details-grid">
-    {data.items.map((item) => (
+  {data.variant === 'compare' ? (
+    <div class="details-compare-items">
+      {data.items.map((item, index) => (
+        <figure class="detail-compare-item">
+          <figcaption class="detail-eyebrow">{item.label}</figcaption>
+          <div
+            class:list={[
+              'detail-compare-media',
+              index === 0 && 'detail-compare-swipe',
+            ]}
+            tabindex={index === 0 ? '0' : undefined}
+            role={index === 0 ? 'region' : undefined}
+            aria-label={index === 0 ? '設計分鏡橫向捲動區' : undefined}
+          >
+            <ProjectMedia
+              media={item.media}
+              mediaSlot={index === 0 ? COMPARE_DRAFT_SLOT : undefined}
+            />
+          </div>
+        </figure>
+      ))}
+    </div>
+  ) : (
+    <div class="details-grid">
+      {data.items.map((item) => (
       <figure
         class={`detail-card size-${item.size ?? 'half'} ${item.media.kind === 'swatches' ? 'has-swatches' : ''}`}
       >
@@ -54,6 +81,7 @@ const { data, tone } = Astro.props;
           </>
         )}
       </figure>
-    ))}
-  </div>
+      ))}
+    </div>
+  )}
 </SectionShell>

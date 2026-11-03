@@ -47,7 +47,13 @@ const showcaseSizes =
       </div>
     ))}
   </dl>
-  <div class:list={['hero-showcase', `layout-${hero.showcase.layout}`]}>
+  <div
+    class:list={[
+      'hero-showcase',
+      `layout-${hero.showcase.layout}`,
+      hero.showcase.mobileScale === 0.25 && 'mobile-scale-25',
+    ]}
+  >
     {hero.showcase.items.map((media, index) => (
       <ProjectMedia
         media={media}

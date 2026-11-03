@@ -1003,6 +1003,17 @@ const figmaSectionHeights390 = {
     ['Links', 627],
     ['Next Project', 469],
   ],
+  // HUIFA `485:1693`.
+  '/work/huifa/': [
+    ['Hero', 704],
+    ['Overview', 739],
+    ['Key Screens', 786],
+    ['Interaction & Motion', 792],
+    ['Details', 714],
+    ['Visual Extension', 410],
+    ['Links', 627],
+    ['Next Project', 469],
+  ],
 } as const;
 
 for (const [route, expectedSections] of Object.entries(
@@ -1047,6 +1058,34 @@ for (const [route, expectedSections] of Object.entries(
     }
   });
 }
+
+test('390 HUIFA Details draft is a focusable horizontal scroller', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Chromium keyboard-scroll gate.',
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/huifa/');
+
+  const scroller = page.getByRole('region', {
+    name: '設計分鏡橫向捲動區',
+  });
+  await scroller.focus();
+  await expect(scroller).toBeFocused();
+  expect(
+    await scroller.evaluate((element) => element.scrollWidth),
+  ).toBeGreaterThan(
+    await scroller.evaluate((element) => element.clientWidth),
+  );
+  await scroller.evaluate((element) => {
+    element.scrollLeft = 200;
+  });
+  expect(
+    await scroller.evaluate((element) => element.scrollLeft),
+  ).toBeGreaterThan(0);
+});
 
 test('390 Hwa Fong uses its project title size', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
