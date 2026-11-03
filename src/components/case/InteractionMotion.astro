@@ -37,7 +37,7 @@ const baseId = 'case-motion';
       class="motion-tabs"
       role="tablist"
       aria-label="互動步驟"
-      style={`--motion-step-count: ${data.steps.length};`}
+      data-step-count={data.steps.length}
     >
       {data.steps.map((step, index) => (
         <button
@@ -57,6 +57,18 @@ const baseId = 'case-motion';
 </SectionShell>
 
 <style>
+  .motion-tabs[data-step-count='1'] {
+    --motion-step-count: 1;
+  }
+
+  .motion-tabs[data-step-count='2'] {
+    --motion-step-count: 2;
+  }
+
+  .motion-tabs[data-step-count='3'] {
+    --motion-step-count: 3;
+  }
+
   .motion-tabs {
     grid-template-columns: repeat(var(--motion-step-count), minmax(0, 1fr));
   }
