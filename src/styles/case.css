@@ -1398,6 +1398,7 @@ a.link-card:focus-visible .link-arrow {
   .details-compare .detail-compare-item figcaption {
     font-size: 0.75rem;
     line-height: 1.25;
+    padding: 0;
   }
 
   .details-compare .detail-compare-item .media-frame {
