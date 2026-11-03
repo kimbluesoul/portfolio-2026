@@ -31,12 +31,15 @@ hero:
     layout: single
     items:
       - kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/sss/hero-showcase.jpg
         alt: SSS 活動頁 PC 與手機案例展示
         aspectRatio: 1920 / 820
         objectPosition: top
-        status: pending
-        expectedFile: src/assets/projects/sss/hero-showcase.jpg
+    mobileMedia:
+      kind: image
+      src: ../../assets/projects/sss/hero-showcase-mobile.jpg
+      alt: SSS 活動頁 PC 與手機案例展示
+      aspectRatio: 390 / 312
 overview:
   heading: |-
     一張主視覺，
@@ -56,39 +59,31 @@ keyScreens:
   main:
     kind: video
     src: /media/sss/key-main.mp4
-    poster: ../../assets/placeholders/placeholder.png
+    poster: ../../assets/projects/sss/key-main-poster.jpg
     alt: SSS 活動頁 PC 首頁捲動
-    aspectRatio: 16 / 9
-    status: pending
-    expectedFile: public/media/sss/key-main.mp4
+    aspectRatio: 2528 / 1216
   closeups:
     - title: 展覽介紹
       caption: 從 SSS 三個核心，帶出超透明的理念。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/sss/key-intro.jpg
         alt: 展覽介紹區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/sss/key-intro.jpg
     - title: 展覽旅程
       caption: 把展區動線畫成立體地圖，從黑暗走向透明。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/sss/key-journey.jpg
         alt: 展覽旅程立體地圖特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/sss/key-journey.jpg
     - title: 建物知情權
       caption: 用簡單的圖示與時間軸，把專業內容講清楚。
       media:
         kind: image
-        src: ../../assets/placeholders/placeholder.png
+        src: ../../assets/projects/sss/key-transparency.jpg
         alt: 建物知情權區塊特寫
         aspectRatio: 458.67 / 300
-        status: pending
-        expectedFile: src/assets/projects/sss/key-transparency.jpg
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 每一次滾動，都有新東西
@@ -99,40 +94,32 @@ motion:
       media:
         kind: video
         src: /media/sss/motion-1.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/sss/motion-1-poster.jpg
         alt: 主視覺拆解動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/sss/motion-1.mp4
+        aspectRatio: 2528 / 1216
     - title: 02　視差滾動
       body: 不同圖層以不同速度移動，每一次滾動都有新的元素進入畫面。
       media:
         kind: video
         src: /media/sss/motion-2.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/sss/motion-2-poster.jpg
         alt: 視差滾動動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/sss/motion-2.mp4
+        aspectRatio: 2528 / 1216
     - title: 03　逐段揭露
       body: 從展覽介紹、旅程導覽到建物知情權，內容隨滾動分段出現，更好吸收。
       media:
         kind: video
         src: /media/sss/motion-3.mp4
-        poster: ../../assets/placeholders/placeholder.png
+        poster: ../../assets/projects/sss/motion-3-poster.jpg
         alt: 內容逐段揭露動態
-        aspectRatio: 960 / 532
-        status: pending
-        expectedFile: public/media/sss/motion-3.mp4
+        aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic
   items:
     - kind: image
-      src: ../../assets/placeholders/placeholder.png
+      src: ../../assets/projects/sss/visual-mosaic.jpg
       alt: SSS 活動頁頁面拼貼
       aspectRatio: 1920 / 1280
-      status: pending
-      expectedFile: src/assets/projects/sss/visual-mosaic.jpg
 links:
   eyebrow: FROM FIGMA TO LIVE
   heading: 從設計稿到正式上線
