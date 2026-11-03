@@ -258,6 +258,11 @@
   aspect-ratio: 960 / 532;
 }
 
+/* Full-width page recordings (PO 2026-11-03: keep the whole width, flatter frame). */
+.ratio-2528x1216 {
+  aspect-ratio: 2528 / 1216;
+}
+
 .ratio-637x550 {
   aspect-ratio: 637 / 550;
 }
