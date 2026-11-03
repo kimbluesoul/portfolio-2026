@@ -4,6 +4,7 @@ class MotionStepsElement extends HTMLElement {
   private observer?: IntersectionObserver;
   private events?: AbortController;
   private selectedIndex = 0;
+  private pendingIndex?: number;
   private autoAdvance = false;
   private hasStarted = false;
 
@@ -30,7 +31,7 @@ class MotionStepsElement extends HTMLElement {
         });
       });
     });
-    this.select(0, false);
+    this.show(0);
 
     this.observer = new IntersectionObserver(
       ([entry]) => {
@@ -41,6 +42,7 @@ class MotionStepsElement extends HTMLElement {
         ) {
           this.hasStarted = true;
           this.observer?.disconnect();
+          void this.warmPosters();
           if (!this.shouldReduceMotion()) {
             this.autoAdvance = true;
             this.select(0, true);
@@ -58,20 +60,47 @@ class MotionStepsElement extends HTMLElement {
   }
 
   private select(index: number, play: boolean) {
-    this.selectedIndex = index;
+    this.pendingIndex = index;
     this.tabs.forEach((tab, tabIndex) => {
       const selected = tabIndex === index;
       tab.setAttribute('aria-selected', String(selected));
       tab.tabIndex = selected ? 0 : -1;
     });
     this.panels.forEach((panel, panelIndex) => {
-      const selected = panelIndex === index;
-      panel.hidden = !selected;
-      const player = panel.querySelector<HTMLElement & { play?: () => void }>(
-        'loop-video',
-      );
-      if (selected && play) player?.play?.();
+      if (panelIndex !== index) return;
+      const player = panel.querySelector<HTMLElement & { play?: () => void }>('loop-video');
+      const video = panel.querySelector<HTMLVideoElement>('video');
+      if (!play || !video) {
+        this.show(index);
+        return;
+      }
+      const reveal = () => this.show(index);
+      video.addEventListener('playing', reveal, { once: true });
+      video.addEventListener('loadeddata', reveal, { once: true });
+      player?.play?.();
     });
+  }
+
+  private show(index: number) {
+    if (this.pendingIndex !== undefined && this.pendingIndex !== index) return;
+    this.selectedIndex = index;
+    this.panels.forEach((panel, panelIndex) => {
+      const selected = panelIndex === index;
+      panel.classList.toggle('is-active', selected);
+      panel.setAttribute('aria-hidden', String(!selected));
+      panel.toggleAttribute('inert', !selected);
+    });
+  }
+
+  private async warmPosters() {
+    await Promise.all(
+      this.panels.slice(1).map(async (panel) => {
+        const poster = panel.querySelector<HTMLImageElement>('.video-poster');
+        if (!poster) return;
+        poster.loading = 'eager';
+        await poster.decode().catch(() => undefined);
+      }),
+    );
   }
 
   private selectByUser(index: number) {

@@ -27,7 +27,9 @@ const baseId = 'case-motion';
           id={`${baseId}-panel-${index}`}
           role="tabpanel"
           aria-labelledby={`${baseId}-tab-${index}`}
-          hidden={index !== 0}
+          aria-hidden={index === 0 ? 'false' : 'true'}
+          inert={index !== 0}
+          class:list={{ 'is-active': index === 0 }}
         >
           <ProjectMedia media={step.media} />
         </div>

@@ -466,6 +466,30 @@ figcaption strong {
   gap: var(--space-10);
 }
 
+.motion-stage {
+  display: grid;
+}
+
+.motion-stage [role='tabpanel'] {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.motion-stage [role='tabpanel'].is-active {
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-stage [role='tabpanel'] {
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  .motion-stage [role='tabpanel'].is-active {
+    opacity: 1;
+  }
+}
+
 .motion-tabs {
   display: grid;
 }
