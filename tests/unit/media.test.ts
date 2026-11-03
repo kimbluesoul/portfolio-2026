@@ -12,6 +12,7 @@ describe('media helpers', () => {
     expect(inferMediaSlot('key-main.mp4')).toBe('key-screen');
     expect(inferMediaSlot('motion-1.v2.mp4')).toBe('motion-step');
     expect(inferMediaSlot('card-preview.mp4')).toBe('preview');
+    expect(inferMediaSlot('key-system-pages.mp4')).toBe('preview');
   });
 
   it('enforces the hard size cap', () => {

@@ -993,6 +993,16 @@ const figmaSectionHeights390 = {
     ['Links', 577],
     ['Next Project', 469],
   ],
+  // AMD `485:1462`.
+  '/work/amd/': [
+    ['Hero', 811],
+    ['Overview', 765],
+    ['Key Screens', 786],
+    ['Interaction & Motion', 705],
+    ['Visual Extension', 410],
+    ['Links', 627],
+    ['Next Project', 469],
+  ],
 } as const;
 
 for (const [route, expectedSections] of Object.entries(
