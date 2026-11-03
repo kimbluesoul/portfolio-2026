@@ -911,6 +911,12 @@ a.link-card:focus-visible .link-arrow {
   border-radius: var(--radius-media) var(--radius-media) 0 0;
 }
 
+.visual-extension .variant-mosaic .media-frame {
+  /* A fractional grid position can anti-alias against a frame background. The
+     mosaic has no placeholder state, so keep that background transparent. */
+  background: transparent;
+}
+
 .next-name-break {
   display: none;
 }
@@ -1292,6 +1298,23 @@ a.link-card:focus-visible .link-arrow {
     max-width: none;
     height: auto;
     transform: translateX(-50%);
+  }
+
+  /* The mosaic source is 1.5:1, while its 390 px frame is 390:410. Let the
+     image's content box fill the frame so cover retains the centered crop
+     without leaving the former half-pixel gap at the bottom. */
+  /* stylelint-disable-next-line no-descending-specificity -- This must override the shared mobile composite crop. */
+  .visual-extension .variant-mosaic .media-frame:not(.has-mobile-art) > img,
+  .visual-extension
+    .variant-mosaic
+    .media-frame:not(.has-mobile-art)
+    > picture
+    > img {
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: none;
   }
 
   .case-hero
