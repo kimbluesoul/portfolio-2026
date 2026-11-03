@@ -8,6 +8,7 @@ class MotionStepsElement extends HTMLElement {
   private selectedIndex = 0;
   private autoAdvance = false;
   private hasStarted = false;
+  private hasUserSelected = false;
 
   connectedCallback() {
     this.events?.abort();
@@ -137,6 +138,7 @@ class MotionStepsElement extends HTMLElement {
   }
 
   private selectByUser(index: number) {
+    this.hasUserSelected = true;
     this.hasStarted = true;
     this.observer?.disconnect();
     this.autoAdvance = false;
@@ -145,7 +147,12 @@ class MotionStepsElement extends HTMLElement {
   }
 
   private handleEnded(index: number) {
-    if (!this.autoAdvance || index !== this.selectedIndex) return;
+    if (
+      !this.autoAdvance ||
+      this.hasUserSelected ||
+      index !== this.selectedIndex
+    )
+      return;
     if (index >= this.tabs.length - 1) {
       this.autoAdvance = false;
       return;
