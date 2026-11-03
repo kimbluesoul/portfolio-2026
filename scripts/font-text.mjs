@@ -99,52 +99,25 @@ export function withCoreBaseline(codePoints) {
   return new Set([...CORE_BASELINE, ...codePoints]);
 }
 
-// ADR-0012 amendment (2026-11-01, case LCP): a page with fewer unique glyphs
-// than this shares the `shared` file, so it does not cost an extra request.
-export const MIN_PAGE_EXT_GLYPHS = 16;
-
 /**
- * Splits the non-core glyphs of one weight into `ext` groups. Each glyph used
- * by exactly one page goes to that page's group; glyphs used by several pages
- * (or by a page below `minGlyphs` unique glyphs) go to `shared`. Browsers only
- * fetch a face whose unicode-range meets the page's text, so a case page never
- * downloads another case page's glyphs.
+ * Gives every page its own non-core glyph set. A glyph used by several pages
+ * is intentionally duplicated between their subsets: only the current page's
+ * faces are emitted into its document.
  *
  * @param {Map<string, Set<number>>} pageCodePoints page key → code points
  * @param {Set<number>} core code points already in the `core` subset
- * @returns {Map<string, Set<number>>} group name (`shared` or a page key) →
- *   code points, without empty groups, in a stable order
+ * @returns {Map<string, Set<number>>} page key → code points, without empty
+ *   groups, in a stable order
  */
-export function partitionExt(
-  pageCodePoints,
-  core,
-  minGlyphs = MIN_PAGE_EXT_GLYPHS,
-) {
-  const users = new Map();
-  for (const [page, codePoints] of pageCodePoints) {
-    for (const codePoint of codePoints) {
-      if (core.has(codePoint)) continue;
-      users.set(codePoint, [...(users.get(codePoint) ?? []), page]);
-    }
-  }
-  const byPage = new Map();
-  const shared = new Set();
-  for (const [codePoint, pages] of users) {
-    if (pages.length > 1) {
-      shared.add(codePoint);
-      continue;
-    }
-    const own = byPage.get(pages[0]) ?? new Set();
-    own.add(codePoint);
-    byPage.set(pages[0], own);
-  }
+export function partitionExt(pageCodePoints, core) {
   const groups = new Map();
-  for (const page of [...byPage.keys()].sort()) {
-    const own = byPage.get(page);
-    if (own.size >= minGlyphs) groups.set(page, own);
-    else for (const codePoint of own) shared.add(codePoint);
+  for (const page of [...pageCodePoints.keys()].sort()) {
+    const own = new Set(
+      [...pageCodePoints.get(page)].filter((codePoint) => !core.has(codePoint)),
+    );
+    if (own.size > 0) groups.set(page, own);
   }
-  return shared.size > 0 ? new Map([['shared', shared], ...groups]) : groups;
+  return groups;
 }
 
 const NAMED_ENTITIES = new Map([

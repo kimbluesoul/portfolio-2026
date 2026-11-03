@@ -69,6 +69,14 @@ const artDirected = mobileMedia
       getImage({ src: media.src }),
     ])
   : undefined;
+const artDirectedImageAttributes = artDirected
+  ? {
+      ...artDirected[4].attributes,
+      loading: eager ? ('eager' as const) : ('lazy' as const),
+      fetchpriority: eager ? ('high' as const) : ('auto' as const),
+      decoding: 'async' as const,
+    }
+  : undefined;
 ---
 
 <MediaFrame
@@ -103,11 +111,8 @@ const artDirected = mobileMedia
       />
       <img
         src={artDirected[4].src}
-        {...artDirected[4].attributes}
+        {...artDirectedImageAttributes}
         alt={media.decorative ? '' : media.alt}
-        loading={eager ? 'eager' : 'lazy'}
-        fetchpriority={eager ? 'high' : 'auto'}
-        decoding="async"
       />
     </picture>
   ) : (
