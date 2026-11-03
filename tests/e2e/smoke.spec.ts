@@ -979,8 +979,10 @@ const figmaSectionHeights390 = {
   '/work/sss/': [
     ['Hero', 811],
     ['Overview', 765],
-    ['Key Screens', 765],
-    ['Interaction & Motion', 815],
+    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 765.
+    ['Key Screens', 735],
+    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 815.
+    ['Interaction & Motion', 787],
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 469],
