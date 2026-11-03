@@ -1,6 +1,6 @@
 # ADR-0010: Quality gates and CI
 
-- Status: Accepted (2026-10-29)
+- Status: Accepted (2026-10-29). CI job layout amended by [ADR-0014](0014-ci-build-once.md) (2026-11-04).
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 
