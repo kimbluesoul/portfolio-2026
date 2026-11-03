@@ -991,8 +991,10 @@ const figmaSectionHeights390 = {
   '/work/jhanyu/': [
     ['Hero', 811],
     ['Overview', 713],
-    ['Key Screens', 786],
-    ['Interaction & Motion', 815],
+    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 786.
+    ['Key Screens', 756],
+    // Two steps and flatter 2528 / 1216 videos (PO 2026-11-03); Figma 815.
+    ['Interaction & Motion', 685],
     ['Visual Extension', 410],
     ['Links', 577],
     ['Next Project', 469],
