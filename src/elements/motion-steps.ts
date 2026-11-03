@@ -3,8 +3,9 @@ class MotionStepsElement extends HTMLElement {
   private panels: HTMLElement[] = [];
   private observer?: IntersectionObserver;
   private events?: AbortController;
+  private switchEvents?: AbortController;
+  private posterDecodes = new WeakMap<HTMLImageElement, Promise<boolean>>();
   private selectedIndex = 0;
-  private pendingIndex?: number;
   private autoAdvance = false;
   private hasStarted = false;
 
@@ -57,35 +58,54 @@ class MotionStepsElement extends HTMLElement {
   disconnectedCallback() {
     this.observer?.disconnect();
     this.events?.abort();
+    this.switchEvents?.abort();
   }
 
   private select(index: number, play: boolean) {
-    this.pendingIndex = index;
+    this.switchEvents?.abort();
+    const switchEvents = new AbortController();
+    this.switchEvents = switchEvents;
+    this.selectedIndex = index;
     this.tabs.forEach((tab, tabIndex) => {
       const selected = tabIndex === index;
       tab.setAttribute('aria-selected', String(selected));
       tab.tabIndex = selected ? 0 : -1;
     });
-    this.panels.forEach((panel, panelIndex) => {
-      if (panelIndex !== index) return;
-      const player = panel.querySelector<HTMLElement & { play?: () => void }>(
-        'loop-video',
-      );
-      const video = panel.querySelector<HTMLVideoElement>('video');
-      if (!play || !video) {
-        this.show(index);
-        return;
-      }
-      const reveal = () => this.show(index);
-      video.addEventListener('playing', reveal, { once: true });
-      video.addEventListener('loadeddata', reveal, { once: true });
-      player?.play?.();
+    const panel = this.panels[index];
+    if (!panel || !play) {
+      this.show(index);
+      return;
+    }
+
+    const reveal = () => {
+      if (switchEvents.signal.aborted) return;
+      window.clearTimeout(timeout);
+      this.show(index);
+    };
+    const timeout = window.setTimeout(reveal, 300);
+    switchEvents.signal.addEventListener(
+      'abort',
+      () => window.clearTimeout(timeout),
+      { once: true },
+    );
+
+    void this.decodePoster(panel).then((decoded) => {
+      if (decoded) reveal();
     });
+
+    const player = panel.querySelector<HTMLElement & { play?: () => void }>(
+      'loop-video',
+    );
+    const video = panel.querySelector<HTMLVideoElement>('video');
+    video?.addEventListener('loadeddata', reveal, {
+      once: true,
+      signal: switchEvents.signal,
+    });
+    player?.play?.();
   }
 
   private show(index: number) {
-    if (this.pendingIndex !== undefined && this.pendingIndex !== index) return;
-    this.selectedIndex = index;
+    if (this.selectedIndex !== index) return;
     this.panels.forEach((panel, panelIndex) => {
       const selected = panelIndex === index;
       panel.classList.toggle('is-active', selected);
@@ -96,19 +116,31 @@ class MotionStepsElement extends HTMLElement {
 
   private async warmPosters() {
     await Promise.all(
-      this.panels.slice(1).map(async (panel) => {
-        const poster = panel.querySelector<HTMLImageElement>('.video-poster');
-        if (!poster) return;
-        poster.loading = 'eager';
-        await poster.decode().catch(() => undefined);
-      }),
+      this.panels.slice(1).map((panel) => this.decodePoster(panel)),
     );
+  }
+
+  private decodePoster(panel: HTMLElement) {
+    const poster = panel.querySelector<HTMLImageElement>('.video-poster');
+    if (!poster) return Promise.resolve(false);
+
+    const existing = this.posterDecodes.get(poster);
+    if (existing) return existing;
+
+    poster.loading = 'eager';
+    const decode = poster.decode().then(
+      () => true,
+      () => false,
+    );
+    this.posterDecodes.set(poster, decode);
+    return decode;
   }
 
   private selectByUser(index: number) {
     this.hasStarted = true;
     this.observer?.disconnect();
     this.autoAdvance = false;
+    void this.warmPosters();
     this.select(index, true);
   }
 
