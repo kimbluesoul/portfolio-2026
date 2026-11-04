@@ -124,11 +124,9 @@ visualExtension:
   variant: mosaic
   mobileMedia:
     kind: image
-    src: ../../assets/placeholders/placeholder.png
+    src: ../../assets/projects/huifa/visual-mosaic-mobile.jpg
     alt: 匯發營造網站頁面拼貼
     aspectRatio: 390 / 410
-    status: pending
-    expectedFile: src/assets/projects/huifa/visual-mosaic-mobile.jpg
   items:
     - kind: image
       src: ../../assets/projects/huifa/visual-mosaic.jpg
