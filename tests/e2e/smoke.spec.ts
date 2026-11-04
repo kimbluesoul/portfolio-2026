@@ -302,6 +302,28 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
     .toBe(true);
 });
 
+test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
+  page,
+}) => {
+  await page.goto('/work/88win/');
+
+  const section = page.locator('.visual-extension');
+  const group = section.locator('reveal-on-view');
+  await group.evaluate((element) => {
+    element.scrollIntoView({ block: 'center' });
+  });
+  await expect(group).toHaveAttribute('data-inview', '');
+
+  await expect(section).toHaveCSS('background-color', 'rgb(243, 243, 243)');
+  await expect
+    .poll(() =>
+      section.evaluate((element) =>
+        getComputedStyle(element, '::before').opacity,
+      ),
+    )
+    .toBe('0');
+});
+
 test('reduced motion leaves no reveal content hidden', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/work/88win/');
