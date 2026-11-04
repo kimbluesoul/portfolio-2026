@@ -134,7 +134,8 @@ test('case header logo follows the content tone at its center line', async ({
 
   const header = page.locator('.site-header');
   const logo = header.locator('.brand');
-  const color = () => logo.evaluate((element) => getComputedStyle(element).color);
+  const color = () =>
+    logo.evaluate((element) => getComputedStyle(element).color);
 
   await expect(header).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect.poll(color).toBe('rgb(31, 59, 214)');
