@@ -143,12 +143,20 @@ Tokens:
 | `--motion-ease-hover` | `ease-out` | Figma hover / focus-visible variants |
 | `--motion-ease-emphasized` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances (fast start, long soft settle) |
 | `--motion-ease-exit` | `cubic-bezier(0.4, 0, 1, 1)` | Elements leaving |
-| `--motion-distance-reveal` | 24px | Reveal translateY |
+| `--motion-distance-reveal` | 24px desktop, **16px below 48rem** (PO 2026-11-04) | Reveal translateY |
 | `--motion-stagger` | 80ms | Between siblings in a reveal group, max 4 steps (320ms) |
 
 Behavior rules:
-- **Quiet by default.** Sections reveal once with opacity 0 → 1 and translateY 24px → 0 (`slow`, `emphasized`). They do not re-animate on scroll back.
-- **Two signature moments per case page** (Hero showcase, Visual Extension): opacity + scale 0.96 → 1 (`signature`, `emphasized`). Nothing else gets more than the quiet reveal.
+- **Scroll reveal: fade + rise + stagger** (PO 2026-11-04). Elements reveal **once** when they enter view, with opacity 0 → 1 and translateY `--motion-distance-reveal` → 0 (`slow`, `emphasized`). They do not re-animate on scroll back.
+- **Reveal groups.** Each case section after the hero reveals as groups, not as one block:
+  - the **section intro** (eyebrow, heading, subtitle) is one group;
+  - each **content group** is one group: Overview blocks, Key Screens main media and the close-up row, Mobile panels, the Motion stage and its step list, Details cards / compare items, Link cards, the Next Project card.
+  - Inside a group, items start `--motion-stagger` (80ms) apart, **at most 4 steps** (items after the 4th start with the 4th).
+  - Body paragraphs, captions and labels never reveal on their own; they move with their item.
+- **Hero: no entrance motion** (PO 2026-11-04). Neither the case hero (text, stats, showcase) nor the Home hero animates in. The hero showcase is the phone LCP element, and a fade would delay LCP (88Win gate ≤ 2500 ms).
+- **One signature moment per case page: the Visual Extension mosaic**, opacity + scale 0.96 → 1 (`signature`, `emphasized`). Nothing else gets more than the standard reveal.
+- **Home:** the project cards after the featured card and the About section use the same reveal; the project grid staggers per row.
+- Reveals never delay content behaviour: videos start and Motion steps auto-advance on their own rules (ADR-0013), even mid-reveal.
 - **Hover / focus-visible**: all states below use `250ms ease-out` and apply identically to pointer hover and keyboard focus (`465:662`, case-page frame `360:251`). The case Hero “← 所有作品” pill changes to `#111` with white text. Link cards change background and border from `#222` to `#1F3BD6`, description text from `#B3B3B3` to `#DBE3FF`, and move ↗ 8px right and 8px up. The Next arrow circle changes from `#1F3BD6` to `#111` and moves → 14px right. The lower “← 所有作品” link changes from `#5C5C5C` to `#1F3BD6` and gains an underline. Footer “BACK TO TOP” and “VIEW RESUME” change to `#9AA8FF` and gain an underline; Email / LinkedIn pills change to a white background with `#111` text and icons. Navigation items use a `#E6E6E6` background. Reduced motion removes only the arrow displacement while preserving every color and underline state.
 - **Interaction & Motion steps**: switching steps crossfades the video (`base`). The step indicator moves with `base` / `standard`. **No auto-advance**: the selected video plays once (on entering view or on selection) and stays on its last frame until the user picks another step (ADR-0013).
 - **Page transitions**: a cross-document fade (`base`) where the browser supports it. Otherwise, a normal navigation.
