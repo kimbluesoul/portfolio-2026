@@ -127,6 +127,32 @@ test('header tap targets are at least 44 × 44 px at 390 px', async ({
   expect(misses).toEqual([]);
 });
 
+test('case header logo follows the content tone at its center line', async ({
+  page,
+}) => {
+  await page.goto('/work/88win/');
+
+  const header = page.locator('.site-header');
+  const logo = header.locator('.brand');
+  const color = () => logo.evaluate((element) => getComputedStyle(element).color);
+
+  await expect(header).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect.poll(color).toBe('rgb(31, 59, 214)');
+
+  await page.locator('.interaction-motion.tone-inverse').evaluate((section) =>
+    section.scrollIntoView({ block: 'start' }),
+  );
+  await expect.poll(color).toBe('rgb(255, 255, 255)');
+
+  await page.locator('.site-footer').evaluate((footer) =>
+    footer.scrollIntoView({ block: 'start' }),
+  );
+  await expect.poll(color).toBe('rgb(255, 255, 255)');
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await expect.poll(color).toBe('rgb(31, 59, 214)');
+});
+
 test('navigation exposes the public anchor contract', async ({ page }) => {
   await page.goto('/');
   await expect(

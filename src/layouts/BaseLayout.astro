@@ -62,6 +62,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       跳至主要內容
     </a>
     <SiteHeader nav={site.nav} />
+    <header-tone></header-tone>
     <main id="main-content">
       <slot />
     </main>
@@ -78,3 +79,4 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </html>
 
 <script src="../elements/reveal-on-view.ts"></script>
+<script src="../elements/header-tone.ts"></script>
