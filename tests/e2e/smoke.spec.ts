@@ -884,6 +884,40 @@ const projectSlugs = readdirSync(
   .filter((file) => file.endsWith('.yaml'))
   .map((file) => file.replace(/\.yaml$/u, ''));
 
+test('390 HUIFA Visual Extension uses its mobile source exclusively', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Runs every project in one mobile viewport.',
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  for (const slug of projectSlugs) {
+    await page.goto(`/work/${slug}/`);
+    const frame = page
+      .locator('.visual-extension .variant-mosaic .media-frame')
+      .first();
+    const mobileSources = frame.locator('source[media="(width < 48rem)"]');
+
+    if (slug === 'huifa') {
+      await expect(frame).toHaveClass(/\bhas-mobile-art\b/u);
+      await expect(mobileSources).toHaveCount(2);
+      await frame.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          frame
+            .locator('img')
+            .evaluate((image: HTMLImageElement) => image.currentSrc),
+        )
+        .toContain('placeholder');
+    } else {
+      await expect(frame).not.toHaveClass(/\bhas-mobile-art\b/u);
+      await expect(mobileSources, `${slug} mobile sources`).toHaveCount(0);
+    }
+  }
+});
+
 test('Visual Extension mosaics fill their frames without the placeholder tone', async ({
   browser,
 }, testInfo) => {

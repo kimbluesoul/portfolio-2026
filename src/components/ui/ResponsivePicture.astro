@@ -48,6 +48,9 @@ const frameClass = [
   className,
   media.objectPosition === 'top' ? 'object-position-top' : undefined,
   mobileMedia ? 'has-mobile-art' : undefined,
+  mobileMedia?.status === 'pending' && media.status !== 'pending'
+    ? 'has-pending-mobile-art'
+    : undefined,
 ]
   .filter(Boolean)
   .join(' ');

@@ -269,6 +269,7 @@ Figma：Desktop `360:2449`／Mobile `485:1693`。規格表：[`docs/specs/huifa.
 | 4 | 主要畫面 | `key-services.jpg` | `360:2528`（服務項目） | 裁切框 | 918 × 600 |  |
 | 5 | Details | `detail-draft.jpg` | `385:672`（設計分鏡） | 直接匯出圖層 | 2872 × 468 | 手機版用同一張橫向滑動 |
 | 6 | Visual Extension | `visual-mosaic.jpg` | `360:2604` Mosaic band | 整張合成圖 | 3840 × 2560 | 拼貼整片一起匯出，手機版用同一張縮小。 |
+| 6b | Visual Extension（390） | `visual-mosaic-mobile.jpg` | `485:1868` Mosaic band（390） | 整張合成圖 | 1170 × 1230（3x） | 390 專用裁切（Figma 手機版位置與桌機不同），PO 匯出 PNG，Claude 轉 JPG。 |
 
 ### 影片
 
@@ -279,7 +280,7 @@ Figma：Desktop `360:2449`／Mobile `485:1693`。規格表：[`docs/specs/huifa.
 | 9 | Interaction & Motion | `motion-2.mp4` | 02 內容進場 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
 | 10 | Details | `detail-live.mp4` | LIVE SITE 完成畫面捲動（Figma `385:667`） | 1440 × 702 | 5 MB／8 MB | `detail-live-poster.jpg` 2880 × 1404 |
 
-**匯發營造合計：圖片 10 張（含 4 張封面）、影片 4 支。**（PO 2026-11-03：Motion 改為 2 步，拿掉 03 區塊轉場）
+**匯發營造合計：圖片 11 張（含 4 張封面）、影片 4 支。**（PO 2026-11-03：Motion 改為 2 步，拿掉 03 區塊轉場）
 
 ---
 

@@ -963,6 +963,14 @@ a.link-card:focus-visible .link-arrow {
 }
 
 @media (width >= 48rem) {
+  .media-frame.has-pending-mobile-art > picture {
+    opacity: 1;
+  }
+
+  .media-frame.has-pending-mobile-art > .pending-label {
+    display: none;
+  }
+
   .detail-card:not(.has-swatches) {
     grid-template-rows: auto minmax(0, 1fr);
     align-content: stretch;
@@ -1331,6 +1339,16 @@ a.link-card:focus-visible .link-arrow {
     height: 100%;
     object-fit: cover;
     transform: none;
+  }
+
+  .visual-extension
+    .variant-mosaic
+    .media-frame.has-mobile-art
+    > picture
+    > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .case-hero
