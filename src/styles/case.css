@@ -955,6 +955,14 @@ a.link-card:focus-visible .link-arrow {
   opacity: 0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .visual-extension:has(
+      reveal-on-view[data-reveal-ready]:not([data-inview])
+    )::before {
+    opacity: 1;
+  }
+}
+
 .next-name-break {
   display: none;
 }
