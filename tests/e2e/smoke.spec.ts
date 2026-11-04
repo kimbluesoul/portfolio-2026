@@ -883,6 +883,207 @@ const projectSlugs = readdirSync(
 )
   .filter((file) => file.endsWith('.yaml'))
   .map((file) => file.replace(/\.yaml$/u, ''));
+
+test('Visual Extension mosaics fill their frames without the placeholder tone', async ({
+  browser,
+}, testInfo) => {
+  const isDesktop = testInfo.project.name === 'chromium-desktop';
+  const isMobile = testInfo.project.name === 'webkit-iphone';
+  test.skip(!isDesktop && !isMobile, 'Desktop and iPhone layout coverage.');
+
+  const context = await browser.newContext({
+    viewport: {
+      width: isDesktop ? 1536 : 390,
+      height: isDesktop ? 730 : 844,
+    },
+    ...(isDesktop && { deviceScaleFactor: 1.25 }),
+  });
+  const page = await context.newPage();
+
+  try {
+    if (isDesktop) {
+      expect(await page.evaluate(() => window.devicePixelRatio)).toBe(1.25);
+    }
+
+    for (const slug of projectSlugs) {
+      await page.goto(`/work/${slug}/`);
+      const mosaics = page.locator(
+        '.visual-extension .variant-mosaic .media-frame',
+      );
+      expect(await mosaics.count(), `${slug} mosaic`).toBeGreaterThan(0);
+
+      const geometry = await mosaics.evaluateAll((frames) =>
+        frames.map((frame) => {
+          const image = frame.querySelector<HTMLImageElement>('img');
+          const frameRect = frame.getBoundingClientRect();
+          const imageRect = image?.getBoundingClientRect();
+          return {
+            background: getComputedStyle(frame).backgroundColor,
+            frame: {
+              x: frameRect.x,
+              y: frameRect.y,
+              width: frameRect.width,
+              height: frameRect.height,
+            },
+            image: imageRect && {
+              x: imageRect.x,
+              y: imageRect.y,
+              width: imageRect.width,
+              height: imageRect.height,
+            },
+          };
+        }),
+      );
+
+      for (const { background, frame, image } of geometry) {
+        expect(background, `${slug} mosaic frame background`).not.toBe(
+          'rgb(230, 230, 230)',
+        );
+        expect(image, `${slug} mosaic image`).toBeTruthy();
+        for (const edge of ['x', 'y'] as const) {
+          expect(
+            (image?.[edge] ?? Number.NaN) - frame[edge],
+            `${slug} mosaic ${edge}`,
+          ).toBeLessThanOrEqual(0.01);
+        }
+        expect(
+          (image?.x ?? Number.NaN) +
+            (image?.width ?? Number.NaN) -
+            (frame.x + frame.width),
+          `${slug} mosaic right edge`,
+        ).toBeGreaterThanOrEqual(-0.01);
+        expect(
+          (image?.y ?? Number.NaN) +
+            (image?.height ?? Number.NaN) -
+            (frame.y + frame.height),
+          `${slug} mosaic bottom edge`,
+        ).toBeGreaterThanOrEqual(-0.01);
+      }
+    }
+  } finally {
+    await context.close();
+  }
+});
+
+test('mosaics have no bright or dark viewport boundary rows', async ({
+  browser,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Chromium pixels only.',
+  );
+  for (const config of [
+    { width: 1920, height: 911, dpr: 1 },
+    { width: 1536, height: 730, dpr: 1.25 },
+    { width: 1280, height: 600, dpr: 1.5 },
+    { width: 1024, height: 768, dpr: 1 },
+  ]) {
+    const context = await browser.newContext({
+      viewport: { width: config.width, height: config.height },
+      deviceScaleFactor: config.dpr,
+    });
+    const page = await context.newPage();
+    try {
+      for (const slug of projectSlugs) {
+        await page.goto(`/work/${slug}/`);
+        const frame = page.locator(
+          '.visual-extension .variant-mosaic .media-frame',
+        );
+        for (const edge of ['top', 'bottom'] as const) {
+          const edgeY = await frame.evaluate(async (element, edgeName) => {
+            const rect = element.getBoundingClientRect();
+            const edge = edgeName === 'top' ? rect.top : rect.bottom;
+            window.scrollTo({
+              top: scrollY + edge - innerHeight / 2,
+              behavior: 'instant',
+            });
+            await new Promise(requestAnimationFrame);
+            await Promise.all(
+              [...element.querySelectorAll<HTMLImageElement>('img')].map(
+                async (image) => {
+                  if (!image.complete || image.naturalWidth === 0) {
+                    await new Promise<void>((resolve) =>
+                      image.addEventListener('load', () => resolve(), {
+                        once: true,
+                      }),
+                    );
+                  }
+                  await image.decode().catch(() => undefined);
+                },
+              ),
+            );
+            const settled = element.getBoundingClientRect();
+            return edgeName === 'top' ? settled.top : settled.bottom;
+          }, edge);
+          const clipY = Math.max(
+            0,
+            Math.min(config.height - 9, Math.floor(edgeY) - 4),
+          );
+          const screenshot = await page.screenshot({
+            clip: { x: 0, y: clipY, width: config.width, height: 9 },
+          });
+          const seams = await page.evaluate(
+            async ({ encoded, edges }) => {
+              const image = new Image();
+              image.src = `data:image/png;base64,${encoded}`;
+              await image.decode();
+              const canvas = document.createElement('canvas');
+              canvas.width = image.naturalWidth;
+              canvas.height = image.naturalHeight;
+              const context = canvas.getContext('2d', {
+                willReadFrequently: true,
+              });
+              if (!context) throw new Error('2D canvas unavailable.');
+              context.drawImage(image, 0, 0);
+              const data = context.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height,
+              ).data;
+              const scale = image.naturalWidth / innerWidth;
+              const mean = (row: number) => {
+                let total = 0;
+                for (let column = 0; column < canvas.width; column += 1) {
+                  const offset = (row * canvas.width + column) * 4;
+                  total +=
+                    (data[offset]! + data[offset + 1]! + data[offset + 2]!) / 3;
+                }
+                return total / canvas.width;
+              };
+              const rows: number[] = [];
+              for (const edge of edges) {
+                const center = Math.round(edge * scale);
+                for (
+                  let row = Math.max(1, center - Math.ceil(4 * scale));
+                  row <=
+                  Math.min(canvas.height - 2, center + Math.ceil(4 * scale));
+                  row += 1
+                ) {
+                  const value = mean(row);
+                  if (
+                    (value > mean(row - 1) + 4 && value > mean(row + 1) + 4) ||
+                    (value < mean(row - 1) - 4 && value < mean(row + 1) - 4)
+                  )
+                    rows.push(row);
+                }
+              }
+              return rows;
+            },
+            { encoded: screenshot.toString('base64'), edges: [4] },
+          );
+          expect(
+            seams,
+            `${slug} ${edge} ${config.width} DPR ${config.dpr}`,
+          ).toEqual([]);
+        }
+      }
+    } finally {
+      await context.close();
+    }
+  }
+});
+
 const overflowRoutes = [
   '/',
   ...projectSlugs.map((slug) => `/work/${slug}/`),
