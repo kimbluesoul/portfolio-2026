@@ -24,7 +24,7 @@ if (!featuredProject) throw new Error('At least one project is required.');
     <ProjectCard project={featuredProject} featured />
     <div class="project-grid">
       {secondaryProjects.map((project) => (
-        <reveal-on-view>
+        <reveal-on-view data-home-card data-reveal-item>
           <ProjectCard project={project} />
         </reveal-on-view>
       ))}

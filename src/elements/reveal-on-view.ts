@@ -1,5 +1,7 @@
 class RevealOnView extends HTMLElement {
   connectedCallback() {
+    const observedElement = this.firstElementChild ?? this;
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       this.dataset.inview = '';
       return;
@@ -14,7 +16,7 @@ class RevealOnView extends HTMLElement {
       },
       { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
     );
-    observer.observe(this);
+    observer.observe(observedElement);
   }
 }
 

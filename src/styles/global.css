@@ -141,18 +141,61 @@
   }
 
   reveal-on-view {
-    display: block;
+    display: contents;
   }
 
-  reveal-on-view[data-reveal-ready] {
+  reveal-on-view[data-reveal-ready]
+    > :first-child:not([data-reveal-item], :has([data-reveal-item])),
+  reveal-on-view[data-reveal-ready] [data-reveal-item] {
     transition:
       opacity var(--motion-duration-slow) var(--motion-ease-emphasized),
       transform var(--motion-duration-slow) var(--motion-ease-emphasized);
   }
 
-  reveal-on-view[data-reveal-ready]:not([data-inview]) {
+  reveal-on-view[data-reveal-ready]:not([data-inview])
+    > :first-child:not([data-reveal-item], :has([data-reveal-item])),
+  reveal-on-view[data-reveal-ready]:not([data-inview]) [data-reveal-item] {
     opacity: 0;
     transform: translateY(var(--motion-distance-reveal));
+  }
+
+  reveal-on-view[data-reveal-ready][data-inview]
+    > :first-child:not([data-reveal-item], :has([data-reveal-item])),
+  reveal-on-view[data-reveal-ready][data-inview] [data-reveal-item] {
+    opacity: 1;
+    transform: none;
+  }
+
+  reveal-on-view[data-reveal-ready] [data-reveal-item]:nth-child(2) {
+    transition-delay: var(--motion-stagger);
+  }
+
+  reveal-on-view[data-reveal-ready] [data-reveal-item]:nth-child(3) {
+    transition-delay: calc(var(--motion-stagger) * 2);
+  }
+
+  reveal-on-view[data-reveal-ready] [data-reveal-item]:nth-child(4) {
+    transition-delay: calc(var(--motion-stagger) * 3);
+  }
+
+  reveal-on-view[data-reveal-ready] [data-reveal-item]:nth-child(n + 5) {
+    transition-delay: calc(var(--motion-stagger) * 4);
+  }
+
+  reveal-on-view[data-home-card]:nth-child(even) > :first-child {
+    transition-delay: var(--motion-stagger);
+  }
+
+  reveal-on-view[data-reveal-variant='signature'][data-reveal-ready]
+    > :first-child {
+    transition-duration: var(--motion-duration-signature);
+  }
+
+  reveal-on-view[data-reveal-variant='signature'][data-reveal-ready]:not(
+      [data-inview]
+    )
+    > :first-child {
+    transform: scale(0.96);
   }
 }
 
@@ -176,7 +219,9 @@
     navigation: none;
   }
 
-  reveal-on-view[data-reveal-ready] {
+  reveal-on-view[data-reveal-ready]
+    > :first-child:not([data-reveal-item], :has([data-reveal-item])),
+  reveal-on-view[data-reveal-ready] [data-reveal-item] {
     opacity: 1;
     transform: none;
   }

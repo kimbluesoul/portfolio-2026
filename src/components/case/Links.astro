@@ -13,37 +13,50 @@ const { data, tone } = Astro.props;
 ---
 
 <SectionShell class="case-links" tone={tone}>
-  <SectionIntro
-    eyebrow={data.eyebrow}
-    heading={data.heading}
-    subtitle={data.subtitle}
-  />
-  <div class="link-cards">
-    {data.cards.map((card) => {
-      const unavailable = card.url === 'TODO(CONTENT)';
-      return unavailable ? (
-        <div class="link-card is-disabled" aria-disabled="true">
-          <span class="link-eyebrow">{card.eyebrow}</span>
-          <strong>{card.label}</strong>
-          <span class="link-description">{card.description}</span>
-        </div>
-      ) : (
-        <a
-          class="link-card"
-          href={card.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span class="link-eyebrow">{card.eyebrow}</span>
-          <strong>{card.label}</strong>
-          <span class="visually-hidden">（另開新視窗）</span>
-          <span class="link-description">{card.description}</span>
-          <span class="link-arrow" aria-hidden="true">
-            ↗
-          </span>
-        </a>
-      );
-    })}
-  </div>
-  {data.note && <p class="link-note">{data.note}</p>}
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      subtitle={data.subtitle}
+    />
+  </reveal-on-view>
+  <reveal-on-view>
+    <div class="link-cards">
+      {data.cards.map((card) => {
+        const unavailable = card.url === 'TODO(CONTENT)';
+        return unavailable ? (
+          <div
+            class="link-card is-disabled"
+            aria-disabled="true"
+            data-reveal-item
+          >
+            <span class="link-eyebrow">{card.eyebrow}</span>
+            <strong>{card.label}</strong>
+            <span class="link-description">{card.description}</span>
+          </div>
+        ) : (
+          <a
+            class="link-card"
+            href={card.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal-item
+          >
+            <span class="link-eyebrow">{card.eyebrow}</span>
+            <strong>{card.label}</strong>
+            <span class="visually-hidden">（另開新視窗）</span>
+            <span class="link-description">{card.description}</span>
+            <span class="link-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        );
+      })}
+    </div>
+  </reveal-on-view>
+  {data.note && (
+    <reveal-on-view>
+      <p class="link-note">{data.note}</p>
+    </reveal-on-view>
+  )}
 </SectionShell>

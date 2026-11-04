@@ -16,25 +16,29 @@ const { data, tone } = Astro.props;
 ---
 
 <SectionShell class="mobile-rwd" tone={tone}>
-  <SectionIntro
-    eyebrow={data.eyebrow}
-    heading={data.heading}
-    subtitle={data.subtitle}
-  />
-  <div
-    class="mobile-panels swipe-row"
-    tabindex="0"
-    role="region"
-    aria-label="手機畫面"
-  >
-    {data.panels.map((panel) => (
-      <figure>
-        <ProjectMedia media={panel.media} mediaSlot={PANEL_SLOT} />
-        <figcaption>
-          <strong>{panel.title}</strong>
-          {panel.caption}
-        </figcaption>
-      </figure>
-    ))}
-  </div>
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      subtitle={data.subtitle}
+    />
+  </reveal-on-view>
+  <reveal-on-view>
+    <div
+      class="mobile-panels swipe-row"
+      tabindex="0"
+      role="region"
+      aria-label="手機畫面"
+    >
+      {data.panels.map((panel) => (
+        <figure data-reveal-item>
+          <ProjectMedia media={panel.media} mediaSlot={PANEL_SLOT} />
+          <figcaption>
+            <strong>{panel.title}</strong>
+            {panel.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </reveal-on-view>
 </SectionShell>

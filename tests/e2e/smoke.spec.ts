@@ -272,9 +272,82 @@ test('home remains complete with reduced motion', async ({ page }) => {
   await expect(page.locator('#work article').last()).toBeVisible();
 });
 
+test('case Hero is visible before scrolling', async ({ page }) => {
+  await page.goto('/work/88win/');
+
+  const hero = page.locator('.case-hero');
+  await expect(hero.locator('h1')).toBeVisible();
+  await expect(hero.locator('.hero-headline')).toBeVisible();
+  await expect(hero.locator('.hero-showcase')).toBeVisible();
+  await expect(hero.locator('reveal-on-view')).toHaveCount(0);
+});
+
+test('a reveal group becomes completely visible in view', async ({ page }) => {
+  await page.goto('/work/88win/');
+
+  const group = page.locator('.overview-story').locator('..');
+  await group.locator('.overview-story').scrollIntoViewIfNeeded();
+  await expect(group).toHaveAttribute('data-inview', '');
+  await expect
+    .poll(() =>
+      group.locator('[data-reveal-item]').evaluateAll((items) =>
+        items.every((item) => {
+          const style = getComputedStyle(item);
+          return style.opacity === '1' && style.transform === 'none';
+        }),
+      ),
+    )
+    .toBe(true);
+});
+
+test('reduced motion leaves no reveal content hidden', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/work/88win/');
+
+  const hidden = await page.locator('reveal-on-view').evaluateAll((groups) =>
+    groups.flatMap((group) => {
+      const items = group.querySelectorAll('[data-reveal-item]');
+      const targets =
+        items.length > 0 ? Array.from(items) : [group.firstElementChild];
+      return targets
+        .filter((target): target is Element => target !== null)
+        .filter((target) => {
+          const style = getComputedStyle(target);
+          return style.opacity !== '1' || style.transform !== 'none';
+        });
+    }),
+  );
+  expect(hidden).toEqual([]);
+});
+
+test('case reveal content stays visible without JavaScript', async ({
+  browser,
+}, testInfo) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    baseURL: String(testInfo.project.use.baseURL),
+  });
+  const page = await context.newPage();
+  await page.goto('/work/88win/');
+
+  const hidden = await page.locator('reveal-on-view').evaluateAll((groups) =>
+    groups.flatMap((group) => {
+      const items = group.querySelectorAll('[data-reveal-item]');
+      const targets =
+        items.length > 0 ? Array.from(items) : [group.firstElementChild];
+      return targets
+        .filter((target): target is Element => target !== null)
+        .filter((target) => getComputedStyle(target).opacity !== '1');
+    }),
+  );
+  expect(hidden).toEqual([]);
+  await context.close();
+});
+
 test('88Win renders the M2 case template and pending-media contract', async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);

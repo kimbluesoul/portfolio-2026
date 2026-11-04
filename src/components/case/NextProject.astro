@@ -20,47 +20,57 @@ const metaParts = next.data.next.meta.split(/\s*·\s*/u);
 
 <SectionShell class="next-project" tone={tone}>
   {/* 360:1590 / 476:1929: back link | divider | eyebrow + counter, left-aligned. */}
-  <div class="next-topline">
-    <a class="back-link" href="/#work">
-      ← 所有作品
-    </a>
-    <span class="next-divider" aria-hidden="true"></span>
-    <p class="case-eyebrow">
-      NEXT PROJECT{' '}
-      <span class="next-counter">
-        {String(next.data.order).padStart(2, '0')} /{' '}
-        {String(projectCount).padStart(2, '0')}
-      </span>
-    </p>
-  </div>
-  <a href={`/work/${next.id}/`}>
-    <div class="next-heading">
-      <h2>
-        {firstNameWord}
-        {remainingNameWords.length > 0 && (
-          <>
-            <br class="next-name-break" /> {remainingNameWords.join(' ')}
-          </>
-        )}
-      </h2>
-      <span class="next-arrow" aria-hidden="true">
-        <span class="next-arrow-glyph">→</span>
-      </span>
+  <reveal-on-view>
+    <div class="next-topline">
+      <a class="back-link" href="/#work">
+        ← 所有作品
+      </a>
+      <span class="next-divider" aria-hidden="true"></span>
+      <p class="case-eyebrow">
+        NEXT PROJECT{' '}
+        <span class="next-counter">
+          {String(next.data.order).padStart(2, '0')} /{' '}
+          {String(projectCount).padStart(2, '0')}
+        </span>
+      </p>
     </div>
-    <p class="next-meta">
-      {metaParts.map((part, index) => (
-        <>
-          {index > 0 && (
+  </reveal-on-view>
+  <a href={`/work/${next.id}/`}>
+    <reveal-on-view>
+      <div class="next-heading">
+        <h2>
+          {firstNameWord}
+          {remainingNameWords.length > 0 && (
             <>
-              {' '}
-              <span class="next-meta-separator">·</span>{' '}
+              <br class="next-name-break" /> {remainingNameWords.join(' ')}
             </>
           )}
-          {part}
-        </>
-      ))}
-    </p>
-    <p class="next-body">{next.data.next.oneLiner}</p>
-    <ProjectMedia class="next-preview" media={next.data.next.media} />
+        </h2>
+        <span class="next-arrow" aria-hidden="true">
+          <span class="next-arrow-glyph">→</span>
+        </span>
+      </div>
+    </reveal-on-view>
+    <reveal-on-view>
+      <div data-reveal-item>
+        <p class="next-meta">
+          {metaParts.map((part, index) => (
+            <>
+              {index > 0 && (
+                <>
+                  {' '}
+                  <span class="next-meta-separator">·</span>{' '}
+                </>
+              )}
+              {part}
+            </>
+          ))}
+        </p>
+        <p class="next-body">{next.data.next.oneLiner}</p>
+      </div>
+    </reveal-on-view>
+    <reveal-on-view>
+      <ProjectMedia class="next-preview" media={next.data.next.media} />
+    </reveal-on-view>
   </a>
 </SectionShell>
