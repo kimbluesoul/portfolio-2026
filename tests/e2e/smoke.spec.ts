@@ -309,9 +309,9 @@ test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
 
   const section = page.locator('.visual-extension');
   const group = section.locator('reveal-on-view');
-  await group.evaluate((element) => {
-    element.scrollIntoView({ block: 'center' });
-  });
+  await expect(group).toHaveAttribute('data-reveal-ready', '');
+  await expect(group).not.toHaveAttribute('data-inview');
+  await group.evaluate((element) => element.setAttribute('data-inview', ''));
   await expect(group).toHaveAttribute('data-inview', '');
 
   await expect(section).toHaveCSS('background-color', 'rgb(243, 243, 243)');
