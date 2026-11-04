@@ -146,6 +146,11 @@ test('case header logo follows the content tone at its center line', async ({
     .evaluate((section) => section.scrollIntoView({ block: 'start' }));
   await expect.poll(color).toBe('rgb(255, 255, 255)');
 
+  await page.evaluate(() => {
+    const scrollRoom = document.createElement('div');
+    scrollRoom.style.height = `${window.innerHeight}px`;
+    document.body.append(scrollRoom);
+  });
   await page
     .locator('.site-footer')
     .evaluate((footer) => footer.scrollIntoView({ block: 'start' }));
