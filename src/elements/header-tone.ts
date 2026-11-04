@@ -21,9 +21,10 @@ class HeaderTone extends HTMLElement {
           if (entry.isIntersecting) this.#inverseTargets.add(entry.target);
           else this.#inverseTargets.delete(entry.target);
         }
-        header.toggleAttribute('data-tone', this.#inverseTargets.size > 0);
         if (this.#inverseTargets.size > 0) {
           header.dataset.tone = 'inverse';
+        } else {
+          delete header.dataset.tone;
         }
       },
       {

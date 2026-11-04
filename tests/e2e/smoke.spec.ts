@@ -217,7 +217,9 @@ test('home uses the approved copy, links, and card assets', async ({
 }) => {
   await page.goto('/');
 
-  await expect(page.locator('header img[alt="Syuan Ci"]')).toBeVisible();
+  const brand = page.getByRole('link', { name: 'Syuan Ci 首頁' });
+  await expect(brand).toBeVisible();
+  await expect(brand.locator('svg[aria-hidden="true"]')).toHaveCount(1);
   await expect(
     page.getByRole('link', { name: 'Work', exact: true }),
   ).toHaveAttribute('aria-current', 'page');
