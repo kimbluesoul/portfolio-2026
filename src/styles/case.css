@@ -927,6 +927,7 @@ a.link-card:focus-visible .link-arrow {
 .visual-extension:has(.variant-mosaic) {
   position: relative;
   z-index: 0;
+  isolation: isolate;
   background: var(--color-bg-canvas);
 }
 
