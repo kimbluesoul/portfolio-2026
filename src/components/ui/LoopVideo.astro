@@ -20,9 +20,16 @@ interface Props {
   eager?: boolean;
   class?: string | undefined;
   mediaSlot?: MediaSlot | undefined;
+  'data-playback'?: string | undefined;
 }
 
-const { class: className, eager = false, media, mediaSlot } = Astro.props;
+const {
+  class: className,
+  eager = false,
+  media,
+  mediaSlot,
+  'data-playback': dataPlayback,
+} = Astro.props;
 const sizes = mediaSlot?.sizes ?? DEFAULT_MEDIA_SIZES;
 const pending = media.status === 'pending';
 const poster = await getImage({
@@ -38,6 +45,7 @@ const poster = await getImage({
 
 <loop-video
   class={className}
+  data-playback={dataPlayback}
   data-state={pending ? 'pending' : 'idle'}
   aria-label={media.alt}
 >

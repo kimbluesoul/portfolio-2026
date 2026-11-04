@@ -15,6 +15,7 @@ interface Props {
   sizes?: string | undefined;
   mediaSlot?: MediaSlot | undefined;
   quality?: number | undefined;
+  'data-playback'?: string | undefined;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   sizes,
   mediaSlot,
   quality,
+  'data-playback': dataPlayback,
 } = Astro.props;
 ---
 
@@ -44,5 +46,6 @@ const {
     eager={eager}
     class={className}
     mediaSlot={mediaSlot}
+    data-playback={dataPlayback}
   />
 ) : null}
