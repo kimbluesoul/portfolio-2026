@@ -42,6 +42,11 @@
   color: var(--color-text-on-inverse);
 }
 
+.case-section.tone-inverse {
+  border-block: 1px solid var(--color-bg-inverse);
+  margin-block: -1px;
+}
+
 .case-eyebrow {
   color: var(--color-text-brand);
   font-family: var(--font-family-display);
@@ -915,20 +920,6 @@ a.link-card:focus-visible .link-arrow {
   /* A fractional grid position can anti-alias against a frame background. The
      mosaic has no placeholder state, so keep that background transparent. */
   background: transparent;
-}
-
-.visual-extension {
-  --mosaic-seam-top: var(--color-bg-surface);
-  --mosaic-seam-bottom: var(--color-bg-inverse);
-
-  background: linear-gradient(
-    var(--mosaic-seam-top) 50%,
-    var(--mosaic-seam-bottom) 50%
-  );
-}
-
-.tone-inverse + .visual-extension {
-  --mosaic-seam-top: var(--color-bg-inverse);
 }
 
 .next-name-break {

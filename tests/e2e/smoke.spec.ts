@@ -989,21 +989,38 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
         const frame = page.locator(
           '.visual-extension .variant-mosaic .media-frame',
         );
-        await frame.evaluate(async (element) => {
-          element.scrollIntoView({ block: 'center' });
-          await Promise.all(
-            [...element.querySelectorAll<HTMLImageElement>('img')].map(
-              (image) => image.decode().catch(() => undefined),
-            ),
-          );
-        });
         for (const edge of ['top', 'bottom'] as const) {
-          const edgeY = await frame.evaluate((element, edgeName) => {
+          const edgeY = await frame.evaluate(async (element, edgeName) => {
             const rect = element.getBoundingClientRect();
-            return edgeName === 'top' ? rect.top : rect.bottom;
+            const edge = edgeName === 'top' ? rect.top : rect.bottom;
+            window.scrollTo({
+              top: scrollY + edge - innerHeight / 2,
+              behavior: 'instant',
+            });
+            await new Promise(requestAnimationFrame);
+            await Promise.all(
+              [...element.querySelectorAll<HTMLImageElement>('img')].map(
+                async (image) => {
+                  if (!image.complete || image.naturalWidth === 0) {
+                    await new Promise<void>((resolve) =>
+                      image.addEventListener('load', () => resolve(), {
+                        once: true,
+                      }),
+                    );
+                  }
+                  await image.decode().catch(() => undefined);
+                },
+              ),
+            );
+            const settled = element.getBoundingClientRect();
+            return edgeName === 'top' ? settled.top : settled.bottom;
           }, edge);
+          const clipY = Math.max(
+            0,
+            Math.min(config.height - 9, Math.floor(edgeY) - 4),
+          );
           const screenshot = await page.screenshot({
-            clip: { x: 0, y: edgeY - 4, width: config.width, height: 9 },
+            clip: { x: 0, y: clipY, width: config.width, height: 9 },
           });
           const seams = await page.evaluate(
             async ({ encoded, edges }) => {
