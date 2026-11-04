@@ -302,7 +302,9 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
     .toBe(true);
 });
 
-test('signature mosaic keeps its seam layer hidden when reveal begins', async ({ page }) => {
+test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
+  page,
+}) => {
   await page.goto('/work/88win/');
 
   const section = page.locator('.visual-extension');
@@ -315,8 +317,8 @@ test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
   await expect(section).toHaveCSS('background-color', 'rgb(243, 243, 243)');
   await expect
     .poll(() =>
-      section.evaluate((element) =>
-        getComputedStyle(element, '::before').opacity,
+      section.evaluate(
+        (element) => getComputedStyle(element, '::before').opacity,
       ),
     )
     .toBe('0');
