@@ -239,6 +239,7 @@ const projects = defineCollection({
         .object({
           variant: z.enum(['mosaic', 'grid']),
           items: z.array(media).min(1),
+          mobileMedia: media.optional(),
         })
         .optional(),
       links: z.object({
