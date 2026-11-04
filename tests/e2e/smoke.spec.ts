@@ -965,7 +965,7 @@ test('Visual Extension mosaics fill their frames without the placeholder tone', 
   }
 });
 
-test('desktop mosaics have no bright or dark boundary rows', async ({
+test('mosaics have no bright or dark viewport boundary rows', async ({
   browser,
 }, testInfo) => {
   test.skip(
@@ -973,9 +973,10 @@ test('desktop mosaics have no bright or dark boundary rows', async ({
     'Chromium pixels only.',
   );
   for (const config of [
-    { width: 1536, height: 730, dpr: 1.25, route: '/work/fitzone/' },
-    { width: 1536, height: 730, dpr: 1.25, route: '/work/sss/' },
-    { width: 1920, height: 911, dpr: 1, route: '/work/sss/' },
+    { width: 1920, height: 911, dpr: 1 },
+    { width: 1536, height: 730, dpr: 1.25 },
+    { width: 1280, height: 600, dpr: 1.5 },
+    { width: 1024, height: 768, dpr: 1 },
   ]) {
     const context = await browser.newContext({
       viewport: { width: config.width, height: config.height },
@@ -983,67 +984,83 @@ test('desktop mosaics have no bright or dark boundary rows', async ({
     });
     const page = await context.newPage();
     try {
-      await page.goto(config.route);
-      const edges = await page
-        .locator('.visual-extension .variant-mosaic .media-frame')
-        .evaluateAll((frames) =>
-          frames.flatMap((frame) => {
-            const { top, bottom } = frame.getBoundingClientRect();
-            return [top + scrollY, bottom + scrollY];
-          }),
+      for (const slug of projectSlugs) {
+        await page.goto(`/work/${slug}/`);
+        const frame = page.locator(
+          '.visual-extension .variant-mosaic .media-frame',
         );
-      const screenshot = await page.screenshot({ fullPage: true });
-      const seams = await page.evaluate(
-        async ({ encoded, edges }) => {
-          const image = new Image();
-          image.src = `data:image/png;base64,${encoded}`;
-          await image.decode();
-          const canvas = document.createElement('canvas');
-          canvas.width = image.naturalWidth;
-          canvas.height = image.naturalHeight;
-          const context = canvas.getContext('2d', { willReadFrequently: true });
-          if (!context) throw new Error('2D canvas unavailable.');
-          context.drawImage(image, 0, 0);
-          const data = context.getImageData(
-            0,
-            0,
-            canvas.width,
-            canvas.height,
-          ).data;
-          const scale = image.naturalWidth / innerWidth;
-          const mean = (row: number) => {
-            let total = 0;
-            for (let column = 0; column < canvas.width; column += 1) {
-              const offset = (row * canvas.width + column) * 4;
-              total +=
-                (data[offset]! + data[offset + 1]! + data[offset + 2]!) / 3;
-            }
-            return total / canvas.width;
-          };
-          const rows: number[] = [];
-          for (const edge of edges) {
-            const center = Math.round(edge * scale);
-            for (
-              let row = Math.max(1, center - Math.ceil(4 * scale));
-              row <= Math.min(canvas.height - 2, center + Math.ceil(4 * scale));
-              row += 1
-            ) {
-              const value = mean(row);
-              if (
-                (value > mean(row - 1) + 4 && value > mean(row + 1) + 4) ||
-                (value < mean(row - 1) - 4 && value < mean(row + 1) - 4)
-              )
-                rows.push(row);
-            }
-          }
-          return rows;
-        },
-        { encoded: screenshot.toString('base64'), edges },
-      );
-      expect(
-        seams,
-        `${config.route} ${config.width} DPR ${config.dpr}`,
-      ).toEqual([]);
+        await frame.evaluate(async (element) => {
+          element.scrollIntoView({ block: 'center' });
+          await Promise.all(
+            [...element.querySelectorAll<HTMLImageElement>('img')].map(
+              (image) => image.decode().catch(() => undefined),
+            ),
+          );
+        });
+        for (const edge of ['top', 'bottom'] as const) {
+          const edgeY = await frame.evaluate((element, edgeName) => {
+            const rect = element.getBoundingClientRect();
+            return edgeName === 'top' ? rect.top : rect.bottom;
+          }, edge);
+          const screenshot = await page.screenshot({
+            clip: { x: 0, y: edgeY - 4, width: config.width, height: 9 },
+          });
+          const seams = await page.evaluate(
+            async ({ encoded, edges }) => {
+              const image = new Image();
+              image.src = `data:image/png;base64,${encoded}`;
+              await image.decode();
+              const canvas = document.createElement('canvas');
+              canvas.width = image.naturalWidth;
+              canvas.height = image.naturalHeight;
+              const context = canvas.getContext('2d', {
+                willReadFrequently: true,
+              });
+              if (!context) throw new Error('2D canvas unavailable.');
+              context.drawImage(image, 0, 0);
+              const data = context.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height,
+              ).data;
+              const scale = image.naturalWidth / innerWidth;
+              const mean = (row: number) => {
+                let total = 0;
+                for (let column = 0; column < canvas.width; column += 1) {
+                  const offset = (row * canvas.width + column) * 4;
+                  total +=
+                    (data[offset]! + data[offset + 1]! + data[offset + 2]!) / 3;
+                }
+                return total / canvas.width;
+              };
+              const rows: number[] = [];
+              for (const edge of edges) {
+                const center = Math.round(edge * scale);
+                for (
+                  let row = Math.max(1, center - Math.ceil(4 * scale));
+                  row <=
+                  Math.min(canvas.height - 2, center + Math.ceil(4 * scale));
+                  row += 1
+                ) {
+                  const value = mean(row);
+                  if (
+                    (value > mean(row - 1) + 4 && value > mean(row + 1) + 4) ||
+                    (value < mean(row - 1) - 4 && value < mean(row + 1) - 4)
+                  )
+                    rows.push(row);
+                }
+              }
+              return rows;
+            },
+            { encoded: screenshot.toString('base64'), edges: [4] },
+          );
+          expect(
+            seams,
+            `${slug} ${edge} ${config.width} DPR ${config.dpr}`,
+          ).toEqual([]);
+        }
+      }
     } finally {
       await context.close();
     }
