@@ -922,6 +922,17 @@ a.link-card:focus-visible .link-arrow {
   background: transparent;
 }
 
+.visual-extension:has(.variant-mosaic) {
+  background: linear-gradient(
+    var(--color-bg-surface) 50%,
+    var(--color-bg-inverse) 50%
+  );
+}
+
+.tone-inverse + .visual-extension:has(.variant-mosaic) {
+  background: var(--color-bg-inverse);
+}
+
 .next-name-break {
   display: none;
 }
