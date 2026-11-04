@@ -1333,7 +1333,11 @@ a.link-card:focus-visible .link-arrow {
     transform: none;
   }
 
-  .visual-extension .variant-mosaic .media-frame.has-mobile-art > picture > img {
+  .visual-extension
+    .variant-mosaic
+    .media-frame.has-mobile-art
+    > picture
+    > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
