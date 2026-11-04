@@ -947,6 +947,20 @@ a.link-card:focus-visible .link-arrow {
 }
 
 @media (width >= 48rem) {
+  /* Mosaic frames can land between device pixels at desktop scaling. Let the
+     image paint one CSS pixel beyond both horizontal edges so the section
+     canvas cannot mix into the image's anti-aliased boundary row. */
+  .visual-extension .variant-mosaic .media-frame {
+    overflow: clip visible;
+  }
+
+  .visual-extension .variant-mosaic .media-frame > img,
+  .visual-extension .variant-mosaic .media-frame > picture > img {
+    position: absolute;
+    inset-block-start: -1px;
+    height: calc(100% + 2px);
+  }
+
   .detail-card:not(.has-swatches) {
     grid-template-rows: auto minmax(0, 1fr);
     align-content: stretch;
