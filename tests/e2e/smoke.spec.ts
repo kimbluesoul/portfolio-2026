@@ -285,8 +285,10 @@ test('case Hero is visible before scrolling', async ({ page }) => {
 test('a reveal group becomes completely visible in view', async ({ page }) => {
   await page.goto('/work/88win/');
 
-  const group = page.locator('.overview-story').locator('..');
-  await group.locator('.overview-story').scrollIntoViewIfNeeded();
+  const group = page.locator('.link-cards').locator('..');
+  await group.locator('.link-cards').evaluate((element) => {
+    element.scrollIntoView({ block: 'center' });
+  });
   await expect(group).toHaveAttribute('data-inview', '');
   await expect
     .poll(() =>
@@ -849,6 +851,7 @@ test('360 home and case pages have no horizontal overflow', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 360, height: 800 });
   for (const route of ['/', '/work/88win/', '/work/fitzone/']) {
     await page.goto(route);
@@ -1088,6 +1091,7 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
     const context = await browser.newContext({
       viewport: { width: config.width, height: config.height },
       deviceScaleFactor: config.dpr,
+      reducedMotion: 'reduce',
     });
     const page = await context.newPage();
     try {
