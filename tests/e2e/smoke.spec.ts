@@ -314,7 +314,6 @@ test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
   await group.evaluate((element) => element.setAttribute('data-inview', ''));
   await expect(group).toHaveAttribute('data-inview', '');
 
-  await expect(section).toHaveCSS('background-color', 'rgb(243, 243, 243)');
   await expect
     .poll(() =>
       section.evaluate(

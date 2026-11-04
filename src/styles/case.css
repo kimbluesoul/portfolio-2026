@@ -928,7 +928,7 @@ a.link-card:focus-visible .link-arrow {
   position: relative;
   z-index: 0;
   isolation: isolate;
-  background: var(--color-bg-canvas);
+  background: transparent;
 }
 
 .visual-extension:has(.variant-mosaic)::before {
@@ -946,22 +946,23 @@ a.link-card:focus-visible .link-arrow {
   transition: opacity 0s var(--motion-duration-signature);
 }
 
+.visual-extension:has(reveal-on-view[data-inview]) {
+  background: transparent;
+  transition: background-color 0s var(--motion-duration-signature);
+}
+
 .tone-inverse + .visual-extension:has(.variant-mosaic)::before {
   background: var(--color-bg-inverse);
+}
+
+.visual-extension:has(reveal-on-view[data-reveal-ready]:not([data-inview])) {
+  background: var(--color-bg-canvas);
 }
 
 .visual-extension:has(
     reveal-on-view[data-reveal-ready]:not([data-inview])
   )::before {
   opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .visual-extension:has(
-      reveal-on-view[data-reveal-ready]:not([data-inview])
-    )::before {
-    opacity: 1;
-  }
 }
 
 .next-name-break {
