@@ -48,7 +48,8 @@ async function filesBelow(directory) {
 }
 
 function limitFor(file) {
-  if (file.includes('key-main')) return limits.keyScreen;
+  if (file.includes('key-main') || basename(file).startsWith('detail-'))
+    return limits.keyScreen;
   if (file.includes('motion-')) return limits.motion;
   return limits.preview;
 }

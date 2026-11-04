@@ -8,7 +8,6 @@ class MotionStepsElement extends HTMLElement {
   private selectedIndex = 0;
   private autoAdvance = false;
   private hasStarted = false;
-  private hasUserSelected = false;
 
   connectedCallback() {
     this.events?.abort();
@@ -16,11 +15,6 @@ class MotionStepsElement extends HTMLElement {
     this.events = events;
     this.tabs = [...this.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     this.panels = [...this.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
-    this.panels.forEach((panel) => {
-      panel
-        .querySelector<HTMLElement>('loop-video')
-        ?.setAttribute('data-playback', 'managed');
-    });
     this.tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => this.selectByUser(index), {
         signal: events.signal,
@@ -149,7 +143,6 @@ class MotionStepsElement extends HTMLElement {
   }
 
   private selectByUser(index: number) {
-    this.hasUserSelected = true;
     this.hasStarted = true;
     this.observer?.disconnect();
     this.autoAdvance = false;
@@ -158,12 +151,7 @@ class MotionStepsElement extends HTMLElement {
   }
 
   private handleEnded(index: number) {
-    if (
-      !this.autoAdvance ||
-      this.hasUserSelected ||
-      index !== this.selectedIndex
-    )
-      return;
+    if (!this.autoAdvance || index !== this.selectedIndex) return;
     if (index >= this.tabs.length - 1) {
       this.autoAdvance = false;
       return;

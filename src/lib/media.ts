@@ -19,7 +19,8 @@ export function pendingVideoPoster(expectedFile: string): string | null {
 }
 
 export function inferMediaSlot(fileName: string): MediaSlot {
-  if (fileName.includes('key-main')) return 'key-screen';
+  if (fileName.includes('key-main') || fileName.startsWith('detail-'))
+    return 'key-screen';
   if (fileName.includes('motion-')) return 'motion-step';
   return 'preview';
 }

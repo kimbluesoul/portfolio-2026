@@ -31,7 +31,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - uses: actions/cache@v6
+      - id: astro-assets
+        uses: actions/cache/restore@v6
         with:
           path: node_modules/.astro
           key: astro-assets-${{ runner.os }}-${{ hashFiles('src/assets/**', 'astro.config.*', 'pnpm-lock.yaml') }}
@@ -41,6 +42,11 @@ jobs:
       - run: pnpm check
       - run: pnpm test
       - run: pnpm build
+      - if: always() && steps.astro-assets.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ runner.os }}-${{ hashFiles('src/assets/**', 'astro.config.*', 'pnpm-lock.yaml') }}
       - uses: actions/upload-artifact@v6
         with:
           name: dist

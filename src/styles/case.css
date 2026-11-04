@@ -498,6 +498,8 @@ figcaption strong {
 }
 
 .motion-stage [role='tabpanel'].is-active {
+  position: relative;
+  z-index: 1;
   opacity: 1;
   transition: opacity 150ms ease;
   visibility: visible;
