@@ -140,14 +140,14 @@ test('case header logo follows the content tone at its center line', async ({
   await expect(header).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await expect.poll(color).toBe('rgb(31, 59, 214)');
 
-  await page.locator('.interaction-motion.tone-inverse').evaluate((section) =>
-    section.scrollIntoView({ block: 'start' }),
-  );
+  await page
+    .locator('.interaction-motion.tone-inverse')
+    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
   await expect.poll(color).toBe('rgb(255, 255, 255)');
 
-  await page.locator('.site-footer').evaluate((footer) =>
-    footer.scrollIntoView({ block: 'start' }),
-  );
+  await page
+    .locator('.site-footer')
+    .evaluate((footer) => footer.scrollIntoView({ block: 'start' }));
   await expect.poll(color).toBe('rgb(255, 255, 255)');
 
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
