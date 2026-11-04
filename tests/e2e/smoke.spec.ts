@@ -130,6 +130,7 @@ test('header tap targets are at least 44 × 44 px at 390 px', async ({
 test('case header logo follows the content tone at its center line', async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 1280, height: 390 });
   await page.goto('/work/88win/');
 
   const header = page.locator('.site-header');
