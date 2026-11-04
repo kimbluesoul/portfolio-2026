@@ -20,21 +20,21 @@ const metaParts = next.data.next.meta.split(/\s*·\s*/u);
 
 <SectionShell class="next-project" tone={tone}>
   {/* 360:1590 / 476:1929: back link | divider | eyebrow + counter, left-aligned. */}
-  <reveal-on-view>
-    <div class="next-topline">
-      <a class="back-link" href="/#work">
+  <div class="next-topline">
+    <reveal-on-view>
+      <a class="back-link" href="/#work" data-reveal-item>
         ← 所有作品
       </a>
-      <span class="next-divider" aria-hidden="true"></span>
-      <p class="case-eyebrow">
+      <span class="next-divider" aria-hidden="true" data-reveal-item></span>
+      <p class="case-eyebrow" data-reveal-item>
         NEXT PROJECT{' '}
         <span class="next-counter">
           {String(next.data.order).padStart(2, '0')} /{' '}
           {String(projectCount).padStart(2, '0')}
         </span>
       </p>
-    </div>
-  </reveal-on-view>
+    </reveal-on-view>
+  </div>
   <a href={`/work/${next.id}/`}>
     <reveal-on-view>
       <div class="next-heading">

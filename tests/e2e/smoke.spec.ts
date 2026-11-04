@@ -1123,6 +1123,7 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
                 },
               ),
             );
+            await new Promise(requestAnimationFrame);
             const settled = element.getBoundingClientRect();
             return edgeName === 'top' ? settled.top : settled.bottom;
           }, edge);
