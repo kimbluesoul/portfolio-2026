@@ -1,6 +1,6 @@
 # ADR-0007: CSS-first motion, no animation library
 
-- Status: Accepted (2026-10-29)
+- Status: Accepted (2026-10-29). Amended 2026-11-04 (v1.13, PO): grouped fade + rise + stagger reveals on case pages, no hero entrance, the Visual Extension as the only signature moment. Still CSS + IntersectionObserver, no library.
 - Date: 2026-10-29
 - Decider: Claude (Architect)
 
