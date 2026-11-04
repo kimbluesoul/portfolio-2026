@@ -1122,6 +1122,11 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
         const frame = page.locator(
           '.visual-extension .variant-mosaic .media-frame',
         );
+        const group = frame
+          .locator('xpath=ancestor::section[1]')
+          .locator('reveal-on-view');
+        await frame.scrollIntoViewIfNeeded();
+        await expect(group).toHaveAttribute('data-inview', '');
         for (const edge of ['top', 'bottom'] as const) {
           const edgeY = await frame.evaluate(async (element, edgeName) => {
             const rect = element.getBoundingClientRect();
