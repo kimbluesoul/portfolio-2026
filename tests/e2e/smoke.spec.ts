@@ -910,7 +910,7 @@ test('390 HUIFA Visual Extension uses its mobile source exclusively', async ({
             .locator('img')
             .evaluate((image: HTMLImageElement) => image.currentSrc),
         )
-        .toContain('placeholder');
+        .toContain('visual-mosaic-mobile');
     } else {
       await expect(frame).not.toHaveClass(/\bhas-mobile-art\b/u);
       await expect(mobileSources, `${slug} mobile sources`).toHaveCount(0);
