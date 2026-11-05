@@ -149,6 +149,10 @@ const { education, skills } = Astro.props;
     font-weight: 400;
   }
 
+  .education-block--language p:not(.label) {
+    color: var(--color-text-primary);
+  }
+
   @media (width >= 48rem) {
     .details-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
