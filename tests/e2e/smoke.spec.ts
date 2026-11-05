@@ -388,12 +388,10 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
     .toBe(true);
 });
 
-// A later PR will fix scroll restoration; re-enable this guard when it does.
-test.fixme('case scroll position is restored after reload', async ({
+test('case scroll position is restored after reload', async ({
   browserName,
   page,
 }) => {
-  test.skip(browserName !== 'chromium');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/work/88win/');
   await page.evaluate(async () => {
@@ -404,8 +402,15 @@ test.fixme('case scroll position is restored after reload', async ({
   });
   await expect
     .poll(() =>
-      page.locator('reveal-on-view[data-inview]').evaluateAll((groups) =>
-        groups.every((group) => {
+      page.locator('.case-study > .case-section').evaluateAll((sections) => {
+        const current = sections.find((section) => {
+          const box = section.getBoundingClientRect();
+          return box.top <= 0 && box.bottom > 0;
+        });
+        if (!current) return false;
+        return [
+          ...current.querySelectorAll('reveal-on-view[data-inview]'),
+        ].every((group) => {
           const items = group.querySelectorAll('[data-reveal-item]');
           const targets =
             items.length > 0 ? Array.from(items) : [group.firstElementChild];
@@ -415,8 +420,8 @@ test.fixme('case scroll position is restored after reload', async ({
               const style = getComputedStyle(target);
               return style.opacity === '1' && style.transform === 'none';
             });
-        }),
-      ),
+        });
+      }),
     )
     .toBe(true);
 
@@ -438,7 +443,54 @@ test.fixme('case scroll position is restored after reload', async ({
   const restoredTop = await sections
     .nth(before.index)
     .evaluate((element) => element.getBoundingClientRect().top);
-  expect(Math.abs(restoredTop - before.top)).toBeLessThanOrEqual(50);
+  const drift = Math.abs(restoredTop - before.top);
+  console.info(`${browserName} scroll restoration drift: ${drift}px`);
+  expect(drift).toBeLessThanOrEqual(50);
+});
+
+test('case navigation starts at the top after restoring a reload', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/88win/');
+  await page.evaluate(async () => {
+    while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
+      window.scrollBy(0, 400);
+      await new Promise((resolve) => window.setTimeout(resolve, 60));
+    }
+  });
+  await expect
+    .poll(() =>
+      page.locator('.case-study > .case-section').evaluateAll((sections) => {
+        const current = sections.find((section) => {
+          const box = section.getBoundingClientRect();
+          return box.top <= 0 && box.bottom > 0;
+        });
+        if (!current) return false;
+        return [
+          ...current.querySelectorAll('reveal-on-view[data-inview]'),
+        ].every((group) => {
+          const items = group.querySelectorAll('[data-reveal-item]');
+          const targets =
+            items.length > 0 ? Array.from(items) : [group.firstElementChild];
+          return targets
+            .filter((target): target is Element => target !== null)
+            .every((target) => {
+              const style = getComputedStyle(target);
+              return style.opacity === '1' && style.transform === 'none';
+            });
+        });
+      }),
+    )
+    .toBe(true);
+
+  await page.reload();
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(0);
+  await page.goto('/');
+  await page.goto('/work/88win/');
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });
 
 for (const route of ['/', '/work/88win/', '/resume/']) {
