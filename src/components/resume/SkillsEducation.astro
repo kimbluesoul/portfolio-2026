@@ -1,0 +1,136 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionIntro from './SectionIntro.astro';
+
+type ResumeData = CollectionEntry<'resume'>['data'];
+
+interface Props {
+  education: ResumeData['education'];
+  skills: ResumeData['skills'];
+}
+
+const { education, skills } = Astro.props;
+---
+
+<div class="details-grid">
+  <section aria-labelledby="resume-skills-heading">
+    <reveal-on-view>
+      <SectionIntro
+        eyebrow={skills.eyebrow}
+        heading={skills.heading}
+        headingId="resume-skills-heading"
+      />
+      <div class="groups">
+        {skills.groups.map((group) => (
+          <div class="group">
+            <p class="label">{group.label}</p>
+            <ul class="tags" aria-label={group.label}>
+              {group.tags.map((tag) => (
+                <li>{tag}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        {skills.note && <p class="note">{skills.note}</p>}
+      </div>
+    </reveal-on-view>
+  </section>
+  <section aria-labelledby="resume-education-heading">
+    <reveal-on-view>
+      <SectionIntro
+        eyebrow={education.eyebrow}
+        heading={education.heading}
+        headingId="resume-education-heading"
+      />
+      <div class="education-blocks">
+        {education.blocks.map((block) => (
+          <div class="education-block">
+            <p class="label">{block.label}</p>
+            <p>
+              <strong>{block.title}</strong>
+            </p>
+            {block.value && <p>{block.value}</p>}
+            {block.lines?.map((line) => (
+              <p>{line}</p>
+            ))}
+          </div>
+        ))}
+      </div>
+    </reveal-on-view>
+  </section>
+</div>
+
+<style>
+  .details-grid,
+  section,
+  .groups,
+  .group,
+  .education-blocks,
+  .education-block {
+    display: grid;
+  }
+
+  .details-grid {
+    gap: var(--space-16);
+  }
+
+  section {
+    min-width: 0;
+    gap: var(--space-6);
+  }
+
+  .groups,
+  .education-blocks {
+    gap: var(--space-8);
+  }
+
+  .group,
+  .education-block {
+    gap: var(--space-3);
+  }
+
+  .label {
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-label);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tags li {
+    max-width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: var(--header-border-width) solid var(--color-border-default);
+    border-radius: var(--radius-tag);
+    font-size: var(--font-size-body-compact);
+    overflow-wrap: anywhere;
+  }
+
+  .note,
+  .education-block {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  .note,
+  .education-block p {
+    color: var(--color-text-secondary);
+  }
+
+  .education-block strong {
+    color: var(--color-text-primary);
+  }
+
+  @media (width >= 48rem) {
+    .details-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-16);
+    }
+  }
+</style>

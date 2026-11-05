@@ -159,6 +159,7 @@
 
   --layout-home-max: 108rem;
   --layout-case-max: 90rem;
+  --layout-resume-content: 67.5rem;
   --layout-text-max: 48rem;
   --layout-page-gutter: clamp(var(--space-5), 5vw, var(--space-24));
   --layout-mobile-content: 21.875rem;

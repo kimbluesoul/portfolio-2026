@@ -13,6 +13,11 @@ const projectSlug = z.enum([
   'huifa',
 ]);
 
+const stat = z.object({
+  label: z.string().min(1),
+  value: z.string().min(1),
+});
+
 const contentUrl = z.union([z.url(), z.literal('TODO(CONTENT)')]);
 
 const projects = defineCollection({
@@ -128,11 +133,6 @@ const projects = defineCollection({
     const compareDetailItem = z.object({
       label: z.string().min(1),
       media,
-    });
-
-    const stat = z.object({
-      label: z.string().min(1),
-      value: z.string().min(1),
     });
 
     return z.object({
@@ -309,4 +309,76 @@ const site = defineCollection({
   }),
 });
 
-export const collections = { projects, site };
+const resumeEntry = z.object({
+  period: z.string().min(1),
+  duration: z.string().min(1),
+  title: z.string().min(1),
+  badge: z.string().min(1).optional(),
+  org: z.string().min(1),
+  industry: z.string().min(1).optional(),
+  body: z.string().min(1),
+  projects: z
+    .array(
+      z.object({
+        label: z.string().min(1),
+        slug: projectSlug,
+      }),
+    )
+    .optional(),
+});
+
+const resumeSection = z.object({
+  heading: z.string().min(1),
+  eyebrow: z.string().min(1),
+});
+
+const resume = defineCollection({
+  loader: file('./src/content/resume.yaml'),
+  schema: z.object({
+    seo: z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+    }),
+    header: z.object({
+      eyebrow: z.string().min(1),
+      nameZh: z.string().min(1),
+      nameEn: z.string().min(1),
+      role: z.string().min(1),
+      focus: z.string().min(1),
+      email: z.email(),
+      location: z.string().min(1),
+      download: z.object({
+        label: z.string().min(1),
+        href: z.literal('/files/Syuan-Ci-Resume.pdf'),
+      }),
+    }),
+    summary: z.string().min(1),
+    facts: z.tuple([stat, stat, stat, stat]),
+    experience: resumeSection.extend({
+      entries: z.array(resumeEntry).min(1),
+    }),
+    earlier: resumeSection.extend({ entries: z.array(resumeEntry) }).optional(),
+    skills: resumeSection.extend({
+      groups: z.array(
+        z.object({
+          label: z.string().min(1),
+          tags: z.array(z.string().min(1)).min(1),
+        }),
+      ),
+      note: z.string().min(1).optional(),
+    }),
+    education: resumeSection.extend({
+      blocks: z.array(
+        z.object({
+          label: z.string().min(1),
+          title: z.string().min(1),
+          value: z.string().min(1).optional(),
+          lines: z.array(z.string().min(1)).optional(),
+        }),
+      ),
+    }),
+    about: resumeSection.extend({ body: z.string().min(1) }),
+  }),
+});
+
+export const collections = { projects, site, resume };

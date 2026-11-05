@@ -1,21 +1,56 @@
 ---
 import { getEntry } from 'astro:content';
+import EntrySection from '../components/resume/EntrySection.astro';
+import ResumeAbout from '../components/resume/ResumeAbout.astro';
+import ResumeHeader from '../components/resume/ResumeHeader.astro';
+import ResumeOverview from '../components/resume/ResumeOverview.astro';
+import SkillsEducation from '../components/resume/SkillsEducation.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const siteEntry = await getEntry('site', 'site');
 if (!siteEntry) throw new Error('Missing site content entry.');
+const resumeEntry = await getEntry('resume', 'resume');
+if (!resumeEntry) throw new Error('Missing resume content entry.');
+
+const { data } = resumeEntry;
 ---
 
 <BaseLayout
-  title="履歷｜周泫淇 Syuan Ci"
-  description={siteEntry.data.seo.description}
+  title={data.seo.title}
+  description={data.seo.description}
   site={siteEntry.data}
 >
-  <section class="placeholder-page">
-    <h1>Resume Placeholder</h1>
-    <p>The responsive web resume is intentionally deferred to M4.</p>
-    <a href="/files/Syuan-Ci-Resume.pdf" download>
-      Download PDF
-    </a>
-  </section>
+  <div class="resume-page">
+    <ResumeHeader data={data.header} />
+    <ResumeOverview summary={data.summary} facts={data.facts} />
+    <EntrySection
+      data={data.experience}
+      headingId="resume-experience-heading"
+    />
+    {data.earlier && (
+      <EntrySection data={data.earlier} headingId="resume-earlier-heading" />
+    )}
+    <SkillsEducation skills={data.skills} education={data.education} />
+    <ResumeAbout data={data.about} />
+  </div>
 </BaseLayout>
+
+<style>
+  .resume-page {
+    display: grid;
+    width: min(
+      calc(100% - var(--layout-page-gutter) * 2),
+      var(--layout-resume-content)
+    );
+    gap: var(--space-18);
+    margin-inline: auto;
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  @media (width >= 48rem) {
+    .resume-page {
+      gap: var(--space-24);
+      padding-block-start: var(--space-24);
+    }
+  }
+</style>

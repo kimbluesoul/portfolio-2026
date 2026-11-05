@@ -22,11 +22,13 @@ export const WEIGHT_SELECTORS = {
     'b',
     'th',
     '.case-study strong',
+    '.accent-emphasis',
     '.hero-headline',
     '.hero-stats dd',
     '.story-title',
     '.pending-label',
     '.case-hero .case-eyebrow',
+    '.resume-role',
     '.next-arrow',
     // 600, drawn with the 700 face; "H5／APP PROTOTYPE" has a full-width slash.
     '.link-eyebrow',
@@ -54,7 +56,9 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
   '.next-topline .case-eyebrow',
   '.outputs-label',
   '.resume-link',
+  '.section-eyebrow',
   '.swatch-hex',
+  '.label',
   '.tag-latin',
   '.work-cue',
 ];
