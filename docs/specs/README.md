@@ -22,6 +22,12 @@ Before ChatGPT starts a page, Claude writes `docs/specs/<slug>.md` (home and res
    - **out of scope**: what this page deliberately does not do.
    Loading / empty / error states are listed only where the page has them (pending media is covered by ARCHITECTURE §9.3).
 
+**Precision rules (adopted 2026-11-05, after the M4 resume needed two extra rounds):**
+- **Measure first.** Every number is measured from the source before the sheet is written (Figma Dev Mode values, or the font sizes in a PDF's content streams) and names its source. Never write "nearest token", "about", or "reuse the closest": that hands the judgment to the implementer.
+- **Distances name both edges**, for example "period left edge → entry title left edge: 267 px", never "left column 267 px".
+- **No empty cells.** Every element row gives size, weight, line height, colour, and spacing. Every sheet also states the page-level items: background, content width, gutters, dividers.
+- **Measurement table.** The Acceptance section carries the table of computed values to check at 1920 and 390. The implementer measures the built page (computed styles) and pastes the filled table into the PR **before** review; the review re-measures the same table. For a page without a Figma frame, the table may become an E2E assertion.
+
 Rules:
 - Figma stays the source of truth. If the sheet and Figma disagree, Figma wins: raise it in the PR, and Claude fixes the sheet.
 - ChatGPT copies strings from the sheet. It does not retype them from Figma.

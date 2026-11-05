@@ -162,7 +162,7 @@ Measured from the PDF content streams. The PDF content column is 658 units wide 
 | Entry body | 12.8 | 21 px, line height 1.75 | 15 px, 1.7 | |
 | Project tags, skill / tool tags | 10.4 | 17 px | 12 px | tag chip |
 | Group labels (`SKILLS`, `TOOLS`, `EDUCATION`, …) | 9.9 | 16 px | 12 px | 500, brand blue, letter-spaced |
-| Skills note; the whole LANGUAGE line (`英文` + value); LOOKING FOR title and line | 12.8 | 21 px | 15 px | **400** (no bold); LOOKING FOR second line grey |
+| Skills note; the whole LANGUAGE line (`英文` + value); LOOKING FOR title and line | 12.8 | 21 px | 15 px | **400** (no bold); text-primary (dark), including the LANGUAGE value; only the LOOKING FOR second line is grey |
 | Education title `私立東海大學` / lines | 13.9 / 11.7 | 23 / 19 px | 16 / 14 px | 700 / grey |
 | About paragraphs | 12.0 | 19.5 px, line height 1.7 | 14 px, 1.7 | |
 
