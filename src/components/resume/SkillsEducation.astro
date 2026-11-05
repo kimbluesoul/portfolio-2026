@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { education, skills } = Astro.props;
+const fullWidthSpace = '\u3000';
 ---
 
 <div class="details-grid">
@@ -43,23 +44,32 @@ const { education, skills } = Astro.props;
         headingId="resume-education-heading"
       />
       <div class="education-blocks">
-        {education.blocks.map((block) => (
-          <div
-            class:list={[
-              'education-block',
-              `education-block--${block.label.toLowerCase().replaceAll(' ', '-')}`,
-            ]}
-          >
-            <p class="label">{block.label}</p>
-            <p>
-              <strong>{block.title}</strong>
-            </p>
-            {block.value && <p>{block.value}</p>}
-            {block.lines?.map((line) => (
-              <p>{line}</p>
-            ))}
-          </div>
-        ))}
+        {education.blocks.map((block) => {
+          const className = `education-block--${block.label.toLowerCase().replaceAll(' ', '-')}`;
+
+          return (
+            <div class:list={['education-block', className]}>
+              <p class="label">{block.label}</p>
+              {block.label === 'LANGUAGE' ? (
+                <p class="language-line">
+                  <strong>{block.title}</strong>
+                  {fullWidthSpace}
+                  {block.value}
+                </p>
+              ) : (
+                <>
+                  <p>
+                    <strong>{block.title}</strong>
+                  </p>
+                  {block.value && <p>{block.value}</p>}
+                  {block.lines?.map((line) => (
+                    <p>{line}</p>
+                  ))}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
     </reveal-on-view>
   </section>
@@ -86,12 +96,24 @@ const { education, skills } = Astro.props;
 
   .groups,
   .education-blocks {
-    gap: var(--space-8);
+    gap: 0;
   }
 
   .group,
   .education-block {
-    gap: var(--space-3);
+    font-size: var(--resume-font-size-entry-body);
+    line-height: var(--resume-line-height-entry-body);
+    gap: 0;
+    margin: 0;
+    margin-block-end: calc(
+      var(--resume-space-details-block-to-label) -
+        var(--resume-space-details-line-to-line)
+    );
+  }
+
+  .group:last-child,
+  .education-block:last-child {
+    margin-block-end: 0;
   }
 
   .label {
@@ -100,25 +122,29 @@ const { education, skills } = Astro.props;
     font-size: var(--resume-font-size-group-label);
     font-weight: 500;
     letter-spacing: var(--letter-spacing-label);
+    line-height: normal;
+    margin: 0;
+    margin-block-end: calc(var(--resume-space-details-label-to-line) - 1lh);
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
+    gap: 0 var(--space-2);
   }
 
   .tags li {
     max-width: 100%;
     padding: var(--space-2) var(--space-3);
+    padding-block: calc((var(--resume-space-details-line-to-line) - 1em) / 2);
     border: var(--header-border-width) solid var(--color-border-default);
     border-radius: var(--radius-tag);
     font-size: var(--resume-font-size-tag);
+    line-height: 1;
     overflow-wrap: anywhere;
   }
 
-  .note,
-  .education-block {
+  .note {
     font-size: var(--resume-font-size-entry-body);
     line-height: var(--resume-line-height-entry-body);
   }
@@ -126,11 +152,13 @@ const { education, skills } = Astro.props;
   .note,
   .education-block p {
     color: var(--color-text-secondary);
+    margin: 0;
   }
 
   .education-block strong {
     color: var(--color-text-primary);
     font-size: var(--resume-font-size-education-title);
+    line-height: 1;
   }
 
   .education-block p:not(.label) {
@@ -151,6 +179,15 @@ const { education, skills } = Astro.props;
 
   .education-block--language p:not(.label) {
     color: var(--color-text-primary);
+  }
+
+  .education-block p:not(.label) + p:not(.label) {
+    margin-block-start: calc(var(--resume-space-details-line-to-line) - 1lh);
+  }
+
+  .education-block .label {
+    color: var(--color-text-brand);
+    margin-block-end: calc(var(--resume-space-details-label-to-line) - 1lh);
   }
 
   @media (width >= 48rem) {

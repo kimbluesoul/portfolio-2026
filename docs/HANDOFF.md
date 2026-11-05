@@ -13,7 +13,7 @@
 ## Open PRs
 | PR | What | Waiting on |
 |---|---|---|
-| — | None after #75 merges | — |
+| `fix/resume-education` | Resume skills / education hierarchy: blue group labels, measured block rhythm, LANGUAGE on one line (spec on this branch) | Codex |
 
 ## Next owner and next action
 1. **Codex**: the backlog below, one task brief at a time, when the Product Owner wants it.

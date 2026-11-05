@@ -302,6 +302,21 @@
     calc(1.0972rem + 3.1829vw),
     3.6875rem
   );
+  --resume-space-details-label-to-line: clamp(
+    1.9375rem,
+    calc(1.5463rem + 1.6049vw),
+    2.75rem
+  );
+  --resume-space-details-line-to-line: clamp(
+    1.5625rem,
+    calc(1.2616rem + 1.2346vw),
+    2.1875rem
+  );
+  --resume-space-details-block-to-label: clamp(
+    2.5625rem,
+    calc(2.0509rem + 2.0988vw),
+    3.625rem
+  );
 
   /* Right entry column starts 267 px from the period: left column + gap. */
   --resume-entry-meta-width: calc(16.6875rem - var(--space-10));
