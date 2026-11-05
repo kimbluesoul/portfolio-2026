@@ -160,6 +160,57 @@ test('case header logo follows the content tone at its center line', async ({
   await expect.poll(color).toBe('rgb(31, 59, 214)');
 });
 
+test('header background appears only after scrolling and follows the page tone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('/work/88win/');
+
+  const header = page.locator('.site-header');
+  const background = () =>
+    header.evaluate((element) => getComputedStyle(element).backgroundColor);
+  const expectedBackground = (color: string) =>
+    header.evaluate((element, value) => {
+      const sample = document.createElement('div');
+      sample.style.backgroundColor = value;
+      element.append(sample);
+      const computed = getComputedStyle(sample).backgroundColor;
+      sample.remove();
+      return computed;
+    }, color);
+
+  await expect(header).not.toHaveAttribute('data-scrolled');
+  await expect.poll(background).toBe('rgba(0, 0, 0, 0)');
+
+  await page
+    .locator('.overview.tone-canvas')
+    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
+  await expect(header).toHaveAttribute('data-scrolled', '');
+  await expect
+    .poll(background)
+    .toBe(
+      await expectedBackground(
+        'color-mix(in srgb, var(--color-bg-canvas) 85%, transparent)',
+      ),
+    );
+  await expect(header).toHaveCSS('backdrop-filter', 'blur(12px)');
+
+  await page
+    .locator('.interaction-motion.tone-inverse')
+    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
+  await expect
+    .poll(background)
+    .toBe(
+      await expectedBackground(
+        'color-mix(in srgb, var(--color-bg-inverse) 85%, transparent)',
+      ),
+    );
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await expect(header).not.toHaveAttribute('data-scrolled');
+  await expect.poll(background).toBe('rgba(0, 0, 0, 0)');
+});
+
 test('navigation exposes the public anchor contract', async ({ page }) => {
   await page.goto('/');
   await expect(

@@ -1,6 +1,7 @@
 class HeaderTone extends HTMLElement {
   #header?: HTMLElement;
   #observer?: IntersectionObserver;
+  #scrollObserver?: IntersectionObserver;
   #inverseTargets = new Set<Element>();
 
   #createObserver = () => {
@@ -40,6 +41,20 @@ class HeaderTone extends HTMLElement {
     }
   };
 
+  #createScrollObserver = () => {
+    this.#scrollObserver?.disconnect();
+
+    const header = this.#header;
+    const sentinel = document.querySelector('.header-scroll-sentinel');
+    if (!header || !sentinel) return;
+
+    this.#scrollObserver = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting) delete header.dataset.scrolled;
+      else header.dataset.scrolled = '';
+    });
+    this.#scrollObserver.observe(sentinel);
+  };
+
   connectedCallback() {
     const header = this.previousElementSibling;
     if (!(header instanceof HTMLElement) || !header.matches('.site-header'))
@@ -47,13 +62,16 @@ class HeaderTone extends HTMLElement {
 
     this.#header = header;
     this.#createObserver();
+    this.#createScrollObserver();
     window.addEventListener('resize', this.#createObserver, { passive: true });
   }
 
   disconnectedCallback() {
     this.#observer?.disconnect();
+    this.#scrollObserver?.disconnect();
     window.removeEventListener('resize', this.#createObserver);
     this.#header?.removeAttribute('data-tone');
+    this.#header?.removeAttribute('data-scrolled');
   }
 }
 
