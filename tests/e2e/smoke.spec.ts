@@ -388,6 +388,85 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
     .toBe(true);
 });
 
+// A later PR will fix scroll restoration; re-enable this guard when it does.
+test.fixme('case scroll position is restored after reload', async ({
+  browserName,
+  page,
+}) => {
+  test.skip(browserName !== 'chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/work/88win/');
+  await page.evaluate(async () => {
+    while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
+      window.scrollBy(0, 400);
+      await new Promise((resolve) => window.setTimeout(resolve, 60));
+    }
+  });
+  await expect
+    .poll(() =>
+      page.locator('reveal-on-view[data-inview]').evaluateAll((groups) =>
+        groups.every((group) => {
+          const items = group.querySelectorAll('[data-reveal-item]');
+          const targets =
+            items.length > 0 ? Array.from(items) : [group.firstElementChild];
+          return targets
+            .filter((target): target is Element => target !== null)
+            .every((target) => {
+              const style = getComputedStyle(target);
+              return style.opacity === '1' && style.transform === 'none';
+            });
+        }),
+      ),
+    )
+    .toBe(true);
+
+  const sections = page.locator('.case-study > .case-section');
+  const before = await sections.evaluateAll((elements) => {
+    const index = elements.findIndex((element) => {
+      const box = element.getBoundingClientRect();
+      return box.top <= 0 && box.bottom > 0;
+    });
+    if (index < 0) throw new Error('No case section crosses the viewport top.');
+    return { index, top: elements[index]!.getBoundingClientRect().top };
+  });
+
+  await page.reload();
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(0);
+  await page.waitForTimeout(1_000);
+  const restoredTop = await sections
+    .nth(before.index)
+    .evaluate((element) => element.getBoundingClientRect().top);
+  expect(Math.abs(restoredTop - before.top)).toBeLessThanOrEqual(50);
+});
+
+for (const route of ['/', '/work/88win/', '/resume/']) {
+  test(`${route} external links expose the new-window contract`, async ({
+    page,
+  }) => {
+    await page.goto(route);
+    const links = page.locator('a[target="_blank"]');
+    expect(await links.count()).toBeGreaterThan(0);
+
+    for (const link of await links.all()) {
+      await link.scrollIntoViewIfNeeded();
+      const rel = (await link.getAttribute('rel'))?.split(/\s+/u) ?? [];
+      expect(rel).toContain('noopener');
+      expect(rel).toContain('noreferrer');
+
+      const hidden = link.locator('.visually-hidden');
+      await expect(hidden).toHaveCount(1);
+      await expect(hidden).toHaveText('（另開新視窗）');
+      const box = await hidden.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.width).toBeLessThanOrEqual(1);
+      expect(box!.height).toBeLessThanOrEqual(1);
+      await expect(link).toHaveAccessibleName(/另開新視窗/u);
+    }
+  });
+}
+
 test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
   page,
 }) => {
