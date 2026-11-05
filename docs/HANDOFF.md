@@ -3,9 +3,9 @@
 > A status index, not a log (adopted 2026-11-05). Every agent reads it first and updates it when project state changes. Details live in specs, ADRs, ARCHITECTURE, and the PRs; link to them instead of copying them here. The M0–M2 implementation notes that used to be here are in the git history of this file (before PR #72).
 
 ## Status (2026-11-05)
-- **Milestone**: M1 Home, M2 case template and **M3 (all seven case studies, with media) are done**. **M4 (`/resume/`) is specified** ([`specs/resume.md`](specs/resume.md)); M5 (launch hardening) has not started.
+- **Milestone**: M1 Home, M2 case template and **M3 (all seven case studies, with media) and M4 (`/resume/`, #74) are done**. M5 (launch hardening) has not started.
 - **Content**: no pending media and no `TODO(CONTENT)` remain.
-- **Architecture**: ARCHITECTURE v1.14 (PR #72) records the M3 state.
+- **Architecture**: ARCHITECTURE v1.15 (PR #73) adds the resume model; v1.14 (PR #72) records the M3 state.
 - **Staging** (mirrors `main` on every merge): `https://staging-portfolio-2026.kimbluesoul.workers.dev/`
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) still shows the M0 build by decision (option A, 2026-10-30). Its content gate is now open; production updates when the Product Owner turns production deploys back on. Until then **a red "Workers Builds" check on `main` is expected**.
 - **Repository** is public since 2026-11-05 (ADR-0014 amendment).
@@ -13,12 +13,12 @@
 ## Open PRs
 | PR | What | Waiting on |
 |---|---|---|
-| #73 | M4 resume spec sheet + ARCHITECTURE v1.15 (resume content model, Q11 resolved) | Product Owner merge |
+| `fix/resume-polish` | #74 P3s: `｜` gaps, entry column offset, LANGUAGE / LOOKING FOR sizes (spec clarified on this branch) | Codex |
 
 ## Next owner and next action
-1. **Product Owner**: merge #73, then paste Claude's M4 task brief to Codex.
-2. **Codex**: implement M4 `/resume/` from [`specs/resume.md`](specs/resume.md).
-3. **Claude**: review the M4 PR; production-switch steps when asked; re-encode HUIFA `detail-live.mp4` at 1920 w (media PR).
+1. **Codex**: the resume polish on `fix/resume-polish` (task brief from Claude).
+2. **Product Owner**: decide when to switch production on (M5 / launch).
+3. **Claude**: review the polish PR; production-switch steps when asked; re-encode HUIFA `detail-live.mp4` at 1920 w (media PR).
 
 ## Blockers and decisions pending
 | Item | Blocks | Owner |
@@ -58,7 +58,7 @@ Decisions live where they apply. Start here:
 | M1 Home | Done (#10) |
 | M2 Case template + 88Win | Done (#14, follow-ups through #46) |
 | M3 Remaining case studies | Done: pages #21, #31, #49–#53; media #54–#60, #66, #71; reveals #68; header #69 / #70 |
-| M4 Resume | Spec written (#73); implementation next |
+| M4 Resume | Done (#73 spec, #74 implementation; polish in progress) |
 | M5 Launch hardening | Not started |
 
 ## Workflow

@@ -158,15 +158,15 @@ Measured from the PDF content streams. The PDF content column is 658 units wide 
 | Section `h2` | 16.0 | 26 px | 19 px | 700 |
 | Period / duration | 11.5 / 10.4 | 19 / 17 px | 13.5 / 12 px | duration grey |
 | Entry title `h3` / badge | 14.4 / 9.9 | 23.5 / 16 px | 17 / 12 px | 700 / brand-blue pill |
-| Org ｜ industry | 11.7 | 19 px | 14 px | grey; `｜` with no extra gap |
+| Org ｜ industry | 11.7 | 19 px | 14 px | grey; `｜` is plain text between them: no margin, padding, or extra spaces (the full-width character is its own gap) |
 | Entry body | 12.8 | 21 px, line height 1.75 | 15 px, 1.7 | |
 | Project tags, skill / tool tags | 10.4 | 17 px | 12 px | tag chip |
 | Group labels (`SKILLS`, `TOOLS`, `EDUCATION`, …) | 9.9 | 16 px | 12 px | 500, brand blue, letter-spaced |
-| Skills note, LANGUAGE value, LOOKING FOR | 12.8 | 21 px | 15 px | |
+| Skills note; the whole LANGUAGE line (`英文` + value); LOOKING FOR title and line | 12.8 | 21 px | 15 px | **400** (no bold); LOOKING FOR second line grey |
 | Education title `私立東海大學` / lines | 13.9 / 11.7 | 23 / 19 px | 16 / 14 px | 700 / grey |
 | About paragraphs | 12.0 | 19.5 px, line height 1.7 | 14 px, 1.7 | |
 
-Spacing and columns scale by the same factor. Desktop reference values (PDF × 1.64): entry left column **267 px** (PDF 163); fact-card padding about 21 px and gap about 20 px; from a section `h2` to its first entry about 100 px; between the summary and the fact cards about 50 px; the skills and education columns are equal with a gap of about 59 px. The header hairline is visible light grey (`--color-border-default`), not 10 % black.
+Spacing and columns scale by the same factor. Desktop reference values (PDF × 1.64): entry right column starts **267 px** from the left edge of the period (PDF 163; this is the left column **plus** its gap, not the column alone); fact-card padding about 21 px and gap about 20 px; from a section `h2` to its first entry about 100 px; between the summary and the fact cards about 50 px; the skills and education columns are equal with a gap of about 59 px. The header hairline is visible light grey (`--color-border-default`), not 10 % black.
 
 ## Layout (mobile, below the 48rem switch)
 No 390 design exists. Q3: mobile **stacks** the two-column rows.
