@@ -20,68 +20,75 @@ const COMPARE_DRAFT_SLOT = {
 ---
 
 <SectionShell class={`details details-${data.variant}`} tone={tone}>
-  <SectionIntro
-    eyebrow={data.eyebrow}
-    heading={data.heading}
-    subtitle={data.subtitle}
-  />
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      subtitle={data.subtitle}
+    />
+  </reveal-on-view>
   {data.variant === 'compare' ? (
-    <div class="details-compare-items">
-      {data.items.map((item, index) => (
-        <figure class="detail-compare-item">
-          <figcaption class="detail-eyebrow">{item.label}</figcaption>
-          <div
-            class:list={[
-              'detail-compare-media',
-              index === 0 && 'detail-compare-swipe',
-            ]}
-            tabindex={index === 0 ? '0' : undefined}
-            role={index === 0 ? 'region' : undefined}
-            aria-label={index === 0 ? '設計分鏡橫向捲動區' : undefined}
-          >
-            <ProjectMedia
-              media={item.media}
-              mediaSlot={index === 0 ? COMPARE_DRAFT_SLOT : undefined}
-            />
-          </div>
-        </figure>
-      ))}
-    </div>
-  ) : (
-    <div class="details-grid">
-      {data.items.map((item) => (
-        <figure
-          class={`detail-card size-${item.size ?? 'half'} ${item.media.kind === 'swatches' ? 'has-swatches' : ''}`}
-        >
-          {item.media.kind === 'swatches' ? (
-            <>
-              <figcaption>
-                {item.eyebrow && (
-                  <span class="detail-eyebrow">{item.eyebrow}</span>
-                )}
-                <strong>{item.title}</strong>
-              </figcaption>
-              {item.caption && <p class="swatch-caption">{item.caption}</p>}
-              <ColorSwatches colors={item.media.colors} />
-            </>
-          ) : (
-            <>
-              <figcaption>
-                {item.eyebrow && (
-                  <span class="detail-eyebrow">{item.eyebrow}</span>
-                )}
-                <strong>{item.title}</strong>
-                {item.caption && <span>{item.caption}</span>}
-              </figcaption>
+    <reveal-on-view>
+      <div class="details-compare-items">
+        {data.items.map((item, index) => (
+          <figure class="detail-compare-item" data-reveal-item>
+            <figcaption class="detail-eyebrow">{item.label}</figcaption>
+            <div
+              class:list={[
+                'detail-compare-media',
+                index === 0 && 'detail-compare-swipe',
+              ]}
+              tabindex={index === 0 ? '0' : undefined}
+              role={index === 0 ? 'region' : undefined}
+              aria-label={index === 0 ? '設計分鏡橫向捲動區' : undefined}
+            >
               <ProjectMedia
                 media={item.media}
-                mobileMedia={item.mobileMedia}
-                mediaSlot={DETAIL_SLOTS[item.size ?? 'half']}
+                mediaSlot={index === 0 ? COMPARE_DRAFT_SLOT : undefined}
               />
-            </>
-          )}
-        </figure>
-      ))}
-    </div>
+            </div>
+          </figure>
+        ))}
+      </div>
+    </reveal-on-view>
+  ) : (
+    <reveal-on-view>
+      <div class="details-grid">
+        {data.items.map((item) => (
+          <figure
+            class={`detail-card size-${item.size ?? 'half'} ${item.media.kind === 'swatches' ? 'has-swatches' : ''}`}
+            data-reveal-item
+          >
+            {item.media.kind === 'swatches' ? (
+              <>
+                <figcaption>
+                  {item.eyebrow && (
+                    <span class="detail-eyebrow">{item.eyebrow}</span>
+                  )}
+                  <strong>{item.title}</strong>
+                </figcaption>
+                {item.caption && <p class="swatch-caption">{item.caption}</p>}
+                <ColorSwatches colors={item.media.colors} />
+              </>
+            ) : (
+              <>
+                <figcaption>
+                  {item.eyebrow && (
+                    <span class="detail-eyebrow">{item.eyebrow}</span>
+                  )}
+                  <strong>{item.title}</strong>
+                  {item.caption && <span>{item.caption}</span>}
+                </figcaption>
+                <ProjectMedia
+                  media={item.media}
+                  mobileMedia={item.mobileMedia}
+                  mediaSlot={DETAIL_SLOTS[item.size ?? 'half']}
+                />
+              </>
+            )}
+          </figure>
+        ))}
+      </div>
+    </reveal-on-view>
   )}
 </SectionShell>

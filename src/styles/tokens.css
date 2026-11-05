@@ -209,6 +209,12 @@
   --bp-xl: 1440px;
 }
 
+@media (width < 48rem) {
+  :root {
+    --motion-distance-reveal: 16px;
+  }
+}
+
 /* Desktop line heights: case body 20 / 160 % (360:251), home display 64 / 83 and 52 / 68 (360:3). */
 @media (width >= 48rem) {
   :root {

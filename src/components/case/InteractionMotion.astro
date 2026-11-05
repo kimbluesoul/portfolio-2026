@@ -15,40 +15,49 @@ const baseId = 'case-motion';
 ---
 
 <SectionShell class="interaction-motion" tone={tone}>
-  <SectionIntro
-    eyebrow={data.eyebrow}
-    heading={data.heading}
-    subtitle={data.subtitle}
-  />
-  <motion-steps>
-    <div class="motion-stage">
-      {data.steps.map((step, index) => (
-        <div
-          id={`${baseId}-panel-${index}`}
-          role="tabpanel"
-          aria-labelledby={`${baseId}-tab-${index}`}
-          aria-hidden={index === 0 ? 'false' : 'true'}
-          inert={index !== 0}
-          class:list={{ 'is-active': index === 0 }}
-        >
-          <ProjectMedia media={step.media} data-playback="managed" />
-        </div>
-      ))}
-    </div>
-    <div class="motion-tabs" role="tablist" aria-label="互動步驟">
-      {data.steps.map((step, index) => (
-        <button
-          id={`${baseId}-tab-${index}`}
-          type="button"
-          role="tab"
-          aria-controls={`${baseId}-panel-${index}`}
-          aria-selected={index === 0 ? 'true' : 'false'}
-          tabindex={index === 0 ? 0 : -1}
-        >
-          <strong>{step.title}</strong>
-          <span>{step.body}</span>
-        </button>
-      ))}
-    </div>
-  </motion-steps>
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      subtitle={data.subtitle}
+    />
+  </reveal-on-view>
+  <reveal-on-view>
+    <motion-steps>
+      <div class="motion-stage" data-reveal-item>
+        {data.steps.map((step, index) => (
+          <div
+            id={`${baseId}-panel-${index}`}
+            role="tabpanel"
+            aria-labelledby={`${baseId}-tab-${index}`}
+            aria-hidden={index === 0 ? 'false' : 'true'}
+            inert={index !== 0}
+            class:list={{ 'is-active': index === 0 }}
+          >
+            <ProjectMedia media={step.media} data-playback="managed" />
+          </div>
+        ))}
+      </div>
+      <div
+        class="motion-tabs"
+        role="tablist"
+        aria-label="互動步驟"
+        data-reveal-item
+      >
+        {data.steps.map((step, index) => (
+          <button
+            id={`${baseId}-tab-${index}`}
+            type="button"
+            role="tab"
+            aria-controls={`${baseId}-panel-${index}`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            tabindex={index === 0 ? 0 : -1}
+          >
+            <strong>{step.title}</strong>
+            <span>{step.body}</span>
+          </button>
+        ))}
+      </div>
+    </motion-steps>
+  </reveal-on-view>
 </SectionShell>

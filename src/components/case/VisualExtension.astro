@@ -15,13 +15,15 @@ const { data, tone } = Astro.props;
 
 <SectionShell class="visual-extension" tone={tone}>
   <h2 class="visually-hidden">Visual extension</h2>
-  <div class:list={['visual-grid', `variant-${data.variant}`]}>
-    {data.items.map((media, index) => (
-      <ProjectMedia
-        media={media}
-        mobileMedia={index === 0 ? data.mobileMedia : undefined}
-        sizes={data.variant === 'mosaic' ? MOSAIC_MEDIA_SIZES : undefined}
-      />
-    ))}
-  </div>
+  <reveal-on-view data-reveal-variant="signature">
+    <div class:list={['visual-grid', `variant-${data.variant}`]}>
+      {data.items.map((media, index) => (
+        <ProjectMedia
+          media={media}
+          mobileMedia={index === 0 ? data.mobileMedia : undefined}
+          sizes={data.variant === 'mosaic' ? MOSAIC_MEDIA_SIZES : undefined}
+        />
+      ))}
+    </div>
+  </reveal-on-view>
 </SectionShell>

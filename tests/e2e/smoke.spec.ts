@@ -272,9 +272,105 @@ test('home remains complete with reduced motion', async ({ page }) => {
   await expect(page.locator('#work article').last()).toBeVisible();
 });
 
+test('case Hero is visible before scrolling', async ({ page }) => {
+  await page.goto('/work/88win/');
+
+  const hero = page.locator('.case-hero');
+  await expect(hero.locator('h1')).toBeVisible();
+  await expect(hero.locator('.hero-headline')).toBeVisible();
+  await expect(hero.locator('.hero-showcase')).toBeVisible();
+  await expect(hero.locator('reveal-on-view')).toHaveCount(0);
+});
+
+test('a reveal group becomes completely visible in view', async ({ page }) => {
+  await page.goto('/work/88win/');
+
+  const group = page.locator('.link-cards').locator('..');
+  await group.locator('.link-cards').evaluate((element) => {
+    element.scrollIntoView({ block: 'center' });
+  });
+  await expect(group).toHaveAttribute('data-inview', '');
+  await expect
+    .poll(() =>
+      group.locator('[data-reveal-item]').evaluateAll((items) =>
+        items.every((item) => {
+          const style = getComputedStyle(item);
+          return style.opacity === '1' && style.transform === 'none';
+        }),
+      ),
+    )
+    .toBe(true);
+});
+
+test('signature mosaic keeps its seam layer hidden when reveal begins', async ({
+  page,
+}) => {
+  await page.goto('/work/88win/');
+
+  const section = page.locator('.visual-extension');
+  const group = section.locator('reveal-on-view');
+  await expect(group).toHaveAttribute('data-reveal-ready', '');
+  await expect(group).not.toHaveAttribute('data-inview');
+  await group.evaluate((element) => element.setAttribute('data-inview', ''));
+  await expect(group).toHaveAttribute('data-inview', '');
+
+  await expect
+    .poll(() =>
+      section.evaluate(
+        (element) => getComputedStyle(element, '::before').opacity,
+      ),
+    )
+    .toBe('0');
+});
+
+test('reduced motion leaves no reveal content hidden', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/work/88win/');
+
+  const hidden = await page.locator('reveal-on-view').evaluateAll((groups) =>
+    groups.flatMap((group) => {
+      const items = group.querySelectorAll('[data-reveal-item]');
+      const targets =
+        items.length > 0 ? Array.from(items) : [group.firstElementChild];
+      return targets
+        .filter((target): target is Element => target !== null)
+        .filter((target) => {
+          const style = getComputedStyle(target);
+          return style.opacity !== '1' || style.transform !== 'none';
+        });
+    }),
+  );
+  expect(hidden).toEqual([]);
+});
+
+test('case reveal content stays visible without JavaScript', async ({
+  browser,
+}, testInfo) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    baseURL: String(testInfo.project.use.baseURL),
+  });
+  const page = await context.newPage();
+  await page.goto('/work/88win/');
+
+  const hidden = await page.locator('reveal-on-view').evaluateAll((groups) =>
+    groups.flatMap((group) => {
+      const items = group.querySelectorAll('[data-reveal-item]');
+      const targets =
+        items.length > 0 ? Array.from(items) : [group.firstElementChild];
+      return targets
+        .filter((target): target is Element => target !== null)
+        .filter((target) => getComputedStyle(target).opacity !== '1');
+    }),
+  );
+  expect(hidden).toEqual([]);
+  await context.close();
+});
+
 test('88Win renders the M2 case template and pending-media contract', async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/work/88win/');
 
   await expect(page.locator('.case-study > .case-section')).toHaveCount(9);
@@ -776,6 +872,7 @@ test('360 home and case pages have no horizontal overflow', async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'webkit-iphone', 'Mobile-only layout.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 360, height: 800 });
   for (const route of ['/', '/work/88win/', '/work/fitzone/']) {
     await page.goto(route);
@@ -1015,6 +1112,7 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
     const context = await browser.newContext({
       viewport: { width: config.width, height: config.height },
       deviceScaleFactor: config.dpr,
+      reducedMotion: 'reduce',
     });
     const page = await context.newPage();
     try {
@@ -1023,6 +1121,11 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
         const frame = page.locator(
           '.visual-extension .variant-mosaic .media-frame',
         );
+        const group = frame
+          .locator('xpath=ancestor::section[1]')
+          .locator('reveal-on-view');
+        await frame.scrollIntoViewIfNeeded();
+        await expect(group).toHaveAttribute('data-inview', '');
         for (const edge of ['top', 'bottom'] as const) {
           const edgeY = await frame.evaluate(async (element, edgeName) => {
             const rect = element.getBoundingClientRect();
@@ -1046,6 +1149,7 @@ test('mosaics have no bright or dark viewport boundary rows', async ({
                 },
               ),
             );
+            await new Promise(requestAnimationFrame);
             const settled = element.getBoundingClientRect();
             return edgeName === 'top' ? settled.top : settled.bottom;
           }, edge);

@@ -20,30 +20,36 @@ const { data, tone } = Astro.props;
 ---
 
 <SectionShell class="key-screens" tone={tone}>
-  <SectionIntro
-    eyebrow={data.eyebrow}
-    heading={data.heading}
-    subtitle={data.subtitle}
-  />
-  <ProjectMedia media={data.main} />
-  <div
-    class="caption-grid swipe-row"
-    tabindex="0"
-    role="region"
-    aria-label="主要畫面特寫"
-  >
-    {data.closeups.map((item) => (
-      <figure>
-        <ProjectMedia
-          media={item.media}
-          mediaSlot={CLOSEUP_SLOT}
-          quality={CLOSEUP_QUALITY}
-        />
-        <figcaption>
-          <strong>{item.title}</strong>
-          {item.caption}
-        </figcaption>
-      </figure>
-    ))}
-  </div>
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      subtitle={data.subtitle}
+    />
+  </reveal-on-view>
+  <reveal-on-view>
+    <ProjectMedia media={data.main} />
+  </reveal-on-view>
+  <reveal-on-view>
+    <div
+      class="caption-grid swipe-row"
+      tabindex="0"
+      role="region"
+      aria-label="主要畫面特寫"
+    >
+      {data.closeups.map((item) => (
+        <figure data-reveal-item>
+          <ProjectMedia
+            media={item.media}
+            mediaSlot={CLOSEUP_SLOT}
+            quality={CLOSEUP_QUALITY}
+          />
+          <figcaption>
+            <strong>{item.title}</strong>
+            {item.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </reveal-on-view>
 </SectionShell>
