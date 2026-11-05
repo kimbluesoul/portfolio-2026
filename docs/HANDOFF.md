@@ -7,23 +7,22 @@
 - **Content**: no pending media and no `TODO(CONTENT)` remain.
 - **Architecture**: ARCHITECTURE v1.15 (PR #73) adds the resume model; v1.14 (PR #72) records the M3 state.
 - **Staging** (mirrors `main` on every merge): `https://staging-portfolio-2026.kimbluesoul.workers.dev/`
-- **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) still shows the M0 build by decision (option A, 2026-10-30). Its content gate is now open; production updates when the Product Owner turns production deploys back on. Until then **a red "Workers Builds" check on `main` is expected**.
+- **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) is **live and current**. The content gate (option A, ADR-0011 amendment) opened once all media were delivered; every merge to `main` since then has deployed to production automatically (green Workers Builds checks from 2026-11-05 at the latest; verified after #76: all routes 200, unknown paths 404, the PDF served). A red Workers check on `main` is now a real failure.
 - **Repository** is public since 2026-11-05 (ADR-0014 amendment).
 
 ## Open PRs
 | PR | What | Waiting on |
 |---|---|---|
-| `fix/resume-education` | Resume skills / education hierarchy: blue group labels, measured block rhythm, LANGUAGE on one line (spec on this branch) | Codex |
+| — | None | — |
 
 ## Next owner and next action
 1. **Codex**: the backlog below, one task brief at a time, when the Product Owner wants it.
-2. **Product Owner**: decide when to switch production on (M5 / launch).
-3. **Claude**: review the polish PR; production-switch steps when asked; re-encode HUIFA `detail-live.mp4` at 1920 w (media PR).
+2. **Product Owner**: optional: a custom domain (Q7); anything left for M5 (launch hardening).
+3. **Claude**: re-encode HUIFA `detail-live.mp4` at 1920 w (media PR) when convenient.
 
 ## Blockers and decisions pending
 | Item | Blocks | Owner |
 |---|---|---|
-| Turn production deploys on | Production showing the current site | Product Owner |
 | Q7: custom domain (optional) | Launch on a custom domain | Product Owner |
 
 ## Backlog (non-blocking review findings)
