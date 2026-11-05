@@ -102,7 +102,7 @@ Left column: heading `專長與工具`, eyebrow `SKILLS`.
 
 Right column: heading `學歷與語言`, eyebrow `EDUCATION`.
 - block `EDUCATION`: title `私立東海大學`; lines `資訊工程系 數位創意組｜大學畢業`, `2013.09 – 2017.06`
-- block `LANGUAGE`: title `英文`, value `聽、說、讀、寫：中等` (one line, a gap between them as in the PDF)
+- block `LANGUAGE`: title `英文`, value `聽、說、讀、寫：中等` — **one line**: `英文`, one full-width space, then the value, both text-primary 400 (never two lines; it may wrap only if the column is too narrow)
 - block `LOOKING FOR`: title `UI/UX 設計師、網頁設計師、產品設計師`; line `全職｜台中市或遠端工作`
 
 ### 06 關於我
@@ -167,6 +167,19 @@ Measured from the PDF content streams. The PDF content column is 658 units wide 
 | About paragraphs | 12.0 | 19.5 px, line height 1.7 | 14 px, 1.7 | |
 
 Spacing and columns scale by the same factor. Desktop reference values (PDF × 1.64): entry right column starts **267 px** from the left edge of the period (PDF 163; this is the left column **plus** its gap, not the column alone); fact-card padding about 21 px and gap about 20 px; from a section `h2` to its first entry about 100 px; between the summary and the fact cards about 50 px; the skills and education columns are equal with a gap of about 59 px. The header hairline is visible light grey (`--color-border-default`), not 10 % black.
+
+### Skills and education blocks: vertical rhythm (added 2026-11-05, PO: "no hierarchy")
+The PDF groups each block tightly and separates blocks clearly; equal gaps everywhere (the #75 state: about 36 px between every line at 390) lose that. Measured from the PDF baselines (page 2, x 68 and x 416). Each distance is **from the top of one text line's box to the top of the next** (`getBoundingClientRect().top`), tolerance ±4 px.
+
+| From → to | PDF | Desktop | 390 |
+|---|---:|---:|---:|
+| Group label (`EDUCATION`, `LANGUAGE`, `LOOKING FOR`, `SKILLS`, `TOOLS`) → first line below it | 26–28 | 44 px | 31 px |
+| Line → next line **in the same block** (title → detail line → date; tag row → tag row; note lines) | 21–22 | 35 px | 25 px |
+| Last line of a block → next group label | 31–38 | 58 px | 41 px |
+
+- All five group labels are **brand blue** (`--color-text-brand`), 500, letter-spaced, as the type table says. #75 renders `EDUCATION`, `LANGUAGE`, `LOOKING FOR` grey: that is a defect.
+- `私立東海大學` is the only bold line in the education column (700). Every other line is 400.
+- The skills note starts one "last line → next block" step below the last TOOLS tag row.
 
 ## Layout (mobile, below the 48rem switch)
 No 390 design exists. Q3: mobile **stacks** the two-column rows.
