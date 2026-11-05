@@ -127,6 +127,39 @@ test('header tap targets are at least 44 × 44 px at 390 px', async ({
   expect(misses).toEqual([]);
 });
 
+test('case header logo follows the content tone at its center line', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 200 });
+  await page.goto('/work/88win/');
+
+  const header = page.locator('.site-header');
+  const logo = header.locator('.brand');
+  const color = () =>
+    logo.evaluate((element) => getComputedStyle(element).color);
+
+  await expect(header).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  await expect.poll(color).toBe('rgb(31, 59, 214)');
+
+  await page
+    .locator('.interaction-motion.tone-inverse')
+    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
+  await expect.poll(color).toBe('rgb(255, 255, 255)');
+
+  await page.evaluate(() => {
+    const scrollRoom = document.createElement('div');
+    scrollRoom.style.height = `${window.innerHeight}px`;
+    document.body.append(scrollRoom);
+  });
+  await page
+    .locator('.site-footer')
+    .evaluate((footer) => footer.scrollIntoView({ block: 'start' }));
+  await expect.poll(color).toBe('rgb(255, 255, 255)');
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+  await expect.poll(color).toBe('rgb(31, 59, 214)');
+});
+
 test('navigation exposes the public anchor contract', async ({ page }) => {
   await page.goto('/');
   await expect(
@@ -184,7 +217,9 @@ test('home uses the approved copy, links, and card assets', async ({
 }) => {
   await page.goto('/');
 
-  await expect(page.locator('header img[alt="Syuan Ci"]')).toBeVisible();
+  const brand = page.getByRole('link', { name: 'Syuan Ci 首頁' });
+  await expect(brand).toBeVisible();
+  await expect(brand.locator('svg[aria-hidden="true"]')).toHaveCount(1);
   await expect(
     page.getByRole('link', { name: 'Work', exact: true }),
   ).toHaveAttribute('aria-current', 'page');

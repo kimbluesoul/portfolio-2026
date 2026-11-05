@@ -1,5 +1,6 @@
 ---
-import logo from '../../assets/site/logo.svg';
+/* eslint-disable astro/no-set-html-directive -- The trusted local SVG is inlined so it can inherit the header color. */
+import logo from '../../assets/site/logo.svg?raw';
 
 interface NavItem {
   label: string;
@@ -16,7 +17,7 @@ const currentPath = Astro.url.pathname;
 
 <header class="site-header">
   <a class="brand" href="/" aria-label="Syuan Ci 首頁">
-    <img src={logo.src} width="91" height="44" alt="Syuan Ci" />
+    <Fragment set:html={logo} />
   </a>
   <nav aria-label="主要導覽">
     <ul>
@@ -50,7 +51,7 @@ const currentPath = Astro.url.pathname;
     justify-content: space-between;
     gap: var(--space-4);
     padding: var(--space-3) var(--layout-page-gutter);
-    background: var(--color-bg-canvas);
+    background: transparent;
   }
 
   /* Nav pill: mobile 473:917 (0.8× scale), desktop 360:3438 / items 466:895.
@@ -110,13 +111,15 @@ const currentPath = Astro.url.pathname;
   }
 
   .brand {
+    position: relative;
     display: block;
     flex: 0 0 auto;
+    color: var(--color-text-brand);
+    transition: color var(--motion-duration-hover) var(--motion-ease-hover);
   }
 
-  .brand img {
-    width: 4.0788rem;
-    height: 1.98rem;
+  .site-header[data-tone='inverse'] .brand {
+    color: var(--color-text-on-inverse);
   }
 
   @media (width >= 48rem) {
@@ -134,8 +137,23 @@ const currentPath = Astro.url.pathname;
       font-size: 1rem;
       line-height: var(--space-4-5);
     }
+  }
 
-    .brand img {
+  @media (prefers-reduced-motion: reduce) {
+    .brand {
+      transition: none;
+    }
+  }
+</style>
+
+<style is:global>
+  .site-header .brand svg {
+    width: 4.0788rem;
+    height: 1.98rem;
+  }
+
+  @media (width >= 48rem) {
+    .site-header .brand svg {
       width: 5.665rem;
       height: 2.75rem;
     }
