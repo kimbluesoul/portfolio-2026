@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.14 — Approved by the Product Owner up to v1.9** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2). v1.8 (2026-10-31, from the PR #21 review) adds a per-project mobile hero title size (`hero.titleSizeMobile`) and −4 % title tracking (§5.1), fixes the 390 back link as centred for every case page, and sets 360 px as the minimum supported width (§10). v1.9 (2026-10-31, from the PR #23 review) starts video loading only after the page `load` event, keeps posters as real image layers under the video, and makes the Lighthouse page-weight gate measure the budget without video, as §13 always intended, with a separate media cap (§7, §13, ADR-0013 amendment). v1.10 (2026-11-01, flaky case-page LCP gate) lays out only the case hero before the first paint (`content-visibility`), makes case-video posters lazy image layers, splits the CJK `ext` subsets per page, and preloads the 400 `core` font on case pages (§7, §13, ADR-0012 amendment). v1.11 (2026-11-02, PO: soft images at 1920 @1x) makes srcsets slot-exact: every desktop slot gets a file of its own 1× / 2× width (§9.1). v1.12 (2026-11-02, M3 specs) adds two template extensions for HUIFA, specified in `docs/specs/huifa.md`: a Details `compare` variant (labelled full-width media, a 390 swipe strip) and a per-project 390 hero showcase scale. No budget changes. v1.13 (2026-11-04, PO) extends scroll reveals to the case pages: fade + rise + stagger by reveal group, 16px rise on phones, no hero entrance, the Visual Extension as the only signature moment (§8, DESIGN_SYSTEM → Motion). v1.14 (2026-11-05, end of M3) records what the M3 PRs already ship: the schema extensions (390 art direction for the hero showcase and the mosaic, the Details `compare` variant), the hard line-break rule (§5.1), current video slots, the 2528 / 1216 frame for wide recordings and the Next preview video (§9.2, §9.5), and the local gates that ADR-0014 made the practice (§16.1). The header spec and the Latin font rule move to DESIGN_SYSTEM. No budget changes.
+**v1.15 — Approved by the Product Owner up to v1.9** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2). v1.8 (2026-10-31, from the PR #21 review) adds a per-project mobile hero title size (`hero.titleSizeMobile`) and −4 % title tracking (§5.1), fixes the 390 back link as centred for every case page, and sets 360 px as the minimum supported width (§10). v1.9 (2026-10-31, from the PR #23 review) starts video loading only after the page `load` event, keeps posters as real image layers under the video, and makes the Lighthouse page-weight gate measure the budget without video, as §13 always intended, with a separate media cap (§7, §13, ADR-0013 amendment). v1.10 (2026-11-01, flaky case-page LCP gate) lays out only the case hero before the first paint (`content-visibility`), makes case-video posters lazy image layers, splits the CJK `ext` subsets per page, and preloads the 400 `core` font on case pages (§7, §13, ADR-0012 amendment). v1.11 (2026-11-02, PO: soft images at 1920 @1x) makes srcsets slot-exact: every desktop slot gets a file of its own 1× / 2× width (§9.1). v1.12 (2026-11-02, M3 specs) adds two template extensions for HUIFA, specified in `docs/specs/huifa.md`: a Details `compare` variant (labelled full-width media, a 390 swipe strip) and a per-project 390 hero showcase scale. No budget changes. v1.13 (2026-11-04, PO) extends scroll reveals to the case pages: fade + rise + stagger by reveal group, 16px rise on phones, no hero entrance, the Visual Extension as the only signature moment (§8, DESIGN_SYSTEM → Motion). v1.14 (2026-11-05, end of M3) records what the M3 PRs already ship: the schema extensions (390 art direction for the hero showcase and the mosaic, the Details `compare` variant), the hard line-break rule (§5.1), current video slots, the 2528 / 1216 frame for wide recordings and the Next preview video (§9.2, §9.5), and the local gates that ADR-0014 made the practice (§16.1). The header spec and the Latin font rule move to DESIGN_SYSTEM. No budget changes. v1.15 (2026-11-05, M4) adds the resume content model and component rules (§5.1, spec `docs/specs/resume.md`), a 1080 px resume content width (§5.3), and resolves Q11 (accepted for v1).
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -225,7 +225,33 @@ Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 
 
 **Transcription checklist.** For every section, the implementer reads **every** text node and link (`href`) in the Figma frame, including card eyebrows, descriptions, captions, counters, and Next-project meta. A Figma field must never be left as `TODO(CONTENT)` when the frame contains it. `TODO(CONTENT)` is only for copy that does not exist in Figma.
 
-`site.yaml` holds nav labels, home hero copy, credentials, About copy, tools/skills tags, contact links (Email, LinkedIn), and footer copy. `resume.yaml` holds the web resume (structure decided when the resume design exists; see Q3).
+`site.yaml` holds nav labels, home hero copy, credentials, About copy, tools/skills tags, contact links (Email, LinkedIn), and footer copy. `resume.yaml` holds the web resume (shape below, v1.15).
+
+**Resume content (v1.15, M4).** A `resume` collection loaded with `file('./src/content/resume.yaml')`, like `site`. Copy is specified in [`docs/specs/resume.md`](specs/resume.md).
+
+```ts
+type ResumeEntry = { period: string; duration: string; title: string; badge?: string;
+                     org: string; industry?: string; body: string;
+                     projects?: { label: string; slug: ProjectSlug /* the §3 slug enum; links /work/<slug>/ */ }[] };
+type ResumeSection<T> = { heading: string; eyebrow: string } & T;
+
+type Resume = {
+  seo: { title: string; description: string };
+  header: { eyebrow: string; nameZh: string; nameEn: string; role: string; focus: string;
+            email: string; location: string; download: { label: string; href: '/files/Syuan-Ci-Resume.pdf' } };
+  summary: string;                                   // **accent** markup
+  facts: [Stat, Stat, Stat, Stat];                   // the existing Stat shape
+  experience: ResumeSection<{ entries: ResumeEntry[] /* ≥ 1 */ }>;
+  earlier?: ResumeSection<{ entries: ResumeEntry[] }>;
+  skills: ResumeSection<{ groups: { label: string; tags: string[] }[]; note?: string }>;
+  education: ResumeSection<{ blocks: { label: string; title: string; value?: string; lines?: string[] }[] }>;
+  about: ResumeSection<{ body: string /* paragraphs split on a blank line */ }>;
+};
+```
+
+- Components live in `src/components/resume/` and receive typed props from `src/pages/resume.astro`; they never read content (§4). They reuse `AccentText`, the tag-chip and outline-pill styles, and `<reveal-on-view>`. No new client JavaScript.
+- The project slug enum is shared with the `projects` collection (one definition), so a renamed project fails the resume build.
+- A unit test rejects CJK radical code points (U+2E80–U+2FDF) in `resume.yaml`: the PDF's text layer uses them, and they would bypass the font subsets.
 
 ### 5.2 Case page renderer
 `CaseSections.astro` owns the V9 template rules so no individual page can drift:
@@ -241,7 +267,7 @@ Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 
 | Tokens | `tokens.css` | Only place raw values live (enforced by Stylelint, §13) |
 | UI primitives | `Button` (primary pill, outline pill, contact pill), `Tag` (thin gray border, no fill), `Eyebrow`, `TextLink` (light/dark), `ArrowButton`, `LinkCard` | Map 1:1 to Figma section `Hover 元件｜Interactive components` (`465:662`). All hover/focus/active states are CSS-only |
 | Media | `ResponsivePicture`, `LoopVideo`, `MediaFrame` | The only components allowed to emit `<img>`, `<picture>`, or `<video>` |
-| Layout | `Container` (content widths: 1728 home / 1440 case at desktop), `Section` (tone + spacing), `SiteHeader`, `SiteFooter` | |
+| Layout | `Container` (content widths: 1728 home / 1440 case / about 1080 resume at desktop), `Section` (tone + spacing), `SiteHeader`, `SiteFooter` | |
 | Sections / blocks | Home sections, case sections | Compose primitives; no raw colors or spacing values |
 | Pages | `index`, `work/[slug]`, `resume`, `404` | Query content, compose sections, set SEO |
 
@@ -494,7 +520,7 @@ These are raised for the **Product Owner**. The architecture does not decide the
 | Q8 | ~~Analytics.~~ **Resolved 2026-10-30**: none. No analytics or tracking scripts. | — |
 | Q9 | ~~Language.~~ **Resolved 2026-10-30**: Traditional Chinese only. No English site or English PDF. English eyebrows and display labels stay as part of the visual style. | — |
 | Q10 | ~~Figma inconsistencies.~~ **Resolved 2026-10-30**: Hwa Fong has prototype + live site (`https://www.duro.com.tw/`). **Hidden Figma layers are never implemented**: AMD uses `360:2355`; `437:652` is hidden and unused. The site order in PRODUCT.md wins over the template suggestion table. 「深藍」 in the template text means `--color-bg-inverse`. | — |
-| Q11 | **Auto-started video and WCAG 2.2.2** (2026-10-31). Clips play once for 10 s without a pause control. Options: (a) trim Home clips to ≤ 5 s, which is exempt; (b) add a small pause button per video, which needs a design; (c) accept the gap for v1. The Product Owner decides before launch (M5). | M5 |
+| Q11 | ~~Auto-started video and WCAG 2.2.2.~~ **Resolved 2026-11-05 (PO): option (c), accepted for v1.** Clips keep playing once without a pause control. Reduced motion and Save-Data still disable autoplay (ADR-0013). The automated gates (axe, Lighthouse) do not test 2.2.2, so nothing changes in CI. | — |
 
 ---
 
