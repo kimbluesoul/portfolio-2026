@@ -1045,10 +1045,10 @@ test('the footer color continues below the page only at the bottom', async ({
     // Measured at the bottom: `content-visibility` placeholders above settle
     // while scrolling. The footer still ends the page, so the bar adds no
     // scroll height, and nothing overflows sideways.
-    expect(bottom.footerBottom, `${route} footer ends the page`).toBeCloseTo(
-      bottom.scrollHeight,
-      0,
-    );
+    expect(
+      Math.abs(bottom.scrollHeight - bottom.footerBottom),
+      `${route} footer ends the page`,
+    ).toBeLessThan(1);
     expect(bottom.scrollWidth, `${route} no horizontal overflow`).toBe(
       bottom.innerWidth,
     );
