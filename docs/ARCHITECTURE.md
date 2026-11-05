@@ -336,7 +336,7 @@ The Product Owner delivers images (2× exports from Figma) and videos **after** 
 
 ### 9.5 Home card videos and the featured composition (v1.7)
 - Every Home card uses a video: `public/media/<slug>/card.mp4` with the poster `src/assets/projects/<slug>/card-poster.jpg` (the first frame). The clip is the first 10 s, 1280 px wide, H.264, no audio, ≤ 3 MB. `next.media` uses the same video, so the Next Project preview plays it too.
-- The featured 88Win card is `kind: 'composite'`: `card-bg.jpg` (3456 × 1000), `card-pc.mp4` (1280 × 704) and `card-mobile.mp4` (320 × 660, the phone with its bezel, cropped from the delivered recording), each video with a `-poster.jpg`. Positions as a percentage of the card, from Figma:
+- The featured 88Win card is `kind: 'composite'`: `card-bg.jpg` (3456 × 1000), `card-pc.mp4` (1280 × 708) and `card-mobile.mp4` (320 × 660, the phone with its bezel, cropped from the delivered recording), each video with a `-poster.jpg`. Positions as a percentage of the card, from Figma:
 
   | Layer | Desktop `465:999` (card 1728 × 500) | 390 `474:1087` (card 350 × 200) |
   |---|---|---|

@@ -33,17 +33,19 @@
 
 2026-10-31 已交件並放進網站（ADR-0013）。首頁每張卡片都是影片，**捲到時播一次，桌機滑鼠移過去會重播，手機捲回來會重播**。
 
+2026-11-05 換成重新錄製的桌機影片（`home/<專案>_desktop.mp4`，與各案例頁 Key Screens 主影片同一份錄影），底部「下一個作品」也跟著換；88Win 精選卡只換 PC 影片，手機影片不變。
+
 | 專案 | 交件原檔 | 網站檔案 | 處理 |
 |---|---|---|---|
 | 88Win（精選卡） | `88win_bg.jpg` | `src/assets/projects/88win/card-bg.jpg` | 原檔 3456 × 1000 |
-| 88Win（精選卡） | `88win.mp4` | `public/media/88win/card-pc.mp4` ＋ `card-pc-poster.jpg` | 前 10 秒、1280 寬 |
+| 88Win（精選卡） | `88win_desktop.mp4` | `public/media/88win/card-pc.mp4` ＋ `card-pc-poster.jpg` | 前 10 秒、1280 寬 |
 | 88Win（精選卡） | `88win_moblie.mp4` | `public/media/88win/card-mobile.mp4` ＋ `card-mobile-poster.jpg` | 從黑底裁出手機（含外框）、320 × 660 |
-| 華豐輪胎 | `duro.mp4` | `public/media/hwa-fong/card.mp4` ＋ `card-poster.jpg` | 裁掉左右黑邊、前 10 秒 |
-| FITZONE | `fitzone.mp4` | `public/media/fitzone/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| SSS | `SSS.mp4` | `public/media/sss/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| 展裕建設 | `jhanyu.mp4` | `public/media/jhanyu/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| AMD | `amd.mp4` | `public/media/amd/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| 匯發營造 | `huifa.mp4` | `public/media/huifa/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 華豐輪胎 | `duro_desktop.mp4` | `public/media/hwa-fong/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| FITZONE | `fitzone_desktop.mp4` | `public/media/fitzone/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| SSS | `sss_desktop.mp4` | `public/media/sss/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 展裕建設 | `jhanyu_desktop.mp4` | `public/media/jhanyu/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| AMD | `amd_desktop.mp4` | `public/media/amd/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 匯發營造 | `huifa_desktop.mp4` | `public/media/huifa/card.mp4` ＋ `card-poster.jpg` | 全長 8 秒 |
 
 之後的建議命名（Claude 收到後也會自己改名，所以不照著命名也沒關係）：資料夾用專案代號（`88win`、`hwa-fong`…），首頁卡片影片叫 `card.mp4`；精選卡的三個圖層叫 `card-bg.jpg`、`card-pc.mp4`、`card-mobile.mp4`。
 
