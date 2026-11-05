@@ -27,6 +27,33 @@ describe('mobile case-title sizes', () => {
     expect(declared.every(isCaseTitleSizeMobile)).toBe(true);
   });
 
+  it('keeps every mobile title rule inside the mobile media query', () => {
+    const mediaStart = caseCss.indexOf('@media (width < 48rem) {');
+    expect(mediaStart).toBeGreaterThanOrEqual(0);
+
+    const openingBrace = caseCss.indexOf('{', mediaStart);
+    let depth = 0;
+    let mediaEnd = -1;
+    for (let index = openingBrace; index < caseCss.length; index += 1) {
+      if (caseCss[index] === '{') depth += 1;
+      if (caseCss[index] === '}') depth -= 1;
+      if (depth === 0) {
+        mediaEnd = index;
+        break;
+      }
+    }
+    expect(mediaEnd).toBeGreaterThan(openingBrace);
+
+    const rules = [
+      ...caseCss.matchAll(/\.hero-copy h1\.title-mobile-\d+\s*\{/g),
+    ];
+    expect(rules.length).toBeGreaterThan(0);
+    for (const rule of rules) {
+      expect(rule.index).toBeGreaterThan(openingBrace);
+      expect(rule.index).toBeLessThan(mediaEnd);
+    }
+  });
+
   it('rejects sizes outside the list', () => {
     expect(isCaseTitleSizeMobile(76)).toBe(true);
     expect(isCaseTitleSizeMobile(64)).toBe(false);
