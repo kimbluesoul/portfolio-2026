@@ -2,6 +2,11 @@ import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { caseTitleSizesMobile, isCaseTitleSizeMobile } from './lib/case-title';
+import {
+  createImageMediaSchemas,
+  expectedMediaFile,
+  mediaAspectRatio,
+} from './lib/image-media-schema';
 
 const projectSlug = z.enum([
   '88win',
@@ -28,39 +33,14 @@ const projects = defineCollection({
       projectSlug.parse(entry.replace(/\.(?:yaml|yml)$/u, '')),
   }),
   schema: ({ image }) => {
-    const expectedFile = z
-      .string()
-      .regex(/^(?:src\/assets\/projects|public\/media)\/[a-z0-9-]+\/.+/);
-    const aspectRatio = z
-      .string()
-      .regex(/^\d+(?:\.\d+)?\s*\/\s*\d+(?:\.\d+)?$/);
-
-    const readyImageMedia = z.object({
-      kind: z.literal('image'),
-      src: image(),
-      alt: z.string(),
-      decorative: z.boolean().optional(),
-      aspectRatio: aspectRatio.optional(),
-      objectPosition: z.enum(['center', 'top']).optional(),
-    });
-
-    const pendingImageMedia = z.object({
-      kind: z.literal('image'),
-      src: image(),
-      alt: z.string(),
-      decorative: z.boolean().optional(),
-      aspectRatio,
-      status: z.literal('pending'),
-      expectedFile,
-      objectPosition: z.enum(['center', 'top']).optional(),
-    });
+    const { imageMedia, readyImageMedia } = createImageMediaSchemas(image);
 
     const readyVideoMedia = z.object({
       kind: z.literal('video'),
       src: z.string().regex(/^\/media\/.+\.mp4$/),
       poster: image(),
       alt: z.string().min(1),
-      aspectRatio: aspectRatio.optional(),
+      aspectRatio: mediaAspectRatio.optional(),
     });
 
     const pendingVideoMedia = z.object({
@@ -68,9 +48,9 @@ const projects = defineCollection({
       src: z.string().regex(/^\/media\/.+\.mp4$/),
       poster: image(),
       alt: z.string().min(1),
-      aspectRatio,
+      aspectRatio: mediaAspectRatio,
       status: z.literal('pending'),
-      expectedFile,
+      expectedFile: expectedMediaFile,
     });
 
     const swatchesMedia = z.object({
@@ -85,27 +65,12 @@ const projects = defineCollection({
         .min(1),
     });
 
-    const media = z
-      .union([
-        pendingImageMedia,
-        pendingVideoMedia,
-        readyImageMedia,
-        readyVideoMedia,
-        swatchesMedia,
-      ])
-      .superRefine((value, context) => {
-        if (
-          value.kind === 'image' &&
-          value.alt.length === 0 &&
-          value.decorative !== true
-        ) {
-          context.addIssue({
-            code: 'custom',
-            message: 'An empty alt requires decorative: true.',
-            path: ['decorative'],
-          });
-        }
-      });
+    const media = z.union([
+      imageMedia,
+      pendingVideoMedia,
+      readyVideoMedia,
+      swatchesMedia,
+    ]);
 
     const composite = z.object({
       kind: z.literal('composite'),
@@ -126,7 +91,7 @@ const projects = defineCollection({
       title: z.string().min(1),
       caption: z.string().optional(),
       media,
-      mobileMedia: media.optional(),
+      mobileMedia: imageMedia.optional(),
       size: z.enum(['third', 'half', 'half-tall', 'full']).optional(),
     });
 
@@ -171,7 +136,7 @@ const projects = defineCollection({
           layout: z.enum(['isometric', 'single']),
           items: z.array(media).min(1).max(2),
           // Art-directed 390 crop for the first item (single layout).
-          mobileMedia: media.optional(),
+          mobileMedia: imageMedia.optional(),
           mobileScale: z.literal(0.25).optional(),
         }),
       }),
@@ -239,7 +204,7 @@ const projects = defineCollection({
         .object({
           variant: z.enum(['mosaic', 'grid']),
           items: z.array(media).min(1),
-          mobileMedia: media.optional(),
+          mobileMedia: imageMedia.optional(),
         })
         .optional(),
       links: z.object({

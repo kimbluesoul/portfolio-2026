@@ -1,10 +1,7 @@
-export type MediaSlot = 'key-screen' | 'motion-step' | 'preview';
+import { inferMediaSlot, MEDIA_SIZE_LIMITS } from './media-limits.mjs';
 
-export const MEDIA_SIZE_LIMITS = {
-  'key-screen': 8 * 1024 * 1024,
-  'motion-step': 4 * 1024 * 1024,
-  preview: 3 * 1024 * 1024,
-} as const satisfies Record<MediaSlot, number>;
+export { inferMediaSlot, MEDIA_SIZE_LIMITS };
+export type MediaSlot = ReturnType<typeof inferMediaSlot>;
 
 export interface PendingMedia {
   expectedFile: string;
@@ -16,13 +13,6 @@ export function pendingVideoPoster(expectedFile: string): string | null {
   const match = expectedFile.match(/^public\/media\/([a-z0-9-]+)\/(.+)\.mp4$/u);
   if (!match?.[1] || !match[2]) return null;
   return `src/assets/projects/${match[1]}/${match[2]}-poster.jpg`;
-}
-
-export function inferMediaSlot(fileName: string): MediaSlot {
-  if (fileName.includes('key-main') || fileName.startsWith('detail-'))
-    return 'key-screen';
-  if (fileName.includes('motion-')) return 'motion-step';
-  return 'preview';
 }
 
 export function isWithinMediaLimit(size: number, slot: MediaSlot): boolean {

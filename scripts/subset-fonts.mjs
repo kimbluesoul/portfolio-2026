@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
-import { Buffer } from 'node:buffer';
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
-import { dirname, extname, join, relative, sep } from 'node:path';
+import { extname, join, relative } from 'node:path';
 import process from 'node:process';
 import subsetFont from 'subset-font';
+import { pageKeyFromPath } from '../src/lib/page-key.mjs';
 import {
   codePointsFrom,
   FONT_WEIGHTS,
@@ -24,15 +24,6 @@ const root = process.cwd();
 const distDirectory = join(root, 'dist');
 const homeHtml = join(distDirectory, 'index.html');
 
-/** `dist/work/88win/index.html` → `work-88win`, `dist/404.html` → `404`. */
-function pageKey(file) {
-  const path = relative(distDirectory, file);
-  const base = path.endsWith(`${sep}index.html`) ? dirname(path) : path;
-  return base
-    .replace(/\.html$/u, '')
-    .split(sep)
-    .join('-');
-}
 const sourceFontPath = join(
   root,
   'fonts-src',
@@ -41,6 +32,12 @@ const sourceFontPath = join(
 );
 const generatedDirectory = join(root, 'public', '_fonts');
 const generatedCss = join(root, 'src', 'styles', 'noto-sans-tc.generated.css');
+const generatedPageCss = join(
+  root,
+  'src',
+  'styles',
+  'noto-sans-tc.pages.generated.json',
+);
 
 async function filesBelow(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -135,7 +132,7 @@ for (const weight of FONT_WEIGHTS) {
   const ext = partitionExt(
     new Map(
       pages.map(({ file, text }) => [
-        pageKey(file),
+        pageKeyFromPath(relative(distDirectory, file)),
         codePointsFrom(text[weight]),
       ]),
     ),
@@ -181,16 +178,15 @@ for (const weight of FONT_WEIGHTS) {
   }
 }
 
-// Keep the mapping beside the generated core CSS so the first Astro pass still
-// has a single generated input. Base64 prevents extension faces from being
-// parsed or bundled as global CSS.
 const pageCss = Object.fromEntries(
   [...pageCssBlocks].map(([page, blocks]) => [page, blocks.join('\n\n')]),
 );
-cssBlocks.push(
-  `/* page-font-faces-base64:${Buffer.from(JSON.stringify(pageCss)).toString('base64')} */`,
-);
 
 // Coverage of the final rendered output is verified by scripts/check-font-coverage.mjs.
+await writeFile(
+  generatedPageCss,
+  `${JSON.stringify(pageCss, null, 2)}\n`,
+  'utf8',
+);
 await writeFile(generatedCss, `${cssBlocks.join('\n\n')}\n`, 'utf8');
 process.stdout.write(`Noto Sans TC subsets: ${summary.join('; ')}.\n`);
