@@ -4,7 +4,7 @@ nameZh: 匯發營造
 card:
   summary: &summary 客戶不想要一般網站的瀏覽方式，於是像排投影片一樣，設計每段內容怎麼進場、怎麼轉到下一段。
   tags: [已上線, UI設計, Motion, 企業網站, 2024–2025]
-  media: &cardVideo
+  media:
     kind: video
     src: /media/huifa/card.mp4
     poster: ../../assets/projects/huifa/card-poster.jpg
@@ -15,7 +15,11 @@ seo:
 next:
   oneLiner: 客戶不想要一般網站的瀏覽方式，於是像排投影片一樣，設計每段內容怎麼進場、怎麼轉到下一段。
   meta: 匯發營造　·　企業網站　·　UI 設計　·　Motion　·　2024–2025
-  media: *cardVideo
+  media:
+    kind: video
+    src: /media/huifa/key-main.mp4
+    poster: ../../assets/projects/huifa/key-main-poster.jpg
+    alt: 匯發營造網站作品預覽
 hero:
   eyebrow: CASE STUDY 07 · 企業網站
   title: HUIFA

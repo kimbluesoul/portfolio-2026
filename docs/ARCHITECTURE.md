@@ -335,8 +335,8 @@ The Product Owner delivers images (2× exports from Figma) and videos **after** 
 - **Removed in v1.7** (ADR-0013). Videos play on view, so touch devices no longer need a play indicator.
 
 ### 9.5 Home card videos and the featured composition (v1.7)
-- Every Home card uses a video: `public/media/<slug>/card.mp4` with the poster `src/assets/projects/<slug>/card-poster.jpg` (the first frame). The clip is the first 10 s, 1280 px wide, H.264, no audio, ≤ 3 MB. `next.media` uses the same video, so the Next Project preview plays it too.
-- The featured 88Win card is `kind: 'composite'`: `card-bg.jpg` (3456 × 1000), `card-pc.mp4` (1280 × 704) and `card-mobile.mp4` (320 × 660, the phone with its bezel, cropped from the delivered recording), each video with a `-poster.jpg`. Positions as a percentage of the card, from Figma:
+- Every Home card uses a video: `public/media/<slug>/card.mp4` with the poster `src/assets/projects/<slug>/card-poster.jpg` (the first frame). The clip is the first 10 s, 1280 px wide, H.264, no audio, ≤ 3 MB. `next.media` uses the project's Key Screens `key-main.mp4` + `key-main-poster.jpg` (the same desktop recording at 1920 w): the Next preview is 1440 × 741 CSS px at a 1920 viewport, so the 1280 w card clip would be upscaled and soft. The bytes load only near the page bottom, and the file is cached for the next page.
+- The featured 88Win card is `kind: 'composite'`: `card-bg.jpg` (3456 × 1000), `card-pc.mp4` (1280 × 708) and `card-mobile.mp4` (320 × 660, the phone with its bezel, cropped from the delivered recording), each video with a `-poster.jpg`. Positions as a percentage of the card, from Figma:
 
   | Layer | Desktop `465:999` (card 1728 × 500) | 390 `474:1087` (card 350 × 200) |
   |---|---|---|
@@ -344,7 +344,7 @@ The Product Owner delivers images (2× exports from Figma) and videos **after** 
   | PC video | x 397, y 81, 844 × 477 (bottom clipped by the card) | x −2, y 0, 353 × 200 (fills the card) |
   | Phone video | x 1185, y 250, 146 × 301 (bottom clipped) | x 266, y 100, 58 × 120 (bottom clipped) |
 
-  The phone video's black surround is clipped with a corner radius of 15 % of its width. Values are percentages of the card box, so the composition scales with the card. The 88Win `next.media` uses `card-pc.mp4` alone.
+  The phone video's black surround is clipped with a corner radius of 15 % of its width. Values are percentages of the card box, so the composition scales with the card. The 88Win `next.media` is its `key-main.mp4`, like every project.
 - `card.jpg` stays as the SEO / Open Graph fallback image and is no longer rendered in the cards.
 
 ---

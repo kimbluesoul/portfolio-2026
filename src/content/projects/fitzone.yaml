@@ -4,7 +4,7 @@ nameZh: 健身房
 card:
   summary: &summary 從介面設計到 Motion 都一起處理，最後也真的落地到正式網站，不是只停在 Figma 裡
   tags: [已上線, UI設計, Motion, 品牌網站, 2024–2025]
-  media: &cardVideo
+  media:
     kind: video
     src: /media/fitzone/card.mp4
     poster: ../../assets/projects/fitzone/card-poster.jpg
@@ -15,7 +15,11 @@ seo:
 next:
   oneLiner: 從 Logo 與健身房的色調延伸，加入心跳識別和有活力的 Motion，最後順利上線。
   meta: 健身房品牌網站　·　UI 設計　·　Motion　·　2024–2025
-  media: *cardVideo
+  media:
+    kind: video
+    src: /media/fitzone/key-main.mp4
+    poster: ../../assets/projects/fitzone/key-main-poster.jpg
+    alt: FITZONE 網站作品預覽
 hero:
   eyebrow: CASE STUDY 03 · 健身房
   title: FITZONE
