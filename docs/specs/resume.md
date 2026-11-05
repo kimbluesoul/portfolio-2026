@@ -138,7 +138,35 @@ None. No images or videos on this page.
 - **Tags**: the existing tag-chip look (thin grey border, no fill). The six project tags are links: on hover / focus-visible they take the site's link hover (brand colour), using the 250 ms ease-out tokens.
 - **Skills / education**: two equal columns, each with its own section intro and rule. Group labels (`SKILLS`, `TOOLS`, `EDUCATION`, `LANGUAGE`, `LOOKING FOR`) are brand-blue letter-spaced labels.
 - **About**: full width, paragraphs with a gap between them.
-- Type sizes come from the existing tokens (case body, caption, heading, label, tag). Map each PDF style to the nearest existing token. A new token is allowed only where none fits, and the PR lists it under "Deviations".
+- ~~Type sizes come from the existing tokens.~~ **Superseded 2026-11-05 (review of #74):** mapping to the nearest site token lost the PDF's hierarchy. The page now **scales the PDF uniformly**: see "Type scale and spacing" below.
+- **Background (PO 2026-11-05):** the resume content area, from below the site header to the footer, is white (`--color-bg-surface`), like the PDF; the fact cards stay `--color-bg-subtle`.
+- **Text width:** the summary and the About paragraphs run the full content width, as in the PDF (no narrower `max-width`).
+
+### Type scale and spacing (from the PDF, 2026-11-05)
+Measured from the PDF content streams. The PDF content column is 658 units wide (x 68 → 726), so at the 1080 px content width every PDF value is **× 1.64**. Below the 48rem switch the scale is **× 1.17** (PDF body 12.8 → the site's 15 px mobile body). Between the two, sizes are fluid (`clamp()`), reaching the desktop value when the content column reaches 1080 px. Use new `--resume-*` tokens in `tokens.css` for these values; do not reuse the case tokens.
+
+| Style | PDF | Desktop target | Mobile target | Weight / colour |
+|---|---:|---:|---:|---|
+| Eyebrow `RESUME · 2026`, section eyebrows | 10.1 | 16.5 px | 12 px | 500, brand blue, letter-spaced |
+| Name `周泫淇` | 37.3 | 61 px | 40 px | 700 |
+| Name `Syuan Ci` | 17.3 | 28 px | 20 px | **500**, grey |
+| Role line (`UI/UX 設計師` + focus) | 16.0 | 26 px | 19 px | role 700 brand blue; focus 500 |
+| Email, location | 11.7 | 19 px | 14 px | email 400; location grey |
+| 下載 PDF button text | — | 17 px | 14 px | as the outline pill |
+| Summary | 13.9 | 23 px, line height 1.85 | 16 px, 1.8 | accents 700 brand blue |
+| Fact label / value | 9.1 / 12.5 | 15 / 20.5 px | 11 / 15 px | label grey letter-spaced; value 700 |
+| Section `h2` | 16.0 | 26 px | 19 px | 700 |
+| Period / duration | 11.5 / 10.4 | 19 / 17 px | 13.5 / 12 px | duration grey |
+| Entry title `h3` / badge | 14.4 / 9.9 | 23.5 / 16 px | 17 / 12 px | 700 / brand-blue pill |
+| Org ｜ industry | 11.7 | 19 px | 14 px | grey; `｜` with no extra gap |
+| Entry body | 12.8 | 21 px, line height 1.75 | 15 px, 1.7 | |
+| Project tags, skill / tool tags | 10.4 | 17 px | 12 px | tag chip |
+| Group labels (`SKILLS`, `TOOLS`, `EDUCATION`, …) | 9.9 | 16 px | 12 px | 500, brand blue, letter-spaced |
+| Skills note, LANGUAGE value, LOOKING FOR | 12.8 | 21 px | 15 px | |
+| Education title `私立東海大學` / lines | 13.9 / 11.7 | 23 / 19 px | 16 / 14 px | 700 / grey |
+| About paragraphs | 12.0 | 19.5 px, line height 1.7 | 14 px, 1.7 | |
+
+Spacing and columns scale by the same factor. Desktop reference values (PDF × 1.64): entry left column **267 px** (PDF 163); fact-card padding about 21 px and gap about 20 px; from a section `h2` to its first entry about 100 px; between the summary and the fact cards about 50 px; the skills and education columns are equal with a gap of about 59 px. The header hairline is visible light grey (`--color-border-default`), not 10 % black.
 
 ## Layout (mobile, below the 48rem switch)
 No 390 design exists. Q3: mobile **stacks** the two-column rows.
