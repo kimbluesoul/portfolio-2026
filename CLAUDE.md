@@ -47,8 +47,18 @@ Classify findings as:
 - **P2 — Should Fix:** performance, edge case, quality, resilience, accessibility issue
 - **P3 — Optional:** naming, readability, minor cleanup or optimization
 
+Tag each finding with one category (adopted 2026-11-05):
+
+- `Architecture`: breaks a recorded architecture decision, ADR, or module boundary
+- `Correctness`: wrong behavior, a bug, or a missed edge case
+- `Maintainability`: makes the code harder to change safely
+- `UI mismatch`: differs from the spec sheet or Figma. **The Product Owner decides.** It blocks only when the spec sheet is explicit; when the spec is silent or the reviewer only prefers another look, it is a question for the Product Owner and does not block
+- `Optional`: not needed in this PR
+
+Only P0 / P1 block a merge. In each fix round Claude names which P2s must be fixed now; the remaining P2s and every P3 go to the HANDOFF backlog, not into the fix round.
+
 For each finding include:
-- severity
+- severity and category
 - file / location
 - problem
 - why it matters
@@ -61,4 +71,5 @@ Prefer explaining the required outcome rather than rewriting the code yourself.
 After ChatGPT submits fixes:
 - re-review unresolved findings
 - identify regressions if present
+- raise new non-blocking findings as backlog items, not as new fix-round work
 - approve only when P0 / P1 findings are resolved

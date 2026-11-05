@@ -23,6 +23,18 @@
 - [ ] Pending-asset report reviewed (no unintended `pending` media); `expectedFile` names match `docs/ASSETS.md`
 - [ ] `docs/HANDOFF.md` updated if project state changed
 
+## Acceptance
+<!-- Each acceptance item from the spec sheet or the task brief, with how it was checked (test name, screenshot, measurement). -->
+
+## Not done
+<!-- What this PR deliberately does not do. "None" if none. -->
+
+## Known limits
+<!-- Known gaps, risks, or problems noticed outside the scope (they go to the backlog, not into this PR). "None" if none. -->
+
+## Review focus
+<!-- Where you want Claude to look closely, e.g. a tricky selector, a timing assumption. -->
+
 ## Deviations from Figma
 <!-- Anything that does not match Figma, and why. "None" if none. Missing design decisions are flagged here, not invented. -->
 
