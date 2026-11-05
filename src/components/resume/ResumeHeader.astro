@@ -33,10 +33,10 @@ const { data } = Astro.props;
 <style>
   .resume-header {
     display: grid;
-    gap: var(--space-8);
+    gap: var(--resume-space-card-gap);
     padding-block-end: var(--space-8);
     border-block-end: var(--header-border-width) solid
-      var(--color-border-header);
+      var(--color-border-default);
   }
 
   .identity,
@@ -53,7 +53,7 @@ const { data } = Astro.props;
   .eyebrow {
     color: var(--color-text-brand);
     font-family: var(--font-family-display);
-    font-size: var(--font-size-label);
+    font-size: var(--resume-font-size-eyebrow);
     font-weight: 500;
     letter-spacing: var(--letter-spacing-label);
   }
@@ -63,20 +63,21 @@ const { data } = Astro.props;
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--space-2) var(--space-4);
-    font-size: var(--font-size-case-heading);
+    font-size: var(--resume-font-size-name);
     line-height: var(--line-height-display);
   }
 
   .name-en {
     color: var(--color-text-secondary);
-    font-size: var(--font-size-case-subheading);
+    font-size: var(--resume-font-size-name-en);
+    font-weight: 500;
   }
 
   .role-line {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-4);
-    font-size: var(--font-size-body);
+    font-size: var(--resume-font-size-role);
   }
 
   .resume-role {
@@ -87,7 +88,7 @@ const { data } = Astro.props;
   .contact {
     gap: var(--space-2);
     color: var(--color-text-secondary);
-    font-size: var(--font-size-body-compact);
+    font-size: var(--resume-font-size-contact);
   }
 
   .email,
@@ -111,6 +112,7 @@ const { data } = Astro.props;
     padding: var(--space-2) var(--space-5);
     border: var(--header-border-width) solid var(--color-border-default);
     border-radius: var(--radius-pill);
+    font-size: var(--resume-font-size-download);
     transition:
       border-color var(--motion-duration-hover) var(--motion-ease-hover),
       color var(--motion-duration-hover) var(--motion-ease-hover);

@@ -71,7 +71,7 @@ const { education, skills } = Astro.props;
   }
 
   .details-grid {
-    gap: var(--space-16);
+    gap: var(--resume-space-details-gap);
   }
 
   section {
@@ -92,7 +92,7 @@ const { education, skills } = Astro.props;
   .label {
     color: var(--color-text-brand);
     font-family: var(--font-family-display);
-    font-size: var(--font-size-label);
+    font-size: var(--resume-font-size-group-label);
     font-weight: 500;
     letter-spacing: var(--letter-spacing-label);
   }
@@ -108,14 +108,14 @@ const { education, skills } = Astro.props;
     padding: var(--space-2) var(--space-3);
     border: var(--header-border-width) solid var(--color-border-default);
     border-radius: var(--radius-tag);
-    font-size: var(--font-size-body-compact);
+    font-size: var(--resume-font-size-tag);
     overflow-wrap: anywhere;
   }
 
   .note,
   .education-block {
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
+    font-size: var(--resume-font-size-entry-body);
+    line-height: var(--resume-line-height-entry-body);
   }
 
   .note,
@@ -125,12 +125,17 @@ const { education, skills } = Astro.props;
 
   .education-block strong {
     color: var(--color-text-primary);
+    font-size: var(--resume-font-size-education-title);
+  }
+
+  .education-block p:not(.label) {
+    font-size: var(--resume-font-size-education-line);
   }
 
   @media (width >= 48rem) {
     .details-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-16);
+      gap: var(--resume-space-details-gap);
     }
   }
 </style>

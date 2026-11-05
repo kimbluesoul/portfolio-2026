@@ -64,13 +64,13 @@ const { data, headingId } = Astro.props;
   }
 
   .entry-section {
-    gap: var(--space-6);
+    gap: var(--resume-space-section-to-entry);
   }
 
   .entry {
     display: grid;
     gap: var(--space-5);
-    padding-block: var(--space-7);
+    padding-block: var(--resume-space-entry-padding);
     border-block-end: var(--header-border-width) solid
       var(--color-border-default);
   }
@@ -78,13 +78,17 @@ const { data, headingId } = Astro.props;
   .entry-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    font-size: var(--font-size-body-compact);
+    gap: var(--space-2);
+    font-size: var(--resume-font-size-period);
   }
 
   .entry-meta p + p,
   .organization {
     color: var(--color-text-secondary);
+  }
+
+  .entry-meta p + p {
+    font-size: var(--resume-font-size-duration);
   }
 
   .entry-content {
@@ -101,8 +105,8 @@ const { data, headingId } = Astro.props;
   }
 
   h3 {
-    font-size: var(--font-size-case-caption-title);
-    line-height: var(--line-height-card-title);
+    font-size: var(--resume-font-size-entry-title);
+    line-height: var(--line-height-body-tight);
   }
 
   .badge {
@@ -110,13 +114,17 @@ const { data, headingId } = Astro.props;
     border: var(--header-border-width) solid var(--color-border-brand);
     border-radius: var(--radius-pill);
     color: var(--color-text-brand);
-    font-size: var(--font-size-label);
+    font-size: var(--resume-font-size-badge);
   }
 
   .organization,
   .body {
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
+    font-size: var(--resume-font-size-contact);
+    line-height: var(--resume-line-height-entry-body);
+  }
+
+  .body {
+    font-size: var(--resume-font-size-entry-body);
   }
 
   .organization span + span::before {
@@ -145,7 +153,7 @@ const { data, headingId } = Astro.props;
     border: var(--header-border-width) solid var(--color-border-default);
     border-radius: var(--radius-tag);
     color: var(--color-text-primary);
-    font-size: var(--font-size-body-compact);
+    font-size: var(--resume-font-size-tag);
     line-height: var(--line-height-tag);
     overflow-wrap: anywhere;
     text-decoration: none;
@@ -168,10 +176,7 @@ const { data, headingId } = Astro.props;
 
   @media (width >= 48rem) {
     .entry {
-      grid-template-columns: calc(var(--space-35) + var(--space-16)) minmax(
-          0,
-          1fr
-        );
+      grid-template-columns: var(--resume-entry-meta-width) minmax(0, 1fr);
       gap: var(--space-10);
     }
 

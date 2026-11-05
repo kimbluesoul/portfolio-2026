@@ -54,6 +54,7 @@ export const LATIN_ONLY_WEIGHT_SELECTORS = [
   '.link-arrow',
   '.next-counter',
   '.next-topline .case-eyebrow',
+  '.name-en',
   '.outputs-label',
   '.resume-link',
   '.section-eyebrow',

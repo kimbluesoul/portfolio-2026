@@ -17,7 +17,7 @@ const { eyebrow, heading, headingId } = Astro.props;
 
 <style>
   .section-intro {
-    padding-block-end: var(--space-4);
+    padding-block-end: var(--resume-space-section-intro-padding);
     border-block-end: calc(var(--header-border-width) * 2) solid
       var(--color-text-primary);
   }
@@ -30,14 +30,14 @@ const { eyebrow, heading, headingId } = Astro.props;
   }
 
   h2 {
-    font-size: var(--font-size-case-subheading);
+    font-size: var(--resume-font-size-section-heading);
     line-height: var(--line-height-body-tight);
   }
 
   .section-eyebrow {
     color: var(--color-text-brand);
     font-family: var(--font-family-display);
-    font-size: var(--font-size-label);
+    font-size: var(--resume-font-size-eyebrow);
     font-weight: 500;
     letter-spacing: var(--letter-spacing-label);
   }

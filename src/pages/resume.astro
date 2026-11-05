@@ -20,22 +20,28 @@ const { data } = resumeEntry;
   description={data.seo.description}
   site={siteEntry.data}
 >
-  <div class="resume-page">
-    <ResumeHeader data={data.header} />
-    <ResumeOverview summary={data.summary} facts={data.facts} />
-    <EntrySection
-      data={data.experience}
-      headingId="resume-experience-heading"
-    />
-    {data.earlier && (
-      <EntrySection data={data.earlier} headingId="resume-earlier-heading" />
-    )}
-    <SkillsEducation skills={data.skills} education={data.education} />
-    <ResumeAbout data={data.about} />
+  <div class="resume-surface">
+    <div class="resume-page">
+      <ResumeHeader data={data.header} />
+      <ResumeOverview summary={data.summary} facts={data.facts} />
+      <EntrySection
+        data={data.experience}
+        headingId="resume-experience-heading"
+      />
+      {data.earlier && (
+        <EntrySection data={data.earlier} headingId="resume-earlier-heading" />
+      )}
+      <SkillsEducation skills={data.skills} education={data.education} />
+      <ResumeAbout data={data.about} />
+    </div>
   </div>
 </BaseLayout>
 
 <style>
+  .resume-surface {
+    background: var(--color-bg-surface);
+  }
+
   .resume-page {
     display: grid;
     width: min(
