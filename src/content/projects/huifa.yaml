@@ -6,7 +6,7 @@ card:
   tags: [已上線, UI設計, Motion, 企業網站, 2024–2025]
   media:
     kind: video
-    src: /media/huifa/card.mp4
+    src: /media/huifa/card.v2.mp4
     poster: ../../assets/projects/huifa/card-poster.jpg
     alt: 匯發營造網站作品預覽
 seo:
@@ -120,7 +120,7 @@ details:
     - label: LIVE SITE
       media:
         kind: video
-        src: /media/huifa/detail-live.mp4
+        src: /media/huifa/detail-live.v2.mp4
         poster: ../../assets/projects/huifa/detail-live-poster.jpg
         alt: 匯發營造網站完成畫面捲動
         aspectRatio: 1440 / 702

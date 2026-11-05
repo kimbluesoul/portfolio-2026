@@ -38,14 +38,14 @@
 | 專案 | 交件原檔 | 網站檔案 | 處理 |
 |---|---|---|---|
 | 88Win（精選卡） | `88win_bg.jpg` | `src/assets/projects/88win/card-bg.jpg` | 原檔 3456 × 1000 |
-| 88Win（精選卡） | `88win_desktop.mp4` | `public/media/88win/card-pc.mp4` ＋ `card-pc-poster.jpg` | 前 10 秒、1280 寬 |
+| 88Win（精選卡） | `88win_desktop.mp4` | `public/media/88win/card-pc.v2.mp4` ＋ `card-pc-poster.jpg` | 前 10 秒、1280 寬 |
 | 88Win（精選卡） | `88win_moblie.mp4` | `public/media/88win/card-mobile.mp4` ＋ `card-mobile-poster.jpg` | 從黑底裁出手機（含外框）、320 × 660 |
-| 華豐輪胎 | `duro_desktop.mp4` | `public/media/hwa-fong/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| FITZONE | `fitzone_desktop.mp4` | `public/media/fitzone/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| SSS | `sss_desktop.mp4` | `public/media/sss/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| 展裕建設 | `jhanyu_desktop.mp4` | `public/media/jhanyu/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| AMD | `amd_desktop.mp4` | `public/media/amd/card.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
-| 匯發營造 | `huifa_desktop.mp4` | `public/media/huifa/card.mp4` ＋ `card-poster.jpg` | 全長 8 秒 |
+| 華豐輪胎 | `duro_desktop.mp4` | `public/media/hwa-fong/card.v2.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| FITZONE | `fitzone_desktop.mp4` | `public/media/fitzone/card.v2.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| SSS | `sss_desktop.mp4` | `public/media/sss/card.v2.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 展裕建設 | `jhanyu_desktop.mp4` | `public/media/jhanyu/card.v2.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| AMD | `amd_desktop.mp4` | `public/media/amd/card.v2.mp4` ＋ `card-poster.jpg` | 前 10 秒 |
+| 匯發營造 | `huifa_desktop.mp4` | `public/media/huifa/card.v2.mp4` ＋ `card-poster.jpg` | 全長 8 秒 |
 
 之後的建議命名（Claude 收到後也會自己改名，所以不照著命名也沒關係）：資料夾用專案代號（`88win`、`hwa-fong`…），首頁卡片影片叫 `card.mp4`；精選卡的三個圖層叫 `card-bg.jpg`、`card-pc.mp4`、`card-mobile.mp4`。
 
@@ -281,7 +281,7 @@ Figma：Desktop `360:2449`／Mobile `485:1693`。規格表：[`docs/specs/huifa.
 | 7 | 主要畫面 | `key-main.mp4` | PC 首頁捲動（Figma `360:2519`） | 1440 × 693（2528 / 1216 寬框） | 5 MB／8 MB | `key-main-poster.jpg` 2880 × 1620 |
 | 8 | Interaction & Motion | `motion-1.mp4` | 01 一頁一畫面 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-1-poster.jpg` 1920 × 1064 |
 | 9 | Interaction & Motion | `motion-2.mp4` | 02 內容進場 | 960 × 462（2528 / 1216 寬框） | 2.5 MB／4 MB | `motion-2-poster.jpg` 1920 × 1064 |
-| 10 | Details | `detail-live.mp4` | LIVE SITE 完成畫面捲動（Figma `385:667`） | 1440 × 702 | 5 MB／8 MB | `detail-live-poster.jpg` 2880 × 1404 |
+| 10 | Details | `detail-live.v2.mp4` | LIVE SITE 完成畫面捲動（Figma `385:667`） | 1440 × 702（2026-11-05 改為 1920 × 936、CRF 24、6.5 MB；原檔 `LIVE SITE.mp4` 2544 × 1220 置中裁成 2502 寬） | 5 MB／8 MB | `detail-live-poster.jpg` 2502 × 1220（原檔寬度） |
 
 **匯發營造合計：圖片 11 張（含 4 張封面）、影片 4 支。**（PO 2026-11-03：Motion 改為 2 步，拿掉 03 區塊轉場）
 

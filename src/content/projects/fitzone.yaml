@@ -6,7 +6,7 @@ card:
   tags: [已上線, UI設計, Motion, 品牌網站, 2024–2025]
   media:
     kind: video
-    src: /media/fitzone/card.mp4
+    src: /media/fitzone/card.v2.mp4
     poster: ../../assets/projects/fitzone/card-poster.jpg
     alt: FITZONE 網站作品預覽
 seo:

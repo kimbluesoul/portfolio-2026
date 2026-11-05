@@ -324,7 +324,7 @@ test('home uses the approved copy, links, and card assets', async ({
         (source) =>
           source.getAttribute('src') ?? source.getAttribute('data-src'),
       ),
-  ).toBe('/media/hwa-fong/card.mp4');
+  ).toBe('/media/hwa-fong/card.v2.mp4');
 
   await expect(
     page.getByText('Thanks for scrolling.', { exact: true }),
@@ -623,7 +623,7 @@ test('loop video lazy-loads, plays once in view, and ends without looping', asyn
   await expect(source).not.toHaveAttribute('src', /.+/u);
 
   await card.scrollIntoViewIfNeeded();
-  await expect(source).toHaveAttribute('src', '/media/huifa/card.mp4');
+  await expect(source).toHaveAttribute('src', '/media/huifa/card.v2.mp4');
   await expect(player).toHaveAttribute('data-state', 'playing');
   expect(await video.evaluate((node) => (node as HTMLVideoElement).loop)).toBe(
     false,
@@ -651,7 +651,7 @@ test('reduced motion keeps scroll playback idle but still allows hover replay', 
   await card.scrollIntoViewIfNeeded();
   await expect(video.locator('source')).toHaveAttribute(
     'src',
-    '/media/huifa/card.mp4',
+    '/media/huifa/card.v2.mp4',
   );
   await expect(player).toHaveAttribute('data-state', 'idle');
   await expect(video).not.toHaveAttribute('data-test-play-count', /.+/u);
@@ -676,7 +676,7 @@ test('Save-Data prevents playback on entry', async ({ page }) => {
   await card.scrollIntoViewIfNeeded();
   await expect(player.locator('source')).toHaveAttribute(
     'src',
-    '/media/huifa/card.mp4',
+    '/media/huifa/card.v2.mp4',
   );
   await expect(player).toHaveAttribute('data-state', 'idle');
   await expect(player.locator('video')).not.toHaveAttribute(

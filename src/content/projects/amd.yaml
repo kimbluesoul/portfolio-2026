@@ -6,7 +6,7 @@ card:
   tags: [已上線, UI設計, 互動設計, 企業網站, 2024–2025]
   media:
     kind: video
-    src: /media/amd/card.mp4
+    src: /media/amd/card.v2.mp4
     poster: ../../assets/projects/amd/card-poster.jpg
     alt: AMD 網站作品預覽
 seo:
