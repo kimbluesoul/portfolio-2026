@@ -37,7 +37,12 @@ const { data, headingId } = Astro.props;
             </div>
             <p class="organization">
               <span>{entry.org}</span>
-              {entry.industry && <span>{entry.industry}</span>}
+              {entry.industry && (
+                <>
+                  <span>｜</span>
+                  <span>{entry.industry}</span>
+                </>
+              )}
             </p>
             <p class="body">{entry.body}</p>
             {entry.projects && (
@@ -96,8 +101,7 @@ const { data, headingId } = Astro.props;
     gap: var(--space-3);
   }
 
-  .title-line,
-  .organization {
+  .title-line {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -125,11 +129,6 @@ const { data, headingId } = Astro.props;
 
   .body {
     font-size: var(--resume-font-size-entry-body);
-  }
-
-  .organization span + span::before {
-    margin-inline-end: var(--space-3);
-    content: '｜';
   }
 
   .projects {

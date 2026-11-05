@@ -44,7 +44,12 @@ const { education, skills } = Astro.props;
       />
       <div class="education-blocks">
         {education.blocks.map((block) => (
-          <div class="education-block">
+          <div
+            class:list={[
+              'education-block',
+              `education-block--${block.label.toLowerCase().replaceAll(' ', '-')}`,
+            ]}
+          >
             <p class="label">{block.label}</p>
             <p>
               <strong>{block.title}</strong>
@@ -130,6 +135,18 @@ const { education, skills } = Astro.props;
 
   .education-block p:not(.label) {
     font-size: var(--resume-font-size-education-line);
+  }
+
+  .education-block--language p:not(.label),
+  .education-block--looking-for p:not(.label) {
+    font-size: var(--resume-font-size-entry-body);
+    font-weight: 400;
+  }
+
+  .education-block--language strong,
+  .education-block--looking-for strong {
+    font-size: inherit;
+    font-weight: 400;
   }
 
   @media (width >= 48rem) {
