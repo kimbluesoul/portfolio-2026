@@ -15,6 +15,7 @@ const { nav } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
+<div class="header-scroll-sentinel" aria-hidden="true"></div>
 <header class="site-header">
   <a class="brand" href="/" aria-label="Syuan Ci 首頁">
     <Fragment set:html={logo} />
@@ -51,7 +52,34 @@ const currentPath = Astro.url.pathname;
     justify-content: space-between;
     gap: var(--space-4);
     padding: var(--space-3) var(--layout-page-gutter);
-    background: transparent;
+    background-color: transparent;
+    transition: background-color var(--motion-duration-hover)
+      var(--motion-ease-hover);
+  }
+
+  .site-header[data-scrolled] {
+    backdrop-filter: blur(12px);
+    background-color: color-mix(
+      in srgb,
+      var(--color-bg-canvas) 85%,
+      transparent
+    );
+  }
+
+  .site-header[data-scrolled][data-tone='inverse'] {
+    background-color: color-mix(
+      in srgb,
+      var(--color-bg-inverse) 85%,
+      transparent
+    );
+  }
+
+  .header-scroll-sentinel {
+    position: absolute;
+    inset-block-start: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
   }
 
   /* Nav pill: mobile 473:917 (0.8× scale), desktop 360:3438 / items 466:895.
@@ -140,6 +168,10 @@ const currentPath = Astro.url.pathname;
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
+
     .brand {
       transition: none;
     }
