@@ -13,10 +13,10 @@
 ## Open PRs
 | PR | What | Waiting on |
 |---|---|---|
-| `fix/resume-polish` | #74 P3s: `｜` gaps, entry column offset, LANGUAGE / LOOKING FOR sizes (spec clarified on this branch) | Codex |
+| — | None after #75 merges | — |
 
 ## Next owner and next action
-1. **Codex**: the resume polish on `fix/resume-polish` (task brief from Claude).
+1. **Codex**: the backlog below, one task brief at a time, when the Product Owner wants it.
 2. **Product Owner**: decide when to switch production on (M5 / launch).
 3. **Claude**: review the polish PR; production-switch steps when asked; re-encode HUIFA `detail-live.mp4` at 1920 w (media PR).
 
@@ -29,6 +29,7 @@
 ## Backlog (non-blocking review findings)
 | Source | Item |
 |---|---|
+| #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
 | #70 P3 | `-webkit-backdrop-filter` on the scrolled header |
 | #65 P3-2 | Image-only schema for `mobileMedia` |
 | #67 P3 | One source for the media slot rules |
@@ -58,7 +59,7 @@ Decisions live where they apply. Start here:
 | M1 Home | Done (#10) |
 | M2 Case template + 88Win | Done (#14, follow-ups through #46) |
 | M3 Remaining case studies | Done: pages #21, #31, #49–#53; media #54–#60, #66, #71; reveals #68; header #69 / #70 |
-| M4 Resume | Done (#73 spec, #74 implementation; polish in progress) |
+| M4 Resume | Done (#73 spec, #74 implementation, #75 polish) |
 | M5 Launch hardening | Not started |
 
 ## Workflow
