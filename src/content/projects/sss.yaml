@@ -6,7 +6,7 @@ card:
   tags: [已上線, UI設計, 互動設計, 活動頁面, 2024–2025]
   media:
     kind: video
-    src: /media/sss/card.mp4
+    src: /media/sss/card.v2.mp4
     poster: ../../assets/projects/sss/card-poster.jpg
     alt: SSS 網站作品預覽
 seo:

@@ -18,7 +18,7 @@
 ## Next owner and next action
 1. **Codex**: the backlog below, one task brief at a time, when the Product Owner wants it.
 2. **Product Owner**: optional: a custom domain (Q7); anything left for M5 (launch hardening).
-3. **Claude**: re-encode HUIFA `detail-live.mp4` at 1920 w (media PR) when convenient.
+3. **Claude**: media PRs when the Product Owner delivers new files (always a new versioned filename, ARCHITECTURE §9.2).
 
 ## Blockers and decisions pending
 | Item | Blocks | Owner |
@@ -28,6 +28,7 @@
 ## Backlog (non-blocking review findings)
 | Source | Item |
 |---|---|
+| HUIFA live PR | A CI guard that fails when a tracked file under `public/media/` is modified in place (must be renamed, ARCHITECTURE §9.2), e.g. `git diff --diff-filter=M origin/main -- public/media` in `check-media` |
 | #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
 | #70 P3 | `-webkit-backdrop-filter` on the scrolled header |
 | #65 P3-2 | Image-only schema for `mobileMedia` |

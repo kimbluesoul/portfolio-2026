@@ -14,7 +14,7 @@ card:
       decorative: true
     desktop:
       kind: video
-      src: /media/88win/card-pc.mp4
+      src: /media/88win/card-pc.v2.mp4
       poster: ../../assets/projects/88win/card-pc-poster.jpg
       alt: 88Win PC 介面動態預覽
     phone:
