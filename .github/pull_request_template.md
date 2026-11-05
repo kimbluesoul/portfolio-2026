@@ -15,13 +15,25 @@
 |  |  |  |  |  | None |
 
 ## Quality gates
-- [ ] `pnpm verify` passes locally (lint, format, check, unit, build, e2e + axe, Lighthouse budgets)
+- [ ] Local gates pass (`pnpm lint && pnpm format:check && pnpm check && pnpm test`; media PRs also `node scripts/check-media.mjs`), and all 4 CI checks are green (ARCHITECTURE §16.1)
 - [ ] No new runtime dependency, or Architect approval noted below (ARCHITECTURE §15)
 - [ ] No raw color/spacing values outside `tokens.css`
 - [ ] Keyboard and reduced-motion checked for new interactive elements
 - [ ] Copy taken from the spec sheet; every difference in the Figma vs page table is listed under "Deviations from Figma"
 - [ ] Pending-asset report reviewed (no unintended `pending` media); `expectedFile` names match `docs/ASSETS.md`
 - [ ] `docs/HANDOFF.md` updated if project state changed
+
+## Acceptance
+<!-- Each acceptance item from the spec sheet or the task brief, with how it was checked (test name, screenshot, measurement). -->
+
+## Not done
+<!-- What this PR deliberately does not do. "None" if none. -->
+
+## Known limits
+<!-- Known gaps, risks, or problems noticed outside the scope (they go to the backlog, not into this PR). "None" if none. -->
+
+## Review focus
+<!-- Where you want Claude to look closely, e.g. a tricky selector, a timing assumption. -->
 
 ## Deviations from Figma
 <!-- Anything that does not match Figma, and why. "None" if none. Missing design decisions are flagged here, not invented. -->

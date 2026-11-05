@@ -15,6 +15,13 @@ Before ChatGPT starts a page, Claude writes `docs/specs/<slug>.md` (home and res
 5. **Figma reference images**: `docs/specs/<slug>/figma-<section>-desktop.jpg` and `-mobile.jpg`, exported by Claude at 1× (JPG, so the repo stays small).
    From 2026-11-02 (SSS, JHANYU, AMD, HUIFA) a sheet may instead ship one 1× full-frame image per width, `figma-desktop.jpg` and `figma-mobile.jpg`, to save export rounds; crop the section from it for the side-by-side table.
 
+6. **Acceptance and scope** (Definition of Done, adopted 2026-11-05): a short checklist the Product Owner, Claude, and the implementer share:
+   - expected behavior at 390, at the section switch point, and at 1920 (and 360 if anything wraps);
+   - interaction and motion: hover / focus, reveals, video playback, and what changes under reduced motion;
+   - the source of every copy string, link, and media file (this sheet, `ASSETS.md`, or the PO);
+   - **out of scope**: what this page deliberately does not do.
+   Loading / empty / error states are listed only where the page has them (pending media is covered by ARCHITECTURE §9.3).
+
 Rules:
 - Figma stays the source of truth. If the sheet and Figma disagree, Figma wins: raise it in the PR, and Claude fixes the sheet.
 - ChatGPT copies strings from the sheet. It does not retype them from Figma.

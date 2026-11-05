@@ -48,3 +48,8 @@ Target: about **10 minutes** per PR on a cache hit (Verify ~5 min, then E2E and 
 - Most PRs get a verdict in about 10 minutes instead of about 60.
 - E2E and Lighthouse test exactly the `dist/` that `Verify` checked, so all three jobs see the same build.
 - The cache uses GitHub Actions cache storage (10 GB per repository; old entries are evicted automatically).
+
+## Amendment (2026-11-05, public repository and local format check)
+- **The repository is public** since 2026-11-05. The private-repository Actions minutes ran out (3,298 of 2,000 minutes on 1–4 November, mostly runs from before this ADR); public repositories have unlimited standard runners. Checked before the switch: no secrets in the tree or the history. GitHub secret scanning and push protection are on. The workflows use no secrets and no `pull_request_target`, so a fork PR cannot reach anything privileged. The Figma design file stays invite-only; the client prototypes the site links to stay "anyone with the link".
+- **Local gates add `pnpm format:check`.** Implementers run `pnpm lint && pnpm format:check && pnpm check && pnpm test` before each push (ARCHITECTURE §16.1 v1.14). Without the format check, Prettier failures came back from CI as extra "style: format" pushes, each costing a full CI round.
+- **Measured:** about 5 minutes per PR on a cache hit (Verify 1–2 min, then E2E ~2.5 min and Lighthouse ~3 min in parallel; PR #71), better than the 10-minute target.

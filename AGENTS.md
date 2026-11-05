@@ -31,7 +31,7 @@ ChatGPT owns implementation after architecture is approved.
 3. Do not override Product Owner UI / UX decisions.
 4. Keep changes scoped to the requested feature.
 5. Use feature branches and Pull Requests.
-6. Run the quality gates in `docs/ARCHITECTURE.md` §16.1 before requesting review: the full `pnpm verify` for the first review of a PR, the fast gates for later fix rounds. Fill in `.github/pull_request_template.md`.
+6. Run the quality gates in `docs/ARCHITECTURE.md` §16.1 before requesting review: the local gates for every push, then wait for all 4 CI checks to be green. Fill in `.github/pull_request_template.md`.
 7. Update `docs/HANDOFF.md` when project state materially changes.
 8. Prefer clear, maintainable implementation over clever abstractions.
 9. Avoid unrelated refactors inside feature PRs.
@@ -51,6 +51,25 @@ Rules:
 - Search with `rg` for the symbol or file you need instead of opening whole folders.
 - If a doc section you skipped turns out to matter, read it then. Do not guess architecture.
 
+## Task brief (from Claude, adopted 2026-11-05)
+Every implementation task, first PR or fix round, starts from a brief that Claude writes and the Product Owner pastes. It always has these parts:
+
+- **Goal**: one or two sentences.
+- **Branch**: name, from `origin/main`.
+- **Files**: the files to add or change, and the doc / spec sections to read. Read only those.
+- **Reuse**: existing components, helpers, or tokens that must be used.
+- **Do not touch**: files or behavior outside the task, including tests that must not change (a brief names the one test that may change when the markup contract changes).
+- **Acceptance**: the checks that make the task done (from the spec sheet's Acceptance section, or listed in the brief).
+- **Risks / open questions**: what Claude already knows may go wrong.
+- **Gates**: the local gates (ARCHITECTURE §16.1), then push, open the PR, and wait for 4 green CI checks.
+
+If the brief is missing a part you need, ask in the PR or raise an Architecture Issue. Do not guess.
+
+## Fix rounds
+- Claude's review comment is the scope: fix the P0 / P1 findings and the P2s Claude names. Nothing else.
+- Do not refactor, rename, or "improve" outside those findings. A new problem you notice goes under "Known limits" in the PR, not into the fix.
+- Reply on the PR with one line per finding: fixed (commit) or not fixed (why).
+
 ## Architecture issue format
 When architecture blocks implementation, report:
 
@@ -64,5 +83,7 @@ When architecture blocks implementation, report:
 
 Do not implement an architecture change until Claude records the decision.
 
+Fast lane: you raise the issue with options → Claude answers only the architecture decision → the Product Owner joins only when the choice is a product or UI trade-off → Claude records it (ADR, ARCHITECTURE, or the spec) → you continue. The rest of the feature is not reopened.
+
 ## Review workflow
-ChatGPT implements -> Claude reviews -> ChatGPT fixes -> Claude re-reviews -> Product Owner decides merge.
+Product Owner confirms the spec -> Claude writes the task brief -> ChatGPT implements and passes the gates -> Claude reviews against the spec and architecture (P0–P3 + category, CLAUDE.md) -> ChatGPT fixes in one round -> Claude re-reviews -> Product Owner decides product / UI questions and merges.
