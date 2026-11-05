@@ -4,7 +4,7 @@ nameZh: 華豐輪胎
 card:
   summary: &summary 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
   tags: [已上線, UI設計, 互動設計, 品牌網站, 2024–2025]
-  media: &card
+  media:
     kind: video
     src: /media/hwa-fong/card.mp4
     poster: ../../assets/projects/hwa-fong/card-poster.jpg
@@ -15,7 +15,11 @@ seo:
 next:
   oneLiner: 以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。
   meta: 華豐輪胎　·　品牌網站　·　UI 設計　·　互動設計　·　2024–2025
-  media: *card
+  media:
+    kind: video
+    src: /media/hwa-fong/key-main.mp4
+    poster: ../../assets/projects/hwa-fong/key-main-poster.jpg
+    alt: 華豐輪胎網站作品預覽
 hero:
   eyebrow: CASE STUDY 02 · 輪胎品牌
   title: HWA FONG TIRE

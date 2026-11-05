@@ -4,7 +4,7 @@ nameZh: 超透明提案
 card:
   summary: &summary 把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。
   tags: [已上線, UI設計, 互動設計, 活動頁面, 2024–2025]
-  media: &cardVideo
+  media:
     kind: video
     src: /media/sss/card.mp4
     poster: ../../assets/projects/sss/card-poster.jpg
@@ -15,7 +15,11 @@ seo:
 next:
   oneLiner: 把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。
   meta: 超透明提案　·　活動頁面　·　UI 設計　·　互動設計　·　2024–2025
-  media: *cardVideo
+  media:
+    kind: video
+    src: /media/sss/key-main.mp4
+    poster: ../../assets/projects/sss/key-main-poster.jpg
+    alt: SSS 網站作品預覽
 hero:
   eyebrow: CASE STUDY 04 · 展覽活動頁
   title: SSS
