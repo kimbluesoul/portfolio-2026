@@ -1,0 +1,152 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  data: CollectionEntry<'resume'>['data']['header'];
+}
+
+const { data } = Astro.props;
+---
+
+<header class="resume-header">
+  <div class="identity">
+    <p class="eyebrow">{data.eyebrow}</p>
+    <h1>
+      <span>{data.nameZh}</span> <span class="name-en">{data.nameEn}</span>
+    </h1>
+    <p class="role-line">
+      <span class="resume-role">{data.role}</span>
+      <span>{data.focus}</span>
+    </p>
+  </div>
+  <div class="contact">
+    <a class="email" href={`mailto:${data.email}`}>
+      {data.email}
+    </a>
+    <p>{data.location}</p>
+    <a class="download" href={data.download.href} download>
+      {data.download.label}
+    </a>
+  </div>
+</header>
+
+<style>
+  .resume-header {
+    display: grid;
+    gap: var(--resume-space-card-gap);
+    padding-block-end: var(--space-8);
+    border-block-end: var(--header-border-width) solid
+      var(--color-border-default);
+  }
+
+  .identity,
+  .contact {
+    display: grid;
+    align-content: end;
+    justify-items: start;
+  }
+
+  .identity {
+    gap: var(--space-4);
+  }
+
+  .eyebrow {
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: var(--resume-font-size-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  h1 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--resume-font-size-name);
+    line-height: var(--line-height-display);
+  }
+
+  .name-en {
+    color: var(--color-text-secondary);
+    font-size: var(--resume-font-size-name-en);
+    font-weight: 500;
+  }
+
+  .role-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--resume-font-size-role);
+  }
+
+  .resume-role {
+    color: var(--color-text-brand);
+    font-weight: 700;
+  }
+
+  .contact {
+    gap: var(--space-2);
+    color: var(--color-text-secondary);
+    font-size: var(--resume-font-size-contact);
+  }
+
+  .email,
+  .download {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .email {
+    min-block-size: var(--space-10);
+    overflow-wrap: anywhere;
+    transition: color var(--motion-duration-hover) var(--motion-ease-hover);
+  }
+
+  .download {
+    min-block-size: calc(var(--space-10) + var(--space-1));
+    margin-block-start: var(--space-3);
+    padding: var(--space-2) var(--space-5);
+    border: var(--header-border-width) solid var(--color-border-default);
+    border-radius: var(--radius-pill);
+    font-size: var(--resume-font-size-download);
+    transition:
+      border-color var(--motion-duration-hover) var(--motion-ease-hover),
+      color var(--motion-duration-hover) var(--motion-ease-hover);
+  }
+
+  .email:focus-visible,
+  .download:focus-visible {
+    color: var(--color-text-brand);
+  }
+
+  .download:focus-visible {
+    border-color: var(--color-border-brand);
+  }
+
+  @media (hover: hover) {
+    .email:hover,
+    .download:hover {
+      color: var(--color-text-brand);
+    }
+
+    .download:hover {
+      border-color: var(--color-border-brand);
+    }
+  }
+
+  @media (width >= 48rem) {
+    .resume-header {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+
+    .contact {
+      justify-items: end;
+      text-align: end;
+    }
+  }
+</style>

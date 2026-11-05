@@ -1,0 +1,189 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionIntro from './SectionIntro.astro';
+
+type ResumeData = CollectionEntry<'resume'>['data'];
+type EntrySectionData =
+  ResumeData['experience'] | NonNullable<ResumeData['earlier']>;
+
+interface Props {
+  data: EntrySectionData;
+  headingId: string;
+}
+
+const { data, headingId } = Astro.props;
+---
+
+<section class="entry-section" aria-labelledby={headingId}>
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      headingId={headingId}
+    />
+  </reveal-on-view>
+  <reveal-on-view>
+    <div class="entries">
+      {data.entries.map((entry) => (
+        <article class="entry" data-reveal-item>
+          <div class="entry-meta">
+            <p>{entry.period}</p>
+            <p>{entry.duration}</p>
+          </div>
+          <div class="entry-content">
+            <div class="title-line">
+              <h3>{entry.title}</h3>
+              {entry.badge && <span class="badge">{entry.badge}</span>}
+            </div>
+            <p class="organization">
+              <span>{entry.org}</span>
+              {entry.industry && <span>{entry.industry}</span>}
+            </p>
+            <p class="body">{entry.body}</p>
+            {entry.projects && (
+              <ul class="projects">
+                {entry.projects.map((project) => (
+                  <li>
+                    <a href={`/work/${project.slug}/`}>{project.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </reveal-on-view>
+</section>
+
+<style>
+  .entry-section,
+  .entries,
+  .entry-content {
+    display: grid;
+  }
+
+  .entry-section {
+    gap: var(--resume-space-section-to-entry);
+  }
+
+  .entry {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--resume-space-entry-padding);
+    border-block-end: var(--header-border-width) solid
+      var(--color-border-default);
+  }
+
+  .entry-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--resume-font-size-period);
+  }
+
+  .entry-meta p + p,
+  .organization {
+    color: var(--color-text-secondary);
+  }
+
+  .entry-meta p + p {
+    font-size: var(--resume-font-size-duration);
+  }
+
+  .entry-content {
+    min-width: 0;
+    gap: var(--space-3);
+  }
+
+  .title-line,
+  .organization {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  h3 {
+    font-size: var(--resume-font-size-entry-title);
+    line-height: var(--line-height-body-tight);
+  }
+
+  .badge {
+    padding: var(--space-1) var(--space-3);
+    border: var(--header-border-width) solid var(--color-border-brand);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-brand);
+    font-size: var(--resume-font-size-badge);
+  }
+
+  .organization,
+  .body {
+    font-size: var(--resume-font-size-contact);
+    line-height: var(--resume-line-height-entry-body);
+  }
+
+  .body {
+    font-size: var(--resume-font-size-entry-body);
+  }
+
+  .organization span + span::before {
+    margin-inline-end: var(--space-3);
+    content: '｜';
+  }
+
+  .projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-block-start: var(--space-2);
+  }
+
+  .projects li {
+    display: flex;
+    max-width: 100%;
+  }
+
+  .projects a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: calc(var(--space-10) + var(--space-1));
+    max-width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: var(--header-border-width) solid var(--color-border-default);
+    border-radius: var(--radius-tag);
+    color: var(--color-text-primary);
+    font-size: var(--resume-font-size-tag);
+    line-height: var(--line-height-tag);
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    transition:
+      border-color var(--motion-duration-hover) var(--motion-ease-hover),
+      color var(--motion-duration-hover) var(--motion-ease-hover);
+  }
+
+  .projects a:focus-visible {
+    border-color: var(--color-border-brand);
+    color: var(--color-text-brand);
+  }
+
+  @media (hover: hover) {
+    .projects a:hover {
+      border-color: var(--color-border-brand);
+      color: var(--color-text-brand);
+    }
+  }
+
+  @media (width >= 48rem) {
+    .entry {
+      grid-template-columns: var(--resume-entry-meta-width) minmax(0, 1fr);
+      gap: var(--space-10);
+    }
+
+    .entry-meta {
+      display: grid;
+      align-content: start;
+      gap: var(--space-2);
+    }
+  }
+</style>

@@ -2,17 +2,31 @@
 import { splitAccent } from '../../lib/accent';
 
 interface Props {
+  emphasis?: boolean;
   text: string;
 }
 
-const { text } = Astro.props;
+const { emphasis = false, text } = Astro.props;
 ---
 
 {splitAccent(text).map((segment) =>
   segment.text.split('\n').map((line, index) => (
     <>
       {index > 0 && <br />}
-      {segment.accent ? <span class="accent">{line}</span> : line}
+      {segment.accent ? (
+        <span class:list={['accent', emphasis && 'accent-emphasis']}>
+          {line}
+        </span>
+      ) : (
+        line
+      )}
     </>
   )),
 )}
+
+<style>
+  .accent-emphasis {
+    color: var(--color-text-brand);
+    font-weight: 700;
+  }
+</style>

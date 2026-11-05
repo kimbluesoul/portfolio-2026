@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import SectionIntro from './SectionIntro.astro';
+
+interface Props {
+  data: CollectionEntry<'resume'>['data']['about'];
+}
+
+const { data } = Astro.props;
+const paragraphs = data.body.split(/\n\n/u);
+---
+
+<section class="resume-about" aria-labelledby="resume-about-heading">
+  <reveal-on-view>
+    <SectionIntro
+      eyebrow={data.eyebrow}
+      heading={data.heading}
+      headingId="resume-about-heading"
+    />
+  </reveal-on-view>
+  <reveal-on-view>
+    <div class="about-copy" data-reveal-item>
+      {paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+  </reveal-on-view>
+</section>
+
+<style>
+  .resume-about,
+  .about-copy {
+    display: grid;
+  }
+
+  .resume-about {
+    gap: var(--space-6);
+  }
+
+  .about-copy {
+    gap: var(--space-5);
+    font-size: var(--resume-font-size-about);
+    line-height: var(--resume-line-height-about);
+  }
+</style>

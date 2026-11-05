@@ -1,0 +1,133 @@
+resume:
+  seo:
+    title: 履歷｜周泫淇 Syuan Ci
+    description: 具 6 年以上 UI 與數位介面設計經驗，經手超過 15 個品牌與企業網站，以及跨 PC、H5、APP 的產品介面。習慣從需求溝通就開始參與、主動提出設計方向，一路做到正式上線；也擅長規劃網站的 Motion 與互動，並與前端密切溝通實作細節。
+
+  header:
+    eyebrow: RESUME · 2026
+    nameZh: 周泫淇
+    nameEn: Syuan Ci
+    role: UI/UX 設計師
+    focus: 介面設計・互動設計・動態設計
+    email: kimbluesoul@gmail.com
+    location: 台中市・可遠端工作
+    download:
+      label: 下載 PDF
+      href: /files/Syuan-Ci-Resume.pdf
+
+  summary: 具 **6 年以上** UI 與數位介面設計經驗，經手超過 15 個品牌與企業網站，以及跨 PC、H5、APP 的產品介面。習慣從需求溝通就開始參與、主動提出設計方向，一路做到**正式上線**；也擅長規劃網站的 **Motion 與互動**，並與前端密切溝通實作細節。
+
+  facts:
+    - label: EXPERIENCE
+      value: 6 年以上
+    - label: FOCUS
+      value: UI・Interaction・Motion
+    - label: WORK STYLE
+      value: 遠端協作經驗
+    - label: AVAILABLE
+      value: 錄取後一週到職
+
+  experience:
+    heading: 工作經歷
+    eyebrow: EXPERIENCE
+    entries:
+      - period: 2025.04 – 2026.09
+        duration: 1 年 6 個月
+        title: UI 設計師
+        badge: 遠端
+        org: 碼斯克科技探索有限公司
+        industry: 電腦軟體服務業
+        body: 以遠端方式參與娛樂平台與 APP 相關產品的 UI 介面與視覺設計，涵蓋 PC、H5 與 APP。整理跨裝置的介面規則與元件，讓不同平台的操作與視覺維持一致；依產品需求進行頁面規劃、介面設計與 Prototype 動效製作，並透過線上溝通與產品及前端工程師協作，完成設計交付與上線調整。同時負責 Banner、Icon、遊戲分類及活動視覺設計，並導入 AI 工具輔助素材生成與視覺延伸，提升設計效率。
+      - period: 2021.03 – 2025.04
+        duration: 4 年 2 個月
+        title: 網頁設計師
+        org: 雲端數位科技有限公司（MINMAX）
+        industry: 網際網路相關業
+        body: 負責品牌與企業網站專案，四年多參與超過 15 個案件，從需求確認到設計驗收的完整流程，包含客戶溝通、設計排程、首頁視覺提案、內頁與 RWD 介面設計，以及前端切版後的畫面驗收。案件涵蓋建設營造、科技電子、生技醫療、綠能與消費品牌等產業。除了介面設計，也負責規劃網站的 Motion 與互動效果，並與前端工程師密切溝通實作細節，確保上線成果符合設計。
+        projects:
+          - label: 華豐輪胎 DURO
+            slug: hwa-fong
+          - label: FITZONE 健身房
+            slug: fitzone
+          - label: 寶舖建設 SSS 超透明提案
+            slug: sss
+          - label: 展裕建設
+            slug: jhanyu
+          - label: 康健生醫 AMD
+            slug: amd
+          - label: 匯發營造
+            slug: huifa
+      - period: 2018.12 – 2019.12
+        duration: 1 年 1 個月
+        title: UI/UX 設計師
+        org: 新思路文創有限公司
+        industry: 電腦系統整合服務業
+        body: 負責 APP 與網頁介面設計，並設計粉絲專頁標誌、繪製貼圖，以及製作商品 Banner。
+
+  earlier:
+    heading: 其他經歷
+    eyebrow: EARLIER
+    entries:
+      - period: 2020.06 – 2020.11
+        duration: 6 個月
+        title: 設計助理
+        org: 布丁牛企業社
+        industry: 餐館業
+        body: 為各分店設計海報、菜單與文宣，經營官方 LINE 的形象、選單與圖文宣傳，並協助主管處理事務與文件整理。
+      - period: 2015.11 – 2017.04
+        duration: 學生工讀
+        title: 影片剪輯
+        org: 東海大學
+        body: 拍攝並剪輯學校演講影片，上傳至學校平台。
+
+  skills:
+    heading: 專長與工具
+    eyebrow: SKILLS
+    groups:
+      - label: SKILLS
+        tags:
+          - UI 設計
+          - Interaction
+          - Motion
+          - Prototype
+          - RWD
+          - 設計規範與元件
+      - label: TOOLS
+        tags:
+          - Figma
+          - Photoshop
+          - Illustrator
+          - HTML / CSS 基礎
+          - AI 輔助工具
+    note: 熟悉 Figma 介面設計、Prototype 與元件製作，擅長規劃網站的動態與互動效果；具 HTML／CSS 基礎概念，能理解前端實作方式並與工程師溝通。
+
+  education:
+    heading: 學歷與語言
+    eyebrow: EDUCATION
+    blocks:
+      - label: EDUCATION
+        title: 私立東海大學
+        lines:
+          - 資訊工程系 數位創意組｜大學畢業
+          - 2013.09 – 2017.06
+      - label: LANGUAGE
+        title: 英文
+        value: 聽、說、讀、寫：中等
+      - label: LOOKING FOR
+        title: UI/UX 設計師、網頁設計師、產品設計師
+        lines:
+          - 全職｜台中市或遠端工作
+
+  about:
+    heading: 關於我
+    eyebrow: ABOUT
+    body: |-
+      你好，我是泫淇，目前主要從事 UI 與視覺設計相關工作。大學就讀資訊工程系，一開始是因為喜歡遊戲與數位內容而選擇這個科系，後來在課程中接觸到使用者體驗與介面設計，才慢慢發現自己真正有興趣的方向是設計。雖然最後沒有往程式開發發展，但資訊背景讓我在與前端工程師合作時，比較能理解設計實際製作與落地時會遇到的問題。
+
+      過去幾年的工作經驗主要涵蓋網站、RWD、數位平台與 APP UI。早期以網站專案為主，從收到案件後與客戶確認需求、安排設計時程、提出首頁提案，到延伸內頁與 RWD 設計，前端切版完成後也會再進行畫面驗收與修改。這段經驗讓我熟悉一個網站從需求確認到實際完成的流程，也累積了不少與客戶溝通及整理需求的經驗；我也特別喜歡替網站規劃動態，讓內容的進場與轉場更有節奏、更好閱讀。
+
+      後來的工作則以遠端方式，接觸到更多不同平台的 UI 與視覺設計，包含 PC、H5、Mobile、APP、Prototype、活動視覺與 Icon 等，也需要和產品及前端工程師一起討論與調整。比起單純完成一張畫面，我會比較在意整體的視覺是否一致、資訊是否清楚，以及最後實際做出來的效果是不是符合原本的設計。
+
+      這幾年隨著 AI 工具快速發展，我也開始把 AI 加進自己的工作流程，用來協助素材製作、視覺方向探索與一些重複性的工作。對我來說它是一個提高效率的工具，但最後該怎麼取捨、怎麼讓畫面變得更完整，還是需要設計本身的判斷。平常喜歡畫畫、看電影、玩遊戲，也習慣看看不同網站、APP 或其他設計作品，這些一直都是很自然的靈感來源。
+
+      未來我希望繼續往 UI 與數位產品設計發展。比起只把畫面做完，我更希望參與產品從需求、設計到實際上線的過程，也持續累積自己在介面、互動與產品判斷上的能力。

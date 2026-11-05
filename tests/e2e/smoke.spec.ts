@@ -1979,11 +1979,60 @@ test('reduced motion disables motion steps auto-play', async ({
 
 test('resume links to the supplied PDF', async ({ page, request }) => {
   await page.goto('/resume/');
-  await expect(
-    page.getByRole('link', { name: 'Download PDF' }),
-  ).toHaveAttribute('href', '/files/Syuan-Ci-Resume.pdf');
+  await expect(page.getByRole('link', { name: '下載 PDF' })).toHaveAttribute(
+    'href',
+    '/files/Syuan-Ci-Resume.pdf',
+  );
   const response = await request.get('/files/Syuan-Ci-Resume.pdf');
   expect(response.ok()).toBe(true);
+});
+
+test('resume has semantic headings and working contact links', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('/resume/');
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    '周泫淇 Syuan Ci',
+  );
+  await expect(
+    page.getByRole('heading', { level: 2 }).allTextContents(),
+  ).resolves.toEqual([
+    '工作經歷',
+    '其他經歷',
+    '專長與工具',
+    '學歷與語言',
+    '關於我',
+  ]);
+  await expect(page.getByRole('heading', { level: 3 })).toHaveCount(5);
+
+  await expect(
+    page.getByRole('link', { name: 'kimbluesoul@gmail.com' }),
+  ).toHaveAttribute('href', 'mailto:kimbluesoul@gmail.com');
+
+  const projectLinks = [
+    ['華豐輪胎 DURO', '/work/hwa-fong/'],
+    ['FITZONE 健身房', '/work/fitzone/'],
+    ['寶舖建設 SSS 超透明提案', '/work/sss/'],
+    ['展裕建設', '/work/jhanyu/'],
+    ['康健生醫 AMD', '/work/amd/'],
+    ['匯發營造', '/work/huifa/'],
+  ] as const;
+  for (const [name, href] of projectLinks) {
+    await expect(page.getByRole('link', { name, exact: true })).toHaveAttribute(
+      'href',
+      href,
+    );
+  }
+
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
 });
 
 test('88Win hero image is requested eagerly at high priority', async ({

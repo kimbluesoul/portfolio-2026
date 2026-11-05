@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import AccentText from '../ui/AccentText.astro';
+
+interface Props {
+  facts: CollectionEntry<'resume'>['data']['facts'];
+  summary: string;
+}
+
+const { facts, summary } = Astro.props;
+---
+
+<reveal-on-view>
+  <div class="resume-overview">
+    <p class="summary" data-reveal-item>
+      <AccentText text={summary} emphasis />
+    </p>
+    <dl class="facts">
+      {facts.map((fact) => (
+        <div class="fact" data-reveal-item>
+          <dt>{fact.label}</dt>
+          <dd>
+            <strong>{fact.value}</strong>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</reveal-on-view>
+
+<style>
+  .resume-overview {
+    display: grid;
+    gap: var(--resume-space-summary-to-facts);
+  }
+
+  .summary {
+    font-size: var(--resume-font-size-summary);
+    line-height: var(--resume-line-height-summary);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--resume-space-card-gap);
+  }
+
+  .fact {
+    display: grid;
+    align-content: center;
+    min-width: 0;
+    gap: var(--space-2);
+    padding: var(--resume-space-card-padding);
+    border-radius: var(--radius-card);
+    background: var(--color-bg-subtle);
+  }
+
+  dt {
+    color: var(--color-text-secondary);
+    font-family: var(--font-family-display);
+    font-size: var(--resume-font-size-fact-label);
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  dd {
+    margin-inline-start: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--resume-font-size-fact-value);
+  }
+
+  @media (width >= 48rem) {
+    .facts {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>
