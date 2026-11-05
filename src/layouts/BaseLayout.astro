@@ -5,7 +5,9 @@ import type { CollectionEntry } from 'astro:content';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import { bodyFontPreloadHref } from '../lib/font-preload';
+import { pageKeyFromPath } from '../lib/page-key.mjs';
 import generatedFontCss from '../styles/noto-sans-tc.generated.css?raw';
+import generatedPageFontCss from '../styles/noto-sans-tc.pages.generated.json';
 import '../styles/global.css';
 
 interface Props {
@@ -20,17 +22,8 @@ const { title, description, site, preloadBodyFont = false } = Astro.props;
 const bodyFontHref = preloadBodyFont
   ? bodyFontPreloadHref(generatedFontCss)
   : undefined;
-const pageKey =
-  Astro.url.pathname === '/'
-    ? 'index'
-    : Astro.url.pathname.replace(/^\/+|\/+$/gu, '').replaceAll('/', '-');
-const encodedPageFontCss =
-  /\/\* page-font-faces-base64:([A-Za-z\d+/=]+) \*\//u.exec(
-    generatedFontCss,
-  )?.[1];
-const pageFontCss = encodedPageFontCss
-  ? (JSON.parse(atob(encodedPageFontCss)) as Record<string, string>)[pageKey]
-  : undefined;
+const pageKey = pageKeyFromPath(Astro.url.pathname);
+const pageFontCss = (generatedPageFontCss as Record<string, string>)[pageKey];
 const pageFontHash = pageFontCss
   ? (`sha256-${createHash('sha256').update(pageFontCss).digest('base64')}` as const)
   : undefined;

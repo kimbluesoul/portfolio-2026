@@ -1,6 +1,8 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { basename, extname, join, relative } from 'node:path';
 import process from 'node:process';
+import { inferMediaSlot, MEDIA_SIZE_LIMITS } from '../src/lib/media-limits.mjs';
+import { verifyMediaManifest } from './media-manifest.mjs';
 
 const root = process.cwd();
 const mediaDirectory = join(root, 'public', 'media');
@@ -24,11 +26,7 @@ const documentedAssetsByProject = new Map(
     return [project, names];
   }),
 );
-const limits = {
-  keyScreen: 8 * 1024 * 1024,
-  motion: 4 * 1024 * 1024,
-  preview: 3 * 1024 * 1024,
-};
+const updateManifest = process.argv.includes('--update-manifest');
 
 async function filesBelow(directory) {
   try {
@@ -48,10 +46,31 @@ async function filesBelow(directory) {
 }
 
 function limitFor(file) {
-  if (file.includes('key-main') || basename(file).startsWith('detail-'))
-    return limits.keyScreen;
-  if (file.includes('motion-')) return limits.motion;
-  return limits.preview;
+  return MEDIA_SIZE_LIMITS[inferMediaSlot(basename(file))];
+}
+
+const manifestResult = await verifyMediaManifest(root, {
+  update: updateManifest,
+});
+for (const file of manifestResult.changed) {
+  process.stderr.write(
+    `${file}: 內容與 media manifest 不符；請改用新檔名，例如 \`.v2.mp4\`（ARCHITECTURE §9.2）\n`,
+  );
+  process.exitCode = 1;
+}
+if (!updateManifest) {
+  for (const file of manifestResult.added) {
+    process.stderr.write(
+      `${file}: 尚未加入 scripts/media-manifest.json；請執行 node scripts/check-media.mjs --update-manifest\n`,
+    );
+    process.exitCode = 1;
+  }
+  for (const file of manifestResult.removed) {
+    process.stderr.write(
+      `${file}: manifest 路徑已不存在；請執行 node scripts/check-media.mjs --update-manifest\n`,
+    );
+    process.exitCode = 1;
+  }
 }
 
 const videoFiles = (await filesBelow(mediaDirectory)).filter(
