@@ -2,12 +2,13 @@
 
 > Every agent reads this first and updates it before ending a session in which project state changed.
 
-## Status (2026-11-02)
-- **Phase**: M1 Home is done (PR #10). **M2 (case template + 88Win) is done (PR #14)**. The first fidelity follow-up merged (PR #17). **M3 Hwa Fong Tire is done (PR #21)**, and play-once video behavior is done (PR #23). The 390 case-template fidelity follow-up is done (PR #26). **M3 FITZONE is in review** on `feat/m3-fitzone`, implemented by Claude while Codex is out of usage (until 2026-11-06).
-- **Process change (2026-10-31)**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media export list is [`docs/ASSETS.md`](ASSETS.md).
-- **88Win COLOR follow-up**: `feat/color-swatches` replaces the two pending COLOR images with schema-validated HTML/SVG swatches. P1-1 and P2-1 from PR #39 are fixed (SVG fill, responsive five-column row, visual evidence, and cross-engine E2E); it awaits Architect re-review. The Product Owner still owns the merge decision.
+## Status (2026-11-05)
+- **Phase**: **M1 Home, M2 case template and M3 (all seven case studies with media) are done** (last merge PR #71). Scroll reveals (#68), the tone-aware header (#69, #70), the mosaic seam fix (#62) and CI build-once (ADR-0014, #61 / #63) are merged. **No pending media and no `TODO(CONTENT)` remain.** ARCHITECTURE v1.14 records the M3 state.
+- **Next**: M4 (`/resume/`) and M5 (launch hardening) have not started. The production switch (below) can happen any time the Product Owner decides.
+- **Process**: Claude writes a page spec sheet before implementation, and every UI PR includes a Figma vs page table ([`docs/specs/README.md`](specs/README.md)). The Product Owner's media list is [`docs/ASSETS.md`](ASSETS.md). Claude makes media PRs; Codex implements code.
 - **Where to see the latest site**: **`https://staging-portfolio-2026.kimbluesoul.workers.dev/`**. `staging` mirrors `main` automatically on every merge (ADR-0011 amendment).
-- **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build. Production deploys are blocked until no `TODO(CONTENT)` remains (Product Owner decision A, 2026-10-30). Until launch, **a red "Workers Builds" check on `main` is expected and is not a bug.**
+- **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) intentionally still shows the M0 build (Product Owner decision A, 2026-10-30). Its gate (no pending media, no `TODO(CONTENT)`) is now open; production updates once the Product Owner turns production deploys back on. Until then, **a red "Workers Builds" check on `main` is expected and is not a bug.**
+- **Repository is public** since 2026-11-05 (ADR-0014 amendment).
 
 ## Roles (restored after M1)
 - **Product Owner / UI Designer:** user
@@ -19,8 +20,9 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 **ChatGPT, before starting M2:** your local checkout (`Documents/Codex/2026-10-29/.../work/portfolio-2026`) may still hold the old uncommitted M1 files. Run `git fetch origin`, `git checkout main`, and `git reset --hard origin/main` (or use a fresh clone). A backup of those files exists in `%LOCALAPPDATA%\Temp\pf-backup`.
 
 ## Next owner
-1. **Reviewer (new Claude chat)**: review `feat/m3-fitzone` and `fix/88win-copy`, both implemented by Claude.
-2. **Product Owner**: export the 88Win, Hwa Fong, and FITZONE media listed in [`docs/ASSETS.md`](ASSETS.md) whenever convenient, put them in one folder, and tell Claude, who checks them and opens an assets PR. The build's pending-asset report shows what is still missing.
+1. **Product Owner**: decide when to switch production on, and Q11 (WCAG 2.2.2 for auto-started clips, ARCHITECTURE §17) before M5.
+2. **Claude**: re-encode HUIFA `detail-live.mp4` at 1920 w (media PR); write the M4 resume spec when the Product Owner starts M4.
+3. **Codex (low-priority backlog)**: `-webkit-backdrop-filter` on the scrolled header (#70 P3); an image-only schema for `mobileMedia` (#65 P3-2); one source for the media slot rules (#67 P3); case-page scroll restore (#36 P2-1); `--font-size-body` is 17.91 px at 1920 (#31); a stylelint guard for `font-feature-settings` (#30); the #26 and #52 P3s.
 
 ## M1 summary
 - **Content**: home copy, tags, links, and SEO are verbatim from `docs/content/home-copy.md`. The 7 remaining `TODO(CONTENT)` markers are case-study fields (M2 / M3).
@@ -33,9 +35,9 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 - **Q1 / A2**: 7 projects in a fixed order (PRODUCT.md updated).
 - **Q2**: mobile 390 frames exist for every page (ARCHITECTURE Appendix A). The tablet range is handled per ARCHITECTURE §10.
 - **Q3**: the resume page follows the layout of `public/files/Syuan-Ci-Resume.pdf`.
-- **Q4**: motion tokens and rules are in DESIGN_SYSTEM → Motion. Steps do not auto-advance.
+- **Q4**: motion tokens and rules are in DESIGN_SYSTEM → Motion. ~~Steps do not auto-advance.~~ Revised 2026-11-02: steps auto-advance once.
 - **Q5**: AMD 維護 video resolved by the Product Owner.
-- **Q6**: videos never autoplay. Desktop plays on hover / focus; mobile plays on tap with a play indicator.
+- **Q6**: ~~videos never autoplay.~~ Revised 2026-10-31 (ADR-0013): videos play once on entering view; hover / re-entry replays.
 - **A1**: ChatGPT reads Figma directly. In practice, Figma image export was not available to ChatGPT, so Claude exported the M1 images (#12).
 
 ## Decisions recorded on 2026-10-31
@@ -54,7 +56,9 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 ## Blockers
 | Blocks | Item | Owner |
 |---|---|---|
-| Launch | All pending images (2× Figma exports) and videos, listed by the pending-asset report | Product Owner |
+| Launch | ~~All pending media~~ Delivered 2026-11-04 (#54–#60, #66) | — |
+| Production switch | Turn production deploys on (Cloudflare / GitHub steps from Claude on request) | Product Owner |
+| M5 | Q11 (WCAG 2.2.2) and Q7 domain (optional) | Product Owner |
 
 ## M0 implementation notes
 - Astro 7 static output, Node 24, pnpm, TypeScript strictest, approved dependencies, and all §16.1 scripts are configured.
@@ -94,10 +98,11 @@ During M1 the roles were temporarily swapped: Claude implemented the review fixe
 | Architecture v1.1 / v1.2 | Done (PR #3, #11) |
 | M0 Bootstrap | Done (PR #2) |
 | M1 Home | **Done (PR #10)** |
-| M2 Case template + 88Win | **Done (PR #14); 390 template fidelity follow-up in review** |
-| M3 Remaining case studies | **In progress**: Hwa Fong done (PR #21) |
+| M2 Case template + 88Win | **Done (PR #14, follow-ups through #46)** |
+| M3 Remaining case studies | **Done**: pages #21, #49–#53; media #54–#60, #66, #71; reveals #68; header #69 / #70 |
+| Architecture v1.13 / v1.14 | Done (#64; v1.14 this docs PR) |
 | M4 Resume | Not started |
 | M5 Launch hardening | Not started |
 
 ## Workflow reminder
-Claude writes the page spec sheet → ChatGPT implements on a feature branch → `pnpm verify` green → PR using the template (with the Figma vs page table) → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 
+Claude writes the page spec sheet → ChatGPT implements on a feature branch → local gates green (ARCHITECTURE §16.1) → PR → 4 CI checks green → using the template (with the Figma vs page table) → Claude review (P0–P3, verdict comment) → ChatGPT fixes → Claude re-review → Product Owner merges. 

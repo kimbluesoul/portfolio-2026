@@ -31,7 +31,7 @@ ChatGPT owns implementation after architecture is approved.
 3. Do not override Product Owner UI / UX decisions.
 4. Keep changes scoped to the requested feature.
 5. Use feature branches and Pull Requests.
-6. Run the quality gates in `docs/ARCHITECTURE.md` §16.1 before requesting review: the full `pnpm verify` for the first review of a PR, the fast gates for later fix rounds. Fill in `.github/pull_request_template.md`.
+6. Run the quality gates in `docs/ARCHITECTURE.md` §16.1 before requesting review: the local gates for every push, then wait for all 4 CI checks to be green. Fill in `.github/pull_request_template.md`.
 7. Update `docs/HANDOFF.md` when project state materially changes.
 8. Prefer clear, maintainable implementation over clever abstractions.
 9. Avoid unrelated refactors inside feature PRs.

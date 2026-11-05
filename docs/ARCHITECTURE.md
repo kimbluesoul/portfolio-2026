@@ -4,7 +4,7 @@
 Claude — Principal Engineer / Software Architect / Code Reviewer.
 
 ## Status
-**v1.13 — Approved by the Product Owner up to v1.9** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2). v1.8 (2026-10-31, from the PR #21 review) adds a per-project mobile hero title size (`hero.titleSizeMobile`) and −4 % title tracking (§5.1), fixes the 390 back link as centred for every case page, and sets 360 px as the minimum supported width (§10). v1.9 (2026-10-31, from the PR #23 review) starts video loading only after the page `load` event, keeps posters as real image layers under the video, and makes the Lighthouse page-weight gate measure the budget without video, as §13 always intended, with a separate media cap (§7, §13, ADR-0013 amendment). v1.10 (2026-11-01, flaky case-page LCP gate) lays out only the case hero before the first paint (`content-visibility`), makes case-video posters lazy image layers, splits the CJK `ext` subsets per page, and preloads the 400 `core` font on case pages (§7, §13, ADR-0012 amendment). v1.11 (2026-11-02, PO: soft images at 1920 @1x) makes srcsets slot-exact: every desktop slot gets a file of its own 1× / 2× width (§9.1). v1.12 (2026-11-02, M3 specs) adds two template extensions for HUIFA, specified in `docs/specs/huifa.md`: a Details `compare` variant (labelled full-width media, a 390 swipe strip) and a per-project 390 hero showcase scale. No budget changes. v1.13 (2026-11-04, PO) extends scroll reveals to the case pages: fade + rise + stagger by reveal group, 16px rise on phones, no hero entrance, the Visual Extension as the only signature moment (§8, DESIGN_SYSTEM → Motion).
+**v1.14 — Approved by the Product Owner up to v1.9** (v1: 2026-10-29). v1.1 (2026-10-30) adds clarifications from the M0 review: the `Captioned` shape, slug = entry id, CSP ownership, and resolutions of Q8–Q10. v1.2 (2026-10-30) adds hosting on Workers (ADR-0011), build-time font subsetting (ADR-0012), and the content fidelity rule (§5.1). v1.3 (2026-10-30) adds template-first delivery: images and videos may be pending with an `expectedFile` (§9.3), and production is gated on content completeness (ADR-0011 amendment). v1.4 (2026-10-30, from the M2 review) adds the `**accent**` markup for brand-coloured words, a Details shape that follows the 88Win bento, and Link card eyebrows (§5.1). v1.5 (2026-10-31) fixes how each media slot is exported from Figma (composite, crop, and art-directed Details visuals), poster naming, and the Product Owner's export list [`docs/ASSETS.md`](ASSETS.md) (§9). v1.6 (2026-10-31) lets fix rounds run only the fast local gates, because CI runs all of them (§16.1), and adds a context budget for the implementer (AGENTS.md). v1.7 (2026-10-31, ADR-0013) makes videos play once when scrolled into view, with hover / re-entry replay, Home cards as videos, and the 88Win featured composition (§5.1, §7, §9.2). v1.8 (2026-10-31, from the PR #21 review) adds a per-project mobile hero title size (`hero.titleSizeMobile`) and −4 % title tracking (§5.1), fixes the 390 back link as centred for every case page, and sets 360 px as the minimum supported width (§10). v1.9 (2026-10-31, from the PR #23 review) starts video loading only after the page `load` event, keeps posters as real image layers under the video, and makes the Lighthouse page-weight gate measure the budget without video, as §13 always intended, with a separate media cap (§7, §13, ADR-0013 amendment). v1.10 (2026-11-01, flaky case-page LCP gate) lays out only the case hero before the first paint (`content-visibility`), makes case-video posters lazy image layers, splits the CJK `ext` subsets per page, and preloads the 400 `core` font on case pages (§7, §13, ADR-0012 amendment). v1.11 (2026-11-02, PO: soft images at 1920 @1x) makes srcsets slot-exact: every desktop slot gets a file of its own 1× / 2× width (§9.1). v1.12 (2026-11-02, M3 specs) adds two template extensions for HUIFA, specified in `docs/specs/huifa.md`: a Details `compare` variant (labelled full-width media, a 390 swipe strip) and a per-project 390 hero showcase scale. No budget changes. v1.13 (2026-11-04, PO) extends scroll reveals to the case pages: fade + rise + stagger by reveal group, 16px rise on phones, no hero entrance, the Visual Extension as the only signature moment (§8, DESIGN_SYSTEM → Motion). v1.14 (2026-11-05, end of M3) records what the M3 PRs already ship: the schema extensions (390 art direction for the hero showcase and the mosaic, the Details `compare` variant), the hard line-break rule (§5.1), current video slots, the 2528 / 1216 frame for wide recordings and the Next preview video (§9.2, §9.5), and the local gates that ADR-0014 made the practice (§16.1). The header spec and the Latin font rule move to DESIGN_SYSTEM. No budget changes.
 
 Implementation starts with milestone **M0 (bootstrap)**. The remaining open questions in [§17](#17-open-product--design-questions-blocking-or-shaping-architecture) only gate launch (M5).
 
@@ -195,15 +195,20 @@ type Project = {
   hero:        { eyebrow: string; title: string; headline: string; subtitle: string;
                  titleSizeMobile?: number /* v1.8: px at 390, from the project's 390 frame */;
                  stats: [Stat, Stat, Stat, Stat];   // Role / Platform / Status / Year
-                 showcase: { layout: 'isometric' | 'single'; items: Media[] } };
+                 showcase: { layout: 'isometric' | 'single'; items: Media[];
+                             mobileMedia?: Media /* v1.14: 390 art-directed crop of item 1 */;
+                             mobileScale?: 0.25 /* v1.12: HUIFA, 390 shows the 1920 composite at ×0.25 */ } };
   overview:    { heading: string; blocks: { title: string; body: string }[] /* 2–3 */; outputs: string[] };
   keyScreens:  { eyebrow: string; heading: string; subtitle: string;
                  main: Media /* 16:9 */; closeups: Captioned[] /* 2–3 */ };
   mobile?:     { eyebrow: string; heading: string; subtitle: string; panels: Captioned[] /* 3 */ };
   motion?:     { eyebrow: string; heading: string; subtitle: string;
                  steps: { title: string; body: string; media: Media }[] /* 1–3 */ };
-  details?:    { eyebrow: string; heading: string; subtitle: string; items: DetailItem[] /* 1–8 */ };
-  visualExtension?: { variant: 'mosaic' | 'grid'; items: Media[] };
+  details?:    { variant?: 'cards'; eyebrow: string; heading: string; subtitle: string; items: DetailItem[] /* 1–8 */ }
+             | { variant: 'compare' /* v1.12, HUIFA: two labelled full-width media, docs/specs/huifa.md */;
+                 eyebrow: string; heading: string; subtitle: string; items: [CompareItem, CompareItem] };
+  visualExtension?: { variant: 'mosaic' | 'grid'; items: Media[];
+                      mobileMedia?: Media /* v1.14: 390 mosaic art, e.g. HUIFA visual-mosaic-mobile.jpg */ };
   links:       { eyebrow: string; heading: string; subtitle: string;
                  cards: { kind: 'prototype' | 'live' | 'demo'; eyebrow: string; label: string; description: string;
                           url: string }[] /* 1–2 */; note?: string };
@@ -215,6 +220,8 @@ Cardinality rules from the V9 template (2–3 overview blocks, 2–3 close-ups, 
 **Content fidelity rule (v1.2).** Every user-visible string, tag, number, and URL in content files is copied **verbatim** from Figma (or from the Product Owner / the resume PDF). Nothing is paraphrased, translated, or invented. If a value is not available yet, use the literal marker `TODO(CONTENT)`. The build lists every remaining marker, and the production build (`WORKERS_CI_BRANCH=main`) fails while any remain, the same way as pending media (§9.3). Schema validity is never a reason to write made-up copy.
 
 **Accent markup (v1.4).** Figma headings colour key words with `--color-text-brand` (e.g. 「延伸到**三個裝置**」 in `360:283`, 「PC・H5・App **跨裝置**介面設計」 in `360:255`). Content strings mark these words with `**double asterisks**`. One shared helper (`src/lib/accent.ts`) splits the string into plain text and `<span class="accent">` parts. Astro escapes the text, so no HTML is ever injected. The helper is used by every heading, title, and headline that can carry an accent. Asterisks never reach the rendered page. Each `**…**` must match a brand-coloured span in Figma exactly.
+
+**Hard line breaks (v1.14).** A line break inside a content string renders as `<br>`, and only where Figma breaks the line on purpose (for example the section `heading` that Figma sets on two lines). Write such strings as YAML block scalars (`heading: |-`), one Figma line per YAML line. `AccentText` (`src/components/ui/AccentText.astro`) turns each newline into `<br>`, also inside an `**accent**` span. It is used by every field that goes through the accent helper (hero headline and title, section intros, Overview, Home hero and About). Never add a break that Figma does not have to fix wrapping at another width; fix the width or the type instead. The About body splits paragraphs on a blank line (`\n\n`).
 
 **Transcription checklist.** For every section, the implementer reads **every** text node and link (`href`) in the Figma frame, including card eyebrows, descriptions, captions, counters, and Next-project meta. A Figma field must never be left as `TODO(CONTENT)` when the frame contains it. `TODO(CONTENT)` is only for copy that does not exist in Figma.
 
@@ -260,7 +267,7 @@ All interactivity is **progressive enhancement**. With JavaScript disabled, ever
 | Element | Responsibility |
 |---|---|
 | `<loop-video>` | **v1.7, ADR-0013.** Wraps one or more `<video muted playsinline preload="none">` (no `loop`). **v1.9:** each poster is a real `<Picture>` layer under its video (lazy, `aria-hidden`; **eager** when the card is above the fold, i.e. the featured card), so posters show with JS off and in every state. **v1.10:** case-page videos (`LoopVideo.astro`) follow the same rule with a single `<img>` layer (lazy, eager only for a first hero item). The `poster` attribute is not used, because browsers fetch it eagerly. Observers start only after the window `load` event, so no video byte competes with the LCP image. After that, it attaches the source when within one viewport of the screen. **Plays once from 0 each time it enters view** (≥ 50 %), then stays on the last frame. Pauses when it leaves view. **Hover-capable devices** (`(hover: hover) and (pointer: fine)`): `pointerenter` / keyboard `focus-within` on the video or its whole-card link replays it from 0. **Touch**: no play indicator. Tapping a video that is not inside a link replays it, and inside a link a tap only navigates. **Reduced motion or Save-Data**: no playback on view, only on hover / focus / tap. Multiple `<video>` children (the featured composition) start together and end with the longest. Exposes `data-state="idle|playing|ended|paused"` for styling and tests. |
-| `<motion-steps>` | Interaction & Motion step switcher, used by every project (AMD 404 / 維護 is one instance). Semantics: WAI-ARIA **Tabs** (`tablist` / `tab` / `tabpanel`), arrow-key + Home/End navigation, roving tabindex. **PO decision 2026-11-02:** when at least 50% of the section enters view, steps 01 → 02 → 03 play once in sequence and stop after 03; the Tabs ARIA state follows each automatic switch. Clicking or keyboard-selecting any step plays it once and stops auto-advance. **ADR-0013:** reduced motion or Save-Data disables automatic playback. |
+| `<motion-steps>` | Interaction & Motion step switcher, used by every project (AMD 404 / 維護 is one instance). Semantics: WAI-ARIA **Tabs** (`tablist` / `tab` / `tabpanel`), arrow-key + Home/End navigation, roving tabindex. **PO decision 2026-11-02:** when at least 50% of the section enters view, the steps play once in sequence (01 → 02 → 03, or 01 → 02 for the two-step JHANYU and HUIFA) and stop after the last; the Tabs ARIA state follows each automatic switch. Clicking or keyboard-selecting any step plays it once and stops auto-advance. **ADR-0013:** reduced motion or Save-Data disables automatic playback. |
 | `<reveal-on-view>` | Adds `data-inview` once when the element enters the viewport. CSS does the animation. Disconnects after firing. |
 | `<footer-tint>` | Placed right after the site footer. iOS Safari fills the strip below the page (bottom overscroll, behind its toolbar) from the root background and from fixed elements at the viewport edge. While the footer covers the bottom edge and the page is scrolled, it sets `data-footer-tint` on `<html>`: the root turns `--color-bg-inverse`, and the element shows as an 8 px fixed bar in that color over the footer's bottom padding (invisible). At the top the root stays white, so a pull-down shows white. Without JS the strip is white. No motion, no layout shift. |
 
@@ -310,13 +317,15 @@ Rules:
 - Delivery format: **MP4, H.264 (High), yuv420p, no audio track, `+faststart`**. Posters are required (`poster` in schema, rendered via `astro:assets`). WebM/AV1 alternates are optional later.
 - Encoding targets / hard caps:
 
-  | Slot | Size | Target | Hard cap |
+  | Slot | Encode (v1.14) | Target | Hard cap |
   |---|---|---|---|
-  | Key screens main (16:9) | 1440×810 (desktop), 960×540 variant optional for mobile | ≤ 5 MB | 8 MB |
-  | Interaction & Motion step | 960×532 | ≤ 2.5 MB | 4 MB |
-  | Home card / Next-project preview | ≤ 1280 wide | ≤ 2 MB | 3 MB |
+  | Key Screens main `key-main.mp4` (16:9 slot, 1440 CSS px wide) — also the Next Project preview (§9.5) | 1920 w, CRF 24–26 | ≤ 5 MB | 8 MB |
+  | Details video `detail-*.mp4` (e.g. HUIFA LIVE SITE) | 1920 w | ≤ 5 MB | 8 MB |
+  | Interaction & Motion step `motion-*.mp4` (960 / 532 slot) | 1920 w, CRF 21 | ≤ 2.5 MB | 4 MB |
+  | Home card `card*.mp4` | 1280 w, first 10 s, CRF 24 | ≤ 2 MB | 3 MB |
 
-  Clip length ≤ 20 s, 24–30 fps. A CI script fails on any file over its hard cap.
+  All encodes: H.264 High, 30 fps, `-an`, `+faststart`; the poster is frame 1 at the encoded width. Clip length ≤ 20 s. `scripts/check-media.mjs` (run by the build) fails on any file over its hard cap; anyone pushing media runs it locally first.
+- **Wide recordings (v1.14).** A recording wider than 1.9 : 1 (the Product Owner's 2528 × 1216 screen captures) keeps its full width: the slot takes the **2528 / 1216** ratio (`aspectRatio: 2528 / 1216`, class `ratio-2528x1216`) instead of cropping to 16 : 9 or 960 / 532. Narrower recordings are cropped to the slot ratio. Each project's ASSETS table names its frame.
 - Files live in `public/media/<slug>/`, named by slot (`key-main.mp4`, `motion-1.mp4`, …). Each video's poster is `src/assets/projects/<slug>/<video-name>-poster.jpg` (e.g. `key-main-poster.jpg`, `motion-1-poster.jpg`), exported at 2× the slot. Motion step slots use the Figma ratio **960 / 532**, not 16 / 9. Changing a video changes its filename (`motion-1.v2.mp4`) so it can be cached as immutable.
 - No embeds (YouTube/Vimeo/Figma iframes). Prototypes are external links only.
 - Repository weight: masters stay **out of git**. If committed delivery media exceeds **300 MB**, open an ADR (Git LFS or R2 object storage).
@@ -447,9 +456,9 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 | `pnpm build` | Astro build (content schemas validated) + media size check + pending-asset report |
 | `pnpm test:e2e` | Playwright against `astro preview`: Chromium desktop + WebKit iPhone viewport, with axe scan on every route |
 | `pnpm lhci` | Lighthouse CI on `dist/` with the §13 budgets |
-| **`pnpm verify`** | All of the above, in order. **Must pass before the first review of a PR** (AGENTS.md rule 6) |
+| **`pnpm verify`** | All of the above, in order |
 
-**Fix rounds (v1.6).** After the first review, each fix round runs the fast gates locally: `pnpm lint && pnpm format:check && pnpm check && pnpm test && pnpm build`. Add `pnpm test:e2e` only when the round changes markup, routes, links, or client scripts. Run `pnpm lhci` locally only when the round changes media, fonts, or CSS that affects layout. CI still runs every gate on every push, and a red CI blocks approval, so nothing is skipped. Only the duplicate local run is.
+**Local gates (v1.14, replaces the v1.6 rule).** Since ADR-0014, CI builds once and runs every gate on every push in about 5 minutes, and a red CI blocks approval. Locally, every PR and every fix round runs only the fast gates: `pnpm lint && pnpm format:check && pnpm check && pnpm test`. Media PRs add `node scripts/check-media.mjs`. The build, E2E and Lighthouse run in CI; run them locally only to debug a CI failure or to measure (for example a layout or LCP change). `pnpm verify` stays available for a full local run. Nothing is skipped: only the duplicate local run is.
 
 ### 16.2 Required tests
 - **Unit**: `projects.ts` (ordering, next wrap 07→01, unique order), `sections.ts` (order, omission, tone alternation for all optional-section combinations), `media.ts` (pending detection, size helpers).
@@ -459,13 +468,13 @@ Strategy: static HTML, no framework runtime, AVIF/WebP with correct `sizes`, laz
 
 ### 16.3 CI (GitHub Actions)
 - Trigger: `pull_request` and `push` to `main`.
-- Jobs: `verify` (lint, format, check, unit, build) → `e2e` (Playwright, browsers cached) → `lighthouse`. A failed gate blocks merge.
+- Jobs (ADR-0014): `verify` (lint, format, check, unit, build, with the `.astro` image cache) uploads `dist/`; then `e2e` (Playwright + axe) and `lighthouse` run in parallel on that same `dist/`. Cloudflare Workers Builds is the fourth check (branch preview). A failed gate blocks merge.
 - The Product Owner enables branch protection on `main`: require PR, require CI, no force-push.
 
 ### 16.4 PR rules
 - Branches: `feat/…`, `fix/…`, `chore/…`, `docs/…`. Conventional Commits.
 - **One milestone (or less) per PR.** No unrelated refactors.
-- Fill in `.github/pull_request_template.md`: scope, Figma nodes implemented, screenshots (desktop + mobile), `pnpm verify` result, deviations from Figma, and the architecture issues raised.
+- Fill in `.github/pull_request_template.md`: scope, Figma nodes implemented, screenshots (desktop + mobile), local gate results (§16.1) and the CI run, deviations from Figma, and the architecture issues raised.
 - All agents push through the Product Owner's GitHub account, so GitHub "Approve" is unavailable. Claude's verdict is recorded as a PR comment: `Architect review: APPROVED | CHANGES REQUESTED`, using the P0–P3 format in `CLAUDE.md`.
 
 ---
@@ -478,7 +487,7 @@ These are raised for the **Product Owner**. The architecture does not decide the
 | Q1 | ~~Scope mismatch.~~ **Resolved 2026-10-29**: 7 projects in a fixed order. PRODUCT.md updated. | — |
 | Q2 | ~~No mobile designs.~~ **Resolved 2026-10-29**: 390 frames delivered (Appendix A). The tablet range is handled per §10. | — |
 | Q3 | ~~Resume page design.~~ **Resolved 2026-10-29**: `public/files/Syuan-Ci-Resume.pdf` is the desktop design reference for `/resume/`. Mobile stacks the two-column rows. | — |
-| Q4 | ~~Motion spec.~~ **Resolved 2026-10-29** (delegated to Architect): see DESIGN_SYSTEM → Motion. Steps do not auto-advance. | — |
+| Q4 | ~~Motion spec.~~ **Resolved 2026-10-29** (delegated to Architect): see DESIGN_SYSTEM → Motion. **Revised 2026-11-02 (PO):** steps play 01 → last once in sequence when the section enters view, then stop (§7 `<motion-steps>`). | — |
 | Q5 | ~~Pending media at launch (AMD 維護 video).~~ **Resolved 2026-10-29** by the Product Owner. The video is delivered with the AMD assets in M3. | — |
 | Q6 | ~~Video pause control.~~ **Resolved 2026-10-29**, **revised 2026-10-31 (ADR-0013)**: videos play once on entering view. Desktop hover replays, mobile replays on re-entry, and reduced motion / Save-Data keep the old user-initiated behaviour (§7). | — |
 | Q7 | **Cloudflare account + domain.** The Cloudflare account exists (2026-10-30); the Worker project is connected per ADR-0011 and is needed **from M1** for preview URLs. A custom domain is optional and only needed at launch. Until then, the site uses `*.workers.dev`. | M1 previews; launch |

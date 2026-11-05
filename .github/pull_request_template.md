@@ -15,7 +15,7 @@
 |  |  |  |  |  | None |
 
 ## Quality gates
-- [ ] `pnpm verify` passes locally (lint, format, check, unit, build, e2e + axe, Lighthouse budgets)
+- [ ] Local gates pass (`pnpm lint && pnpm format:check && pnpm check && pnpm test`; media PRs also `node scripts/check-media.mjs`), and all 4 CI checks are green (ARCHITECTURE §16.1)
 - [ ] No new runtime dependency, or Architect approval noted below (ARCHITECTURE §15)
 - [ ] No raw color/spacing values outside `tokens.css`
 - [ ] Keyboard and reduced-motion checked for new interactive elements

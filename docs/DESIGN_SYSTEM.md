@@ -8,7 +8,7 @@ ChatGPT may transcribe values from Figma into this document only with a source c
 This document records approved design decisions. It does **not** define engineering architecture.
 
 ## Current status
-M1 home tokens transcribed from the approved Figma frames on 2026-10-30. Values below are flagged for Product Owner confirmation in the M1 PR.
+M1 home tokens transcribed from the approved Figma frames on 2026-10-30. Case-page type, hover states, scroll reveals and the site header were added through M2–M3 and are live on staging (2026-11-05).
 
 ## Figma source
 
@@ -66,6 +66,16 @@ Instrument Sans arrows are self-hosted as an OFL-licensed two-glyph WOFF2 subset
 
 Fonts are subset per weight to the text inside those selectors. Any CSS rule that sets another weight must be either listed there or in `LATIN_ONLY_WEIGHT_SELECTORS` (Latin-only labels such as `OVERVIEW`); the build fails otherwise. Only 400 / 700 Noto Sans TC faces exist, so a 600 rule (Figma SemiBold) is drawn with the 700 face and is checked against the 700 list. The coverage gate rejects 500 unless its selector is explicitly Latin-only. A Chromium E2E test fails if any text node on the main routes is drawn with a system font.
 
+**Which face draws Latin text (recorded 2026-11-05, measured with CDP `CSS.getPlatformFontsForNode` on staging; Figma was updated to match in session 3, 24 ranges):**
+
+| Stack | Elements | Latin drawn in |
+|---|---|---|
+| Display (`--font-family-display`) | `h1`–`h3` including section `h2`, eyebrows, labels, `.tag-latin` (Home card years and "Motion" tags), nav, footer display text | **Instrument Sans** |
+| Body (`--font-family-body`) | hero headline, outputs, captions, step titles, link titles, About tools / skills chips, body copy | **Noto Sans TC** |
+| Any | `←` `→` `↗` | Noto Sans TC, except `→` `↗` in `.link-arrow` and the desktop Next arrow, which use the Instrument Sans arrows face above |
+
+A Latin word inside a body-stack element stays in Noto Sans TC; do not wrap it to switch faces. Figma follows the same rule: case hero eyebrows "CASE STUDY 0X · " are Instrument Sans Medium, Latin words in `Heading` layers (DURO, SSS, Logo) are Instrument Sans Bold.
+
 ## Spacing
 
 Reusable spacing tokens are a 4 px base sequence: 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48, 56, 72, 96, and 140 px.
@@ -104,8 +114,21 @@ The implementation is mobile-first. The two-column work grid switches at 768 px,
 - Mobile featured card: 350 × 384 px; secondary card heights vary with content, e.g. 350 × 338 and 350 × 313 px (`474:1086`, `474:1122`, `474:1145`).
 - Card media stays clipped while the media layer scales to 1.02 on hover. The whole card lifts 4 px; the entire card is one link (`465:662`).
 
-## Breakpoints
+## Site header
 
+Product Owner decisions 2026-11-04 / 11-05 (PR #69, #70). Implemented in `SiteHeader.astro` + `src/elements/header-tone.ts`.
+
+| State | Header background | Logo | Nav pill |
+|---|---|---|---|
+| At the top of the page | transparent | brand blue | white (`--color-bg-surface`), always |
+| Scrolled (a top sentinel has left the viewport) | 85 % `--color-bg-canvas` + `backdrop-filter: blur(12px)` | as below | white |
+| Scrolled, logo over a dark section | 85 % `--color-bg-inverse` + blur 12 px | white (`--color-text-on-inverse`) | white |
+
+- The logo is an inline SVG drawn with `currentColor`. It turns white while the horizontal line through its centre is over a `.case-section.tone-inverse` or the `.site-footer` (IntersectionObserver with a one-line root margin), and back to brand blue elsewhere. The scrolled background follows the same tone.
+- Colour and background changes use `250ms ease-out` (`--motion-duration-hover`, `--motion-ease-hover`).
+- The header is `position: sticky`. Nav sizes and hover states: see Typography (Nav item) and Motion (Hover / focus-visible).
+
+## Breakpoints
 | Token | Value | Use |
 |---|---:|---|
 | `--bp-md` | 768 px | two-column work grid and wider navigation |
@@ -158,7 +181,7 @@ Behavior rules:
 - **Home:** the project cards after the featured card and the About section use the same reveal; the project grid staggers per row.
 - Reveals never delay content behaviour: videos start and Motion steps auto-advance on their own rules (ADR-0013), even mid-reveal.
 - **Hover / focus-visible**: all states below use `250ms ease-out` and apply identically to pointer hover and keyboard focus (`465:662`, case-page frame `360:251`). The case Hero “← 所有作品” pill changes to `#111` with white text. Link cards change background and border from `#222` to `#1F3BD6`, description text from `#B3B3B3` to `#DBE3FF`, and move ↗ 8px right and 8px up. The Next arrow circle changes from `#1F3BD6` to `#111` and moves → 14px right. The lower “← 所有作品” link changes from `#5C5C5C` to `#1F3BD6` and gains an underline. Footer “BACK TO TOP” and “VIEW RESUME” change to `#9AA8FF` and gain an underline; Email / LinkedIn pills change to a white background with `#111` text and icons. Navigation items use a `#E6E6E6` background. Reduced motion removes only the arrow displacement while preserving every color and underline state.
-- **Interaction & Motion steps**: switching steps crossfades the video (`base`). The step indicator moves with `base` / `standard`. **No auto-advance**: the selected video plays once (on entering view or on selection) and stays on its last frame until the user picks another step (ADR-0013).
+- **Interaction & Motion steps**: switching steps crossfades the video (`base`). The step indicator moves with `base` / `standard`. **Auto-advance once (PO 2026-11-02)**: when half the section is in view, the steps play once in order (01 → 02 → 03; JHANYU and HUIFA have two steps) and stop on the last frame of the last step. Selecting a step plays it once and ends auto-advance. Reduced motion or Save-Data disables automatic playback (ADR-0013).
 - **Page transitions**: a cross-document fade (`base`) where the browser supports it. Otherwise, a normal navigation.
 - **Reduced motion**: every duration above becomes ~0, and reveals are skipped. Hover color changes stay.
 
