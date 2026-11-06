@@ -7,6 +7,9 @@ class ScrollRestoreElement extends HTMLElement {
   #connected = false;
   #position: SavedScrollPosition | undefined;
   #userMoved = false;
+  #resizeObserver: ResizeObserver | undefined;
+  #restoreFrame: number | undefined;
+  #restoreTimeout: number | undefined;
 
   connectedCallback() {
     if (this.#connected) return;
@@ -35,6 +38,9 @@ class ScrollRestoreElement extends HTMLElement {
       passive: true,
     });
     window.addEventListener('keydown', this.#markUserMoved);
+    window.addEventListener('pointerdown', this.#markUserMoved, {
+      passive: true,
+    });
     this.#restorePosition();
 
     if (document.readyState === 'complete') {
@@ -47,7 +53,7 @@ class ScrollRestoreElement extends HTMLElement {
   disconnectedCallback() {
     window.removeEventListener('pagehide', this.#savePosition);
     window.removeEventListener('load', this.#restoreAfterLoad);
-    this.#removeUserListeners();
+    this.#stopSettling();
     this.#connected = false;
   }
 
@@ -117,18 +123,47 @@ class ScrollRestoreElement extends HTMLElement {
   };
 
   #restoreAfterLoad = () => {
-    if (!this.#userMoved) this.#restorePosition();
-    this.#removeUserListeners();
+    if (this.#userMoved) return;
+    this.#restorePosition();
+    this.#resizeObserver = new ResizeObserver(this.#scheduleRestore);
+    this.#sections().forEach((section) =>
+      this.#resizeObserver?.observe(section),
+    );
+    this.#restoreTimeout = window.setTimeout(this.#stopSettling, 3_000);
   };
 
   #markUserMoved = () => {
     this.#userMoved = true;
+    this.#stopSettling();
+  };
+
+  #scheduleRestore = () => {
+    if (this.#userMoved || this.#restoreFrame !== undefined) return;
+    this.#restoreFrame = window.requestAnimationFrame(() => {
+      this.#restoreFrame = undefined;
+      if (!this.#userMoved) this.#restorePosition();
+    });
+  };
+
+  #stopSettling = () => {
+    this.#resizeObserver?.disconnect();
+    this.#resizeObserver = undefined;
+    if (this.#restoreFrame !== undefined) {
+      window.cancelAnimationFrame(this.#restoreFrame);
+      this.#restoreFrame = undefined;
+    }
+    if (this.#restoreTimeout !== undefined) {
+      window.clearTimeout(this.#restoreTimeout);
+      this.#restoreTimeout = undefined;
+    }
+    this.#removeUserListeners();
   };
 
   #removeUserListeners() {
     window.removeEventListener('wheel', this.#markUserMoved);
     window.removeEventListener('touchstart', this.#markUserMoved);
     window.removeEventListener('keydown', this.#markUserMoved);
+    window.removeEventListener('pointerdown', this.#markUserMoved);
   }
 }
 

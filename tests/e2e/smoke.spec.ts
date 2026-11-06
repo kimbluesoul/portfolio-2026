@@ -388,65 +388,84 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
     .toBe(true);
 });
 
-test('case scroll position is restored after reload', async ({
-  browserName,
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/work/88win/');
-  await page.evaluate(async () => {
-    while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
-      window.scrollBy(0, 400);
-      await new Promise((resolve) => window.setTimeout(resolve, 60));
-    }
-  });
-  await expect
-    .poll(() =>
-      page.locator('.case-study > .case-section').evaluateAll((sections) => {
-        const current = sections.find((section) => {
-          const box = section.getBoundingClientRect();
-          return box.top <= 0 && box.bottom > 0;
-        });
-        if (!current) return false;
-        return [
-          ...current.querySelectorAll('reveal-on-view[data-inview]'),
-        ].every((group) => {
-          const items = group.querySelectorAll('[data-reveal-item]');
-          const targets =
-            items.length > 0 ? Array.from(items) : [group.firstElementChild];
-          return targets
-            .filter((target): target is Element => target !== null)
-            .every((target) => {
-              const style = getComputedStyle(target);
-              return style.opacity === '1' && style.transform === 'none';
-            });
-        });
-      }),
-    )
-    .toBe(true);
-
-  const sections = page.locator('.case-study > .case-section');
-  const before = await sections.evaluateAll((elements) => {
-    const index = elements.findIndex((element) => {
-      const box = element.getBoundingClientRect();
-      return box.top <= 0 && box.bottom > 0;
+for (const path of ['/work/88win/', '/work/amd/']) {
+  test(`case scroll position is restored after reload: ${path}`, async ({
+    browserName,
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(path);
+    await page.evaluate(async () => {
+      while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
+        window.scrollBy(0, 400);
+        await new Promise((resolve) => window.setTimeout(resolve, 60));
+      }
     });
-    if (index < 0) throw new Error('No case section crosses the viewport top.');
-    return { index, top: elements[index]!.getBoundingClientRect().top };
-  });
+    await expect
+      .poll(() =>
+        page.locator('.case-study > .case-section').evaluateAll((sections) => {
+          const current = sections.find((section) => {
+            const box = section.getBoundingClientRect();
+            return box.top <= 0 && box.bottom > 0;
+          });
+          if (!current) return false;
+          return [
+            ...current.querySelectorAll('reveal-on-view[data-inview]'),
+          ].every((group) => {
+            const items = group.querySelectorAll('[data-reveal-item]');
+            const targets =
+              items.length > 0 ? Array.from(items) : [group.firstElementChild];
+            return targets
+              .filter((target): target is Element => target !== null)
+              .every((target) => {
+                const style = getComputedStyle(target);
+                return style.opacity === '1' && style.transform === 'none';
+              });
+          });
+        }),
+      )
+      .toBe(true);
 
-  await page.reload();
-  await expect
-    .poll(() => page.evaluate(() => window.scrollY))
-    .toBeGreaterThan(0);
-  await page.waitForTimeout(1_000);
-  const restoredTop = await sections
-    .nth(before.index)
-    .evaluate((element) => element.getBoundingClientRect().top);
-  const drift = Math.abs(restoredTop - before.top);
-  console.info(`${browserName} scroll restoration drift: ${drift}px`);
-  expect(drift).toBeLessThanOrEqual(50);
-});
+    const sections = page.locator('.case-study > .case-section');
+    const before = await sections.evaluateAll((elements) => {
+      const index = elements.findIndex((element) => {
+        const box = element.getBoundingClientRect();
+        return box.top <= 0 && box.bottom > 0;
+      });
+      if (index < 0)
+        throw new Error('No case section crosses the viewport top.');
+      return { index, top: elements[index]!.getBoundingClientRect().top };
+    });
+
+    await page.reload();
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(0);
+    let lastScrollHeight: number | undefined;
+    let stableSince = Date.now();
+    await expect
+      .poll(
+        async () => {
+          const scrollHeight = await page.evaluate(
+            () => document.documentElement.scrollHeight,
+          );
+          if (scrollHeight !== lastScrollHeight) {
+            lastScrollHeight = scrollHeight;
+            stableSince = Date.now();
+          }
+          return Date.now() - stableSince >= 1_000;
+        },
+        { timeout: 10_000 },
+      )
+      .toBe(true);
+    const restoredTop = await sections
+      .nth(before.index)
+      .evaluate((element) => element.getBoundingClientRect().top);
+    const drift = Math.abs(restoredTop - before.top);
+    console.info(`${browserName} ${path} scroll restoration drift: ${drift}px`);
+    expect(drift).toBeLessThanOrEqual(50);
+  });
+}
 
 test('case navigation starts at the top after restoring a reload', async ({
   page,
