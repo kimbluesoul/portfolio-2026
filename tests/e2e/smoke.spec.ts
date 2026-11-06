@@ -51,6 +51,8 @@ test('pages expose the expected JSON-LD', async ({ page }) => {
   await expect(workScripts).toHaveCount(1);
   const workData = JSON.parse((await workScripts.textContent()) ?? '');
   expect(workData['@type']).toBe('CreativeWork');
+  expect(workData.creator['@type']).toBe('Person');
+  expect(workData.creator.name).toBe('周泫淇');
   expect(workData.creator['@id']).toBe(person['@id']);
 
   await page.goto('/resume/');

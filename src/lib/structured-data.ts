@@ -67,6 +67,11 @@ export function createCreativeWorkStructuredData({
     url: new URL(`/work/${slug}/`, siteUrl).href,
     image: new URL(getShareImage(slug).path, siteUrl).href,
     inLanguage: LANGUAGE,
-    creator: { '@id': new URL('/#person', siteUrl).href },
+    creator: {
+      '@type': 'Person',
+      '@id': new URL('/#person', siteUrl).href,
+      name: PERSON_NAME,
+      url: new URL('/', siteUrl).href,
+    },
   };
 }

@@ -69,7 +69,12 @@ describe('structured data', () => {
           /^https:\/\/portfolio\.example\/og\/.+\.v\d+\.(?:png|jpg)$/u,
         ),
         inLanguage: 'zh-Hant-TW',
-        creator: { '@id': 'https://portfolio.example/#person' },
+        creator: {
+          '@type': 'Person',
+          '@id': 'https://portfolio.example/#person',
+          name: '周泫淇',
+          url: 'https://portfolio.example/',
+        },
       });
       expect(
         existsSync(
