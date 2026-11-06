@@ -227,6 +227,115 @@ test('navigation exposes the public anchor contract', async ({ page }) => {
   await expect(page.locator('#contact')).toHaveCount(1);
 });
 
+test('home header About link scrolls smoothly to its anchor', async ({
+  browserName,
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.setViewportSize({ width: 1440, height: 720 });
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveCSS('scroll-behavior', 'smooth');
+
+  const header = page.locator('.site-header');
+  const about = page.locator('#about');
+  const aboutLink = header.getByRole('link', { name: 'About', exact: true });
+  await page.evaluate(async () => {
+    for (let pass = 0; pass < 2; pass += 1) {
+      for (
+        let top = window.innerHeight / 2;
+        top < document.documentElement.scrollHeight;
+        top += window.innerHeight / 2
+      ) {
+        window.scrollTo({ top, behavior: 'instant' });
+        await new Promise(requestAnimationFrame);
+        await new Promise(requestAnimationFrame);
+      }
+    }
+    await new Promise((resolve) => window.setTimeout(resolve, 500));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+  });
+  const targetScrollY = await about.evaluate((element) => {
+    const scrollMarginTop = Number.parseFloat(
+      getComputedStyle(element).scrollMarginTop,
+    );
+    return (
+      element.getBoundingClientRect().top + window.scrollY - scrollMarginTop
+    );
+  });
+  expect(targetScrollY).toBeGreaterThan(0);
+
+  await page.evaluate((target) => {
+    const root = document.documentElement;
+    root.dataset.sawIntermediateScroll = 'false';
+    const startedAt = performance.now();
+    const observe = () => {
+      if (window.scrollY > 0 && window.scrollY < target) {
+        root.dataset.sawIntermediateScroll = 'true';
+      }
+      if (
+        root.dataset.sawIntermediateScroll === 'false' &&
+        performance.now() - startedAt < 5_000
+      ) {
+        requestAnimationFrame(observe);
+      }
+    };
+    requestAnimationFrame(observe);
+  }, targetScrollY);
+  const startedAt = await page.evaluate(() => performance.now());
+  await aboutLink.click();
+  await page.waitForTimeout(100);
+  await expect(page.locator('html')).toHaveAttribute(
+    'data-saw-intermediate-scroll',
+    'true',
+  );
+
+  await expect
+    .poll(async () => {
+      const aboutTop = await about.evaluate(
+        (element) => element.getBoundingClientRect().top,
+      );
+      const scrollMarginTop = await about.evaluate((element) =>
+        Number.parseFloat(getComputedStyle(element).scrollMarginTop),
+      );
+      return Math.abs(aboutTop - scrollMarginTop);
+    })
+    .toBeLessThanOrEqual(2);
+  const finishedAt = await page.evaluate(() => performance.now());
+  console.info(
+    `${browserName} home-to-About smooth scroll: ${Math.round(finishedAt - startedAt)}ms`,
+  );
+});
+
+test('home header About link jumps immediately with reduced motion', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1440, height: 720 });
+  await page.goto('/');
+
+  const header = page.locator('.site-header');
+  await header.getByRole('link', { name: 'About', exact: true }).click();
+
+  const firstFrameOffset = await page.evaluate(
+    () =>
+      new Promise<number>((resolve) => {
+        requestAnimationFrame(() => {
+          const aboutTop = document
+            .querySelector<HTMLElement>('#about')!
+            .getBoundingClientRect().top;
+          const scrollMarginTop = Number.parseFloat(
+            getComputedStyle(document.querySelector<HTMLElement>('#about')!)
+              .scrollMarginTop,
+          );
+          resolve(Math.abs(aboutTop - scrollMarginTop));
+        });
+      }),
+  );
+  expect(firstFrameOffset).toBeLessThanOrEqual(2);
+});
+
 test('home renders the complete ordered project index', async ({ page }) => {
   await page.goto('/');
   const projectLinks = page.locator('#work article > a');
@@ -373,7 +482,7 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
 
   const group = page.locator('.link-cards').locator('..');
   await group.locator('.link-cards').evaluate((element) => {
-    element.scrollIntoView({ block: 'center' });
+    element.scrollIntoView({ block: 'center', behavior: 'instant' });
   });
   await expect(group).toHaveAttribute('data-inview', '');
   await expect
@@ -1181,7 +1290,10 @@ test('the footer color continues below the page only at the bottom', async ({
     expect(top.barDisplay, `${route} top bar`).toBe('none');
 
     await page.evaluate(() =>
-      window.scrollTo(0, document.documentElement.scrollHeight),
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'instant',
+      }),
     );
     await expect.poll(async () => (await state()).tint).toBe(true);
     const bottom = await state();
