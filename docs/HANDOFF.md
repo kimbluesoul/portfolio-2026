@@ -2,10 +2,11 @@
 
 > A status index, not a log (adopted 2026-11-05). Every agent reads it first and updates it when project state changes. Details live in specs, ADRs, ARCHITECTURE, and the PRs; link to them instead of copying them here. The M0–M2 implementation notes that used to be here are in the git history of this file (before PR #72).
 
-## Status (2026-11-05)
+## Status (2026-11-06)
 - **Milestone**: M1 Home, M2 case template and **M3 (all seven case studies, with media) and M4 (`/resume/`, #74) are done**. M5 (launch hardening) has not started.
 - **Content**: no pending media and no `TODO(CONTENT)` remain.
-- **Architecture**: ARCHITECTURE v1.15 (PR #73) adds the resume model; v1.14 (PR #72) records the M3 state.
+- **Architecture**: ARCHITECTURE v1.16 records `<scroll-restore>` (#81) and the media manifest (#79); v1.15 (PR #73) adds the resume model.
+- **Backlog PRs**: A (#79, media and font tooling), B (#80, test and lint guards) and the scroll-restore fix (#81) are merged. PR C (small visual items) is next.
 - **Staging** (mirrors `main` on every merge): `https://staging-portfolio-2026.kimbluesoul.workers.dev/`
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) is **live and current**. The content gate (option A, ADR-0011 amendment) opened once all media were delivered; every merge to `main` since then has deployed to production automatically (green Workers Builds checks from 2026-11-05 at the latest; verified after #76: all routes 200, unknown paths 404, the PDF served). A red Workers check on `main` is now a real failure.
 - **Repository** is public since 2026-11-05 (ADR-0014 amendment).
@@ -16,7 +17,7 @@
 | — | None | — |
 
 ## Next owner and next action
-1. **Codex**: the backlog below, one task brief at a time, when the Product Owner wants it.
+1. **Codex**: PR C from Claude's task brief (`-webkit-backdrop-filter`, body size at 1920, `.hero-stats` min-height), then the rest of the backlog below.
 2. **Product Owner**: optional: a custom domain (Q7); anything left for M5 (launch hardening).
 3. **Claude**: media PRs when the Product Owner delivers new files (always a new versioned filename, ARCHITECTURE §9.2).
 
@@ -28,15 +29,13 @@
 ## Backlog (non-blocking review findings)
 | Source | Item |
 |---|---|
-| HUIFA live PR | A CI guard that fails when a tracked file under `public/media/` is modified in place (must be renamed, ARCHITECTURE §9.2), e.g. `git diff --diff-filter=M origin/main -- public/media` in `check-media` |
+| #70 P3 | `-webkit-backdrop-filter` on the scrolled header (PR C) |
+| #31 P3 | `--font-size-body` is 17.91 px at 1920 (PR C) |
+| #26 P3 | `.hero-stats { min-height: 110px }` at 390; the Hero 390 gate must hold from spacing and type (PR C) |
 | #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
-| #70 P3 | `-webkit-backdrop-filter` on the scrolled header |
-| #65 P3-2 | Image-only schema for `mobileMedia` |
-| #67 P3 | One source for the media slot rules |
-| #36 P2-1 | Case-page scroll restore |
-| #31 P3 | `--font-size-body` is 17.91 px at 1920 |
-| #30 P3 | Stylelint guard for `font-feature-settings` / `font-variant-*` |
-| #26, #52 P3s | Remaining small items (see the PR comments) |
+| #80 P3 | `.stylelintrc.json`: the token rule and the ADR-0012 `writing-mode` rule share one message; give each its own |
+| #81 P3 | `smoke.spec.ts`: the "wait for the current section's reveals" block is duplicated in the two scroll-restore tests; use one helper |
+| #52 P3s | Remaining small items (see the PR comments) |
 
 ## Recorded decisions
 Decisions live where they apply. Start here:
