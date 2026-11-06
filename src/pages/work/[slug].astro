@@ -5,6 +5,7 @@ import CaseSections from '../../components/case/CaseSections.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getOrderedProjects } from '../../lib/project-content';
 import { getNextProject } from '../../lib/projects';
+import { createCreativeWorkStructuredData } from '../../lib/structured-data';
 import '../../styles/case.css';
 
 interface Props {
@@ -31,12 +32,22 @@ const nextProject = getNextProject(
 );
 const siteEntry = await getEntry('site', 'site');
 if (!siteEntry) throw new Error('Missing site content entry.');
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured.');
+const structuredData = createCreativeWorkStructuredData({
+  siteUrl,
+  slug: project.id,
+  name: project.data.name,
+  nameZh: project.data.nameZh,
+  description: project.data.seo.description,
+});
 ---
 
 <BaseLayout
   title={project.data.seo.title}
   description={project.data.seo.description}
   site={siteEntry.data}
+  structuredData={structuredData}
   shareImage={{
     key: project.id,
     alt: `${project.data.name} 案例主視覺`,

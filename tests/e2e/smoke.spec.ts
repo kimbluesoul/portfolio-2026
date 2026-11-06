@@ -28,6 +28,37 @@ const sharePreviewRoutes = [
   { route: '/work/huifa/', key: 'huifa', alt: 'HUIFA 案例主視覺' },
 ] as const;
 
+test('pages expose the expected JSON-LD', async ({ page }) => {
+  await page.goto('/');
+  const homeScripts = page.locator('script[type="application/ld+json"]');
+  await expect(homeScripts).toHaveCount(1);
+  const homeData = JSON.parse((await homeScripts.textContent()) ?? '');
+  expect(homeData['@graph']).toHaveLength(2);
+  const person = homeData['@graph'].find(
+    (node: { '@type'?: string }) => node['@type'] === 'Person',
+  );
+  const website = homeData['@graph'].find(
+    (node: { '@type'?: string }) => node['@type'] === 'WebSite',
+  );
+  expect(person).toBeTruthy();
+  expect(website).toBeTruthy();
+  expect(person.sameAs).toEqual([
+    'https://www.linkedin.com/in/syuanci-chou-design',
+  ]);
+
+  await page.goto('/work/88win/');
+  const workScripts = page.locator('script[type="application/ld+json"]');
+  await expect(workScripts).toHaveCount(1);
+  const workData = JSON.parse((await workScripts.textContent()) ?? '');
+  expect(workData['@type']).toBe('CreativeWork');
+  expect(workData.creator['@id']).toBe(person['@id']);
+
+  await page.goto('/resume/');
+  await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(
+    0,
+  );
+});
+
 for (const { route, key, alt } of sharePreviewRoutes) {
   test(`${route} has complete share preview metadata`, async ({
     baseURL,

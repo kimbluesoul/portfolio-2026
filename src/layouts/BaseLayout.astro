@@ -1,5 +1,5 @@
 ---
-/* eslint-disable astro/no-set-html-directive -- generated font CSS is trusted build output */
+/* eslint-disable astro/no-set-html-directive -- generated font CSS and serialized JSON-LD are trusted build output */
 import { createHash } from 'node:crypto';
 import type { CollectionEntry } from 'astro:content';
 import SiteFooter from '../components/layout/SiteFooter.astro';
@@ -18,6 +18,7 @@ interface Props {
   /** Preload the 400 `core` font (case pages, where the LCP is text). */
   preloadBodyFont?: boolean;
   shareImage?: { key: string; alt: string };
+  structuredData?: object;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   description,
   site,
   preloadBodyFont = false,
+  structuredData,
   shareImage = {
     key: 'home',
     alt: 'Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計',
@@ -42,6 +44,9 @@ if (pageFontHash) Astro.csp?.insertStyleHash(pageFontHash);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const image = getShareImage(shareImage.key);
 const imageUrl = new URL(image.path, Astro.site);
+const serializedStructuredData = structuredData
+  ? JSON.stringify(structuredData).replaceAll('<', '\\u003c')
+  : undefined;
 ---
 
 <!doctype html>
@@ -72,6 +77,13 @@ const imageUrl = new URL(image.path, Astro.site);
         as="font"
         type="font/woff2"
         crossorigin
+      />
+    )}
+    {serializedStructuredData && (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={serializedStructuredData}
       />
     )}
   </head>
