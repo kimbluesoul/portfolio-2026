@@ -482,7 +482,7 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
 
   const group = page.locator('.link-cards').locator('..');
   await group.locator('.link-cards').evaluate((element) => {
-    element.scrollIntoView({ block: 'center' });
+    element.scrollIntoView({ block: 'center', behavior: 'instant' });
   });
   await expect(group).toHaveAttribute('data-inview', '');
   await expect
@@ -1290,7 +1290,10 @@ test('the footer color continues below the page only at the bottom', async ({
     expect(top.barDisplay, `${route} top bar`).toBe('none');
 
     await page.evaluate(() =>
-      window.scrollTo(0, document.documentElement.scrollHeight),
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'instant',
+      }),
     );
     await expect.poll(async () => (await state()).tint).toBe(true);
     const bottom = await state();
