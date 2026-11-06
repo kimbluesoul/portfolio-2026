@@ -199,10 +199,28 @@ details:
       caption: 遊戲圖（方形）用同一張圖等比例縮放，各裝置共用；遊戲廠商圖（長方形）分成 PC 與 H5／App 兩種版本。另一種廠商圖只用在 PC 版，分成選中與未選中兩種狀態。
       size: full
       media:
-        kind: image
-        src: ../../assets/projects/88win/detail-card.png
-        alt: 88Win 卡片元件規格
-        aspectRatio: 1322 / 300
+        kind: split
+        lead:
+          kind: image
+          src: ../../assets/projects/88win/detail-card-lead.png
+          alt: 88Win 遊戲圖卡片規格（方形）
+          aspectRatio: 390 / 213
+        leadMobile:
+          kind: image
+          src: ../../assets/projects/88win/detail-card-lead-mobile.png
+          alt: 88Win 遊戲圖卡片規格（方形）
+          aspectRatio: 310 / 179
+        note: 等比例的遊戲圖面適應各裝置，不用額外重新作圖。
+        rest:
+          kind: image
+          src: ../../assets/projects/88win/detail-card-rest.png
+          alt: 88Win 遊戲廠商圖卡片規格
+          aspectRatio: 892 / 300
+        restMobile:
+          kind: image
+          src: ../../assets/projects/88win/detail-card-rest-mobile.png
+          alt: 88Win 遊戲廠商圖卡片規格
+          aspectRatio: 310 / 475
     - eyebrow: HEADER
       title: 導覽列
       caption: 登入前引導登入，登入後直接顯示餘額和存、提、轉、VIP 入口。

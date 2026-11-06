@@ -43,7 +43,9 @@ const {
 const sizes = mediaSlot?.sizes ?? sizesProp ?? DEFAULT_MEDIA_SIZES;
 const srcsetWidths = srcsetWidthsFor(media.src.width, mediaSlot?.width);
 // Art-directed phone crops fill the column (the 390 frames are full-bleed).
-const MOBILE_ART_SIZES = '100vw';
+const mobileArtSizes = mediaSlot?.mobileWidth
+  ? `${mediaSlot.mobileWidth}px`
+  : '100vw';
 const frameClass = [
   className,
   media.objectPosition === 'top' ? 'object-position-top' : undefined,
@@ -59,13 +61,13 @@ const artDirected = mobileMedia
       getImage({
         src: mobileMedia.src,
         format: 'avif',
-        widths: srcsetWidthsFor(mobileMedia.src.width),
+        widths: srcsetWidthsFor(mobileMedia.src.width, mediaSlot?.mobileWidth),
         ...(quality === undefined ? {} : { quality }),
       }),
       getImage({
         src: mobileMedia.src,
         format: 'webp',
-        widths: srcsetWidthsFor(mobileMedia.src.width),
+        widths: srcsetWidthsFor(mobileMedia.src.width, mediaSlot?.mobileWidth),
       }),
       getImage({ src: media.src, format: 'avif', widths: srcsetWidths }),
       getImage({ src: media.src, format: 'webp', widths: srcsetWidths }),
@@ -93,13 +95,13 @@ const artDirectedImageAttributes = artDirected
       <source
         media="(width < 48rem)"
         srcset={artDirected[0].srcSet.attribute}
-        sizes={MOBILE_ART_SIZES}
+        sizes={mobileArtSizes}
         type="image/avif"
       />
       <source
         media="(width < 48rem)"
         srcset={artDirected[1].srcSet.attribute}
-        sizes={MOBILE_ART_SIZES}
+        sizes={mobileArtSizes}
         type="image/webp"
       />
       <source

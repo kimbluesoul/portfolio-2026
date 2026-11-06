@@ -1,7 +1,11 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import type { SectionTone } from '../../lib/sections';
-import { DETAIL_SLOTS, type MediaSlot } from '../../lib/media-srcset';
+import {
+  DETAIL_SLOTS,
+  DETAIL_SPLIT_SLOTS,
+  type MediaSlot,
+} from '../../lib/media-srcset';
 import ProjectMedia from '../ui/ProjectMedia.astro';
 import SectionIntro from '../ui/SectionIntro.astro';
 import SectionShell from '../ui/SectionShell.astro';
@@ -69,6 +73,31 @@ const COMPARE_DRAFT_SLOT = {
                 </figcaption>
                 {item.caption && <p class="swatch-caption">{item.caption}</p>}
                 <ColorSwatches colors={item.media.colors} />
+              </>
+            ) : item.media.kind === 'split' ? (
+              <>
+                <figcaption>
+                  {item.eyebrow && (
+                    <span class="detail-eyebrow">{item.eyebrow}</span>
+                  )}
+                  <strong>{item.title}</strong>
+                  {item.caption && <span>{item.caption}</span>}
+                </figcaption>
+                <div class="detail-card-split">
+                  <div class="detail-card-split-lead">
+                    <ProjectMedia
+                      media={item.media.lead}
+                      mobileMedia={item.media.leadMobile}
+                      mediaSlot={DETAIL_SPLIT_SLOTS.lead}
+                    />
+                    <p class="detail-card-note">{item.media.note}</p>
+                  </div>
+                  <ProjectMedia
+                    media={item.media.rest}
+                    mobileMedia={item.media.restMobile}
+                    mediaSlot={DETAIL_SPLIT_SLOTS.rest}
+                  />
+                </div>
               </>
             ) : (
               <>

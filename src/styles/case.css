@@ -284,6 +284,14 @@
   aspect-ratio: 1322 / 300;
 }
 
+.ratio-390x213 {
+  aspect-ratio: 390 / 213;
+}
+
+.ratio-892x300 {
+  aspect-ratio: 892 / 300;
+}
+
 .ratio-373x148 {
   aspect-ratio: 373 / 148;
 }
@@ -577,6 +585,35 @@ figcaption strong {
   width: auto;
   margin: 0 var(--space-8) var(--space-2);
   border-radius: 0;
+}
+
+.detail-card-split {
+  display: grid;
+  grid-template-columns: 29.5008% 67.4735%;
+  gap: 3.0257%;
+  width: 100%;
+  max-width: 82.625rem;
+  margin-block-start: 2.3125rem;
+}
+
+.detail-card-split-lead {
+  display: grid;
+  align-content: start;
+  gap: var(--space-7);
+  padding-block-start: 0.6875rem;
+}
+
+.detail-card-split .media-frame {
+  width: 100%;
+  margin: 0;
+}
+
+.detail-card-note {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 .color-swatches {
@@ -1023,6 +1060,11 @@ a.link-card:focus-visible .link-arrow {
     margin: var(--space-3) 0 0;
   }
 
+  .detail-card:not(.has-swatches) .detail-card-split .media-frame {
+    align-self: auto;
+    margin: 0;
+  }
+
   .case-hero {
     padding-block-end: 0;
   }
@@ -1289,6 +1331,14 @@ a.link-card:focus-visible .link-arrow {
     aspect-ratio: 310 / 234;
   }
 
+  .mobile-ratio-310x179 {
+    aspect-ratio: 310 / 179;
+  }
+
+  .mobile-ratio-310x475 {
+    aspect-ratio: 310 / 475;
+  }
+
   .mobile-ratio-310x280 {
     aspect-ratio: 310 / 280;
   }
@@ -1337,6 +1387,28 @@ a.link-card:focus-visible .link-arrow {
 
   .detail-card .media-frame {
     margin: 0 var(--space-5) var(--space-5);
+  }
+
+  .detail-card-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    width: auto;
+    max-width: none;
+    margin: 0 var(--space-5) var(--space-5);
+  }
+
+  .detail-card-split-lead {
+    gap: var(--space-4);
+    padding-block-start: 0;
+  }
+
+  .detail-card .detail-card-split .media-frame {
+    margin: 0;
+  }
+
+  .detail-card-note {
+    font-size: 0.8125rem;
+    line-height: 1.6;
   }
 
   :is(.case-hero .layout-single, .visual-extension .variant-mosaic)
