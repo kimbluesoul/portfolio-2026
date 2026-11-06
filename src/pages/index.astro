@@ -5,6 +5,7 @@ import HomeHero from '../components/home/HomeHero.astro';
 import ProjectCard from '../components/home/ProjectCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getOrderedProjects } from '../lib/project-content';
+import { createHomeStructuredData } from '../lib/structured-data';
 
 const siteEntry = await getEntry('site', 'site');
 if (!siteEntry) throw new Error('Missing site content entry.');
@@ -12,12 +13,20 @@ const site = siteEntry.data;
 const projects = await getOrderedProjects();
 const [featuredProject, ...secondaryProjects] = projects;
 if (!featuredProject) throw new Error('At least one project is required.');
+const siteUrl = Astro.site;
+if (!siteUrl) throw new Error('Astro.site must be configured.');
+const structuredData = createHomeStructuredData({
+  siteUrl,
+  title: site.seo.title,
+  linkedin: site.contact.linkedin,
+});
 ---
 
 <BaseLayout
   title={site.seo.title}
   description={site.seo.description}
   site={site}
+  structuredData={structuredData}
 >
   <HomeHero {...site.hero} credentials={site.credentials} />
   <section id="work" class="work" aria-label="SELECTED WORK">
