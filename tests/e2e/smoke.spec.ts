@@ -1734,7 +1734,8 @@ const figmaSectionHeights390 = {
   '/work/88win/': [
     ['Hero', 784],
     ['Overview', 791],
-    ['Key Screens', 740],
+    // Figma 475:1037 = 760.14 (PO 2026-11-06, Promotion caption 2 lines)
+    ['Key Screens', 760],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
     // PO 2026-11-03: phones keep the desktop Details images (no mobile
