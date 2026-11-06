@@ -3,10 +3,10 @@
 > A status index, not a log (adopted 2026-11-05). Every agent reads it first and updates it when project state changes. Details live in specs, ADRs, ARCHITECTURE, and the PRs; link to them instead of copying them here. The M0–M2 implementation notes that used to be here are in the git history of this file (before PR #72).
 
 ## Status (2026-11-06)
-- **Milestone**: M1 Home, M2 case template and **M3 (all seven case studies, with media) and M4 (`/resume/`, #74) are done**. M5 (launch hardening) has not started.
+- **Milestone**: M1 Home, M2 case template and **M3 (all seven case studies, with media) and M4 (`/resume/`, #74) are done**. M5 (launch hardening) is in progress: the share preview is live (#85 / #86, checked on Facebook and LINE), and the PO decided against a custom domain. JSON-LD is the remaining M5 item.
 - **Content**: no pending media and no `TODO(CONTENT)` remain.
-- **Architecture**: ARCHITECTURE v1.16 records `<scroll-restore>` (#81) and the media manifest (#79); v1.15 (PR #73) adds the resume model.
-- **Backlog PRs**: A (#79, media and font tooling), B (#80, test and lint guards) and the scroll-restore fix (#81) are merged. PR C (small visual items) is next.
+- **Architecture**: ARCHITECTURE v1.17 records the share preview and the cache-header fix (#86); v1.16 records `<scroll-restore>` (#81), the media manifest (#79) and CSS browser targets (#83).
+- **Since 2026-11-05**: the backlog PRs A–C (#79, #80, #83) and the scroll-restore fix (#81) are merged, plus smooth anchor scrolling (#84, PO request).
 - **Staging** (mirrors `main` on every merge): `https://staging-portfolio-2026.kimbluesoul.workers.dev/`
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) is **live and current**. The content gate (option A, ADR-0011 amendment) opened once all media were delivered; every merge to `main` since then has deployed to production automatically (green Workers Builds checks from 2026-11-05 at the latest; verified after #76: all routes 200, unknown paths 404, the PDF served). A red Workers check on `main` is now a real failure.
 - **Repository** is public since 2026-11-05 (ADR-0014 amendment).
@@ -17,20 +17,18 @@
 | — | None | — |
 
 ## Next owner and next action
-1. **Codex**: PR C from Claude's task brief (`-webkit-backdrop-filter`, body size at 1920), then the rest of the backlog below.
-2. **Product Owner**: optional: a custom domain (Q7); anything left for M5 (launch hardening).
+1. **Product Owner**: decide whether to add JSON-LD (the last M5 item, ARCHITECTURE §11).
+2. **Codex**: the backlog below, one task brief at a time, when the Product Owner wants it.
 3. **Claude**: media PRs when the Product Owner delivers new files (always a new versioned filename, ARCHITECTURE §9.2).
 
 ## Blockers and decisions pending
 | Item | Blocks | Owner |
 |---|---|---|
-| Q7: custom domain (optional) | Launch on a custom domain | Product Owner |
+| — | None (Q7 resolved 2026-11-06: no custom domain) | — |
 
 ## Backlog (non-blocking review findings)
 | Source | Item |
 |---|---|
-| #70 P3 | `-webkit-backdrop-filter` on the scrolled header (PR C) |
-| #31 P3 | `--font-size-body` is 17.91 px at 1920 (PR C) |
 | #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
 | #80 P3 | `.stylelintrc.json`: the token rule and the ADR-0012 `writing-mode` rule share one message; give each its own |
 | #81 P3 | `smoke.spec.ts`: the "wait for the current section's reveals" block is duplicated in the two scroll-restore tests; use one helper |
@@ -58,7 +56,7 @@ Decisions live where they apply. Start here:
 | M2 Case template + 88Win | Done (#14, follow-ups through #46) |
 | M3 Remaining case studies | Done: pages #21, #31, #49–#53; media #54–#60, #66, #71; reveals #68; header #69 / #70 |
 | M4 Resume | Done (#73 spec, #74 implementation, #75 polish) |
-| M5 Launch hardening | Not started |
+| M5 Launch hardening | In progress: 404 and sitemap (M0–M1), share preview #85 / #86; no custom domain (PO); JSON-LD open |
 
 ## Workflow
 Product Owner confirms the spec → Claude writes the task brief (AGENTS.md) → Codex implements, local gates green → PR (template: acceptance, not done, known limits, review focus) → 4 CI checks green → Claude reviews (P0–P3 + category) → one fix round → Claude re-reviews → Product Owner decides product / UI questions and merges.
