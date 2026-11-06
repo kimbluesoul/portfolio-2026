@@ -17,6 +17,34 @@ if (!productionCsp) {
 
 const routes = ['/', '/work/88win/', '/resume/', '/404/'];
 
+test('1920 404 fills the viewport and keeps navigation inactive', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Desktop-only layout.',
+  );
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('/404/');
+
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Page Not Found',
+  );
+  await expect(page.getByRole('link', { name: 'Return Home' })).toHaveAttribute(
+    'href',
+    '/',
+  );
+  await expect(page.locator('header [aria-current]')).toHaveCount(0);
+
+  const layout = await page.evaluate(() => ({
+    footerBottom: document.querySelector('footer')?.getBoundingClientRect()
+      .bottom,
+    scrollHeight: document.documentElement.scrollHeight,
+  }));
+  expect(layout.footerBottom).toBeCloseTo(1080, 0);
+  expect(layout.scrollHeight).toBeCloseTo(1080, 0);
+});
+
 const productionOrigin = 'https://portfolio-2026.kimbluesoul.workers.dev';
 const defaultShareAlt =
   'Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計';
