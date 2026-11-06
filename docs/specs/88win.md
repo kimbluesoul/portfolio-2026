@@ -36,3 +36,30 @@ Slot aspect ratios used in content (ARCHITECTURE §9.1 v1.5):
 | Motion step videos | 960 / 532 |
 | Details visuals | desktop / mobile visual area, e.g. Color 647 / 140 and 310 / 280 (see ASSETS.md) |
 | Visual Extension mosaic (composite, one item) | 1920 / 1280 |
+
+## Details CARD: the note is text (PO, 2026-11-06)
+The line 「等比例的遊戲圖面適應各裝置，不用額外重新作圖。」 (Figma `360:1050` / `476:1517`) belongs to the square game-card images. It was baked into `detail-card.png`, so on 390 it shrank with the desktop image. It becomes real text between two images, as in Figma.
+
+Images (in `src/assets/projects/88win/`, all 2×, transparent PNG, delivered in this change):
+
+| File | Content | Size (2×) | CSS size | Source |
+|---|---|---|---|---|
+| `detail-card-lead.png` | desktop square cards (`650:1560`) | 780 × 426 | 390 × 213 | crop (0, 22) of `detail-card.png` |
+| `detail-card-rest.png` | desktop vendor and list cards | 1784 × 600 | 892 × 300 | crop (860, 0) of `detail-card.png` |
+| `detail-card-lead-mobile.png` | 390 `Square` (`476:1490`) | 620 × 358 | 310 × 179 | composed from the PO's 2× layer exports at the `476:1489` positions (mean abs diff vs the Figma 1× render: 8.8 / 4.1) |
+| `detail-card-rest-mobile.png` | 390 `28`, `1`, `Vendor` with their 16 px gaps (`476:1518`–`476:1569`) | 620 × 950 | 310 × 475 | same |
+
+Layout, positions measured from the card's top-left corner (`360:991`, 1440 wide) and the 390 `Cards` frame (`476:1489`, 310 wide):
+
+| Element | Desktop (≥ 48rem) | 390 |
+|---|---|---|
+| Arrangement | two columns: lead image + note on the left, rest image on the right | one column: lead image, note, rest image |
+| Lead image | left edge = card left + 32; top = card top + 171 (the visual area top 160 + 11); 390 × 213 | full width 310 × 179 |
+| Lead image bottom → note top | 28 (Figma note top 412 − image bottom 384) | 16 |
+| Note | Noto Sans TC 400, 15 / 24 px, `--color-text-secondary` (`#5c5c5c`), left-aligned, width 388 | 400, 13 / 20.8 px, same colour, width 310 |
+| Note bottom → rest image top | — (side by side) | 16 |
+| Rest image | left edge = card left + 462 (column gap 40 after the 390 lead column); top = card top + 160; 892 × 300 | 310 × 475 |
+
+At desktop widths below 1920 the two columns keep the 390 : 892 ratio and the 40 px gap scales with them; the note keeps its type size and may wrap. The card grows to fit it instead of overlapping.
+Alt text: lead `88Win 遊戲圖卡片規格（方形）`, rest `88Win 遊戲廠商圖卡片規格`.
+`detail-card.png` is no longer used after the implementation and is deleted then.

@@ -84,7 +84,7 @@ Desktop 的「範圍」是相對於該張卡片左上角的座標（x, y, 寬 ×
 |---|---|---|---|---|---|---|---|
 | 9 | ICON | `detail-icon.png` | `360:403`（已是獨立 Frame） | 1274 × 1100 | `detail-icon-mobile.png` | `476:1002` | 620 × 468 |
 | 10 | CATEGORY | `detail-category.png` | `360:785` 範圍 (32, 160) 640 × 134 | 1280 × 268 | `detail-category-mobile.png` | `476:1281` Category grid | 620 × 536 |
-| 11 | CARD | `detail-card.png` | `360:991` 範圍 (32, 160) 1322 × 300 | 2644 × 600 | `detail-card-mobile.png` | `476:1489` Cards | 620 × 1414 |
+| 11 | CARD | `detail-card-lead.png` + `detail-card-rest.png`（2026-11-06 拆開，說明文字改為網頁文字，見 `specs/88win.md`） | `650:1560` 與右側卡片 | 780 × 426、1784 × 600 | `detail-card-lead-mobile.png` + `detail-card-rest-mobile.png` | `476:1490`、`476:1518`–`476:1569` | 620 × 358、620 × 950 |
 | 12 | HEADER | `detail-header.png` | `360:1051` 範圍 (32, 184) 373 × 148 | 746 × 296 | `detail-header-mobile.png` | `476:1634` Headers | 620 × 225 |
 | 13 | BUTTON | `detail-button.png` | `360:1057` 範圍 (32, 165) 399 × 187 | 798 × 374 | `detail-button-mobile.png` | `476:1794` Buttons | 613 × 274 |
 | 14 | NAVIGATION | `detail-navigation.png` | `360:1080` Tab Bar | 786 × 210 | `detail-navigation-mobile.png` | `476:1820` Tab Bar | 620 × 166 |
