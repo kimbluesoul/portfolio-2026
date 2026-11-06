@@ -543,9 +543,9 @@ test('home uses the approved copy, links, and card assets', async ({
     ['02 — Hwa Fong Tire', '華豐輪胎', '品牌網站', '2024–2025'],
     ['03 — FITZONE', '健身房', 'Motion', '2024–2025'],
     ['04 — SSS', '超透明提案', '活動頁面', '2024–2025'],
-    ['05 — JHANYU', '展裕建設', '品牌延伸', '2024–2025'],
-    ['06 — AMD', '康健生醫', '互動設計', '2024–2025'],
-    ['07 — HUIFA', '匯發營造', 'Motion', '2024–2025'],
+    ['05 — AMD', '康健生醫', '互動設計', '2024–2025'],
+    ['06 — HUIFA', '匯發營造', 'Motion', '2024–2025'],
+    ['07 — JHANYU', '展裕建設', '品牌延伸', '2024'],
   ];
   for (const [index, copy] of expectedCardCopy.entries()) {
     // textContent: copy fidelity must not depend on reveal (opacity) state.

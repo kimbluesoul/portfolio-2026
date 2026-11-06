@@ -546,6 +546,10 @@ figcaption strong {
   min-width: 0;
 }
 
+.mobile-panels figcaption {
+  text-align: center;
+}
+
 .detail-card {
   display: grid;
   overflow: hidden;
