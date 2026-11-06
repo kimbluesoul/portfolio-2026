@@ -13,7 +13,14 @@ All images are exactly **1200 × 630** (1.91 : 1).
 | `/`, `/resume/`, `/404/` | `home.v1.png` | Figma `718:1570` (PO design), 1× render | `Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計` |
 | `/work/<slug>/` (7 pages) | `<slug>.v1.jpg` | the case hero showcase `src/assets/projects/<slug>/hero-showcase.jpg` | `<project.data.name> 案例主視覺` (e.g. `88Win 案例主視覺`) |
 
-Case images, PO option A (2026-11-06): the full hero showcase is scaled to 1200 px wide (1200 × 513) and placed at the **bottom** of the frame. The top 117 px are filled with `#f3f3f3`, which is the hero's own top-edge colour on all 7 heroes (measured: every pixel of row 0 is `rgb(243, 243, 243)`). The bottom edge is not padded, because the devices run into it, as they do on the site. JPEG q85 4:4:4 mozjpeg, 57–108 KB.
+Case images (PO, 2026-11-06): a crop of the hero showcase around its device group, so the devices fill most of the card.
+
+- **Device group box.** Measured in the 3840 × 1640 source as the pixels that differ from the background by more than 12. Most heroes: x 896–2934, top y 52–54. HUIFA: x 484–3356, top y 190. The devices run into the bottom edge.
+- **Six heroes, variant "V2".** The crop's bottom edge cuts 22 % of the device group's height off the bottom. Above the devices there are 70 source px of background. Devices ≈ 980 px wide in the 1200 px card.
+- **HUIFA, variant "V1".** No bottom cut, because its landscape devices are width-limited to 90 % of the card (1080 px).
+- **Horizontal position.** The crop is centred on the device group.
+- **Missing background.** Any area above the source is filled with `#f3f3f3`, the heroes' own top-edge colour (every pixel of row 0 is `rgb(243, 243, 243)`).
+- **Encoding.** JPEG q85 4:4:4 mozjpeg, 94–163 KB.
 
 **Versioned names:** platforms cache an image by its URL for days to weeks. A replaced image gets the next name (`home.v2.png`), never the same name (ARCHITECTURE §9.2 rule).
 
