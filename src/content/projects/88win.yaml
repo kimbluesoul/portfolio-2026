@@ -89,7 +89,7 @@ keyScreens:
         alt: 88Win 導覽列特寫
         aspectRatio: 458.67 / 300
     - title: Promotion
-      caption: 活動圖可以很吸睛，但不能蓋過操作
+      caption: 活動圖可以吸睛，但不能蓋過操作。素材以 AI 生成初稿，構圖、合成與修圖由我完成。
       media:
         kind: image
         src: ../../assets/projects/88win/key-promotion.jpg
