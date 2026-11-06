@@ -17,7 +17,7 @@
 | — | None | — |
 
 ## Next owner and next action
-1. **Codex**: PR C from Claude's task brief (`-webkit-backdrop-filter`, body size at 1920, `.hero-stats` min-height), then the rest of the backlog below.
+1. **Codex**: PR C from Claude's task brief (`-webkit-backdrop-filter`, body size at 1920), then the rest of the backlog below.
 2. **Product Owner**: optional: a custom domain (Q7); anything left for M5 (launch hardening).
 3. **Claude**: media PRs when the Product Owner delivers new files (always a new versioned filename, ARCHITECTURE §9.2).
 
@@ -31,7 +31,6 @@
 |---|---|
 | #70 P3 | `-webkit-backdrop-filter` on the scrolled header (PR C) |
 | #31 P3 | `--font-size-body` is 17.91 px at 1920 (PR C) |
-| #26 P3 | `.hero-stats { min-height: 110px }` at 390; the Hero 390 gate must hold from spacing and type (PR C) |
 | #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
 | #80 P3 | `.stylelintrc.json`: the token rule and the ADR-0012 `writing-mode` rule share one message; give each its own |
 | #81 P3 | `smoke.spec.ts`: the "wait for the current section's reveals" block is duplicated in the two scroll-restore tests; use one helper |
