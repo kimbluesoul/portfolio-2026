@@ -13,6 +13,11 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  vite: {
+    build: {
+      cssTarget: ['chrome111', 'edge111', 'firefox114', 'safari16.4'],
+    },
+  },
   image: {
     // Case media are UI screenshots: 4:2:0 chroma (the AVIF default) blurs
     // coloured text and edges at 1×, so keep full chroma resolution.
