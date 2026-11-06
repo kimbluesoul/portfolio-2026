@@ -205,7 +205,9 @@ test('case header logo follows the content tone at its center line', async ({
 
   await page
     .locator('.interaction-motion.tone-inverse')
-    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
+    .evaluate((section) =>
+      section.scrollIntoView({ block: 'start', behavior: 'instant' }),
+    );
   await expect.poll(color).toBe('rgb(255, 255, 255)');
 
   await page.evaluate(() => {
@@ -215,7 +217,9 @@ test('case header logo follows the content tone at its center line', async ({
   });
   await page
     .locator('.site-footer')
-    .evaluate((footer) => footer.scrollIntoView({ block: 'start' }));
+    .evaluate((footer) =>
+      footer.scrollIntoView({ block: 'start', behavior: 'instant' }),
+    );
   await expect.poll(color).toBe('rgb(255, 255, 255)');
 
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -246,7 +250,9 @@ test('header background appears only after scrolling and follows the page tone',
 
   await page
     .locator('.overview.tone-canvas')
-    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
+    .evaluate((section) =>
+      section.scrollIntoView({ block: 'start', behavior: 'instant' }),
+    );
   await expect(header).toHaveAttribute('data-scrolled', '');
   await expect
     .poll(background)
@@ -259,7 +265,9 @@ test('header background appears only after scrolling and follows the page tone',
 
   await page
     .locator('.interaction-motion.tone-inverse')
-    .evaluate((section) => section.scrollIntoView({ block: 'start' }));
+    .evaluate((section) =>
+      section.scrollIntoView({ block: 'start', behavior: 'instant' }),
+    );
   await expect
     .poll(background)
     .toBe(
@@ -376,6 +384,8 @@ test('home header About link jumps immediately with reduced motion', async ({
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 1440, height: 720 });
   await page.goto('/');
+  await page.waitForLoadState('load');
+  await page.evaluate(() => document.fonts.ready);
 
   const header = page.locator('.site-header');
   await header.getByRole('link', { name: 'About', exact: true }).click();
@@ -568,7 +578,7 @@ for (const path of ['/work/88win/', '/work/amd/']) {
     await page.goto(path);
     await page.evaluate(async () => {
       while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
-        window.scrollBy(0, 400);
+        window.scrollBy({ top: 400, behavior: 'instant' });
         await new Promise((resolve) => window.setTimeout(resolve, 60));
       }
     });
@@ -645,7 +655,7 @@ test('case navigation starts at the top after restoring a reload', async ({
   await page.goto('/work/88win/');
   await page.evaluate(async () => {
     while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
-      window.scrollBy(0, 400);
+      window.scrollBy({ top: 400, behavior: 'instant' });
       await new Promise((resolve) => window.setTimeout(resolve, 60));
     }
   });
@@ -1377,7 +1387,7 @@ test('the footer color continues below the page only at the bottom', async ({
       bottom.innerWidth,
     );
 
-    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     await expect.poll(async () => (await state()).tint).toBe(false);
     expect((await state()).barDisplay).toBe('none');
   }
