@@ -832,12 +832,15 @@ test('88Win renders the M2 case template and pending-media contract', async ({
   await expect(page.locator('loop-video video source[src]')).toHaveCount(0);
   await expect(page.locator('motion-steps')).toHaveCount(1);
   await expect(page.locator('.detail-card')).toHaveCount(7);
-  // Every image card renders <picture> (AVIF + webp); COLOR is HTML swatches.
-  // All six show their desktop image on phones for now (docs/ASSETS.md).
-  await expect(page.locator('.detail-card picture')).toHaveCount(6);
+  // Every image renders <picture> (AVIF + webp); COLOR is HTML swatches.
+  // CARD is split into two art-directed pictures; the other five are unchanged.
+  await expect(page.locator('.detail-card picture')).toHaveCount(7);
   await expect(
     page.locator('.detail-card source[media="(width < 48rem)"]'),
-  ).toHaveCount(0);
+  ).toHaveCount(4);
+  await expect(page.locator('.detail-card-note')).toHaveText(
+    '等比例的遊戲圖面適應各裝置，不用額外重新作圖。',
+  );
   await expect(page.locator('.case-hero .hero-showcase')).toHaveCount(1);
   await expect(
     page.locator('.visual-extension .visual-grid > .media-frame'),
@@ -1321,6 +1324,73 @@ test('desktop Details cards never clip their content', async ({
   }
 });
 
+test('88Win CARD split keeps the approved image and text geometry', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'Geometry is measured once in Chromium.',
+  );
+
+  for (const width of [1920, 390]) {
+    await page.setViewportSize({
+      width,
+      height: width === 1920 ? 1080 : 844,
+    });
+    await page.goto('/work/88win/');
+    const card = page.locator('.detail-card').filter({ hasText: '遊戲圖面' });
+    await card.scrollIntoViewIfNeeded();
+
+    const geometry = await card.evaluate((element) => {
+      const bounds = (selector: string) =>
+        element.querySelector<HTMLElement>(selector)!.getBoundingClientRect();
+      const lead = bounds('.detail-card-split-lead .media-frame');
+      const note = bounds('.detail-card-note');
+      const rest = bounds(':scope > .detail-card-split > .media-frame');
+      const noteStyle = getComputedStyle(
+        element.querySelector<HTMLElement>('.detail-card-note')!,
+      );
+      return {
+        lead: { width: lead.width, height: lead.height },
+        rest: { width: rest.width, height: rest.height },
+        leadToNote: note.top - lead.bottom,
+        noteToRest: rest.top - note.bottom,
+        noteFontSize: noteStyle.fontSize,
+        noteLineHeight: noteStyle.lineHeight,
+      };
+    });
+
+    if (width === 1920) {
+      expect(geometry.lead.width).toBeCloseTo(390, 0);
+      expect(geometry.lead.height).toBeCloseTo(213, 0);
+      expect(geometry.rest.width).toBeCloseTo(892, 0);
+      expect(geometry.rest.height).toBeCloseTo(300, 0);
+      expect(geometry.leadToNote).toBeCloseTo(28, 0);
+      expect(geometry.noteFontSize).toBe('15px');
+      expect(geometry.noteLineHeight).toBe('24px');
+    } else {
+      expect(geometry.lead.width).toBeCloseTo(310, 0);
+      expect(geometry.lead.height).toBeCloseTo(179, 0);
+      expect(geometry.rest.width).toBeCloseTo(310, 0);
+      expect(geometry.rest.height).toBeCloseTo(475, 0);
+      expect(geometry.leadToNote).toBeCloseTo(16, 0);
+      expect(geometry.noteToRest).toBeCloseTo(16, 0);
+      expect(geometry.noteFontSize).toBe('13px');
+      expect(geometry.noteLineHeight).toBe('20.8px');
+    }
+  }
+
+  const mobileSources = page.locator(
+    '.detail-card-split source[media="(width < 48rem)"]',
+  );
+  await expect(mobileSources).toHaveCount(4);
+  for (const source of await mobileSources.all()) {
+    await expect(source).toHaveAttribute('sizes', '310px');
+    await expect(source).toHaveAttribute('srcset', /\b310w\b/u);
+    await expect(source).toHaveAttribute('srcset', /\b620w\b/u);
+  }
+});
+
 test('360 home and case pages have no horizontal overflow', async ({
   page,
 }, testInfo) => {
@@ -1741,9 +1811,9 @@ const figmaSectionHeights390 = {
     ['Key Screens', 760],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
-    // PO 2026-11-03: phones keep the desktop Details images (no mobile
-    // exports), so this is the site's own height, not Figma's 3461.
-    ['Details', 2664, 16],
+    // CARD now uses its approved mobile split art and real note text. Other
+    // Details cards retain their existing output, so this remains site height.
+    ['Details', 3300, 16],
     ['Visual Extension', 410],
     ['Links', 659],
     ['Next Project', 530],

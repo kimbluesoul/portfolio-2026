@@ -15,6 +15,8 @@ export const SRCSET_WIDTHS = [
 export interface MediaSlot {
   /** CSS px width of the slot in the 1920 frame. */
   width: number;
+  /** Optional CSS px width for an art-directed phone source. */
+  mobileWidth?: number;
   sizes: string;
 }
 
@@ -53,6 +55,20 @@ export const DETAIL_SLOTS = {
     sizes: '(width < 48rem) 100vw, min(40vw, 640px)',
   },
   full: { width: 1376, sizes: '(width < 48rem) 100vw, min(86vw, 1376px)' },
+} as const satisfies Record<string, MediaSlot>;
+
+/** 88Win split CARD art: exact desktop slots and 310 px phone slots. */
+export const DETAIL_SPLIT_SLOTS = {
+  lead: {
+    width: 390,
+    mobileWidth: 310,
+    sizes: '(width < 48rem) 310px, min(25vw, 390px)',
+  },
+  rest: {
+    width: 892,
+    mobileWidth: 310,
+    sizes: '(width < 48rem) 310px, min(57vw, 892px)',
+  },
 } as const satisfies Record<string, MediaSlot>;
 
 /** The ladder below the source width, plus the slot's 1x / 2x widths. */

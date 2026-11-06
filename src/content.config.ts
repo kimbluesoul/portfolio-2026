@@ -86,11 +86,20 @@ const projects = defineCollection({
       media,
     });
 
+    const splitDetailMedia = z.object({
+      kind: z.literal('split'),
+      lead: imageMedia,
+      leadMobile: imageMedia,
+      note: z.string().min(1),
+      rest: imageMedia,
+      restMobile: imageMedia,
+    });
+
     const detailItem = z.object({
       eyebrow: z.string().min(1).optional(),
       title: z.string().min(1),
       caption: z.string().optional(),
-      media,
+      media: z.union([media, splitDetailMedia]),
       mobileMedia: imageMedia.optional(),
       size: z.enum(['third', 'half', 'half-tall', 'full']).optional(),
     });
