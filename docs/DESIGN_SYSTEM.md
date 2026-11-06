@@ -170,6 +170,7 @@ Tokens:
 | `--motion-stagger` | 80ms | Between siblings in a reveal group, max 4 steps (320ms) |
 
 Behavior rules:
+- **Anchor scrolling is smooth** (PO 2026-11-06, #84). Same-page links scroll with the browser's native smooth scrolling (`html { scroll-behavior: smooth }`), so the browser sets duration and easing. These links are About, Work, Back to top and the home Hero's Work cue. Measured in Chromium: home top → About ≈ 1.1 s; Back to top from the end of a case page ≈ 1.5 s. Reduced motion jumps instantly. A link to another page (e.g. a case page's back link to `/#work`) lands without animation. Scripted scrolls that must not animate (`<scroll-restore>`, tests) pass `behavior: 'instant'`. If the PO later wants a set duration or curve, that needs a small script.
 - **Scroll reveal: fade + rise + stagger** (PO 2026-11-04). Elements reveal **once** when they enter view, with opacity 0 → 1 and translateY `--motion-distance-reveal` → 0 (`slow`, `emphasized`). They do not re-animate on scroll back.
 - **Reveal groups.** Each case section after the hero reveals as groups, not as one block:
   - the **section intro** (eyebrow, heading, subtitle) is one group;
