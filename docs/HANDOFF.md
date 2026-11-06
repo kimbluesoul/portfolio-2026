@@ -7,6 +7,7 @@
 - **Content**: 88Win's Promotion caption states the AI use (#90, PO 2026-11-06). The other case studies say nothing about AI, which is a PO decision.
 - **Content**: no pending media and no `TODO(CONTENT)` remain.
 - **Architecture**: ARCHITECTURE v1.17 records the share preview and the cache-header fix (#86); v1.16 records `<scroll-restore>` (#81), the media manifest (#79) and CSS browser targets (#83).
+- **404 page** redesigned (Figma `728:1945`, spec [`specs/404.md`](specs/404.md) #92, implementation #93). The 390 layout is a proportional proposal; the PO checks it on the live site.
 - **Since 2026-11-05**: the backlog PRs A–C (#79, #80, #83) and the scroll-restore fix (#81) are merged, plus smooth anchor scrolling (#84, PO request). #88 made every test scroll explicit, because #84 had made `main` CI flaky.
 - **Staging** (mirrors `main` on every merge): `https://staging-portfolio-2026.kimbluesoul.workers.dev/`
 - **Production** (`https://portfolio-2026.kimbluesoul.workers.dev/`) is **live and current**. The content gate (option A, ADR-0011 amendment) opened once all media were delivered; every merge to `main` since then has deployed to production automatically (green Workers Builds checks from 2026-11-05 at the latest; verified after #76: all routes 200, unknown paths 404, the PDF served). A red Workers check on `main` is now a real failure.
@@ -31,10 +32,10 @@
 | Source | Item |
 |---|---|
 | #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
-| #80 P3 | `.stylelintrc.json`: the token rule and the ADR-0012 `writing-mode` rule share one message; give each its own |
-| #81 P3 | `smoke.spec.ts`: the "wait for the current section's reveals" block is duplicated in the two scroll-restore tests; use one helper |
-| #89 P3 | `structured-data.test.ts`: the CreativeWork test passes `name: '88Win'` for every slug; read each slug's YAML `name` / `nameZh` instead |
-| #52 P3s | Remaining small items (see the PR comments) |
+| #93 P3 | `global.css`: the shared brand button is still named `.resume-link` although the 404 "Return Home" uses it too; give it a generic name |
+| #93 P3 | `404.astro`: the viewport layout uses `body:has(.not-found-page)`; `:has()` needs Firefox 121 while `cssTarget` is Firefox 114. Older Firefox falls back to the normal layout (footer below the fold) |
+| #93 P3 | `smoke.spec.ts`: the 404 layout test covers 1920 only; add 390 × 844 (no vertical scroll, footer bottom = 844) |
+| #94 P3 | `.stylelintrc.json` only extends `stylelint.config.mjs`: point `stylelint-guards.test.ts` at the `.mjs`, delete the shim, update the ARCHITECTURE §tree line, and assert each rule's message |
 
 ## Recorded decisions
 Decisions live where they apply. Start here:
