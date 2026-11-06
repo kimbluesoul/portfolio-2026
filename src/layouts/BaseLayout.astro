@@ -6,6 +6,7 @@ import SiteFooter from '../components/layout/SiteFooter.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import { bodyFontPreloadHref } from '../lib/font-preload';
 import { pageKeyFromPath } from '../lib/page-key.mjs';
+import { getShareImage } from '../lib/share-image';
 import generatedFontCss from '../styles/noto-sans-tc.generated.css?raw';
 import generatedPageFontCss from '../styles/noto-sans-tc.pages.generated.json';
 import '../styles/global.css';
@@ -16,9 +17,19 @@ interface Props {
   site: CollectionEntry<'site'>['data'];
   /** Preload the 400 `core` font (case pages, where the LCP is text). */
   preloadBodyFont?: boolean;
+  shareImage?: { key: string; alt: string };
 }
 
-const { title, description, site, preloadBodyFont = false } = Astro.props;
+const {
+  title,
+  description,
+  site,
+  preloadBodyFont = false,
+  shareImage = {
+    key: 'home',
+    alt: 'Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計',
+  },
+} = Astro.props;
 const bodyFontHref = preloadBodyFont
   ? bodyFontPreloadHref(generatedFontCss)
   : undefined;
@@ -29,6 +40,8 @@ const pageFontHash = pageFontCss
   : undefined;
 if (pageFontHash) Astro.csp?.insertStyleHash(pageFontHash);
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const image = getShareImage(shareImage.key);
+const imageUrl = new URL(image.path, Astro.site);
 ---
 
 <!doctype html>
@@ -38,6 +51,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Syuan Ci" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content={image.type} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={shareImage.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
     {pageFontCss && <Fragment set:html={`<style>${pageFontCss}</style>`} />}
     {bodyFontHref && (

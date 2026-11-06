@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { readdirSync, readFileSync } from 'node:fs';
+import { getShareImage } from '../../src/lib/share-image';
 
 const headersFile = readFileSync(
   new URL('../../public/_headers', import.meta.url),
@@ -15,6 +16,67 @@ if (!productionCsp) {
 }
 
 const routes = ['/', '/work/88win/', '/resume/', '/404/'];
+
+const productionOrigin = 'https://portfolio-2026.kimbluesoul.workers.dev';
+const defaultShareAlt =
+  'Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計';
+const sharePreviewRoutes = [
+  { route: '/', key: 'home', alt: defaultShareAlt },
+  { route: '/resume/', key: 'home', alt: defaultShareAlt },
+  { route: '/404/', key: 'home', alt: defaultShareAlt },
+  { route: '/work/88win/', key: '88win', alt: '88Win 案例主視覺' },
+  { route: '/work/huifa/', key: 'huifa', alt: 'HUIFA 案例主視覺' },
+] as const;
+
+for (const { route, key, alt } of sharePreviewRoutes) {
+  test(`${route} has complete share preview metadata`, async ({
+    baseURL,
+    page,
+    request,
+  }) => {
+    await page.goto(route);
+
+    const title = await page.title();
+    const description = await page
+      .locator('meta[name="description"]')
+      .getAttribute('content');
+    const image = getShareImage(key);
+    const expected = {
+      'og:type': 'website',
+      'og:site_name': 'Syuan Ci',
+      'og:locale': 'zh_TW',
+      'og:title': title,
+      'og:description': description,
+      'og:url': new URL(route, productionOrigin).href,
+      'og:image': new URL(image.path, productionOrigin).href,
+      'og:image:type': image.type,
+      'og:image:width': '1200',
+      'og:image:height': '630',
+      'og:image:alt': alt,
+    } as const;
+
+    for (const [property, content] of Object.entries(expected)) {
+      const tag = page.locator(`meta[property="${property}"]`);
+      await expect(tag, property).toHaveCount(1);
+      await expect(tag, property).toHaveAttribute('content', content ?? '');
+    }
+
+    const twitterCard = page.locator('meta[name="twitter:card"]');
+    await expect(twitterCard).toHaveCount(1);
+    await expect(twitterCard).toHaveAttribute('content', 'summary_large_image');
+
+    const imageUrl = expected['og:image'];
+    expect(imageUrl).toMatch(
+      /^https:\/\/portfolio-2026\.kimbluesoul\.workers\.dev\/og\//u,
+    );
+    const localImageUrl = new URL(new URL(imageUrl).pathname, baseURL);
+    const imageResponse = await request.get(localImageUrl.href);
+    expect(imageResponse.status()).toBe(200);
+    expect(imageResponse.headers()['content-type']).toBe(
+      expected['og:image:type'],
+    );
+  });
+}
 
 for (const route of routes) {
   test(`${route} applies production CSP and passes smoke checks`, async ({
