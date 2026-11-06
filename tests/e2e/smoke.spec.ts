@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { readdirSync, readFileSync } from 'node:fs';
 import { getShareImage } from '../../src/lib/share-image';
 
@@ -630,6 +630,39 @@ test('a reveal group becomes completely visible in view', async ({ page }) => {
     .toBe(true);
 });
 
+async function scrollAndSettleReveals(page: Page) {
+  await page.evaluate(async () => {
+    while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
+      window.scrollBy({ top: 400, behavior: 'instant' });
+      await new Promise((resolve) => window.setTimeout(resolve, 60));
+    }
+  });
+  await expect
+    .poll(() =>
+      page.locator('.case-study > .case-section').evaluateAll((sections) => {
+        const current = sections.find((section) => {
+          const box = section.getBoundingClientRect();
+          return box.top <= 0 && box.bottom > 0;
+        });
+        if (!current) return false;
+        return [
+          ...current.querySelectorAll('reveal-on-view[data-inview]'),
+        ].every((group) => {
+          const items = group.querySelectorAll('[data-reveal-item]');
+          const targets =
+            items.length > 0 ? Array.from(items) : [group.firstElementChild];
+          return targets
+            .filter((target): target is Element => target !== null)
+            .every((target) => {
+              const style = getComputedStyle(target);
+              return style.opacity === '1' && style.transform === 'none';
+            });
+        });
+      }),
+    )
+    .toBe(true);
+}
+
 for (const path of ['/work/88win/', '/work/amd/']) {
   test(`case scroll position is restored after reload: ${path}`, async ({
     browserName,
@@ -637,36 +670,7 @@ for (const path of ['/work/88win/', '/work/amd/']) {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(path);
-    await page.evaluate(async () => {
-      while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
-        window.scrollBy({ top: 400, behavior: 'instant' });
-        await new Promise((resolve) => window.setTimeout(resolve, 60));
-      }
-    });
-    await expect
-      .poll(() =>
-        page.locator('.case-study > .case-section').evaluateAll((sections) => {
-          const current = sections.find((section) => {
-            const box = section.getBoundingClientRect();
-            return box.top <= 0 && box.bottom > 0;
-          });
-          if (!current) return false;
-          return [
-            ...current.querySelectorAll('reveal-on-view[data-inview]'),
-          ].every((group) => {
-            const items = group.querySelectorAll('[data-reveal-item]');
-            const targets =
-              items.length > 0 ? Array.from(items) : [group.firstElementChild];
-            return targets
-              .filter((target): target is Element => target !== null)
-              .every((target) => {
-                const style = getComputedStyle(target);
-                return style.opacity === '1' && style.transform === 'none';
-              });
-          });
-        }),
-      )
-      .toBe(true);
+    await scrollAndSettleReveals(page);
 
     const sections = page.locator('.case-study > .case-section');
     const before = await sections.evaluateAll((elements) => {
@@ -714,36 +718,7 @@ test('case navigation starts at the top after restoring a reload', async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/work/88win/');
-  await page.evaluate(async () => {
-    while (window.scrollY < document.documentElement.scrollHeight * 0.7) {
-      window.scrollBy({ top: 400, behavior: 'instant' });
-      await new Promise((resolve) => window.setTimeout(resolve, 60));
-    }
-  });
-  await expect
-    .poll(() =>
-      page.locator('.case-study > .case-section').evaluateAll((sections) => {
-        const current = sections.find((section) => {
-          const box = section.getBoundingClientRect();
-          return box.top <= 0 && box.bottom > 0;
-        });
-        if (!current) return false;
-        return [
-          ...current.querySelectorAll('reveal-on-view[data-inview]'),
-        ].every((group) => {
-          const items = group.querySelectorAll('[data-reveal-item]');
-          const targets =
-            items.length > 0 ? Array.from(items) : [group.firstElementChild];
-          return targets
-            .filter((target): target is Element => target !== null)
-            .every((target) => {
-              const style = getComputedStyle(target);
-              return style.opacity === '1' && style.transform === 'none';
-            });
-        });
-      }),
-    )
-    .toBe(true);
+  await scrollAndSettleReveals(page);
 
   await page.reload();
   await expect

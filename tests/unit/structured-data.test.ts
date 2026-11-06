@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   createCreativeWorkStructuredData,
@@ -7,6 +7,28 @@ import {
 
 const siteUrl = new URL('https://portfolio.example/');
 const linkedin = 'https://www.linkedin.com/in/syuanci-chou-design';
+const expectedProjectNames: Record<string, string> = {
+  '88win': '線上娛樂城 88Win',
+  amd: '康健生醫 AMD',
+  fitzone: '健身房 FITZONE',
+  huifa: '匯發營造 HUIFA',
+  'hwa-fong': '華豐輪胎 Hwa Fong Tire',
+  jhanyu: '展裕建設 JHANYU',
+  sss: '超透明提案 SSS',
+};
+
+function readTopLevelProjectNames(slug: string) {
+  const lines = readFileSync(
+    new URL(`../../src/content/projects/${slug}.yaml`, import.meta.url),
+    'utf8',
+  ).split(/\r?\n/u);
+  const name = lines.find((line) => line.startsWith('name: '))?.slice(6);
+  const nameZh = lines.find((line) => line.startsWith('nameZh: '))?.slice(8);
+  if (!name || !nameZh) {
+    throw new Error(`Missing top-level name fields for ${slug}.`);
+  }
+  return { name, nameZh };
+}
 
 describe('structured data', () => {
   it('creates the home Person and WebSite graph', () => {
@@ -50,19 +72,25 @@ describe('structured data', () => {
       .map((file) => file.replace(/\.yaml$/u, ''));
 
     expect(projectSlugs).toHaveLength(7);
+    expect(Object.keys(expectedProjectNames).sort()).toEqual(
+      [...projectSlugs].sort(),
+    );
     for (const slug of projectSlugs) {
+      const { name, nameZh } = readTopLevelProjectNames(slug);
+      const expectedName = expectedProjectNames[slug]!;
+      expect(`${nameZh} ${name}`).toBe(expectedName);
       const data = createCreativeWorkStructuredData({
         siteUrl,
         slug,
-        name: '88Win',
-        nameZh: '線上娛樂城',
+        name,
+        nameZh,
         description: '案例描述',
       });
 
       expect(data).toEqual({
         '@context': 'https://schema.org',
         '@type': 'CreativeWork',
-        name: '線上娛樂城 88Win',
+        name: expectedName,
         description: '案例描述',
         url: `https://portfolio.example/work/${slug}/`,
         image: expect.stringMatching(
