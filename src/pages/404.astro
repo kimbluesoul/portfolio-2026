@@ -11,9 +11,101 @@ if (!siteEntry) throw new Error('Missing site content entry.');
   description="The requested page could not be found."
   site={siteEntry.data}
 >
-  <section class="placeholder-page">
-    <h1>Page not found</h1>
-    <p>The final 404 presentation is intentionally deferred to M5.</p>
-    <a href="/">Return home</a>
+  <section class="not-found-page">
+    <svg
+      class="not-found-mark"
+      width="507"
+      height="255"
+      viewBox="0 0 507 255"
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M96.3218 15.0005C49.521 70.3105 -26.6268 179.862 43.1885 175.588C113.004 171.313 168.255 137.791 187.153 121.564M141.738 60.4161C127.589 108.107 102.199 210.792 113.835 240"
+        stroke="currentColor"
+        stroke-width="30"
+        stroke-linecap="round"
+      ></path>
+      <path
+        d="M400.566 15.0005C353.765 70.3105 277.617 179.862 347.433 175.588C417.248 171.313 472.499 137.791 491.397 121.564M445.982 60.4161C431.833 108.107 406.443 210.792 418.079 240"
+        stroke="currentColor"
+        stroke-width="30"
+        stroke-linecap="round"
+      ></path>
+      <path
+        d="M255.426 30.0005C293.027 30.0005 328.926 69.6331 328.926 126C328.926 182.368 293.027 222 255.426 222C217.825 222 181.926 182.368 181.926 126C181.926 69.6331 217.825 30.0005 255.426 30.0005Z"
+        fill="var(--color-bg-surface)"
+        stroke="currentColor"
+        stroke-width="30"
+      ></path>
+    </svg>
+    <h1>Page Not Found</h1>
+    <a class="resume-link" href="/">
+      Return Home
+    </a>
   </section>
 </BaseLayout>
+
+<style is:global>
+  body:has(.not-found-page) {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+  }
+
+  body:has(.not-found-page) > main {
+    display: grid;
+    min-height: 0;
+    flex: 1 0 auto;
+    place-items: center;
+    padding: 2.5rem var(--layout-page-gutter) 3rem;
+    background: var(--color-bg-surface);
+  }
+
+  .not-found-page {
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    color: var(--color-text-brand);
+    text-align: center;
+  }
+
+  .not-found-mark {
+    width: 16rem;
+    height: 8.0469rem;
+    margin-block-end: 0.75rem;
+  }
+
+  .not-found-page h1 {
+    margin-block-end: 1.5rem;
+    color: var(--color-text-brand);
+    font-family: var(--font-family-display);
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 3.25rem;
+    white-space: nowrap;
+  }
+
+  .not-found-page .resume-link {
+    justify-self: center;
+  }
+
+  @media (width >= 48rem) {
+    body:has(.not-found-page) > main {
+      padding-block: 6.875rem 9.1875rem;
+    }
+
+    .not-found-mark {
+      width: 31.6875rem;
+      height: 15.9375rem;
+      margin-block-end: 1.125rem;
+    }
+
+    .not-found-page h1 {
+      margin-block-end: 1.875rem;
+      font-size: 4rem;
+      line-height: 5.1875rem;
+    }
+  }
+</style>
