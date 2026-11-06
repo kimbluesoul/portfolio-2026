@@ -34,8 +34,8 @@ if (!siteEntry) throw new Error('Missing site content entry.');
         stroke-linecap="round"
       ></path>
       <path
+        class="not-found-zero"
         d="M255.426 30.0005C293.027 30.0005 328.926 69.6331 328.926 126C328.926 182.368 293.027 222 255.426 222C217.825 222 181.926 182.368 181.926 126C181.926 69.6331 217.825 30.0005 255.426 30.0005Z"
-        fill="var(--color-bg-surface)"
         stroke="currentColor"
         stroke-width="30"
       ></path>
@@ -75,6 +75,10 @@ if (!siteEntry) throw new Error('Missing site content entry.');
     width: 16rem;
     height: 8.0469rem;
     margin-block-end: 0.75rem;
+  }
+
+  .not-found-zero {
+    fill: var(--color-bg-surface);
   }
 
   .not-found-page h1 {
