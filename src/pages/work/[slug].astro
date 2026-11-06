@@ -37,6 +37,10 @@ if (!siteEntry) throw new Error('Missing site content entry.');
   title={project.data.seo.title}
   description={project.data.seo.description}
   site={siteEntry.data}
+  shareImage={{
+    key: project.id,
+    alt: `${project.data.name} 案例主視覺`,
+  }}
   preloadBodyFont
 >
   <CaseSections
