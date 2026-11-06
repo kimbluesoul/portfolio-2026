@@ -1,4 +1,4 @@
-order: 7
+order: 6
 name: HUIFA
 nameZh: 匯發營造
 card:
@@ -21,7 +21,7 @@ next:
     poster: ../../assets/projects/huifa/key-main-poster.jpg
     alt: 匯發營造網站作品預覽
 hero:
-  eyebrow: CASE STUDY 07 · 企業網站
+  eyebrow: CASE STUDY 06 · 企業網站
   title: HUIFA
   titleSizeMobile: 76
   headline: 匯發營造**企業網站**設計

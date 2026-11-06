@@ -482,9 +482,9 @@ test('home renders the complete ordered project index', async ({ page }) => {
     '/work/hwa-fong/',
     '/work/fitzone/',
     '/work/sss/',
-    '/work/jhanyu/',
     '/work/amd/',
     '/work/huifa/',
+    '/work/jhanyu/',
   ]);
 });
 
@@ -543,9 +543,9 @@ test('home uses the approved copy, links, and card assets', async ({
     ['02 — Hwa Fong Tire', '華豐輪胎', '品牌網站', '2024–2025'],
     ['03 — FITZONE', '健身房', 'Motion', '2024–2025'],
     ['04 — SSS', '超透明提案', '活動頁面', '2024–2025'],
-    ['05 — JHANYU', '展裕建設', '品牌延伸', '2024–2025'],
-    ['06 — AMD', '康健生醫', '互動設計', '2024–2025'],
-    ['07 — HUIFA', '匯發營造', 'Motion', '2024–2025'],
+    ['05 — AMD', '康健生醫', '互動設計', '2024–2025'],
+    ['06 — HUIFA', '匯發營造', 'Motion', '2024–2025'],
+    ['07 — JHANYU', '展裕建設', '品牌延伸', '2024'],
   ];
   for (const [index, copy] of expectedCardCopy.entries()) {
     // textContent: copy fidelity must not depend on reveal (opacity) state.
@@ -990,7 +990,7 @@ test('loop video lazy-loads, plays once in view, and ends without looping', asyn
   await expect(source).not.toHaveAttribute('src', /.+/u);
 
   await card.scrollIntoViewIfNeeded();
-  await expect(source).toHaveAttribute('src', '/media/huifa/card.v2.mp4');
+  await expect(source).toHaveAttribute('src', '/media/jhanyu/card.v2.mp4');
   await expect(player).toHaveAttribute('data-state', 'playing');
   expect(await video.evaluate((node) => (node as HTMLVideoElement).loop)).toBe(
     false,
@@ -1018,7 +1018,7 @@ test('reduced motion keeps scroll playback idle but still allows hover replay', 
   await card.scrollIntoViewIfNeeded();
   await expect(video.locator('source')).toHaveAttribute(
     'src',
-    '/media/huifa/card.v2.mp4',
+    '/media/jhanyu/card.v2.mp4',
   );
   await expect(player).toHaveAttribute('data-state', 'idle');
   await expect(video).not.toHaveAttribute('data-test-play-count', /.+/u);
@@ -1043,7 +1043,7 @@ test('Save-Data prevents playback on entry', async ({ page }) => {
   await card.scrollIntoViewIfNeeded();
   await expect(player.locator('source')).toHaveAttribute(
     'src',
-    '/media/huifa/card.v2.mp4',
+    '/media/jhanyu/card.v2.mp4',
   );
   await expect(player).toHaveAttribute('data-state', 'idle');
   await expect(player.locator('video')).not.toHaveAttribute(

@@ -1,9 +1,9 @@
-order: 5
+order: 7
 name: JHANYU
 nameZh: 展裕建設
 card:
   summary: &summary 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
-  tags: [已上線, UI設計, 品牌延伸, 企業網站, 2024–2025]
+  tags: [已上線, UI設計, 品牌延伸, 企業網站, '2024']
   media:
     kind: video
     src: /media/jhanyu/card.v2.mp4
@@ -14,14 +14,14 @@ seo:
   description: *summary
 next:
   oneLiner: 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
-  meta: 展裕建設　·　企業網站　·　UI 設計　·　品牌延伸　·　2024–2025
+  meta: 展裕建設　·　企業網站　·　UI 設計　·　品牌延伸　·　2024
   media:
     kind: video
     src: /media/jhanyu/key-main.mp4
     poster: ../../assets/projects/jhanyu/key-main-poster.jpg
     alt: 展裕建設網站作品預覽
 hero:
-  eyebrow: CASE STUDY 05 · 企業網站
+  eyebrow: CASE STUDY 07 · 企業網站
   title: JHANYU
   titleSizeMobile: 76
   headline: 展裕建設**企業網站**設計
@@ -30,7 +30,7 @@ hero:
     - { label: ROLE, value: UI / 品牌延伸 }
     - { label: PLATFORM, value: 企業網站 }
     - { label: STATUS, value: 已上線 }
-    - { label: YEAR, value: 2024–2025 }
+    - { label: YEAR, value: '2024' }
   showcase:
     layout: single
     items:

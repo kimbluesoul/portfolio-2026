@@ -1,4 +1,4 @@
-order: 6
+order: 5
 name: AMD
 nameZh: 康健生醫
 card:
@@ -21,7 +21,7 @@ next:
     poster: ../../assets/projects/amd/key-main-poster.jpg
     alt: AMD 網站作品預覽
 hero:
-  eyebrow: CASE STUDY 06 · 企業網站
+  eyebrow: CASE STUDY 05 · 企業網站
   title: AMD
   titleSizeMobile: 76
   headline: 康健生醫**企業網站**設計
