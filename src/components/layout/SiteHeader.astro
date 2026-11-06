@@ -58,6 +58,8 @@ const currentPath = Astro.url.pathname;
   }
 
   .site-header[data-scrolled] {
+    /* stylelint-disable-next-line property-no-vendor-prefix -- iOS Safari < 18 */
+    -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     background-color: color-mix(
       in srgb,
