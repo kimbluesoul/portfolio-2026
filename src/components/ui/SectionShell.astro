@@ -5,12 +5,22 @@ interface Props {
   class?: string;
   id?: string;
   tone: SectionTone;
+  'data-font-critical'?: boolean;
 }
 
-const { class: className, id, tone } = Astro.props;
+const {
+  class: className,
+  id,
+  tone,
+  'data-font-critical': dataFontCritical,
+} = Astro.props;
 ---
 
-<section id={id} class:list={['case-section', `tone-${tone}`, className]}>
+<section
+  id={id}
+  class:list={['case-section', `tone-${tone}`, className]}
+  data-font-critical={dataFontCritical}
+>
   <div class="case-container">
     <slot />
   </div>

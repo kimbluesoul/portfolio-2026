@@ -6,9 +6,11 @@ import subsetFont from 'subset-font';
 import { pageKeyFromPath } from '../src/lib/page-key.mjs';
 import {
   codePointsFrom,
+  criticalWeightedText,
   FONT_WEIGHTS,
   LAYOUT_FEATURES,
   partitionExt,
+  splitCriticalExt,
   weightedText,
   withCoreBaseline,
 } from './font-text.mjs';
@@ -16,7 +18,8 @@ import {
 // ADR-0012: subset Noto Sans TC per weight to the glyphs that weight renders.
 // Each weight gets a `core` subset (home page) and `ext` subsets (glyphs only
 // used on other pages), so the home page never downloads case-study glyphs.
-// Every page gets an `ext-<page>` subset containing all of its non-core glyphs.
+// Marked pages split that extension into an early `ext-<page>-hero` subset and
+// a deferred `ext-<page>` remainder. Unmarked pages keep one extension subset.
 // Extension faces are emitted only into that page's head; the generated global
 // stylesheet contains core faces only.
 
@@ -102,7 +105,10 @@ const pages = await Promise.all(
     .filter((file) => extname(file) === '.html')
     .map(async (file) => ({
       file,
-      text: weightedText(await readFile(file, 'utf8')),
+      ...((html) => ({
+        text: weightedText(html),
+        criticalText: criticalWeightedText(html),
+      }))(await readFile(file, 'utf8')),
     })),
 );
 const cssText = (
@@ -139,12 +145,45 @@ for (const weight of FONT_WEIGHTS) {
     core,
   );
 
-  for (const [name, codePoints] of [
-    ['core', core],
-    ...[...ext].map(([group, groupCodePoints]) => [
-      `ext-${group}`,
-      groupCodePoints,
+  const criticalByPage = new Map(
+    pages.map(({ file, criticalText }) => [
+      pageKeyFromPath(relative(distDirectory, file)),
+      codePointsFrom(criticalText[weight]),
     ]),
+  );
+  const extensionGroups = [];
+  for (const [page, pageCodePoints] of ext) {
+    const criticalCodePoints = criticalByPage.get(page) ?? new Set();
+    if (criticalCodePoints.size === 0) {
+      extensionGroups.push({
+        name: `ext-${page}`,
+        page,
+        codePoints: pageCodePoints,
+      });
+      continue;
+    }
+    const { hero, remainder } = splitCriticalExt(
+      pageCodePoints,
+      criticalCodePoints,
+      new Set(),
+    );
+    if (hero.size > 0)
+      extensionGroups.push({
+        name: `ext-${page}-hero`,
+        page,
+        codePoints: hero,
+      });
+    if (remainder.size > 0)
+      extensionGroups.push({
+        name: `ext-${page}`,
+        page,
+        codePoints: remainder,
+      });
+  }
+
+  for (const { name, page, codePoints } of [
+    { name: 'core', page: undefined, codePoints: core },
+    ...extensionGroups,
   ]) {
     if (codePoints.size === 0) continue;
     const subset = await subsetFont(
@@ -169,7 +208,6 @@ for (const weight of FONT_WEIGHTS) {
 }`;
     if (name === 'core') cssBlocks.push(cssBlock);
     else {
-      const page = name.slice('ext-'.length);
       pageCssBlocks.set(page, [...(pageCssBlocks.get(page) ?? []), cssBlock]);
     }
     summary.push(
