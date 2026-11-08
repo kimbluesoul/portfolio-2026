@@ -1806,14 +1806,13 @@ const figmaSectionHeights390 = {
   // 88Win `475:953`.
   '/work/88win/': [
     ['Hero', 784],
-    ['Overview', 791],
-    // Figma 475:1037 = 760.14 (PO 2026-11-06, Promotion caption 2 lines)
-    ['Key Screens', 760],
+    ['Overview', 843],
+    // Figma 475:1003 = 843 / 475:1037 = 812.14, copy update 2026-11-08
+    ['Key Screens', 812],
     ['Mobile / RWD', 717],
     ['Interaction & Motion', 792],
-    // CARD now uses its approved mobile split art and real note text. Other
-    // Details cards retain their existing output, so this remains site height.
-    ['Details', 3300, 16],
+    // site height after copy update 2026-11-08
+    ['Details', 3351, 16],
     ['Visual Extension', 410],
     ['Links', 659],
     ['Next Project', 530],
