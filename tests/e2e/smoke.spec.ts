@@ -2503,7 +2503,8 @@ test('88Win requests only its own page extension fonts', async ({
     const pathname = new URL(request.url()).pathname;
     if (/noto-sans-tc/iu.test(pathname)) fontRequests.push(pathname);
   });
-  await page.goto('/work/88win/', { waitUntil: 'networkidle' });
+  await page.goto('/work/88win/', { waitUntil: 'load' });
+  await page.waitForLoadState('networkidle');
 
   expect(
     fontRequests.some((pathname) => /ext-work-88win/iu.test(pathname)),

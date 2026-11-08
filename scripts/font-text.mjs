@@ -125,6 +125,29 @@ export function partitionExt(pageCodePoints, core) {
   return groups;
 }
 
+/**
+ * Splits one page's non-core glyphs into an early critical subset and the
+ * deferred remainder. The sets are disjoint and their union is the page's
+ * original extension subset.
+ *
+ * @param {Set<number>} pageCodePoints all code points rendered by the page
+ * @param {Set<number>} criticalCodePoints code points inside marked content
+ * @param {Set<number>} core code points already in the `core` subset
+ */
+export function splitCriticalExt(pageCodePoints, criticalCodePoints, core) {
+  const hero = new Set(
+    [...criticalCodePoints].filter(
+      (codePoint) => pageCodePoints.has(codePoint) && !core.has(codePoint),
+    ),
+  );
+  const remainder = new Set(
+    [...pageCodePoints].filter(
+      (codePoint) => !core.has(codePoint) && !hero.has(codePoint),
+    ),
+  );
+  return { hero, remainder };
+}
+
 const NAMED_ENTITIES = new Map([
   ['amp', '&'],
   ['apos', "'"],
@@ -213,7 +236,7 @@ function selectorMatches(parts, stack) {
  * @param {string} html
  * @returns {Record<number, string>}
  */
-export function weightedText(html) {
+function extractWeightedText(html, markedOnly) {
   const body = stripNonText(html);
   /** @type {Record<number, string[]>} */
   const chunks = Object.fromEntries(FONT_WEIGHTS.map((weight) => [weight, []]));
@@ -223,6 +246,7 @@ export function weightedText(html) {
   )) {
     const [, closing, name, attributes, text] = token;
     if (text !== undefined) {
+      if (markedOnly && !stack.some((element) => element.marked)) continue;
       const decoded = decodeEntities(text);
       chunks[400].push(decoded);
       for (const weight of stack.at(-1)?.weights ?? []) {
@@ -245,7 +269,12 @@ export function weightedText(html) {
         .find((value) => value !== undefined)
         ?.split(/\s+/u)
         .filter(Boolean) ?? [];
-    const element = { tag, classes, weights: new Set(stack.at(-1)?.weights) };
+    const element = {
+      tag,
+      classes,
+      weights: new Set(stack.at(-1)?.weights),
+      marked: /(?:^|\s)data-font-critical(?:\s|=|$)/iu.test(attributes),
+    };
     stack.push(element);
     for (const { weight, selectors } of PARSED_WEIGHT_SELECTORS) {
       if (selectors.some((parts) => selectorMatches(parts, stack))) {
@@ -256,6 +285,15 @@ export function weightedText(html) {
   return Object.fromEntries(
     FONT_WEIGHTS.map((weight) => [weight, chunks[weight].join(' ')]),
   );
+}
+
+export function weightedText(html) {
+  return extractWeightedText(html, false);
+}
+
+/** Returns text inside `data-font-critical` elements, split by font weight. */
+export function criticalWeightedText(html) {
+  return extractWeightedText(html, true);
 }
 
 export function isCjkOrFullWidth(codePoint) {

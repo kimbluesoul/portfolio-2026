@@ -21,6 +21,17 @@ interface Props {
   structuredData?: object;
 }
 
+interface DeferredFontFace {
+  src: string;
+  weight: number;
+  unicodeRange: string;
+}
+
+interface PageFonts {
+  criticalCss: string;
+  deferredFaces: DeferredFontFace[];
+}
+
 const {
   title,
   description,
@@ -36,11 +47,31 @@ const bodyFontHref = preloadBodyFont
   ? bodyFontPreloadHref(generatedFontCss)
   : undefined;
 const pageKey = pageKeyFromPath(Astro.url.pathname);
-const pageFontCss = (generatedPageFontCss as Record<string, string>)[pageKey];
+const pageFonts = (
+  generatedPageFontCss as unknown as Record<string, PageFonts>
+)[pageKey];
+const pageFontCss = pageFonts?.criticalCss;
+const deferredFaces = pageFonts?.deferredFaces ?? [];
+const deferredFontCss = deferredFaces
+  .map(
+    ({ src, weight, unicodeRange }) => `@font-face {
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: ${weight};
+  font-display: swap;
+  src: url('${src}') format('woff2');
+  unicode-range: ${unicodeRange};
+}`,
+  )
+  .join('\n\n');
 const pageFontHash = pageFontCss
   ? (`sha256-${createHash('sha256').update(pageFontCss).digest('base64')}` as const)
   : undefined;
+const deferredFontHash = deferredFontCss
+  ? (`sha256-${createHash('sha256').update(deferredFontCss).digest('base64')}` as const)
+  : undefined;
 if (pageFontHash) Astro.csp?.insertStyleHash(pageFontHash);
+if (deferredFontHash) Astro.csp?.insertStyleHash(deferredFontHash);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const image = getShareImage(shareImage.key);
 const imageUrl = new URL(image.path, Astro.site);
@@ -73,6 +104,11 @@ const serializedStructuredData = structuredData
     <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
     {pageFontCss && <Fragment set:html={`<style>${pageFontCss}</style>`} />}
+    {deferredFontCss && (
+      <Fragment
+        set:html={`<noscript><style>${deferredFontCss}</style></noscript>`}
+      />
+    )}
     {bodyFontHref && (
       <link
         rel="preload"
@@ -108,8 +144,12 @@ const serializedStructuredData = structuredData
       resumeLabel={site.footer.resumeLabel}
       subheading={site.footer.subheading}
     />
+    {deferredFaces.length > 0 && (
+      <deferred-fonts data-faces={JSON.stringify(deferredFaces)} />
+    )}
   </body>
 </html>
 
 <script src="../elements/reveal-on-view.ts"></script>
 <script src="../elements/header-tone.ts"></script>
+<script src="../elements/deferred-fonts.ts"></script>
