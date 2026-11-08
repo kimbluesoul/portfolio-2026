@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   CORE_BASELINE,
+  criticalWeightedText,
   LATIN_ONLY_WEIGHT_SELECTORS,
   LAYOUT_FEATURES,
   partitionExt,
+  splitCriticalExt,
   WEIGHT_SELECTORS,
   weightedText,
   withCoreBaseline,
@@ -115,6 +117,23 @@ describe('weightedText', () => {
   });
 });
 
+describe('criticalWeightedText', () => {
+  it('extracts only the marked subtree while preserving weight rules', () => {
+    const text = criticalWeightedText(`<body>
+      <section class="case-section case-hero" data-font-critical>
+        <h1>關鍵標題</h1><p>關鍵內文</p>
+      </section>
+      <section><h2>延後標題</h2><p>延後內文</p></section>
+    </body>`);
+
+    expect(text[400]).toContain('關鍵標題');
+    expect(text[400]).toContain('關鍵內文');
+    expect(text[400]).not.toContain('延後');
+    expect(text[700]).toContain('關鍵標題');
+    expect(text[700]).not.toContain('關鍵內文');
+  });
+});
+
 describe('weight selectors', () => {
   it('lists every Chinese 700 use found in the 2026-11-02 audit', () => {
     expect(WEIGHT_SELECTORS[700]).toEqual(
@@ -202,5 +221,21 @@ describe('ADR-0012 per-page ext subsets', () => {
     expect(
       partitionExt(new Map([['work-a', points('甲')]]), points('甲')).size,
     ).toBe(0);
+  });
+
+  it('splits hero and remainder without changing the original extension', () => {
+    const core = points('核心');
+    const original = points('核心甲乙丙丁');
+    const { hero, remainder } = splitCriticalExt(
+      original,
+      points('核心甲丙'),
+      core,
+    );
+    const ext = new Set([...original].filter((point) => !core.has(point)));
+
+    expect(hero).toEqual(points('甲丙'));
+    expect(remainder).toEqual(points('乙丁'));
+    expect([...hero].some((point) => remainder.has(point))).toBe(false);
+    expect(new Set([...hero, ...remainder])).toEqual(ext);
   });
 });
