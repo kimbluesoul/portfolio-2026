@@ -38,8 +38,6 @@
 | #93 P3 | `404.astro`: the viewport layout uses `body:has(.not-found-page)`; `:has()` needs Firefox 121 while `cssTarget` is Firefox 114. Older Firefox falls back to the normal layout (footer below the fold) |
 | #93 P3 | `smoke.spec.ts`: the 404 layout test covers 1920 only; add 390 × 844 (no vertical scroll, footer bottom = 844) |
 | #98 P3 | `DETAIL_SPLIT_SLOTS` mobile `sizes` is a fixed `310px`; on phones wider than 390 the image renders wider. No visible loss while the source is 620 w; follow the real width if a wider source is added |
-| #101 P3 | The `@font-face` template exists twice (`scripts/subset-fonts.mjs` `fontFaceCss` and `BaseLayout.astro` `deferredFontCss`); share one helper so the JS-loaded and `<noscript>` faces cannot drift |
-| #101 P3 | Nothing asserts that `<deferred-fonts data-faces>` lists the same files and ranges as the `<noscript>` faces (the coverage gate reads only the latter); add a unit or E2E check |
 | #94 P3 | `.stylelintrc.json` only extends `stylelint.config.mjs`: point `stylelint-guards.test.ts` at the `.mjs`, delete the shim, update the ARCHITECTURE §tree line, and assert each rule's message |
 
 ## Recorded decisions

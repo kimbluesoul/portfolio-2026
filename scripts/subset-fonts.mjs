@@ -3,6 +3,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import process from 'node:process';
 import subsetFont from 'subset-font';
+import { fontFaceCss } from '../src/lib/font-face-css.mjs';
 import { pageKeyFromPath } from '../src/lib/page-key.mjs';
 import {
   codePointsFrom,
@@ -98,17 +99,6 @@ function unicodeRange(codePoints) {
             .toUpperCase()}`,
     )
     .join(', ');
-}
-
-function fontFaceCss({ src, weight, unicodeRange: range }) {
-  return `@font-face {
-  font-family: 'Noto Sans TC';
-  font-style: normal;
-  font-weight: ${weight};
-  font-display: swap;
-  src: url('${src}') format('woff2');
-  unicode-range: ${range};
-}`;
 }
 
 const files = await filesBelow(distDirectory);
