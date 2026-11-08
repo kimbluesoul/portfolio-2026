@@ -69,11 +69,95 @@ function rangesFromCss(cssText) {
   return rangesByWeight;
 }
 
+function decodedAttribute(value) {
+  return value
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#34;', '"')
+    .replaceAll('&#x22;', '"')
+    .replaceAll('&amp;', '&');
+}
+
+function deferredFacesFromElement(html) {
+  const match = html.match(
+    /<deferred-fonts\b[^>]*\bdata-faces=(['"])(.*?)\1[^>]*>/isu,
+  );
+  if (!match) return [];
+  try {
+    return JSON.parse(decodedAttribute(match[2]));
+  } catch {
+    return undefined;
+  }
+}
+
+function facesFromNoscript(html) {
+  const styles = [
+    ...html.matchAll(
+      /<noscript>\s*<style>([\s\S]*?)<\/style>\s*<\/noscript>/giu,
+    ),
+  ]
+    .map((match) => match[1])
+    .join('\n');
+  return [...styles.matchAll(/@font-face\s*\{([^}]*)\}/gu)].flatMap(
+    ([, body]) => {
+      if (!/font-family:\s*['"]?Noto Sans TC/iu.test(body)) return [];
+      const src = body.match(/src:\s*url\((['"]?)(.*?)\1\)/iu)?.[2];
+      const weight = Number(body.match(/font-weight:\s*(\d+)/u)?.[1]);
+      const unicodeRange = body.match(/unicode-range:\s*([^;]+)/u)?.[1]?.trim();
+      return src && weight && unicodeRange
+        ? [{ src, weight, unicodeRange }]
+        : [];
+    },
+  );
+}
+
+function faceKey({ src, weight, unicodeRange }) {
+  return JSON.stringify([src, weight, unicodeRange]);
+}
+
+function multisetDifference(left, right) {
+  const remaining = new Map();
+  for (const face of right)
+    remaining.set(faceKey(face), (remaining.get(faceKey(face)) ?? 0) + 1);
+  return left.filter((face) => {
+    const key = faceKey(face);
+    const count = remaining.get(key) ?? 0;
+    if (count === 0) return true;
+    remaining.set(key, count - 1);
+    return false;
+  });
+}
+
+function describeFaces(faces) {
+  return faces
+    .map(
+      ({ src, weight, unicodeRange }) =>
+        `${src} (weight ${weight}, ${unicodeRange})`,
+    )
+    .join('; ');
+}
+
+function deferredFallbackFailure(path, html) {
+  const elementFaces = deferredFacesFromElement(html);
+  const noscriptFaces = facesFromNoscript(html);
+  if (elementFaces === undefined)
+    return `${path}: deferred-fonts data-faces is not valid JSON`;
+  const onlyInElement = multisetDifference(elementFaces, noscriptFaces);
+  const onlyInNoscript = multisetDifference(noscriptFaces, elementFaces);
+  if (onlyInElement.length === 0 && onlyInNoscript.length === 0)
+    return undefined;
+  return `${path}: deferred font fallback mismatch; data-faces only: ${describeFaces(onlyInElement) || '(none)'}; noscript only: ${describeFaces(onlyInNoscript) || '(none)'}`;
+}
+
 const coreRangesByWeight = rangesFromCss(css);
 const failures = [];
 const report = new Map(FONT_WEIGHTS.map((weight) => [weight, new Set()]));
 for (const file of files.filter((path) => extname(path) === '.html')) {
   const html = await readFile(file, 'utf8');
+  const fallbackFailure = deferredFallbackFailure(
+    relative(distDirectory, file),
+    html,
+  );
+  if (fallbackFailure) failures.push(fallbackFailure);
   const inlineCss = [...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/giu)]
     .map((match) => match[1])
     .join('\n');

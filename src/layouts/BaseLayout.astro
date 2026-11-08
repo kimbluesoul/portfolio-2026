@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import type { CollectionEntry } from 'astro:content';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
+import { fontFaceCss } from '../lib/font-face-css.mjs';
 import { bodyFontPreloadHref } from '../lib/font-preload';
 import { pageKeyFromPath } from '../lib/page-key.mjs';
 import { getShareImage } from '../lib/share-image';
@@ -52,18 +53,7 @@ const pageFonts = (
 )[pageKey];
 const pageFontCss = pageFonts?.criticalCss;
 const deferredFaces = pageFonts?.deferredFaces ?? [];
-const deferredFontCss = deferredFaces
-  .map(
-    ({ src, weight, unicodeRange }) => `@font-face {
-  font-family: 'Noto Sans TC';
-  font-style: normal;
-  font-weight: ${weight};
-  font-display: swap;
-  src: url('${src}') format('woff2');
-  unicode-range: ${unicodeRange};
-}`,
-  )
-  .join('\n\n');
+const deferredFontCss = deferredFaces.map(fontFaceCss).join('\n\n');
 const pageFontHash = pageFontCss
   ? (`sha256-${createHash('sha256').update(pageFontCss).digest('base64')}` as const)
   : undefined;
