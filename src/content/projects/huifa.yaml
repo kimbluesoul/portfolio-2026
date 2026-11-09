@@ -2,7 +2,7 @@ order: 6
 name: HUIFA
 nameZh: 匯發營造
 card:
-  summary: &summary 客戶不想要一般網站的瀏覽方式，於是像排投影片一樣，設計每段內容怎麼進場、怎麼轉到下一段。
+  summary: &summary 客戶覺得一般網站太普通。我從品牌 Logo 的開場開始，設計全站的捲動與轉場，上線幾乎與設計相同。
   tags: [已上線, UI設計, Motion, 企業網站, 2024–2025]
   media:
     kind: video
@@ -13,7 +13,7 @@ seo:
   title: 匯發營造 HUIFA｜周泫淇 Syuan Ci
   description: *summary
 next:
-  oneLiner: 客戶不想要一般網站的瀏覽方式，於是像排投影片一樣，設計每段內容怎麼進場、怎麼轉到下一段。
+  oneLiner: 客戶覺得一般網站太普通。我從品牌 Logo 的開場開始，設計全站的捲動與轉場，上線幾乎與設計相同。
   meta: 匯發營造　·　企業網站　·　UI 設計　·　Motion　·　2024–2025
   media:
     kind: video
@@ -25,7 +25,7 @@ hero:
   title: HUIFA
   titleSizeMobile: 76
   headline: 匯發營造**企業網站**設計
-  subtitle: 客戶完全不想要一般網站的瀏覽方式，希望特別一點。我一邊和客戶確認需求，一邊照著期望設計，讓整個網站像一份會動的簡報。
+  subtitle: 客戶覺得一般網站到處都是，希望特別一點。我設計整個網站的動態與轉場，做完回頭看，才發現它就像一份會動的簡報。
   stats:
     - { label: ROLE, value: UI / Motion }
     - { label: PLATFORM, value: 企業網站 }
@@ -46,16 +46,16 @@ overview:
     **更像一份會動的簡報**
   blocks:
     - title: 背景
-      body: 客戶完全不想要一般網站的瀏覽方式，希望整個網站特別一點，不以操作效率為優先，而是重視瀏覽時的體驗。
+      body: 這個案子不以操作效率為優先，而是重視瀏覽時的體驗。代價是門檻變高：有些地方不容易看出能點擊，捲動時也難預期內容從哪裡出現。
     - title: 過程
-      body: 一邊和客戶確認需求，一邊依照期望調整設計，把想像中的瀏覽方式一步步具體化，最後真的做成網站。
+      body: 我先找類似網站給客戶參考，再把動態做進原型讓客戶看效果。最後客戶很滿意成果。
     - title: 挑戰
-      body: 回頭看，有些部分真的很像在做投影片：每段內容要怎麼進場、怎麼轉到下一個區塊才自然，都需要一格一格安排。
+      body: 最難的是把客戶的資料放進這樣的版面：每段都要排得合理，文字又不能顯得單薄。
   outputs: [企業網站, Motion]
 keyScreens:
   eyebrow: DESKTOP
   heading: 一進站，先看見**品牌**
-  subtitle: 首頁以 Logo 搭配線稿建築開場，乾淨、有份量；往下滾動後，一個區塊一個區塊地展開，像翻開一份簡報。
+  subtitle: 客戶希望由品牌 Logo 帶出轉場，我找來線稿建築搭配，開場乾淨、有份量；往下滾動後，內容一個區塊一個區塊地展開。
   main:
     kind: video
     src: /media/huifa/key-main.mp4
@@ -64,14 +64,14 @@ keyScreens:
     aspectRatio: 2528 / 1216
   closeups:
     - title: 執行準則
-      caption: PLAN 到 ACTION 五個步驟，一字排開說清楚。
+      caption: 從文字稿出發，把 PLAN 到 ACTION 五個步驟一字排開說清楚。
       media:
         kind: image
         src: ../../assets/projects/huifa/key-guidelines.jpg
         alt: 執行準則區塊特寫
         aspectRatio: 458.67 / 300
     - title: 工程實績
-      caption: 建案實景搭配工程數據，成果一目了然。
+      caption: 客戶提供的建案照片與工程數據，整理成一目了然的實績區塊。
       media:
         kind: image
         src: ../../assets/projects/huifa/key-projects.jpg
@@ -87,7 +87,7 @@ keyScreens:
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 每一次滾動，都是一次換頁
-  subtitle: 整個網站的動態就像投影片的轉場：每段內容怎麼進場、怎麼轉到下一個區塊，都經過安排，讓瀏覽的節奏自然流暢。
+  subtitle: 動態由我設計，並在原型中示範怎麼動，前端再依原型還原。手機版的捲動效果較少，我設計首頁的呈現，其餘由前端調整成適合手機的瀏覽方式。
   steps:
     - title: 01　一頁一畫面
       body: 每個區塊都是一個完整畫面，像簡報一樣一頁講一件事。
@@ -109,7 +109,7 @@ details:
   variant: compare
   eyebrow: DETAILS
   heading: 從設計稿，到真的**動起來**
-  subtitle: 上方是設計時排的分鏡，下方是實際完成的樣貌，可以對照看看構想怎麼一步步落地。
+  subtitle: 上方是我畫給前端的分鏡，下方是上線後的樣貌，兩者幾乎一模一樣。
   items:
     - label: DESIGN DRAFT
       media:
