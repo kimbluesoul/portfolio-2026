@@ -1848,11 +1848,12 @@ const figmaSectionHeights390 = {
   // SSS `484:1580`.
   '/work/sss/': [
     ['Hero', 811],
-    ['Overview', 765],
-    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 765.
-    ['Key Screens', 735],
-    // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 815.
-    ['Interaction & Motion', 787],
+    // Figma 484:1654 = 817, copy update 2026-11-09.
+    ['Overview', 817],
+    // Flatter video; Figma 484:1684 = 781, copy update 2026-11-09.
+    ['Key Screens', 751],
+    // Flatter video; Figma 484:1712 = 812, copy update 2026-11-09.
+    ['Interaction & Motion', 784],
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 469],
