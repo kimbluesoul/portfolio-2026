@@ -1886,7 +1886,8 @@ const figmaSectionHeights390 = {
   // HUIFA `485:1693`.
   '/work/huifa/': [
     ['Hero', 704],
-    ['Overview', 739],
+    // Figma 485:1767 = 713, copy update 2026-11-09.
+    ['Overview', 713],
     // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 786.
     ['Key Screens', 756],
     // Two steps and flatter 2528 / 1216 videos (PO 2026-11-03); Figma 792.
