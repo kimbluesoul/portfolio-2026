@@ -21,6 +21,14 @@
   contain-intrinsic-size: auto 60rem;
 }
 
+/* A paint-contained neighbour snaps separately and lets the canvas show through
+   at fractional device pixels. Keep the mosaic and both neighbours in one paint. */
+.case-study > .case-section:has(+ .visual-extension),
+.case-study > .visual-extension:has(.variant-mosaic),
+.case-study > .visual-extension:has(.variant-mosaic) + .case-section {
+  content-visibility: visible;
+}
+
 .case-container {
   width: min(
     calc(100% - (var(--layout-page-gutter) * 2)),
@@ -965,6 +973,8 @@ a.link-card:focus-visible .link-arrow {
   background: transparent;
 }
 
+/* stylelint-disable-next-line no-descending-specificity -- The containment
+   override is intentionally placed with the default above. */
 .visual-extension:has(.variant-mosaic) {
   position: relative;
   z-index: 0;
@@ -987,6 +997,8 @@ a.link-card:focus-visible .link-arrow {
   transition: opacity 0s var(--motion-duration-signature);
 }
 
+/* stylelint-disable-next-line no-descending-specificity -- The containment
+   override is intentionally placed with the default above. */
 .visual-extension:has(reveal-on-view[data-inview]) {
   background: transparent;
   transition: background-color 0s var(--motion-duration-signature);

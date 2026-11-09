@@ -33,7 +33,6 @@
 ## Backlog (non-blocking review findings)
 | Source | Item |
 |---|---|
-| #75 note | `mosaics have no bright or dark viewport boundary rows` flaked once on Chromium (sss / amd at DPR 1.25 / 1.5; passed on retry). Watch; fix if it repeats |
 | #93 P3 | `global.css`: the shared brand button is still named `.resume-link` although the 404 "Return Home" uses it too; give it a generic name |
 | #93 P3 | `404.astro`: the viewport layout uses `body:has(.not-found-page)`; `:has()` needs Firefox 121 while `cssTarget` is Firefox 114. Older Firefox falls back to the normal layout (footer below the fold) |
 | #93 P3 | `smoke.spec.ts`: the 404 layout test covers 1920 only; add 390 × 844 (no vertical scroll, footer bottom = 844) |
