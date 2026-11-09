@@ -52,14 +52,14 @@ overview:
     - title: 背景
       body: 這是寶舖建設「SSS 超透明提案」展覽的活動頁。剛拿到需求和素材時覺得有些普通，主要就是一張 SSS 的圖，照片也不多。
     - title: 讓主視覺動起來
-      body: 看到 SSS 主視覺時，就覺得它動起來一定更豐富有趣。於是拆解裡面的元素讓它們各自動起來，讓人一進站就被吸引停留。
+      body: 看到 SSS 主視覺時，就覺得它動起來一定更豐富有趣。我在每個 S 裡挑出適合動的元素，平均分布讓整體看起來豐富；箭頭、手指、放大鏡這類較大的向量物件，則用移動帶出焦點。
     - title: 挑戰
-      body: 素材有限，怎麼讓人願意看、願意互動是最大的難題。我和前端大量溝通視差滾動的效果，讓每一次滾動都有新元素進入。
+      body: 素材有限，怎麼讓人願意看、願意互動是最大的難題。我找了其他網站的類似案例給前端參考，讓他更理解我要的視差效果，做到每一次滾動都有新元素進入。客戶很喜歡網頁的動態、瀏覽感受和互動感。
   outputs: [活動頁面, 互動設計]
 keyScreens:
   eyebrow: DESKTOP
   heading: 一進站，SSS 就**動起來**
-  subtitle: 首頁把主視覺拆成一個個元素，讓它們各自動起來，搭配「世界唯一專為健康・安全建築解析的展覽」標語，第一眼就抓住目光。
+  subtitle: 首頁讓主視覺動起來，搭配「世界唯一專為健康・安全建築解析的展覽」標語，第一眼就抓住目光。
   main:
     kind: video
     src: /media/sss/key-main.mp4
@@ -75,14 +75,14 @@ keyScreens:
         alt: 展覽介紹區塊特寫
         aspectRatio: 458.67 / 300
     - title: 展覽旅程
-      caption: 把展區動線畫成立體地圖，從黑暗走向透明。
+      caption: 客戶原本就有分區地圖，但沒有互動。到了網頁上，我讓區域直接亮起來，比左右對照英文數字更清楚。
       media:
         kind: image
         src: ../../assets/projects/sss/key-journey.jpg
         alt: 展覽旅程立體地圖特寫
         aspectRatio: 458.67 / 300
     - title: 建物知情權
-      caption: 用簡單的圖示與時間軸，把專業內容講清楚。
+      caption: 圖示與時間軸由客戶提供，我加上動態，讓內容隨滾動呈現。
       media:
         kind: image
         src: ../../assets/projects/sss/key-transparency.jpg
@@ -91,9 +91,17 @@ keyScreens:
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 每一次滾動，都有新東西
-  subtitle: 整個網站大量運用視差滾動，和前端反覆溝通細節，讓超透明理念、旅程導覽與建物知情權，都能在互動中被看見、被吸收。
+  subtitle: 整個網站大量運用視差滾動，讓超透明理念、旅程導覽與建物知情權，都能在互動中被看見、被吸收。
   steps:
-    - title: 01　主視覺拆解
+    - title: 01　進站動畫
+      body: 寶舖的圓形 Logo 繞進畫面定位，再帶出展覽資訊，最後銜接進網站。客戶很喜歡，後續的新展覽也沿用這套動畫。
+      media:
+        kind: video
+        src: /media/sss/motion-entry.mp4
+        poster: ../../assets/projects/sss/motion-entry-poster.jpg
+        alt: 寶舖建設進站動畫
+        aspectRatio: 2528 / 1216
+    - title: 02　主視覺拆解
       body: 把 SSS 主視覺裡的元素拆開、單獨動起來，一進站就被吸引停留。
       media:
         kind: video
@@ -101,21 +109,13 @@ motion:
         poster: ../../assets/projects/sss/motion-1-poster.jpg
         alt: 主視覺拆解動態
         aspectRatio: 2528 / 1216
-    - title: 02　視差滾動
+    - title: 03　視差滾動
       body: 不同圖層以不同速度移動，每一次滾動都有新的元素進入畫面。
       media:
         kind: video
         src: /media/sss/motion-2.mp4
         poster: ../../assets/projects/sss/motion-2-poster.jpg
         alt: 視差滾動動態
-        aspectRatio: 2528 / 1216
-    - title: 03　逐段揭露
-      body: 從展覽介紹、旅程導覽到建物知情權，內容隨滾動分段出現，更好吸收。
-      media:
-        kind: video
-        src: /media/sss/motion-3.mp4
-        poster: ../../assets/projects/sss/motion-3-poster.jpg
-        alt: 內容逐段揭露動態
         aspectRatio: 2528 / 1216
 visualExtension:
   variant: mosaic
