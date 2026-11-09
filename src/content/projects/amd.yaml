@@ -50,16 +50,16 @@ overview:
     **再把需求一一接住**
   blocks:
     - title: 背景
-      body: 康健生醫是醫療器材公司，主要客群在國外。我建議客戶開版時就使用英文，之後切換語言時，版型比較不會跑掉。
+      body: 康健生醫是醫療器材公司，主要客群在國外，網站需要中英兩種語言。我建議開版就用英文：主要客群看的是英文版，版面也比中文好看；而且英文通常比中文長，先用中文開版再換成英文很容易跑版。
     - title: 過程
-      body: 客戶一開始沒有太多想法，改了幾版之後，開始明確要求每個區塊要放哪些內容、期望有哪些動態，我在設計時也一併考慮進去。
+      body: 客戶一開始沒有太多想法，改了幾版之後，開始明確要求每個區塊要放哪些內容、期望有哪些動態。客戶曾問我，是不是都照他們的想法在做。我的想法是：內容是客戶最清楚的，我負責把它做出來，並決定怎麼互動。
     - title: 挑戰
-      body: 客戶要求較多，互動內容也多。首頁產品區要使用描線的產品圖，需要額外處理，還要和整體視覺、動態保持一致。
+      body: 客戶要求較多，互動內容也多。首頁產品區客戶希望由描線變成實物，所以每一張實物照片，我都要額外處理成描線版本，還要和整體視覺、動態保持一致。
   outputs: [企業網站, 互動設計]
 keyScreens:
   eyebrow: DESKTOP
   heading: 專業醫療，也要**好讀**
-  subtitle: 首頁用手術場景與「Accelerating Excellence」開場，往下依客戶指定的內容依序展開，讓專業的醫療資訊在英文版面裡也清楚好讀。
+  subtitle: 首頁用手術場景與「Accelerating Excellence」開場，往下依客戶指定的內容依序展開。文字量不少，我盡量用排版拉開節奏，讓專業的醫療資訊讀起來不那麼枯燥。
   main:
     kind: video
     src: /media/amd/key-main.mp4
@@ -68,7 +68,7 @@ keyScreens:
     aspectRatio: 16 / 9
   closeups:
     - title: 產品區域
-      caption: 依手術階段分類，搭配額外處理的描線產品圖。
+      caption: 依客戶的手術階段分類，搭配我逐張處理的描線產品圖。
       media:
         kind: image
         src: ../../assets/projects/amd/key-products.jpg
@@ -82,7 +82,7 @@ keyScreens:
         alt: 產品頁特寫
         aspectRatio: 458.67 / 300
     - title: 產品內容頁
-      caption: 用標註線拆解產品結構，四項特色一次看清楚。
+      caption: 客戶提供的結構資料，以標註線呈現，四項特色一次看清楚。
       media:
         kind: image
         src: ../../assets/projects/amd/key-product-content.jpg
@@ -91,7 +91,7 @@ keyScreens:
 motion:
   eyebrow: INTERACTION & MOTION
   heading: 連出錯的頁面，也有細節
-  subtitle: 除了客戶指定的互動，我也特別替 404 與維護頁面加上動態，讓使用者在找不到頁面或網站維護時，依然感受得到品牌的用心。
+  subtitle: 除了客戶指定的互動，客戶沒有要求的 404 與維護頁面，我也主動加上動態（圖庫素材），讓使用者在找不到頁面或網站維護時，依然感受得到品牌的用心。
   steps:
     - title: 01　404 頁面
       body: 找不到頁面時，手術燈與「Oops」插圖帶著動態出現，讓出錯的時刻輕鬆一點。

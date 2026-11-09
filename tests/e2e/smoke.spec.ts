@@ -1873,8 +1873,10 @@ const figmaSectionHeights390 = {
   // AMD `485:1462`.
   '/work/amd/': [
     ['Hero', 811],
-    ['Overview', 765],
-    ['Key Screens', 786],
+    // Figma 485:1536 = 843, copy update 2026-11-09.
+    ['Overview', 843],
+    // Figma 485:1566 = 812, copy update 2026-11-09.
+    ['Key Screens', 812],
     // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 705.
     ['Interaction & Motion', 685],
     ['Visual Extension', 410],
