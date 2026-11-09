@@ -1820,12 +1820,15 @@ const figmaSectionHeights390 = {
   // Hwa Fong `483:1298`.
   '/work/hwa-fong/': [
     ['Hero', 846],
-    ['Overview', 765],
+    // Figma 483:1372 = 843, copy update 2026-11-09
+    ['Overview', 843],
     ['Key Screens', 807],
-    // Flatter 2528 / 1216 motion videos (PO 2026-11-03), not Figma's 815.
-    ['Interaction & Motion', 787],
+    // 比 Figma 矮是因為影片比例較扁（2528 / 1216，PO 2026-11-03）。
+    // Figma 483:1431 = 841, copy update 2026-11-09
+    ['Interaction & Motion', 813],
     ['Visual Extension', 410],
-    ['Links', 627],
+    // Figma 483:1475 = 651, copy update 2026-11-09
+    ['Links', 651],
     ['Next Project', 469],
   ],
   // FITZONE `484:1339`.
