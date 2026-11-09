@@ -1834,11 +1834,13 @@ const figmaSectionHeights390 = {
   // FITZONE `484:1339`.
   '/work/fitzone/': [
     ['Hero', 810],
-    ['Overview', 765],
-    // Flatter 2528 / 1216 key and motion videos (PO 2026-11-03), not
-    // Figma's 760 / 789.
+    // Figma 484:1398 = 843, copy update 2026-11-09
+    ['Overview', 843],
+    // Flatter 2528 / 1216 key and motion videos (PO 2026-11-03); Key Screens
+    // is lower than Figma's 760.
     ['Key Screens', 731],
-    ['Interaction & Motion', 762],
+    // Figma 484:1459 = 864; lower because of the flatter motion video, copy update 2026-11-09
+    ['Interaction & Motion', 837],
     ['Visual Extension', 410],
     ['Links', 627],
     ['Next Project', 490],
