@@ -2,7 +2,7 @@ order: 7
 name: JHANYU
 nameZh: 展裕建設
 card:
-  summary: &summary 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
+  summary: &summary 展裕 Logo 很適合延伸，我把斜角與品牌橘做成大面積色塊，三條流程用連接線帶著視線走。
   tags: [已上線, UI設計, 品牌延伸, 企業網站, '2024']
   media:
     kind: video
@@ -13,7 +13,7 @@ seo:
   title: 展裕建設 JHANYU｜周泫淇 Syuan Ci
   description: *summary
 next:
-  oneLiner: 延伸 Logo 的斜角與亮橘色，用大面積色塊撐起品牌感，也把繁多的服務流程整理得清楚又不單調。
+  oneLiner: 展裕 Logo 很適合延伸，我把斜角與品牌橘做成大面積色塊，三條流程用連接線帶著視線走。
   meta: 展裕建設　·　企業網站　·　UI 設計　·　品牌延伸　·　2024
   media:
     kind: video
@@ -25,7 +25,7 @@ hero:
   title: JHANYU
   titleSizeMobile: 76
   headline: 展裕建設**企業網站**設計
-  subtitle: 溝通順利，設計上大量延伸 Logo 的造型語言，加入大面積的亮橘色塊，讓整個網站一看就是展裕建設；也把圖量很多的服務流程，整理得清楚又不單調。
+  subtitle: 我覺得展裕的 Logo 很好發揮，於是把屋頂般的斜角延伸成版面的色塊與分割，再大面積使用品牌橘，讓整個網站一看就是展裕建設。
   stats:
     - { label: ROLE, value: UI / 品牌延伸 }
     - { label: PLATFORM, value: 企業網站 }
@@ -50,11 +50,11 @@ overview:
     **讓亮橘撐起品牌**
   blocks:
     - title: 背景
-      body: 和客戶確認需求的過程很順利，沒有太多狀況，重點放在如何讓網站更有展裕建設自己的樣子。
+      body: 建築雖然也能有識別度，但要看是什麼類型的建案；Logo 則各有特色。我判斷展裕的 Logo 非常適合延伸，於是把它當成網站設計的出發點。
     - title: 品牌延伸
-      body: 大量延伸 Logo 的造型語言，把屋頂般的斜角變成版面裡的色塊與分割，再加入大面積的亮橘色，讓品牌感更鮮明。
+      body: 亮橘是展裕的品牌色，我嘗試大面積使用。為了不讓橘色太搶，安排色塊時同時考慮視覺焦點與整體，並和白色背景交替，讓畫面有呼吸；手機版的色塊則收斂成一小區。客戶很喜歡這種整塊的重點感。
     - title: 挑戰
-      body: 服務流程的圖比較多，如何清楚呈現、又不讓內容顯得單調無聊，是這個案子印象最深的挑戰。
+      body: 服務流程有三條、共 16 個步驟，客戶只提供文字和步驟。照一般方式排列會很枯燥，所以我用連接線拉出明確的順序主軸，讓人順著看下去。
   outputs: [企業網站, 品牌延伸]
 keyScreens:
   eyebrow: DESKTOP
@@ -75,7 +75,7 @@ keyScreens:
         alt: 關於展裕區塊特寫
         aspectRatio: 458.67 / 300
     - title: 熱銷建案
-      caption: 實景照片搭配清楚的規格表，資訊一目了然。
+      caption: 客戶提供的實景照片與規格內容，我排成清楚好讀的版面。
       media:
         kind: image
         src: ../../assets/projects/jhanyu/key-projects.jpg
@@ -91,7 +91,7 @@ keyScreens:
 motion:
   eyebrow: SERVICE FLOW
   heading: 服務流程，清楚也不無聊
-  subtitle: 這個案子動態不多，重點放在服務流程的設計。流程的圖量多，所以用一致的圖示、步驟標籤和連接線，讓每個流程清楚好讀，又延續品牌的視覺語言。
+  subtitle: 這個案子動態不多，重點放在服務流程的設計。連接線讓先後順序一目了然，圖示則增加趣味與版面美觀；線條圖示取自圖庫，我再逐一調整成一致。
   steps:
     - title: 01　圖示化步驟
       body: 每個步驟都搭配一致的線條圖示，讓繁瑣的流程不必細讀文字也能看懂。
@@ -102,7 +102,7 @@ motion:
         alt: 圖示化步驟
         aspectRatio: 2528 / 1216
     - title: 02　編號與版面節奏
-      body: 橘色編號標籤與連接線帶出先後順序，流程、色塊與留白交錯安排，讓圖量多的頁面清楚又不單調。
+      body: 橘色編號標籤與連接線帶出先後順序，流程、色塊與留白交錯安排，讓步驟多的頁面也有閱讀節奏。
       media:
         kind: video
         src: /media/jhanyu/motion-2.mp4
@@ -119,7 +119,7 @@ visualExtension:
 links:
   eyebrow: FROM DESIGN TO LIVE
   heading: 從設計稿到正式上線
-  subtitle: 想直接看看的話，這裡有原本的設計稿和正式網站。
+  subtitle: 想直接看看的話，這裡有原本的設計稿和正式網站，兩者幾乎沒有差別。
   cards:
     - kind: demo
       eyebrow: DESIGN DEMO
