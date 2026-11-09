@@ -1861,13 +1861,15 @@ const figmaSectionHeights390 = {
   // JHANYU `484:1821`.
   '/work/jhanyu/': [
     ['Hero', 811],
-    ['Overview', 713],
+    // Figma 484:1895 = 791, copy update 2026-11-09.
+    ['Overview', 791],
     // Flatter 2528 / 1216 videos (PO 2026-11-03); Figma 786.
     ['Key Screens', 756],
-    // Two steps and flatter 2528 / 1216 videos (PO 2026-11-03); Figma 815.
+    // Two steps and flatter 2528 / 1216 videos (PO 2026-11-03); Figma 713.
     ['Interaction & Motion', 685],
     ['Visual Extension', 410],
-    ['Links', 577],
+    // Figma 484:1997 = 603, copy update 2026-11-09.
+    ['Links', 603],
     ['Next Project', 469],
   ],
   // AMD `485:1462`.

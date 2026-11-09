@@ -98,7 +98,7 @@ motion:
         alt: 一頁一畫面
         aspectRatio: 2528 / 1216
     - title: 02　內容進場
-      body: 標題、圖片和文字依序出現，讓視線跟著內容走。
+      body: 標題、圖片和文字依序出現，視線跟著走。
       media:
         kind: video
         src: /media/huifa/motion-2.mp4
