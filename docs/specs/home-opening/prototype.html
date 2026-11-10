@@ -1,0 +1,250 @@
+<title>首頁開場原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  /* Layout: the live home page (hero → featured 88Win → 02–07 grid), with one scroll moment on the featured card. Single light look, as on the site. */
+  :root {
+    color-scheme: light;
+    --bg: #f3f3f3;
+    --fg: #000;
+    --fg-2: #5c5c5c;
+    --brand: #1f3bd6;
+    --brand-glint: #9fb0ff;
+    --line: color-mix(in srgb, #000 10%, transparent);
+    --tag-line: #d4d4d4;
+    --media-bg: #e6e6e6;
+    --pill-bg: rgb(255 255 255 / 0.92);
+    --font-display: "Instrument Sans", "Noto Sans TC", system-ui, sans-serif;
+    --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+    --gutter: clamp(20px, 5vw, 96px);
+    --max: 108rem;
+    --radius-card: clamp(0.75rem, 0.6225rem + 0.523vw, 1.25rem);
+  }
+  html { overflow-x: clip; overflow-anchor: none; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; overflow-x: clip; }
+  * { box-sizing: border-box; }
+  .wrap { width: min(calc(100% - 2 * var(--gutter)), var(--max)); margin-inline: auto; }
+
+  header.nav { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; }
+  .mark { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--brand); font-style: italic; }
+  .pill { display: flex; gap: 4px; padding: 4px; background: #fff; border-radius: 999px; font-family: var(--font-display); font-size: 14px; }
+  .pill span { padding: 8px 14px; border-radius: 999px; }
+  .pill span:first-child { background: #eef1ff; color: var(--brand); }
+
+  .hero { padding-block: clamp(36px, 6vw, 96px) 40px; will-change: opacity, transform; }
+  .hero-copy { display: grid; gap: 28px; }
+  .eyebrow { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.25rem, 0.9rem + 1.4vw, 2.5rem); line-height: 1.2; }
+  h1 { margin: 0; font-size: clamp(1.875rem, 1.327rem + 2.179vw, 4rem); font-weight: 700; line-height: 1.35; text-wrap: balance; }
+  .intro { margin: 0; color: var(--fg-2); font-size: clamp(15px, 0.9rem + 0.2vw, 18px); line-height: 1.6; max-width: 52rem; }
+  .creds { list-style: none; margin: 28px 0 0; padding: 28px 0 0; border-top: 1px solid var(--line); display: grid; gap: 16px; }
+  .creds li { display: grid; gap: 8px; }
+  .creds span { color: var(--brand); font-family: var(--font-display); font-size: 13px; font-weight: 500; letter-spacing: 0.12em; }
+  .cue { display: none; margin-top: 48px; color: var(--brand); font-family: var(--font-display); font-size: 13px; font-weight: 700; }
+
+  /* B: 「瞬間」 is visible from the first frame; only a glint and a stroke pass through it. */
+  .moment { position: relative; display: inline-block; color: var(--brand);
+    background: linear-gradient(100deg, var(--brand) 0 42%, var(--brand-glint) 50%, var(--brand) 58% 100%);
+    background-size: 260% 100%; background-position: 100% 0;
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .moment::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0.02em; height: 0.07em; background: var(--brand); transform: scaleX(0); transform-origin: left; }
+  /* Loops every 4.5 s: stroke in and out, glint passes, then rest. Paused while the hero is off screen. */
+  .play .moment { animation: glint 4.5s cubic-bezier(.2,.7,.2,1) .3s infinite; }
+  .play .moment::after { animation: stroke 4.5s cubic-bezier(.65,0,.35,1) .3s infinite; }
+  .offscreen .moment, .offscreen .moment::after { animation-play-state: paused; }
+  @keyframes glint { 0%, 8% { background-position: 100% 0; } 30%, 100% { background-position: 0 0; } }
+  @keyframes stroke {
+    0% { transform: scaleX(0); transform-origin: left; }
+    11% { transform: scaleX(1); transform-origin: left; }
+    13.5% { transform: scaleX(1); transform-origin: right; }
+    25%, 100% { transform: scaleX(0); transform-origin: right; }
+  }
+
+  /* A1: the card keeps its layout box; a centred window grows to full bleed, then folds back. */
+  .runway { position: relative; }
+  .sticky { position: sticky; z-index: 2; }
+  .frame { position: relative; aspect-ratio: 7 / 4; }
+  .window { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); overflow: hidden; background: var(--media-bg); }
+  .window > img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 48%; }
+  .stage { position: absolute; left: 50%; top: 50%; transform-origin: center; }
+  .stage .pc, .stage .phone { position: absolute; object-fit: cover; display: block; }
+  .stage .pc { top: 0; left: -0.5714%; width: 100.8571%; height: 100%; }
+  .stage .phone { top: 50%; left: 76%; width: 16.5714%; height: 60%; border-radius: 15% / 7.25%; }
+
+  .card-copy { display: grid; gap: 10px; padding-top: 16px; }
+  .card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-size: clamp(1.25rem, 1rem + 0.8vw, 2rem); font-weight: 700; }
+  .card-head .no { font-family: var(--font-display); }
+  .card-head h2, .card-head h3 { margin: 0; font-size: inherit; }
+  .summary { margin: 0; line-height: 1.6; font-size: clamp(15px, 0.9rem + 0.15vw, 18px); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+  .tags li { padding: 6px 8px; border: 1px solid var(--tag-line); border-radius: 6px; font-size: 13px; line-height: 1; }
+
+  .grid { display: grid; gap: 48px 32px; padding-block: 64px 120px; }
+  .grid .media { aspect-ratio: 350 / 166; border-radius: var(--radius-card); overflow: hidden; background: var(--media-bg); }
+  .grid img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .proto { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 10;
+    display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 16px; background: var(--pill-bg); border: 1px solid var(--line);
+    border-radius: 999px; font-size: 13px; color: var(--fg-2); box-shadow: 0 6px 24px rgb(0 0 0 / 0.08); white-space: nowrap; }
+  .proto button { font: inherit; color: #fff; background: var(--brand); border: 0; border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+  .proto button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  @media (width >= 48rem) {
+    .creds { display: flex; flex-wrap: wrap; gap: 16px 64px; }
+    .cue { display: inline-block; }
+    .frame { aspect-ratio: 1728 / 500; }
+    .stage .pc { top: 16.2%; left: 22.9745%; width: 48.8426%; height: 95.4%; }
+    .stage .phone { top: 50%; left: 68.5764%; width: 8.4491%; height: 60.2%; }
+    .card-copy { gap: 18px; padding: 30px 10px 0; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    .grid .media { aspect-ratio: 844 / 400; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .play .moment, .play .moment::after { animation: none; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="nav"><span class="mark">Syuan Ci</span><nav class="pill" aria-label="主選單"><span>Work</span><span>About</span><span>Contact</span></nav></header>
+
+  <section class="hero" id="hero">
+    <div class="hero-copy">
+      <p class="eyebrow" style="margin:0">HELLO, I’M SYUAN CI</p>
+      <h1 id="headline">設計畫面，<br>也設計畫面之間的<span class="moment">瞬間</span>。</h1>
+      <p class="intro">專注於介面設計、互動與動態視覺，將靜態畫面延伸成清晰、直覺且富有節奏的數位體驗。</p>
+    </div>
+    <ul class="creds" aria-label="專業領域">
+      <li><span>EXPERIENCE</span>6 年以上 UI 與數位介面設計</li>
+      <li><span>FOCUS</span>介面設計・互動設計・動態設計・原型設計</li>
+      <li><span>CURRENTLY</span>Available for opportunities</li>
+    </ul>
+    <span class="cue">SELECTED WORK ↓</span>
+  </section>
+</div>
+
+<div class="wrap">
+  <div class="runway" id="runway">
+    <div class="sticky" id="sticky">
+      <div class="frame" id="frame">
+        <div class="window" id="window">
+          <img class="bg" src="m/88win-bg.jpg" alt="">
+          <div class="stage" id="stage">
+            <video class="pc" id="pc" src="m/88win-pc.mp4" poster="m/88win-pc.jpg" muted playsinline loop preload="auto" aria-label="88Win PC 介面動態預覽"></video>
+            <video class="phone" id="phone" src="m/88win-mobile.mp4" poster="m/88win-mobile.jpg" muted playsinline loop preload="auto" aria-label="88Win 手機介面動態預覽"></video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-copy">
+    <div class="card-head"><span class="no">01 — 88Win</span><h2>線上娛樂城</h2></div>
+    <p class="summary">整理 PC、H5 與 App 的介面規則，讓不同裝置上的操作與視覺維持一致</p>
+    <ul class="tags"><li>已上線</li><li>UI設計</li><li>互動設計</li><li>PC / H5 / App</li><li>2025–2026</li></ul>
+  </div>
+
+  <div class="grid">
+    <article><div class="media"><img src="m/hwa-fong.jpg" alt="華豐輪胎網站作品預覽" loading="lazy"></div><div class="card-copy"><div class="card-head"><span class="no">02 — Hwa Fong Tire</span><h3>華豐輪胎</h3></div><p class="summary">以「DURO for Durability」為核心，呈現華豐輪胎可靠的品牌形象與完整產品線，並加入可探索的互動與 Motion。</p></div></article>
+    <article><div class="media"><img src="m/fitzone.jpg" alt="FITZONE 網站作品預覽" loading="lazy"></div><div class="card-copy"><div class="card-head"><span class="no">03 — FITZONE</span><h3>健身房</h3></div><p class="summary">從介面設計到 Motion 都一起處理，最後也真的落地到正式網站，不是只停在 Figma 裡</p></div></article>
+    <article><div class="media"><img src="m/sss.jpg" alt="SSS 網站作品預覽" loading="lazy"></div><div class="card-copy"><div class="card-head"><span class="no">04 — SSS</span><h3>超透明提案</h3></div><p class="summary">把一張主視覺拆開讓它動起來，再用視差滾動讓每次滑動都有新內容，讓建築展變得想看、也想互動。</p></div></article>
+    <article><div class="media"><img src="m/amd.jpg" alt="AMD 網站作品預覽" loading="lazy"></div><div class="card-copy"><div class="card-head"><span class="no">05 — AMD</span><h3>康健生醫</h3></div><p class="summary">客群在海外，以英文開版避免換語系跑版；依客戶指定的內容與動態，重新設計產品區與描線產品圖。</p></div></article>
+    <article><div class="media"><img src="m/huifa.jpg" alt="匯發營造網站作品預覽" loading="lazy"></div><div class="card-copy"><div class="card-head"><span class="no">06 — HUIFA</span><h3>匯發營造</h3></div><p class="summary">客戶覺得一般網站太普通。我從品牌 Logo 的開場開始，設計全站的捲動與轉場，上線幾乎與設計相同。</p></div></article>
+    <article><div class="media"><img src="m/jhanyu.jpg" alt="展裕建設網站作品預覽" loading="lazy"></div><div class="card-copy"><div class="card-head"><span class="no">07 — JHANYU</span><h3>展裕建設</h3></div><p class="summary">展裕 Logo 很適合延伸，我把斜角與品牌橘做成大面積色塊，三條流程用連接線帶著視線走。</p></div></article>
+  </div>
+</div>
+
+<div class="proto" role="region" aria-label="原型控制">
+  <span>原型 · 往下捲看效果</span>
+  <button type="button" id="replay">回到頂端重播</button>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (id) => document.getElementById(id);
+  const hero = $('hero'), runway = $('runway'), sticky = $('sticky'), frame = $('frame'), win = $('window'), stage = $('stage');
+  const videos = [$('pc'), $('phone')];
+  const OVER = 1.2;         // devices grow past full-bleed width at the peak
+  const K = 1.45;           // window height at the peak, relative to the scaled card
+  const HOLD = 0.05;        // share of the runway spent fully open
+  let m = {}, started = false, R0 = 16;
+
+  const ease = (t) => t * t * t * (t * (t * 6 - 15) + 10);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  function measure() {
+    const vw = document.documentElement.clientWidth, vh = innerHeight;
+    runway.style.height = '';
+    const W0 = frame.clientWidth, H0 = frame.clientHeight;
+    const sPeak = (vw / W0) * OVER;
+    const Hpeak = Math.max(H0, Math.min(H0 * sPeak * K, vh * 0.9));
+    const stickyTop = Math.max(72, (vh - H0) / 2);
+    const R = vh * 0.5;
+    runway.style.height = H0 + R + 'px';
+    sticky.style.top = stickyTop + 'px';
+    win.style.width = vw + 'px';
+    win.style.height = Hpeak + 'px';
+    stage.style.width = W0 + 'px';
+    stage.style.height = H0 + 'px';
+    const docTop = runway.getBoundingClientRect().top + scrollY;
+    const startTop = Math.min(docTop, vh * 0.9);
+    m = { vw, W0, H0, sPeak, Hpeak, stickyTop, R, G: Math.max(1, startTop - stickyTop) };
+    render();
+  }
+
+  function progress() {
+    const u = m.stickyTop - runway.getBoundingClientRect().top;
+    if (u <= -m.G) return 0;
+    if (u < 0) return ease((u + m.G) / m.G);
+    if (u <= HOLD * m.R) return 1;
+    if (u <= m.R) return 1 - ease((u - HOLD * m.R) / ((1 - HOLD) * m.R));
+    return 0;
+  }
+
+  function render() {
+    const p = reduce ? 0 : progress();
+    const s = 1 + (m.sPeak - 1) * p;
+    const w = m.W0 + (m.vw - m.W0) * p, h = m.H0 + (m.Hpeak - m.H0) * p;
+    win.style.clipPath = `inset(${(m.Hpeak - h) / 2}px ${(m.vw - w) / 2}px round ${(1 - p) * R0}px)`;
+    stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+    const heroP = runway.getBoundingClientRect().top > m.stickyTop ? p : 1;
+    hero.style.opacity = String(1 - 0.55 * heroP);
+    hero.style.transform = `translateY(${-28 * heroP}px)`;
+    if (!started && (p > 0.55 || reduce)) { started = true; videos.forEach((v) => v.play().catch(() => {})); }
+  }
+
+  function radiusPx() {
+    const probe = document.createElement('div');
+    probe.style.width = 'var(--radius-card)';
+    probe.style.position = 'absolute';
+    document.body.appendChild(probe);
+    const px = probe.getBoundingClientRect().width;
+    probe.remove();
+    return px || 16;
+  }
+  let ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; render(); });
+  }, { passive: true });
+  addEventListener('resize', () => { R0 = radiusPx(); measure(); });
+
+  function playOpening() {
+    const h1 = $('headline');
+    h1.classList.remove('play');
+    void h1.offsetWidth;
+    h1.classList.add('play');
+  }
+  $('replay').addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: 'instant' });
+    started = false;
+    videos.forEach((v) => { v.pause(); v.currentTime = 0; });
+    playOpening();
+  });
+
+  new IntersectionObserver(([e]) => $('headline').classList.toggle('offscreen', !e.isIntersecting)).observe($('headline'));
+
+  const boot = () => { R0 = radiusPx(); measure(); playOpening(); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot); else boot();
+})();
+</script>
