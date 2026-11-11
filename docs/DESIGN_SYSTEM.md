@@ -170,7 +170,7 @@ Tokens:
 | `--motion-stagger` | 80ms | Between siblings in a reveal group, max 4 steps (320ms) |
 
 Behavior rules:
-- **Anchor scrolling is smooth** (PO 2026-11-06, #84). Same-page links scroll with the browser's native smooth scrolling (`html { scroll-behavior: smooth }`), so the browser sets duration and easing. These links are About, Work, Back to top and the home Hero's Work cue. Measured in Chromium: home top → About ≈ 1.1 s; Back to top from the end of a case page ≈ 1.5 s. Reduced motion jumps instantly. A link to another page (e.g. a case page's back link to `/#work`) lands without animation. Scripted scrolls that must not animate (`<scroll-restore>`, tests) pass `behavior: 'instant'`. If the PO later wants a set duration or curve, that needs a small script.
+- **Anchor scrolling is smooth** (PO 2026-11-06, #84). Same-page links scroll with the browser's native smooth scrolling (`html { scroll-behavior: smooth }`), so the browser sets duration and easing. These links are About, Work and Back to top (the home Hero's Work cue was removed in #113). Measured in Chromium: home top → About ≈ 1.1 s; Back to top from the end of a case page ≈ 1.5 s. Reduced motion jumps instantly. A link to another page (e.g. a case page's back link to `/#work`) lands without animation. Scripted scrolls that must not animate (`<scroll-restore>`, tests) pass `behavior: 'instant'`. If the PO later wants a set duration or curve, that needs a small script.
 - **Scroll reveal: fade + rise + stagger** (PO 2026-11-04). Elements reveal **once** when they enter view, with opacity 0 → 1 and translateY `--motion-distance-reveal` → 0 (`slow`, `emphasized`). They do not re-animate on scroll back.
 - **Reveal groups.** Each case section after the hero reveals as groups, not as one block:
   - the **section intro** (eyebrow, heading, subtitle) is one group;
@@ -178,6 +178,9 @@ Behavior rules:
   - Inside a group, items start `--motion-stagger` (80ms) apart, **at most 4 steps** (items after the 4th start with the 4th).
   - Body paragraphs, captions and labels never reveal on their own; they move with their item.
 - **Hero: no entrance motion** (PO 2026-11-04). Neither the case hero (text, stats, showcase) nor the Home hero animates in. The hero showcase is the phone LCP element, and a fade would delay LCP (88Win gate ≤ 2500 ms).
+- **Home opening** (PO 2026-11-10, #113, [`specs/home-opening.md`](specs/home-opening.md)). Two exceptions to "no hero motion", neither of which hides content at first paint:
+  - **「瞬間」 loop**: in the home `h1`, a stroke under the accent word and a `#9AA8FF` glint pass through it every 4.5 s. The word itself stays solid `#1F3BD6`. Paused while the headline is off screen; off under reduced motion.
+  - **Featured reveal**: while scrolling, the 01 card opens to full bleed (devices scaled 1.2 × past full width, window up to 1.45 × the scaled card height and at most 90 % of the viewport), holds for 5 % of the runway, and folds back to the card within half a viewport of scrolling. The hero fades to 0.45 and rises 28 px as the card opens. Off under reduced motion and without JavaScript.
 - **One signature moment per case page: the Visual Extension mosaic**, opacity + scale 0.96 → 1 (`signature`, `emphasized`). Nothing else gets more than the standard reveal.
 - **Home:** the project cards after the featured card and the About section use the same reveal; the project grid staggers per row.
 - Reveals never delay content behaviour: videos start and Motion steps auto-advance on their own rules (ADR-0013), even mid-reveal.

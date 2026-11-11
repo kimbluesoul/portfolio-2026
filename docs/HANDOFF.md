@@ -2,12 +2,13 @@
 
 > A status index, not a log (adopted 2026-11-05). Every agent reads it first and updates it when project state changes. Details live in specs, ADRs, ARCHITECTURE, and the PRs; link to them instead of copying them here. The M0–M2 implementation notes that used to be here are in the git history of this file (before PR #72).
 
-## Status (2026-11-09)
+## Status (2026-11-11)
+- **Home opening** (PO 2026-11-10, spec #112, implementation #113): the 「瞬間」 loop in the home headline and the featured-card scroll reveal; the hero's "SELECTED WORK ↓" cue is gone, with the card position unchanged.
 - **Milestone**: **M1–M5 are done** (2026-11-06). M5 shipped the share preview (#85 / #86, checked on Facebook and LINE) and JSON-LD (#89, Google Rich Results Test: crawled, no errors; Person / WebSite / CreativeWork are not rich-result types, so "no items detected" is expected). The PO decided against a custom domain.
 - **Content**: 88Win's Promotion caption states the AI use (#90, PO 2026-11-06). The other case studies say nothing about AI, which is a PO decision.
 - **Content**: no pending media and no `TODO(CONTENT)` remain.
 - **Content**: the case-copy pass with the PO is complete for all seven projects (#100, #104, #105, #107, #108, #109, #110). Figma Motion on HUIFA and JHANYU now shows the two steps the site has; the third step is hidden.
-- **Architecture**: ARCHITECTURE v1.21 records the mosaic `content-visibility` exception (#104). v1.20 records critical / deferred font faces (#101). v1.17 records the share preview and the cache-header fix (#86); v1.16 records `<scroll-restore>` (#81), the media manifest (#79) and CSS browser targets (#83).
+- **Architecture**: ARCHITECTURE v1.22 records `<featured-reveal>` (#113). v1.21 records the mosaic `content-visibility` exception (#104). v1.20 records critical / deferred font faces (#101). v1.17 records the share preview and the cache-header fix (#86); v1.16 records `<scroll-restore>` (#81), the media manifest (#79) and CSS browser targets (#83).
 - **PO requests 2026-11-07** (#96–#98): 88Win Mobile captions centred; order AMD 05 / HUIFA 06 / JHANYU 07 (JHANYU year 2024); site icons (favicon); the 88Win CARD note is HTML text (Details `split`, ARCHITECTURE v1.19).
 - **2026-11-08**: 88Win copy update (#100, PO; Figma `360:251` / `475:953` updated by Claude). It pushed the phone LCP over 2500 ms, so #101 now loads non-hero CJK faces after `load` (ADR-0012 amendment, ARCHITECTURE v1.20): 88Win LCP 2488 → 2337 ms.
 - **404 page** redesigned (Figma `728:1945`, spec [`specs/404.md`](specs/404.md) #92, implementation #93). The 390 layout is a proportional proposal; the PO checks it on the live site.
@@ -40,6 +41,9 @@
 | #98 P3 | `DETAIL_SPLIT_SLOTS` mobile `sizes` is a fixed `310px`; on phones wider than 390 the image renders wider. No visible loss while the source is 620 w; follow the real width if a wider source is added |
 | #94 P3 | `.stylelintrc.json` only extends `stylelint.config.mjs`: point `stylelint-guards.test.ts` at the `.mjs`, delete the shim, update the ARCHITECTURE §tree line, and assert each rule's message |
 | #110 P3 | `smoke.spec.ts`: the HUIFA Interaction & Motion comment still says Figma 792; the frame is 690 since the two-step sync. The gate value is unaffected |
+| #113 P3 | `ProjectCard.astro`: the composite media markup exists twice (featured and non-featured branches); a media change has to be made in both |
+| #113 P3 | `ProjectCard.astro`: the featured background renders at window width (100vw) while its `sizes` describes the card width, about 11 % upscaled at DPR 1 (ARCHITECTURE §9.1). No visible loss on the soft abstract image today |
+| #113 P3 | `featured-reveal.ts`: finds the hero by the `.hero` class and owns the headline's off-screen observer; a data attribute and a separate small element would keep the boundaries clearer |
 
 ## Recorded decisions
 Decisions live where they apply. Start here:
