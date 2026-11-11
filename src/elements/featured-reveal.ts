@@ -66,7 +66,7 @@ class FeaturedReveal extends HTMLElement {
     window.addEventListener('scroll', this.queueRender, { passive: true });
     window.addEventListener('resize', this.handleResize);
 
-    requestAnimationFrame(() => this.measure());
+    this.measure();
   }
 
   disconnectedCallback() {
