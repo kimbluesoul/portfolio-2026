@@ -65,6 +65,8 @@ for (const viewport of viewports) {
       '設計畫面，也設計畫面之間的瞬間。',
     );
     await expect(reveal).toHaveAttribute('data-progress', '0.000');
+    await page.evaluate(() => scrollTo({ top: 1, behavior: 'instant' }));
+    await expect(reveal).toHaveAttribute('data-ready', '');
 
     const geometry = await reveal.evaluate((element) => {
       const frame = element.querySelector<HTMLElement>(
@@ -240,6 +242,7 @@ test('short viewports keep the sticky top below the header', async ({
   await page.goto('/');
 
   const reveal = page.locator('featured-reveal');
+  await page.evaluate(() => scrollTo({ top: 1, behavior: 'instant' }));
   await expect(reveal).toHaveAttribute('data-ready', '');
   const stickyTop = await reveal
     .locator('[data-featured-sticky]')

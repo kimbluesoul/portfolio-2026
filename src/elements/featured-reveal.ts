@@ -154,22 +154,30 @@ class FeaturedReveal extends HTMLElement {
     };
 
     this.sticky.style.setProperty('--featured-sticky-top', `${stickyTop}px`);
-    this.windowElement.style.width = `${peakWidth}px`;
-    this.windowElement.style.height = `${peakHeight}px`;
-    this.windowElement.style.borderRadius = '0';
-    this.stage.style.width = `${cardWidth}px`;
-    this.stage.style.height = `${cardHeight}px`;
-    this.dataset.ready = '';
-    this.render();
   }
 
   private queueRender = () => {
     if (this.frameRequest) return;
     this.frameRequest = requestAnimationFrame(() => {
       this.frameRequest = 0;
+      this.activate();
       this.render();
     });
   };
+
+  private activate() {
+    if (this.hasAttribute('data-ready') || !this.windowElement || !this.stage) {
+      return;
+    }
+
+    const { peakWidth, peakHeight, cardWidth, cardHeight } = this.measurements;
+    this.windowElement.style.width = `${peakWidth}px`;
+    this.windowElement.style.height = `${peakHeight}px`;
+    this.windowElement.style.borderRadius = '0';
+    this.stage.style.width = `${cardWidth}px`;
+    this.stage.style.height = `${cardHeight}px`;
+    this.dataset.ready = '';
+  }
 
   private getProgress(offset: number) {
     const { growDistance, runway } = this.measurements;
@@ -188,7 +196,13 @@ class FeaturedReveal extends HTMLElement {
   }
 
   private render() {
-    if (!this.enabled || !this.windowElement || !this.stage || !this.hero) {
+    if (
+      !this.enabled ||
+      !this.hasAttribute('data-ready') ||
+      !this.windowElement ||
+      !this.stage ||
+      !this.hero
+    ) {
       return;
     }
 
