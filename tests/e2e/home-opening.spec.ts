@@ -61,6 +61,9 @@ for (const viewport of viewports) {
     await page.evaluate(() => document.fonts.ready);
 
     const reveal = page.locator('featured-reveal');
+    await expect(page.locator('#home-heading')).toHaveText(
+      '設計畫面，也設計畫面之間的瞬間。',
+    );
     await expect(reveal).toHaveAttribute('data-progress', '0.000');
 
     const geometry = await reveal.evaluate((element) => {
@@ -167,17 +170,82 @@ for (const viewport of viewports) {
       }
     }
 
-    await expect(page.locator('.accent-glint')).toHaveCSS(
-      'animation-play-state',
-      'paused',
+    await expect(page.locator('.accent-glint')).toHaveAttribute(
+      'data-text',
+      '瞬間',
     );
+    expect(
+      await page
+        .locator('.accent-glint')
+        .evaluate(
+          (element) => getComputedStyle(element, '::before').animationPlayState,
+        ),
+    ).toBe('paused');
     await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
-    await expect(page.locator('.accent-glint')).toHaveCSS(
-      'animation-play-state',
-      'running',
-    );
+    await expect
+      .poll(() =>
+        page
+          .locator('.accent-glint')
+          .evaluate(
+            (element) =>
+              getComputedStyle(element, '::before').animationPlayState,
+          ),
+      )
+      .toBe('running');
   });
 }
+
+test('enhanced CSS keeps the unupgraded reveal window at card size', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'The custom-element fallback is covered in Chromium.',
+  );
+  await page.addInitScript(() => {
+    const define = customElements.define.bind(customElements);
+    customElements.define = (name, constructor, options) => {
+      if (name !== 'featured-reveal') define(name, constructor, options);
+    };
+  });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+
+  const geometry = await page.locator('featured-reveal').evaluate((element) => {
+    const frame = element.querySelector<HTMLElement>('[data-featured-frame]')!;
+    const windowElement = element.querySelector<HTMLElement>(
+      '[data-featured-window]',
+    )!;
+    return {
+      frame: frame.getBoundingClientRect().toJSON(),
+      window: windowElement.getBoundingClientRect().toJSON(),
+    };
+  });
+
+  for (const key of ['x', 'y', 'width', 'height'] as const) {
+    expect(geometry.window[key]).toBeCloseTo(geometry.frame[key], 0);
+  }
+});
+
+test('short viewports keep the sticky top below the header', async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== 'chromium-desktop',
+    'The reveal geometry is covered in Chromium.',
+  );
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.goto('/');
+
+  const reveal = page.locator('featured-reveal');
+  await expect(reveal).toHaveAttribute('data-ready', '');
+  const stickyTop = await reveal
+    .locator('[data-featured-sticky]')
+    .evaluate((element) => Number.parseFloat(getComputedStyle(element).top));
+  expect(stickyTop).toBe(116);
+});
 
 test('reduced motion has no featured runway', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });

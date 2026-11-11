@@ -79,6 +79,7 @@ class FeaturedReveal extends HTMLElement {
     this.hero?.style.removeProperty('opacity');
     this.hero?.style.removeProperty('transform');
     this.windowElement?.style.removeProperty('border-radius');
+    this.removeAttribute('data-ready');
   }
 
   private handleResize = () => {
@@ -117,13 +118,16 @@ class FeaturedReveal extends HTMLElement {
         viewportHeight * 0.9,
       ),
     );
-    const headerOffset = Number.parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        '--header-height',
-      ),
-    );
+    const rootStyles = getComputedStyle(document.documentElement);
+    const headerHeightToken = rootStyles
+      .getPropertyValue('--header-height')
+      .trim();
+    const headerHeight = headerHeightToken.endsWith('rem')
+      ? Number.parseFloat(headerHeightToken) *
+        Number.parseFloat(rootStyles.fontSize)
+      : Number.parseFloat(headerHeightToken);
     const stickyTop = Math.max(
-      headerOffset + 24,
+      headerHeight + 24,
       (viewportHeight - cardHeight) / 2,
     );
     const documentTop = this.getBoundingClientRect().top + window.scrollY;
@@ -155,6 +159,7 @@ class FeaturedReveal extends HTMLElement {
     this.windowElement.style.borderRadius = '0';
     this.stage.style.width = `${cardWidth}px`;
     this.stage.style.height = `${cardHeight}px`;
+    this.dataset.ready = '';
     this.render();
   }
 
