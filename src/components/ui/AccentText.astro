@@ -3,10 +3,11 @@ import { splitAccent } from '../../lib/accent';
 
 interface Props {
   emphasis?: boolean;
+  moment?: boolean;
   text: string;
 }
 
-const { emphasis = false, text } = Astro.props;
+const { emphasis = false, moment = false, text } = Astro.props;
 ---
 
 {splitAccent(text).map((segment) =>
@@ -14,8 +15,22 @@ const { emphasis = false, text } = Astro.props;
     <>
       {index > 0 && <br />}
       {segment.accent ? (
-        <span class:list={['accent', emphasis && 'accent-emphasis']}>
+        <span
+          class:list={[
+            'accent',
+            emphasis && 'accent-emphasis',
+            moment && 'accent-moment',
+          ]}
+        >
           {line}
+          {moment && (
+            <>
+              <span class="accent-glint" aria-hidden="true">
+                {line}
+              </span>
+              <span class="accent-stroke" aria-hidden="true"></span>
+            </>
+          )}
         </span>
       ) : (
         line
@@ -28,5 +43,90 @@ const { emphasis = false, text } = Astro.props;
   .accent-emphasis {
     color: var(--color-text-brand);
     font-weight: 700;
+  }
+
+  .accent-moment {
+    position: relative;
+    display: inline-block;
+    color: var(--color-text-brand);
+  }
+
+  .accent-stroke {
+    position: absolute;
+    right: 0;
+    bottom: 0.02em;
+    left: 0;
+    height: 0.07em;
+    background: var(--color-text-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: moment-stroke 4.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s infinite;
+  }
+
+  .accent-glint {
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    background: linear-gradient(
+      100deg,
+      var(--color-text-brand) 0 42%,
+      var(--blue-300) 50%,
+      var(--color-text-brand) 58% 100%
+    );
+    background-position: 100% 0;
+    background-size: 260% 100%;
+    background-clip: text;
+    pointer-events: none;
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: moment-glint 4.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s infinite;
+  }
+
+  .accent-moment[data-headline-offscreen] :is(.accent-stroke, .accent-glint) {
+    animation-play-state: paused;
+  }
+
+  @keyframes moment-glint {
+    0%,
+    8% {
+      background-position: 100% 0;
+    }
+
+    30%,
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  @keyframes moment-stroke {
+    0% {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    11% {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    13.5% {
+      transform: scaleX(1);
+      transform-origin: right;
+    }
+
+    25%,
+    100% {
+      transform: scaleX(0);
+      transform-origin: right;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .accent-stroke,
+    .accent-glint {
+      display: none;
+      animation: none;
+    }
   }
 </style>
