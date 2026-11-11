@@ -15,7 +15,7 @@ const { credentials, eyebrow, heading, introduction } = Astro.props;
   <div class="hero-copy">
     <p class="hero-eyebrow">{eyebrow}</p>
     <h1 id="home-heading">
-      <AccentText text={heading} />
+      <AccentText text={heading} moment />
     </h1>
     <p class="hero-introduction">{introduction}</p>
   </div>
@@ -27,9 +27,6 @@ const { credentials, eyebrow, heading, introduction } = Astro.props;
       </li>
     ))}
   </ul>
-  <a class="work-cue" href="#work">
-    SELECTED WORK ↓
-  </a>
 </section>
 
 <style>
@@ -99,23 +96,10 @@ const { credentials, eyebrow, heading, introduction } = Astro.props;
     font-weight: 400;
   }
 
-  .work-cue {
-    display: none;
-    margin-block-start: var(--space-12);
-    color: var(--color-text-brand);
-    font-family: var(--font-family-display);
-    font-size: var(--font-size-label);
-    font-weight: 700;
-    text-decoration: none;
-  }
-
   @media (width >= 48rem) {
-    .work-cue {
-      display: inline-block;
-    }
-
     .hero {
-      padding-block: var(--space-24) var(--space-10);
+      padding-block: var(--space-24)
+        calc(var(--space-24) + var(--space-2) + 0.05rem);
     }
 
     .credentials {
