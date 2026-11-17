@@ -124,7 +124,7 @@ links:
     - kind: demo
       eyebrow: DESIGN DEMO
       label: 設計稿 Demo
-      description: 原本交付的設計稿頁面，可以直接瀏覽。
+      description: 此案非 Figma 製作；原本的線上 Demo 已下架，可能無法開啟。
       url: 'http://demo.m000409.24241872.tw/demo/index.html'
     - kind: live
       eyebrow: LIVE SITE

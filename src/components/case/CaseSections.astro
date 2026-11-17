@@ -28,7 +28,7 @@ const sections = assignTones(
 );
 ---
 
-<article class="case-study">
+<article class="case-study" data-project={project.id}>
   {sections.map(({ key, tone }) => {
     if (key === 'hero') return <CaseHero project={project} tone={tone} />;
     if (key === 'overview')
