@@ -1868,8 +1868,8 @@ const figmaSectionHeights390 = {
     // Two steps and flatter 2528 / 1216 videos (PO 2026-11-03); Figma 713.
     ['Interaction & Motion', 685],
     ['Visual Extension', 410],
-    // Demo copy update and equal-height mobile cards (PO 2026-11-17).
-    ['Links', 651],
+    // Demo copy update, cards not equal height (PO 2026-11-17).
+    ['Links', 627],
     ['Next Project', 469],
   ],
   // AMD `485:1462`.
