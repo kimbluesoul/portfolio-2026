@@ -1,5 +1,5 @@
 export const shareImageFiles = {
-  home: 'home.v1.png',
+  home: 'home.v2.png',
   '88win': '88win.v1.jpg',
   'hwa-fong': 'hwa-fong.v1.jpg',
   fitzone: 'fitzone.v1.jpg',

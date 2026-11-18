@@ -48,7 +48,7 @@ describe('structured data', () => {
           alternateName: 'Syuan Ci',
           jobTitle: 'UI/UX 設計師',
           url: 'https://portfolio.example/',
-          image: 'https://portfolio.example/og/home.v1.png',
+          image: 'https://portfolio.example/og/home.v2.png',
           sameAs: [linkedin],
         },
         {

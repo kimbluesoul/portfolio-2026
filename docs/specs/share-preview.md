@@ -10,7 +10,7 @@ All images are exactly **1200 × 630** (1.91 : 1).
 
 | Page | File | Source | Alt text (`og:image:alt`) |
 |---|---|---|---|
-| `/`, `/resume/`, `/404/` | `home.v1.png` | Figma `718:1570` (PO design), 1× render | `Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計` |
+| `/`, `/resume/`, `/404/` | `home.v2.png` | Figma `789:1831` ("OG 方案 A", PO-approved 2026-11-18; replaces `home.v1.png` from `718:1570`), 1× render | `Syuan Ci 周泫淇 — 介面設計・互動設計・動態設計・原型設計` |
 | `/work/<slug>/` (7 pages) | `<slug>.v1.jpg` | the case hero showcase `src/assets/projects/<slug>/hero-showcase.jpg` | `<project.data.name> 案例主視覺` (e.g. `88Win 案例主視覺`) |
 
 Case images (PO, 2026-11-06): a crop of the hero showcase around its device group, so the devices fill most of the card.
