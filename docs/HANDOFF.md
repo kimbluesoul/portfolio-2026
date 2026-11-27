@@ -3,6 +3,7 @@
 > A status index, not a log (adopted 2026-11-05). Every agent reads it first and updates it when project state changes. Details live in specs, ADRs, ARCHITECTURE, and the PRs; link to them instead of copying them here. The M0–M2 implementation notes that used to be here are in the git history of this file (before PR #72).
 
 ## Status (2026-11-28)
+- **Daily log**: [`DEVLOG.md`](DEVLOG.md) (started 2026-11-28, with a review of 11-08 → 11-28).
 - **Since 2026-11-17**: JHANYU Demo card copy says the demo was not made in Figma and may no longer open (#115, PO); its 390 link cards keep natural heights (#116, PO). The home / resume / 404 share card is v2, OG option A (#117, Figma 789:1831, home.v2.png), live on production.
 - **Home opening** (PO 2026-11-10, spec #112, implementation #113): the 「瞬間」 loop in the home headline and the featured-card scroll reveal; the hero's "SELECTED WORK ↓" cue is gone, with the card position unchanged.
 - **Milestone**: **M1–M5 are done** (2026-11-06). M5 shipped the share preview (#85 / #86, checked on Facebook and LINE) and JSON-LD (#89, Google Rich Results Test: crawled, no errors; Person / WebSite / CreativeWork are not rich-result types, so "no items detected" is expected). The PO decided against a custom domain.
@@ -21,7 +22,11 @@
 ## Open PRs
 | PR | What | Waiting on |
 |---|---|---|
-| — | None | — |
+| #118 | Docs: record #115–#117, add DEVLOG | Product Owner merge |
+
+## 下一個對話先做 (next conversation starts here)
+1. Merge #118 (this HANDOFF + [`DEVLOG.md`](DEVLOG.md)) if it is still open.
+2. Nothing else is queued. Ask the Product Owner whether there is new content or a design change; otherwise the site is done. If they want tidying, pick one P3 from the backlog below as a Codex brief.
 
 ## Next owner and next action
 1. **Product Owner**: new content or design changes as they come; no milestone is open.
